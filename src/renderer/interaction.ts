@@ -9,6 +9,7 @@ export class InteractionManager {
   private mouseDownPos: Point = { x: 0, y: 0 };
   private mouseInWindow = false;
   private lastMouseRel: Point = { x: 0, y: 0 };
+  private lastClickTime = 0;  // for double-click detection
   private cleanupFns: (() => void)[] = [];
 
   constructor(
@@ -89,8 +90,18 @@ export class InteractionManager {
       const dy = e.clientY - this.mouseDownPos.y;
       if (Math.abs(dx) < CONFIG.dragThreshold && Math.abs(dy) < CONFIG.dragThreshold) {
         if (this.fsm.isMouseOverCat(e.clientX, e.clientY)) {
-          if (this.fsm.onClick()) {
-            this.audio.playMeow();
+          const now = performance.now();
+          // Double-click detection
+          if (now - this.lastClickTime < CONFIG.dblClickWindow) {
+            this.lastClickTime = 0;
+            if (this.fsm.roll()) {
+              this.audio.playMeow();
+            }
+          } else {
+            this.lastClickTime = now;
+            if (this.fsm.onClick()) {
+              this.audio.playMeow();
+            }
           }
         }
       }

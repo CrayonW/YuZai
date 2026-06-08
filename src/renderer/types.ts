@@ -15,7 +15,8 @@ export type CatState =
   | 'dragged'
   | 'purring'
   | 'eating'
-  | 'meowing';
+  | 'meowing'
+  | 'rolling';
 
 export type CatSize = 'small' | 'medium' | 'large';
 
@@ -41,5 +42,7 @@ export const CONFIG = {
   chaseDistance:    250,  // px — mouse distance that triggers chase
   purrDistance:     120,  // px — mouse distance that triggers purring
   dragThreshold:    5,    // px — movement before drag is detected
+  dblClickWindow:   400,  // ms — max interval between double-click
+  rollDuration:     1.2,  // s  — how long the roll animation lasts
   fps:              60,
 } as const;

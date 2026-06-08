@@ -22,6 +22,7 @@ export class CatStateMachine {
   private meowTimer = 0;
   private eatTimer = 0;
   private purrTimer = 0;
+  private rollTimer = 0;
   private dragOffset: Point = { x: 0, y: 0 };
   private walkTarget: Point | null = null;
   private size: CatSize = 'medium';
@@ -68,6 +69,14 @@ export class CatStateMachine {
     this.walkTarget = null;
   }
 
+  roll(): boolean {
+    // Returns true if roll was triggered
+    if (this.state === 'dragged' || this.state === 'sleeping' || this.state === 'eating' || this.state === 'rolling') return false;
+    this.state = 'rolling';
+    this.rollTimer = CONFIG.rollDuration;
+    return true;
+  }
+
   isMouseOverCat(mouseRelX: number, mouseRelY: number): boolean {
     const cx = this.position.x * window.innerWidth;
     const cy = this.position.y * window.innerHeight;
@@ -90,6 +99,7 @@ export class CatStateMachine {
       case 'purring':    return this.updatePurring(dt, mouseInWindow, windowW, windowH);
       case 'eating':     return this.updateEating(dt);
       case 'meowing':    return this.updateMeowing(dt);
+      case 'rolling':    return this.updateRolling(dt);
       default:           return null;
     }
   }
@@ -188,6 +198,12 @@ export class CatStateMachine {
   private updateMeowing(dt: number): Point | null {
     this.meowTimer -= dt;
     if (this.meowTimer <= 0) { this.state = 'idle'; this.idleTimer = 0; }
+    return null;
+  }
+
+  private updateRolling(dt: number): Point | null {
+    this.rollTimer -= dt;
+    if (this.rollTimer <= 0) { this.state = 'idle'; this.idleTimer = 0; }
     return null;
   }
 

@@ -49,6 +49,7 @@ export class CatRenderer {
       case 'dragged':   this.drawDragged(t); break;
       case 'walking':
       case 'chasing':   this.drawWalking(t); break;
+      case 'rolling':   this.drawRolling(t); break;
       default:          this.drawIdle(t); break;
     }
 
@@ -427,6 +428,50 @@ export class CatRenderer {
   // ────────────────────────────────────────
   //  Utils
   // ────────────────────────────────────────
+
+  /** Rolling / cute animation — cat flops on its side then back */
+  private drawRolling(t: number): void {
+    const ctx = this.ctx;
+    const phase = t * 8; // rotation speed
+    const rollAngle = Math.sin(phase) * 0.8; // ±45 degrees max
+
+    ctx.save();
+    // Rotate the whole cat for the roll effect
+    ctx.rotate(rollAngle);
+
+    // Slightly squished body during roll
+    const squash = 1 + Math.abs(Math.sin(phase)) * 0.3;
+    ctx.save();
+    ctx.scale(1 / squash, squash);
+    this.drawBody(ctx, -5);
+    ctx.restore();
+
+    // Head tilted
+    ctx.save();
+    ctx.rotate(-rollAngle * 0.5);
+    this.drawHead(ctx, 5);
+    ctx.restore();
+
+    // Happy wiggling tail
+    const tailWag = Math.sin(t * 15) * 0.4;
+    this.drawTail(ctx, 0.3 + tailWag, 0.3);
+
+    ctx.restore();
+
+    // Sparkle / heart particles around the cat
+    const sparkleCount = 4;
+    for (let i = 0; i < sparkleCount; i++) {
+      const sx = Math.sin(t * 5 + i * 1.6) * 35;
+      const sy = -20 + Math.cos(t * 5 + i * 1.6) * 25;
+      const alpha = 0.3 + Math.sin(t * 8 + i) * 0.3;
+      ctx.fillStyle = `rgba(255, 150, 200, ${Math.max(0, alpha)})`;
+      ctx.beginPath();
+      ctx.arc(sx, sy, 3 + Math.sin(t * 10 + i) * 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // ── Utils ──
 
   private roundRect(
     ctx: CanvasRenderingContext2D,
