@@ -9,6 +9,9 @@ export const IPC = {
   // Mouse tracking
   MOUSE_GET_POSITION: 'mouse:get-position',
 
+  // Screen info
+  SCREEN_GET_BOUNDS: 'screen:get-bounds',
+
   // Settings
   SETTINGS_GET: 'settings:get',
   SETTINGS_SET: 'settings:set',

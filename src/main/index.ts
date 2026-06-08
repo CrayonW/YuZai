@@ -70,6 +70,12 @@ function registerIPC(): void {
     return { x: p.x, y: p.y };
   });
 
+  // — Screen work area (bounds for boundary clamping) —
+  ipcMain.handle(IPC.SCREEN_GET_BOUNDS, () => {
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+    return { width, height };
+  });
+
   // — Settings —
   ipcMain.handle(IPC.SETTINGS_GET, (_event, key: string) => {
     const s: Settings = loadSettings();

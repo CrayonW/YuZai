@@ -35,6 +35,10 @@ async function main() {
     y: winPos.y + canvas.height / 2,
   };
 
+  // Get screen bounds for boundary clamping
+  const screenBounds = await window.yuZaiAPI.getScreenBounds();
+  fsm.setScreenBounds(screenBounds.width, screenBounds.height);
+
   // ── Main loop ──
 
   let lastTime = performance.now();

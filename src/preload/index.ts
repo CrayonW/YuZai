@@ -7,6 +7,7 @@ export interface YuZaiAPI {
   getWindowBounds: () => Promise<{ x: number; y: number; width: number; height: number }>;
   resizeWindow: (size: 'small' | 'medium' | 'large') => Promise<void>;
   getMousePosition: () => Promise<{ x: number; y: number }>;
+  getScreenBounds: () => Promise<{ width: number; height: number }>;
   getSetting: (key: string) => Promise<unknown>;
   setSetting: (key: string, value: unknown) => Promise<unknown>;
   getAllSettings: () => Promise<Record<string, unknown>>;
@@ -22,6 +23,7 @@ contextBridge.exposeInMainWorld('yuZaiAPI', {
   getWindowBounds: () => ipcRenderer.invoke(IPC.WINDOW_GET_BOUNDS),
   resizeWindow: (size: string) => ipcRenderer.invoke(IPC.WINDOW_RESIZE, size),
   getMousePosition: () => ipcRenderer.invoke(IPC.MOUSE_GET_POSITION),
+  getScreenBounds: () => ipcRenderer.invoke(IPC.SCREEN_GET_BOUNDS),
   getSetting: (key: string) => ipcRenderer.invoke(IPC.SETTINGS_GET, key),
   setSetting: (key: string, value: unknown) => ipcRenderer.invoke(IPC.SETTINGS_SET, key, value),
   getAllSettings: () => ipcRenderer.invoke(IPC.SETTINGS_GET_ALL),

@@ -62,8 +62,12 @@ export class InteractionManager {
       // Drag movement
       if (this.isDragging) {
         const offset = this.fsm.getDragOffset();
-        const newX = e.screenX - offset.x;
-        const newY = e.screenY - offset.y;
+        let newX = e.screenX - offset.x;
+        let newY = e.screenY - offset.y;
+        // Clamp to keep cat window on screen
+        const winSize = this.fsm.catPixelSize;
+        newX = Math.max(0, Math.min(screen.width - winSize, newX));
+        newY = Math.max(0, Math.min(screen.height - winSize, newY));
         window.yuZaiAPI.moveWindow(newX, newY);
         this.fsm.screenPos = { x: newX + offset.x, y: newY + offset.y };
       }

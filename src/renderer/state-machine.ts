@@ -129,7 +129,7 @@ export class CatStateMachine {
     const timeout = CONFIG.idleTimeoutMin / 1000 + Math.random() * (CONFIG.idleTimeoutMax - CONFIG.idleTimeoutMin) / 1000;
     if (this.idleTimer > timeout) {
       this.state = 'walking';
-      this.walkTarget = this.randomScreenPoint(wW, wH);
+      this.walkTarget = this.randomScreenPoint();
       return null;
     }
 
@@ -146,8 +146,14 @@ export class CatStateMachine {
     const ratio = Math.min(step / dist, 1);
     const mx = dx * ratio, my = dy * ratio;
     this.facingRight = dx >= 0;
-    this.screenPos = { x: this.screenPos.x + mx, y: this.screenPos.y + my };
-    return { x: mx, y: my };
+    const newPos = this.clampToScreen(
+      this.screenPos.x + mx,
+      this.screenPos.y + my,
+    );
+    const clampedMx = newPos.x - this.screenPos.x;
+    const clampedMy = newPos.y - this.screenPos.y;
+    this.screenPos = newPos;
+    return { x: clampedMx, y: clampedMy };
   }
 
   private updateSleeping(dt: number, mouseInWindow: Point | null, wW: number, wH: number): Point | null {
@@ -171,8 +177,14 @@ export class CatStateMachine {
     const ratio = Math.min(step / dist, 1);
     const mx = dx * ratio, my = dy * ratio;
     this.facingRight = dx >= 0;
-    this.screenPos = { x: this.screenPos.x + mx, y: this.screenPos.y + my };
-    return { x: mx, y: my };
+    const newPos = this.clampToScreen(
+      this.screenPos.x + mx,
+      this.screenPos.y + my,
+    );
+    const clampedMx = newPos.x - this.screenPos.x;
+    const clampedMy = newPos.y - this.screenPos.y;
+    this.screenPos = newPos;
+    return { x: clampedMx, y: clampedMy };
   }
 
   private updateDragged(): Point | null {
@@ -209,11 +221,27 @@ export class CatStateMachine {
 
   // ── Helpers ──
 
-  private randomScreenPoint(wW: number, wH: number): Point {
+  private screenW = 1920;  // screen work area width (initialized by app)
+  private screenH = 1080;  // screen work area height
+
+  setScreenBounds(w: number, h: number): void {
+    this.screenW = w;
+    this.screenH = h;
+  }
+
+  private randomScreenPoint(): Point {
     const margin = this.catPixelSize;
     return {
-      x: margin + Math.random() * (wW - margin * 2),
-      y: margin + Math.random() * (wH - margin * 2),
+      x: margin + Math.random() * (this.screenW - margin * 2),
+      y: margin + Math.random() * (this.screenH - margin * 2),
+    };
+  }
+
+  private clampToScreen(x: number, y: number): Point {
+    const margin = this.catPixelSize / 2;
+    return {
+      x: Math.max(margin, Math.min(this.screenW - margin, x)),
+      y: Math.max(margin, Math.min(this.screenH - margin, y)),
     };
   }
 
