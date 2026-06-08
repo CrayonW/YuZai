@@ -47,8 +47,9 @@ export class CatRenderer {
   /** Main render entry — called every frame */
   render(state: CatState, t: number, _dt: number, facingRight = true): void {
     const ctx = this.ctx;
-    const w = this.canvas.width;
-    const h = this.canvas.height;
+    // Use CSS-pixel dimensions (after setTransform(dpr,0,0,dpr,0,0) in app.ts)
+    const w = window.innerWidth;
+    const h = window.innerHeight;
     const cx = w / 2;
     const cy = h / 2;
     const targetSize = CAT_PIXEL_SIZE[this.catSize];
