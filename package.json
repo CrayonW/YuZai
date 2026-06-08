@@ -1,0 +1,20 @@
+{
+  "name": "yuzai-desktop-pet",
+  "version": "1.0.0",
+  "description": "鱼仔桌面宠物 - 你家里的猫鱼仔，现在在你的桌面上陪你工作 🐱",
+  "main": "dist/main/index.js",
+  "scripts": {
+    "build": "node esbuild.config.mjs",
+    "dev": "npm run build && electron .",
+    "start": "npm run dev",
+    "dist": "npm run build && electron-builder",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:win": "npm run build && electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "esbuild": "^0.19.11",
+    "typescript": "^5.3.3"
+  }
+}

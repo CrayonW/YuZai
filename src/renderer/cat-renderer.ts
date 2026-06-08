@@ -1,0 +1,461 @@
+import { CatState } from './types';
+
+/**
+ * Procedural placeholder cat renderer using Canvas 2D.
+ *
+ * When real photos / sprite sheets are added later, replace the draw*()
+ * methods with image-based rendering while keeping the same public API.
+ */
+export class CatRenderer {
+  private canvas: HTMLCanvasElement;
+  private ctx: CanvasRenderingContext2D;
+  private blinkTimer = 0;
+  private blinkState = false;
+
+  constructor(canvas: HTMLCanvasElement) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d')!;
+  }
+
+  /** Main render entry — called every frame */
+  render(state: CatState, t: number, dt: number, catSize: number): void {
+    const ctx = this.ctx;
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+    const cx = w / 2;
+    const cy = h / 2;
+    const s = catSize / 250; // scale normalized to medium (250 px cat)
+
+    ctx.clearRect(0, 0, w, h);
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(s, s);
+
+    // Blink logic (shared across most states)
+    this.blinkTimer += dt;
+    this.blinkState = Math.sin(this.blinkTimer * 0.3) > 0.92;
+
+    switch (state) {
+      case 'sleeping':  this.drawSleeping(t); break;
+      case 'eating':    this.drawEating(t); break;
+      case 'meowing':   this.drawMeowing(t); break;
+      case 'purring':   this.drawHappy(t); break;
+      case 'dragged':   this.drawDragged(t); break;
+      case 'walking':
+      case 'chasing':   this.drawWalking(t); break;
+      default:          this.drawIdle(t); break;
+    }
+
+    ctx.restore();
+  }
+
+  // ────────────────────────────────────────
+  //  Drawing helpers
+  // ────────────────────────────────────────
+
+  private catOrange = '#F5A623';
+  private catLight = '#FCC77B';
+  private catDark = '#D4891A';
+  private catWhite = '#FFF5E6';
+  private earPink = '#FFB3B3';
+  private eyeGreen = '#7EC850';
+  private nosePink = '#FF8C94';
+  private pupilBlack = '#1A1A2E';
+
+  private drawBody(ctx: CanvasRenderingContext2D, yOff = 0, squash = 1): void {
+    ctx.save();
+    ctx.scale(1, squash);
+    ctx.translate(0, yOff);
+
+    // Main body — pear shape
+    ctx.fillStyle = this.catOrange;
+    ctx.beginPath();
+    ctx.ellipse(0, 15, 42, 50, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Belly patch
+    ctx.fillStyle = this.catWhite;
+    ctx.beginPath();
+    ctx.ellipse(0, 20, 28, 35, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Front paws
+    ctx.fillStyle = this.catOrange;
+    this.roundRect(ctx, -22, 50, 18, 16, 8);
+    this.roundRect(ctx, 4, 50, 18, 16, 8);
+
+    // Paw details
+    ctx.fillStyle = this.catLight;
+    ctx.beginPath();
+    ctx.ellipse(-13, 60, 6, 4, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(13, 60, 6, 4, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  private drawHead(ctx: CanvasRenderingContext2D, yOff = 0, mouthOpen = 0): void {
+    const y = -38 + yOff;
+
+    // Ears
+    ctx.fillStyle = this.catOrange;
+    ctx.beginPath();
+    ctx.moveTo(-28, y + 5); ctx.lineTo(-22, y - 18); ctx.lineTo(-8, y + 5);
+    ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(28, y + 5); ctx.lineTo(22, y - 18); ctx.lineTo(8, y + 5);
+    ctx.closePath(); ctx.fill();
+
+    // Inner ears
+    ctx.fillStyle = this.earPink;
+    ctx.beginPath();
+    ctx.moveTo(-24, y + 3); ctx.lineTo(-20, y - 12); ctx.lineTo(-12, y + 3);
+    ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(24, y + 3); ctx.lineTo(20, y - 12); ctx.lineTo(12, y + 3);
+    ctx.closePath(); ctx.fill();
+
+    // Head circle
+    ctx.fillStyle = this.catOrange;
+    ctx.beginPath();
+    ctx.ellipse(0, y, 38, 32, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Cheek fluff
+    ctx.fillStyle = this.catLight;
+    ctx.beginPath();
+    ctx.ellipse(-18, y + 10, 14, 10, -0.3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(18, y + 10, 14, 10, 0.3, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Eyes
+    if (!this.blinkState) {
+      ctx.fillStyle = this.eyeGreen;
+      ctx.beginPath();
+      ctx.ellipse(-14, y - 2, 8, 9, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(14, y - 2, 8, 9, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Pupils
+      ctx.fillStyle = this.pupilBlack;
+      ctx.beginPath();
+      ctx.ellipse(-14, y, 5, 6, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(14, y, 5, 6, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eye highlights
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(-17, y - 4, 3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(11, y - 4, 3, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      // Closed eyes (lines)
+      ctx.strokeStyle = this.catDark;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(-22, y - 2); ctx.lineTo(-6, y - 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(6, y - 2); ctx.lineTo(22, y - 2);
+      ctx.stroke();
+      ctx.lineWidth = 1;
+    }
+
+    // Nose
+    ctx.fillStyle = this.nosePink;
+    ctx.beginPath();
+    ctx.moveTo(0, y + 5);
+    ctx.lineTo(-4, y + 10);
+    ctx.lineTo(4, y + 10);
+    ctx.closePath();
+    ctx.fill();
+
+    // Mouth
+    ctx.strokeStyle = this.catDark;
+    ctx.lineWidth = 1.5;
+    if (mouthOpen > 0) {
+      // Open mouth (meow)
+      ctx.fillStyle = '#4A1520';
+      ctx.beginPath();
+      ctx.ellipse(0, y + 18, 6 * mouthOpen, 5 * mouthOpen, 0, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      // Normal mouth
+      ctx.beginPath();
+      ctx.moveTo(0, y + 12);
+      ctx.lineTo(-6, y + 16);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, y + 12);
+      ctx.lineTo(6, y + 16);
+      ctx.stroke();
+    }
+
+    // Whiskers
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1;
+    for (const side of [-1, 1]) {
+      for (let i = -1; i <= 1; i++) {
+        ctx.beginPath();
+        ctx.moveTo(side * 10, y + 8 + i * 3);
+        ctx.lineTo(side * 45, y + 5 + i * 10);
+        ctx.stroke();
+      }
+    }
+  }
+
+  private drawTail(ctx: CanvasRenderingContext2D, angle = 0.3, curl = 0): void {
+    ctx.strokeStyle = this.catOrange;
+    ctx.lineWidth = 8;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(30, 40);
+    ctx.bezierCurveTo(55, 20 + curl * 15, 65, -10 - curl * 20, 50 + angle * 20, -30 - curl * 25);
+    ctx.stroke();
+
+    // Tail tip highlight
+    ctx.strokeStyle = this.catDark;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(48, -20 - curl * 15);
+    ctx.lineTo(52, -30 - curl * 25);
+    ctx.stroke();
+    ctx.lineWidth = 1;
+  }
+
+  // ────────────────────────────────────────
+  //  State-specific drawing
+  // ────────────────────────────────────────
+
+  private drawIdle(t: number): void {
+    const breathe = Math.sin(t * 2.5) * 2;
+    this.drawTail(this.ctx, 0.3 + Math.sin(t * 1.8) * 0.15);
+    this.drawBody(this.ctx, breathe * 0.3);
+    this.drawHead(this.ctx, breathe * 0.5);
+  }
+
+  private drawWalking(t: number): void {
+    const bob = Math.abs(Math.sin(t * 8)) * 4;
+    const legPhase = Math.sin(t * 10);
+
+    // Body bounces
+    this.ctx.save();
+    this.ctx.translate(0, bob - 2);
+
+    // Alternate paws slightly
+    this.ctx.save();
+    this.ctx.translate(legPhase * 3, 0);
+    this.drawBody(this.ctx, 0);
+    this.ctx.restore();
+
+    this.drawHead(this.ctx, bob * 0.6);
+    this.drawTail(this.ctx, 0.5 + legPhase * 0.3);
+    this.ctx.restore();
+  }
+
+  private drawSleeping(t: number): void {
+    const breathe = Math.sin(t * 1.5) * 3;
+    const ctx = this.ctx;
+
+    // Curled up body (oval)
+    ctx.fillStyle = this.catOrange;
+    ctx.beginPath();
+    ctx.ellipse(0, 10, 55, 32, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Darker stripes
+    ctx.fillStyle = this.catDark;
+    ctx.beginPath();
+    ctx.arc(30, -5, 10, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(-20, 15, 8, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Curled tail wrapping
+    ctx.strokeStyle = this.catOrange;
+    ctx.lineWidth = 7;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.arc(20, 25, 25, 0, Math.PI * 1.2);
+    ctx.stroke();
+
+    // Head tucked in
+    ctx.fillStyle = this.catOrange;
+    ctx.beginPath();
+    ctx.ellipse(-25, -5, 28, 24, -0.3, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Ear tips visible
+    ctx.fillStyle = this.catOrange;
+    ctx.beginPath();
+    ctx.moveTo(-38, -22); ctx.lineTo(-35, -35); ctx.lineTo(-25, -20);
+    ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(-18, -26); ctx.lineTo(-12, -38); ctx.lineTo(-5, -24);
+    ctx.closePath(); ctx.fill();
+
+    // Closed eyes
+    ctx.strokeStyle = this.catDark;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-38, -5); ctx.lineTo(-28, -5);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(-18, -5); ctx.lineTo(-8, -5);
+    ctx.stroke();
+    ctx.lineWidth = 1;
+
+    // Sleeping Zs
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.font = 'bold 16px sans-serif';
+    const zPhase = t * 2;
+    ctx.fillText('z', 38, -20 + Math.sin(zPhase) * 6);
+    ctx.fillText('Z', 50, -35 + Math.sin(zPhase + 1) * 6);
+    ctx.fillText('Z', 62, -50 + Math.sin(zPhase + 2) * 6);
+
+    // Breathing
+    ctx.fillStyle = this.catLight;
+    ctx.beginPath();
+    ctx.ellipse(0, 10 + breathe * 0.4, 52, 29, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  private drawHappy(t: number): void {
+    const purr = Math.sin(t * 20) * 1.5;
+    const ctx = this.ctx;
+
+    // Slight body vibration from purring
+    ctx.save();
+    ctx.translate(purr * 0.5, 0);
+
+    this.drawTail(this.ctx, 0.6 + Math.sin(t * 3) * 0.2, 0.5);
+    this.drawBody(this.ctx, 0);
+
+    // Happy half-closed eyes
+    const y = -38;
+    ctx.fillStyle = this.catOrange;
+    ctx.beginPath();
+    ctx.ellipse(0, y, 38, 32, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Ears drawn again (simplified for now — call drawHead variant)
+    ctx.restore();
+    this.drawTail(ctx, 0.6, 0.5);
+    this.drawBody(ctx, 0);
+
+    // Custom head with happy eyes
+    this.drawHeadHappy(ctx, t);
+  }
+
+  private drawHeadHappy(ctx: CanvasRenderingContext2D, _t: number): void {
+    const y = -38;
+    // (Re-draw head for happy expression... simplified: use drawHead and overlay)
+    // For brevity, just draw the head and overlay half-closed lids
+    this.drawHead(ctx, 0, 0);
+
+    // Half-close eyes (draw lids)
+    ctx.fillStyle = this.catOrange;
+    ctx.beginPath();
+    ctx.rect(-22, y - 8, 16, 5);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.rect(6, y - 8, 16, 5);
+    ctx.fill();
+  }
+
+  private drawDragged(t: number): void {
+    const wobble = Math.sin(t * 6) * 3;
+    const ctx = this.ctx;
+
+    // Slightly elongated body
+    ctx.save();
+    ctx.scale(1, 1.15);
+    this.drawBody(ctx, 5);
+    ctx.restore();
+
+    // Worried head
+    ctx.save();
+    ctx.translate(wobble * 0.3, 0);
+    this.drawHead(ctx, -8);
+    ctx.restore();
+
+    // Drooping tail
+    ctx.strokeStyle = this.catOrange;
+    ctx.lineWidth = 7;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(30, 45);
+    ctx.quadraticCurveTo(40, 75, 25, 90);
+    ctx.stroke();
+    ctx.lineWidth = 1;
+
+    // Worried eyebrows
+    ctx.strokeStyle = this.catDark;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(-18, -40); ctx.lineTo(-6, -37);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(18, -40); ctx.lineTo(6, -37);
+    ctx.stroke();
+    ctx.lineWidth = 1;
+  }
+
+  private drawEating(t: number): void {
+    const nod = Math.sin(t * 10) * 5;
+    this.drawTail(this.ctx, 0.5);
+    this.drawBody(this.ctx);
+    this.drawHead(this.ctx, nod * 0.8);
+  }
+
+  private drawMeowing(t: number): void {
+    const mouthWide = 0.6 + Math.sin(t * 12) * 0.4;
+    const ctx = this.ctx;
+
+    this.drawTail(ctx, 0.4);
+    this.drawBody(ctx);
+
+    // Head tilted up slightly
+    ctx.save();
+    ctx.translate(0, -5);
+    this.drawHead(ctx, 0, Math.max(0, mouthWide));
+    ctx.restore();
+  }
+
+  // ────────────────────────────────────────
+  //  Utils
+  // ────────────────────────────────────────
+
+  private roundRect(
+    ctx: CanvasRenderingContext2D,
+    x: number, y: number,
+    w: number, h: number,
+    r: number,
+  ): void {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+    ctx.fill();
+  }
+}
