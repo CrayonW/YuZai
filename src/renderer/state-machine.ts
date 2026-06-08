@@ -17,6 +17,7 @@ export class CatStateMachine {
   idleTimer = 0;
   targetPos: Point | null = null;
   paused = false;
+  facingRight = true;                       // current facing direction
 
   private meowTimer = 0;
   private eatTimer = 0;
@@ -134,6 +135,7 @@ export class CatStateMachine {
     const step = CONFIG.walkSpeed * dt;
     const ratio = Math.min(step / dist, 1);
     const mx = dx * ratio, my = dy * ratio;
+    this.facingRight = dx >= 0;
     this.screenPos = { x: this.screenPos.x + mx, y: this.screenPos.y + my };
     return { x: mx, y: my };
   }
@@ -158,6 +160,7 @@ export class CatStateMachine {
     const step = CONFIG.chaseSpeed * dt;
     const ratio = Math.min(step / dist, 1);
     const mx = dx * ratio, my = dy * ratio;
+    this.facingRight = dx >= 0;
     this.screenPos = { x: this.screenPos.x + mx, y: this.screenPos.y + my };
     return { x: mx, y: my };
   }

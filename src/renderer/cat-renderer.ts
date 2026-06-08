@@ -23,7 +23,7 @@ export class CatRenderer {
   }
 
   /** Main render entry — called every frame */
-  render(state: CatState, t: number, dt: number): void {
+  render(state: CatState, t: number, dt: number, facingRight = true): void {
     const ctx = this.ctx;
     const w = this.canvas.width;
     const h = this.canvas.height;
@@ -35,7 +35,7 @@ export class CatRenderer {
 
     ctx.save();
     ctx.translate(cx, cy);
-    ctx.scale(s, s);
+    ctx.scale(facingRight ? s : -s, s);
 
     // Blink logic (shared across most states)
     this.blinkTimer += dt;
