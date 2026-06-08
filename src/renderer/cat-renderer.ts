@@ -1,4 +1,4 @@
-import { CatState } from './types';
+import { CatState, CatSize, CAT_PIXEL_SIZE } from './types';
 
 /**
  * Procedural placeholder cat renderer using Canvas 2D.
@@ -11,20 +11,25 @@ export class CatRenderer {
   private ctx: CanvasRenderingContext2D;
   private blinkTimer = 0;
   private blinkState = false;
+  private catSize: CatSize = 'medium';
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d')!;
   }
 
+  setSize(size: CatSize): void {
+    this.catSize = size;
+  }
+
   /** Main render entry — called every frame */
-  render(state: CatState, t: number, dt: number, catSize: number): void {
+  render(state: CatState, t: number, dt: number): void {
     const ctx = this.ctx;
     const w = this.canvas.width;
     const h = this.canvas.height;
     const cx = w / 2;
     const cy = h / 2;
-    const s = catSize / 250; // scale normalized to medium (250 px cat)
+    const s = CAT_PIXEL_SIZE[this.catSize] / 250; // scale normalized to medium
 
     ctx.clearRect(0, 0, w, h);
 
@@ -34,7 +39,7 @@ export class CatRenderer {
 
     // Blink logic (shared across most states)
     this.blinkTimer += dt;
-    this.blinkState = Math.sin(this.blinkTimer * 0.3) > 0.92;
+    this.blinkState = Math.sin(this.blinkTimer * 3) > 0.92;
 
     switch (state) {
       case 'sleeping':  this.drawSleeping(t); break;
@@ -51,7 +56,7 @@ export class CatRenderer {
   }
 
   // ────────────────────────────────────────
-  //  Drawing helpers
+  //  Colour palette
   // ────────────────────────────────────────
 
   private catOrange = '#F5A623';
@@ -63,6 +68,11 @@ export class CatRenderer {
   private nosePink = '#FF8C94';
   private pupilBlack = '#1A1A2E';
 
+  // ────────────────────────────────────────
+  //  Drawing primitives (used by state drawers)
+  // ────────────────────────────────────────
+
+  /** Draw only the cat body (pear shape + belly patch). */
   private drawBody(ctx: CanvasRenderingContext2D, yOff = 0, squash = 1): void {
     ctx.save();
     ctx.scale(1, squash);
@@ -80,23 +90,10 @@ export class CatRenderer {
     ctx.ellipse(0, 20, 28, 35, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // Front paws
-    ctx.fillStyle = this.catOrange;
-    this.roundRect(ctx, -22, 50, 18, 16, 8);
-    this.roundRect(ctx, 4, 50, 18, 16, 8);
-
-    // Paw details
-    ctx.fillStyle = this.catLight;
-    ctx.beginPath();
-    ctx.ellipse(-13, 60, 6, 4, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(13, 60, 6, 4, 0, 0, Math.PI * 2);
-    ctx.fill();
-
     ctx.restore();
   }
 
+  /** Draw head with ears, eyes, nose, mouth, whiskers. */
   private drawHead(ctx: CanvasRenderingContext2D, yOff = 0, mouthOpen = 0): void {
     const y = -38 + yOff;
 
@@ -216,6 +213,23 @@ export class CatRenderer {
     }
   }
 
+  /** Draw head with happy half-closed eyes on top of a regular head. */
+  private drawHeadHappy(ctx: CanvasRenderingContext2D, _t: number): void {
+    // Draw the full head first
+    this.drawHead(ctx, 0, 0);
+
+    // Overlay half-closed eyelids
+    const y = -38;
+    ctx.fillStyle = this.catOrange;
+    ctx.beginPath();
+    ctx.rect(-22, y - 8, 16, 5);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.rect(6, y - 8, 16, 5);
+    ctx.fill();
+  }
+
+  /** Draw tail with configurable wag angle and curl. */
   private drawTail(ctx: CanvasRenderingContext2D, angle = 0.3, curl = 0): void {
     ctx.strokeStyle = this.catOrange;
     ctx.lineWidth = 8;
@@ -241,28 +255,30 @@ export class CatRenderer {
 
   private drawIdle(t: number): void {
     const breathe = Math.sin(t * 2.5) * 2;
-    this.drawTail(this.ctx, 0.3 + Math.sin(t * 1.8) * 0.15);
-    this.drawBody(this.ctx, breathe * 0.3);
-    this.drawHead(this.ctx, breathe * 0.5);
+    const ctx = this.ctx;
+    this.drawTail(ctx, 0.3 + Math.sin(t * 1.8) * 0.15);
+    this.drawBody(ctx, breathe * 0.3);
+    this.drawHead(ctx, breathe * 0.5);
   }
 
   private drawWalking(t: number): void {
     const bob = Math.abs(Math.sin(t * 8)) * 4;
     const legPhase = Math.sin(t * 10);
+    const ctx = this.ctx;
 
     // Body bounces
-    this.ctx.save();
-    this.ctx.translate(0, bob - 2);
+    ctx.save();
+    ctx.translate(0, bob - 2);
 
     // Alternate paws slightly
-    this.ctx.save();
-    this.ctx.translate(legPhase * 3, 0);
-    this.drawBody(this.ctx, 0);
-    this.ctx.restore();
+    ctx.save();
+    ctx.translate(legPhase * 3, 0);
+    this.drawBody(ctx, 0);
+    ctx.restore();
 
-    this.drawHead(this.ctx, bob * 0.6);
-    this.drawTail(this.ctx, 0.5 + legPhase * 0.3);
-    this.ctx.restore();
+    this.drawHead(ctx, bob * 0.6);
+    this.drawTail(ctx, 0.5 + legPhase * 0.3);
+    ctx.restore();
   }
 
   private drawSleeping(t: number): void {
@@ -326,7 +342,7 @@ export class CatRenderer {
     ctx.fillText('Z', 50, -35 + Math.sin(zPhase + 1) * 6);
     ctx.fillText('Z', 62, -50 + Math.sin(zPhase + 2) * 6);
 
-    // Breathing
+    // Breathing overlay
     ctx.fillStyle = this.catLight;
     ctx.beginPath();
     ctx.ellipse(0, 10 + breathe * 0.4, 52, 29, 0, 0, Math.PI * 2);
@@ -341,39 +357,11 @@ export class CatRenderer {
     ctx.save();
     ctx.translate(purr * 0.5, 0);
 
-    this.drawTail(this.ctx, 0.6 + Math.sin(t * 3) * 0.2, 0.5);
-    this.drawBody(this.ctx, 0);
-
-    // Happy half-closed eyes
-    const y = -38;
-    ctx.fillStyle = this.catOrange;
-    ctx.beginPath();
-    ctx.ellipse(0, y, 38, 32, 0, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Ears drawn again (simplified for now — call drawHead variant)
-    ctx.restore();
-    this.drawTail(ctx, 0.6, 0.5);
+    this.drawTail(ctx, 0.6 + Math.sin(t * 3) * 0.2, 0.5);
     this.drawBody(ctx, 0);
-
-    // Custom head with happy eyes
     this.drawHeadHappy(ctx, t);
-  }
 
-  private drawHeadHappy(ctx: CanvasRenderingContext2D, _t: number): void {
-    const y = -38;
-    // (Re-draw head for happy expression... simplified: use drawHead and overlay)
-    // For brevity, just draw the head and overlay half-closed lids
-    this.drawHead(ctx, 0, 0);
-
-    // Half-close eyes (draw lids)
-    ctx.fillStyle = this.catOrange;
-    ctx.beginPath();
-    ctx.rect(-22, y - 8, 16, 5);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.rect(6, y - 8, 16, 5);
-    ctx.fill();
+    ctx.restore();
   }
 
   private drawDragged(t: number): void {
@@ -416,9 +404,10 @@ export class CatRenderer {
 
   private drawEating(t: number): void {
     const nod = Math.sin(t * 10) * 5;
-    this.drawTail(this.ctx, 0.5);
-    this.drawBody(this.ctx);
-    this.drawHead(this.ctx, nod * 0.8);
+    const ctx = this.ctx;
+    this.drawTail(ctx, 0.5);
+    this.drawBody(ctx);
+    this.drawHead(ctx, nod * 0.8);
   }
 
   private drawMeowing(t: number): void {

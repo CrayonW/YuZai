@@ -67,7 +67,7 @@ async function main() {
     });
 
     // Render
-    renderer.render(fsm.state, fsm.animTimer, fsm.catPixelSize);
+    renderer.render(fsm.state, fsm.animTimer, dt, fsm.catPixelSize);
 
     requestAnimationFrame(frame);
   }
