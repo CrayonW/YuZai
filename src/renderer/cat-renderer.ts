@@ -50,6 +50,7 @@ export class CatRenderer {
       case 'walking':
       case 'chasing':   this.drawWalking(t); break;
       case 'rolling':   this.drawRolling(t); break;
+      case 'grooming':  this.drawGrooming(t); break;
       default:          this.drawIdle(t); break;
     }
 
@@ -467,6 +468,41 @@ export class CatRenderer {
       ctx.fillStyle = `rgba(255, 150, 200, ${Math.max(0, alpha)})`;
       ctx.beginPath();
       ctx.arc(sx, sy, 3 + Math.sin(t * 10 + i) * 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  /** Grooming animation — cat washes its face with a paw */
+  private drawGrooming(t: number): void {
+    const ctx = this.ctx;
+    const cycle = Math.sin(t * 3); // slow paw movement
+    const pawY = -30 + cycle * 8; // paw moves up and down near face
+    const pawX = 18; // right paw at face
+
+    // Draw normal body and head
+    this.drawTail(ctx, 0.2);
+    this.drawBody(ctx, 0);
+    this.drawHead(ctx, 0);
+
+    // Right paw lifted to face
+    ctx.save();
+    ctx.fillStyle = this.catLight;
+    ctx.beginPath();
+    ctx.ellipse(pawX, pawY, 7, 5, 0.3, 0, Math.PI * 2);
+    ctx.fill();
+    // Paw outline
+    ctx.strokeStyle = this.catDark;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.ellipse(pawX, pawY, 7, 5, 0.3, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+
+    // Tongue peeking out occasionally (when paw is near mouth)
+    if (Math.abs(cycle) < 0.3) {
+      ctx.fillStyle = '#FF8888';
+      ctx.beginPath();
+      ctx.arc(6, 6, 3, 0, Math.PI);
       ctx.fill();
     }
   }

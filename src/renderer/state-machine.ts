@@ -23,6 +23,8 @@ export class CatStateMachine {
   private eatTimer = 0;
   private purrTimer = 0;
   private rollTimer = 0;
+  private groomTimer = 0;   // countdown for current grooming
+  private groomCooldown = 0; // time until next grooming attempt
   private dragOffset: Point = { x: 0, y: 0 };
   private walkTarget: Point | null = null;
   private size: CatSize = 'medium';
@@ -100,6 +102,7 @@ export class CatStateMachine {
       case 'eating':     return this.updateEating(dt);
       case 'meowing':    return this.updateMeowing(dt);
       case 'rolling':    return this.updateRolling(dt);
+      case 'grooming':   return this.updateGrooming(dt);
       default:           return null;
     }
   }
@@ -131,6 +134,19 @@ export class CatStateMachine {
       this.state = 'walking';
       this.walkTarget = this.randomScreenPoint();
       return null;
+    }
+
+    // Groom occasionally?
+    if (this.groomCooldown <= 0) {
+      // Set next grooming interval
+      this.groomCooldown = (CONFIG.groomIntervalMin + Math.random() * (CONFIG.groomIntervalMax - CONFIG.groomIntervalMin)) / 1000;
+      if (this.idleTimer > 1.5) { // been idle at least 1.5s before grooming
+        this.state = 'grooming';
+        this.groomTimer = CONFIG.groomDuration;
+        return null;
+      }
+    } else {
+      this.groomCooldown -= dt;
     }
 
     return null;
@@ -216,6 +232,16 @@ export class CatStateMachine {
   private updateRolling(dt: number): Point | null {
     this.rollTimer -= dt;
     if (this.rollTimer <= 0) { this.state = 'idle'; this.idleTimer = 0; }
+    return null;
+  }
+
+  private updateGrooming(dt: number): Point | null {
+    this.groomTimer -= dt;
+    if (this.groomTimer <= 0) {
+      this.state = 'idle';
+      this.idleTimer = 0;
+      this.groomCooldown = (CONFIG.groomIntervalMin + Math.random() * (CONFIG.groomIntervalMax - CONFIG.groomIntervalMin)) / 1000;
+    }
     return null;
   }
 

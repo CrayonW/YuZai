@@ -16,7 +16,8 @@ export type CatState =
   | 'purring'
   | 'eating'
   | 'meowing'
-  | 'rolling';
+  | 'rolling'
+  | 'grooming';
 
 export type CatSize = 'small' | 'medium' | 'large';
 
@@ -44,5 +45,8 @@ export const CONFIG = {
   dragThreshold:    5,    // px — movement before drag is detected
   dblClickWindow:   400,  // ms — max interval between double-click
   rollDuration:     1.2,  // s  — how long the roll animation lasts
+  groomIntervalMin: 20000, // ms — min idle before grooming
+  groomIntervalMax: 60000, // ms — max idle before grooming
+  groomDuration:    2.0,  // s  — how long grooming lasts
   fps:              60,
 } as const;
