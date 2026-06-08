@@ -13,6 +13,7 @@ export interface YuZaiAPI {
   onFeedTrigger: (cb: () => void) => () => void;
   onSettingsChanged: (cb: (s: Record<string, unknown>) => void) => () => void;
   onPauseToggle: (cb: (paused: boolean) => void) => () => void;
+  quitApp: () => void;
 }
 
 contextBridge.exposeInMainWorld('yuZaiAPI', {
@@ -40,4 +41,5 @@ contextBridge.exposeInMainWorld('yuZaiAPI', {
     ipcRenderer.on(IPC.PAUSE_TOGGLE, handler);
     return () => ipcRenderer.removeListener(IPC.PAUSE_TOGGLE, handler);
   },
+  quitApp: () => ipcRenderer.send(IPC.APP_QUIT),
 } satisfies YuZaiAPI);

@@ -18,4 +18,7 @@ export const IPC = {
   FEED_TRIGGER: 'feed:trigger',
   SETTINGS_CHANGED: 'settings:changed',
   PAUSE_TOGGLE: 'pause:toggle',
+
+  // Commands from renderer to main
+  APP_QUIT: 'app:quit',
 } as const;

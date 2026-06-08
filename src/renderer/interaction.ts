@@ -1,7 +1,7 @@
 import { CatStateMachine } from './state-machine';
 import { CatRenderer } from './cat-renderer';
 import { AudioManager } from './audio-manager';
-import { Point, CONFIG } from './types';
+import { Point, CONFIG, CatSize } from './types';
 
 export class InteractionManager {
   private isDragging = false;
@@ -11,6 +11,7 @@ export class InteractionManager {
   private lastMouseRel: Point = { x: 0, y: 0 };
   private lastClickTime = 0;  // for double-click detection
   private cleanupFns: (() => void)[] = [];
+  private contextMenu: HTMLElement | null = null;
 
   constructor(
     private canvas: HTMLCanvasElement,
@@ -20,6 +21,7 @@ export class InteractionManager {
   ) {
     this.bindEvents();
     this.bindIPC();
+    this.bindContextMenu();
   }
 
   // ── DOM events ──
@@ -135,6 +137,87 @@ export class InteractionManager {
     });
   }
 
+  // ── Context menu ──
+
+  private bindContextMenu(): void {
+    this.contextMenu = document.getElementById('context-menu');
+    if (!this.contextMenu) return;
+
+    // Prevent default browser context menu on canvas
+    const onContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+      if (this.fsm.isMouseOverCat(e.clientX, e.clientY)) {
+        this.showContextMenu(e.clientX, e.clientY);
+      }
+    };
+
+    // Click on menu item
+    const onMenuClick = (e: Event) => {
+      const target = e.target as HTMLElement;
+      const action = target.getAttribute('data-action');
+      if (!action) return;
+
+      this.hideContextMenu();
+      this.handleMenuAction(action);
+    };
+
+    // Click elsewhere hides menu
+    const onClickOutside = (_e: MouseEvent) => {
+      this.hideContextMenu();
+    };
+
+    this.canvas.addEventListener('contextmenu', onContextMenu);
+    this.contextMenu.addEventListener('click', onMenuClick);
+    document.addEventListener('click', onClickOutside);
+
+    this.cleanupFns.push(() => {
+      this.canvas.removeEventListener('contextmenu', onContextMenu);
+      this.contextMenu?.removeEventListener('click', onMenuClick);
+      document.removeEventListener('click', onClickOutside);
+    });
+  }
+
+  private showContextMenu(x: number, y: number): void {
+    if (!this.contextMenu) return;
+    this.contextMenu.style.left = `${x}px`;
+    this.contextMenu.style.top = `${y}px`;
+    this.contextMenu.classList.remove('hidden');
+  }
+
+  private hideContextMenu(): void {
+    this.contextMenu?.classList.add('hidden');
+  }
+
+  private handleMenuAction(action: string): void {
+    switch (action) {
+      case 'feed':
+        this.fsm.feed();
+        break;
+      case 'size-small':
+        this.changeSize('small');
+        break;
+      case 'size-medium':
+        this.changeSize('medium');
+        break;
+      case 'size-large':
+        this.changeSize('large');
+        break;
+      case 'pause':
+        this.fsm.paused = !this.fsm.paused;
+        break;
+      case 'quit':
+        window.yuZaiAPI.quitApp();
+        break;
+    }
+  }
+
+  private async changeSize(size: CatSize): Promise<void> {
+    this.fsm.setSize(size);
+    this.renderer.setSize(size);
+    await window.yuZaiAPI.setSetting('catSize', size);
+    await window.yuZaiAPI.resizeWindow(size);
+  }
+
   // ── IPC events from main process ──
 
   private bindIPC() {
@@ -150,9 +233,7 @@ export class InteractionManager {
 
     const unsubSettings = window.yuZaiAPI.onSettingsChanged(async (s) => {
       if (s.catSize) {
-        this.fsm.setSize(s.catSize as 'small' | 'medium' | 'large');
-        this.renderer.setSize(s.catSize as 'small' | 'medium' | 'large');
-        await window.yuZaiAPI.resizeWindow(s.catSize as 'small' | 'medium' | 'large');
+        await this.changeSize(s.catSize as CatSize);
       }
     });
     this.cleanupFns.push(unsubSettings);

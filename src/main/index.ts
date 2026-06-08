@@ -82,4 +82,13 @@ function registerIPC(): void {
   });
 
   ipcMain.handle(IPC.SETTINGS_GET_ALL, () => loadSettings());
+
+  // — App quit from renderer —
+  ipcMain.on(IPC.APP_QUIT, () => {
+    if (mainWindow) {
+      const [x, y] = mainWindow.getPosition();
+      saveSettings({ windowX: x, windowY: y });
+    }
+    app.quit();
+  });
 }
