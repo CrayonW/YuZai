@@ -72,14 +72,6 @@ export class InteractionManager {
         this.fsm.screenPos = { x: newX + offset.x, y: newY + offset.y };
       }
 
-      // Purr detection (mouse hovering over cat)
-      if (!this.isDragging && this.fsm.isMouseOverCat(e.clientX, e.clientY)) {
-        this.fsm.startPurr();
-        this.audio.startPurr();
-      } else if (this.fsm.state === 'purring') {
-        this.fsm.stopPurr();
-        this.audio.stopPurr();
-      }
     };
 
     const onMouseUp = (e: MouseEvent) => {
@@ -115,10 +107,6 @@ export class InteractionManager {
 
     const onMouseLeave = () => {
       this.mouseInWindow = false;
-      if (this.fsm.state === 'purring') {
-        this.fsm.stopPurr();
-        this.audio.stopPurr();
-      }
     };
 
     const onMouseEnter = () => { this.mouseInWindow = true; };

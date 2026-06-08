@@ -1,21 +1,43 @@
 import { CatState, CatSize, CAT_PIXEL_SIZE } from './types';
 
 /**
- * Procedural placeholder cat renderer using Canvas 2D.
+ * Photo-based cat renderer using Canvas 2D.
  *
- * When real photos / sprite sheets are added later, replace the draw*()
- * methods with image-based rendering while keeping the same public API.
+ * Draws 鱼仔's real photo (yuzai.png) with state-specific transforms:
+ * - idle: gentle breathing (subtle scale pulse)
+ * - walking/chasing: vertical bounce + facing flip
+ * - sleeping: slight rotation + dim + Zzz text
+ * - meowing: mouth-open scale pulse
+ * - eating: small head nod
+ * - dragged: wobble + slight opacity reduction
+ * - rolling: full rotation animation
+ * - grooming: side-to-side tilt
+ * - purring: subtle vibration
  */
 export class CatRenderer {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  private blinkTimer = 0;
-  private blinkState = false;
+  private image: HTMLImageElement | null = null;
+  private imageLoaded = false;
   private catSize: CatSize = 'medium';
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d')!;
+    this.loadImage();
+  }
+
+  private loadImage(): void {
+    this.image = new Image();
+    this.image.onload = () => {
+      this.imageLoaded = true;
+    };
+    this.image.onerror = () => {
+      console.warn('鱼仔照片未找到，请将 yuzai.png 放入 assets/images/ 目录');
+      this.imageLoaded = false;
+    };
+    // Path relative to dist/renderer/ where the HTML is loaded
+    this.image.src = '../../assets/images/yuzai.png';
   }
 
   setSize(size: CatSize): void {
@@ -23,447 +45,148 @@ export class CatRenderer {
   }
 
   /** Main render entry — called every frame */
-  render(state: CatState, t: number, dt: number, facingRight = true): void {
+  render(state: CatState, t: number, _dt: number, facingRight = true): void {
     const ctx = this.ctx;
     const w = this.canvas.width;
     const h = this.canvas.height;
     const cx = w / 2;
     const cy = h / 2;
-    const s = CAT_PIXEL_SIZE[this.catSize] / 250; // scale normalized to medium
+    const targetSize = CAT_PIXEL_SIZE[this.catSize];
 
     ctx.clearRect(0, 0, w, h);
 
+    // Fallback: show placeholder text if image not loaded
+    if (!this.imageLoaded || !this.image) {
+      this.drawPlaceholder(ctx, cx, cy, targetSize);
+      return;
+    }
+
+    // Calculate scale to fit the image within the target pixel size
+    const imgW = this.image.width;
+    const imgH = this.image.height;
+    const scale = Math.min(targetSize / imgW, targetSize / imgH);
+
     ctx.save();
     ctx.translate(cx, cy);
-    ctx.scale(facingRight ? s : -s, s);
 
-    // Blink logic (shared across most states)
-    this.blinkTimer += dt;
-    this.blinkState = Math.sin(this.blinkTimer * 3) > 0.92;
+    // Apply facing direction flip
+    ctx.scale(facingRight ? 1 : -1, 1);
 
+    // Apply state-specific transforms
     switch (state) {
-      case 'sleeping':  this.drawSleeping(t); break;
-      case 'eating':    this.drawEating(t); break;
-      case 'meowing':   this.drawMeowing(t); break;
-      case 'purring':   this.drawHappy(t); break;
-      case 'dragged':   this.drawDragged(t); break;
-      case 'walking':
-      case 'chasing':   this.drawWalking(t); break;
-      case 'rolling':   this.drawRolling(t); break;
-      case 'grooming':  this.drawGrooming(t); break;
-      default:          this.drawIdle(t); break;
+      case 'idle':       this.applyIdle(ctx, t, scale, imgW, imgH); break;
+      case 'walking':    this.applyWalking(ctx, t, scale, imgW, imgH); break;
+      case 'chasing':    this.applyChasing(ctx, t, scale, imgW, imgH); break;
+      case 'sleeping':   this.applySleeping(ctx, t, scale, imgW, imgH); break;
+      case 'meowing':    this.applyMeowing(ctx, t, scale, imgW, imgH); break;
+      case 'eating':     this.applyEating(ctx, t, scale, imgW, imgH); break;
+      case 'dragged':    this.applyDragged(ctx, t, scale, imgW, imgH); break;
+      case 'rolling':    this.applyRolling(ctx, t, scale, imgW, imgH); break;
+      case 'grooming':   this.applyGrooming(ctx, t, scale, imgW, imgH); break;
+      case 'purring':    this.applyIdle(ctx, t, scale, imgW, imgH); break;
+      default:           this.applyIdle(ctx, t, scale, imgW, imgH); break;
     }
 
     ctx.restore();
   }
 
-  // ────────────────────────────────────────
-  //  Colour palette
-  // ────────────────────────────────────────
+  // ── State transforms ──
 
-  private catOrange = '#F5A623';
-  private catLight = '#FCC77B';
-  private catDark = '#D4891A';
-  private catWhite = '#FFF5E6';
-  private earPink = '#FFB3B3';
-  private eyeGreen = '#7EC850';
-  private nosePink = '#FF8C94';
-  private pupilBlack = '#1A1A2E';
-
-  // ────────────────────────────────────────
-  //  Drawing primitives (used by state drawers)
-  // ────────────────────────────────────────
-
-  /** Draw only the cat body (pear shape + belly patch). */
-  private drawBody(ctx: CanvasRenderingContext2D, yOff = 0, squash = 1): void {
+  private applyIdle(ctx: CanvasRenderingContext2D, t: number, s: number, iw: number, ih: number): void {
+    // Gentle breathing — subtle scale oscillation
+    const breathe = 1 + Math.sin(t * 1.8) * 0.02;
     ctx.save();
-    ctx.scale(1, squash);
-    ctx.translate(0, yOff);
-
-    // Main body — pear shape
-    ctx.fillStyle = this.catOrange;
-    ctx.beginPath();
-    ctx.ellipse(0, 15, 42, 50, 0, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Belly patch
-    ctx.fillStyle = this.catWhite;
-    ctx.beginPath();
-    ctx.ellipse(0, 20, 28, 35, 0, 0, Math.PI * 2);
-    ctx.fill();
-
+    ctx.scale(s * breathe, s * breathe);
+    ctx.drawImage(this.image!, -iw / 2, -ih / 2, iw, ih);
     ctx.restore();
   }
 
-  /** Draw head with ears, eyes, nose, mouth, whiskers. */
-  private drawHead(ctx: CanvasRenderingContext2D, yOff = 0, mouthOpen = 0): void {
-    const y = -38 + yOff;
-
-    // Ears
-    ctx.fillStyle = this.catOrange;
-    ctx.beginPath();
-    ctx.moveTo(-28, y + 5); ctx.lineTo(-22, y - 18); ctx.lineTo(-8, y + 5);
-    ctx.closePath(); ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(28, y + 5); ctx.lineTo(22, y - 18); ctx.lineTo(8, y + 5);
-    ctx.closePath(); ctx.fill();
-
-    // Inner ears
-    ctx.fillStyle = this.earPink;
-    ctx.beginPath();
-    ctx.moveTo(-24, y + 3); ctx.lineTo(-20, y - 12); ctx.lineTo(-12, y + 3);
-    ctx.closePath(); ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(24, y + 3); ctx.lineTo(20, y - 12); ctx.lineTo(12, y + 3);
-    ctx.closePath(); ctx.fill();
-
-    // Head circle
-    ctx.fillStyle = this.catOrange;
-    ctx.beginPath();
-    ctx.ellipse(0, y, 38, 32, 0, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Cheek fluff
-    ctx.fillStyle = this.catLight;
-    ctx.beginPath();
-    ctx.ellipse(-18, y + 10, 14, 10, -0.3, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(18, y + 10, 14, 10, 0.3, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Eyes
-    if (!this.blinkState) {
-      ctx.fillStyle = this.eyeGreen;
-      ctx.beginPath();
-      ctx.ellipse(-14, y - 2, 8, 9, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.ellipse(14, y - 2, 8, 9, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Pupils
-      ctx.fillStyle = this.pupilBlack;
-      ctx.beginPath();
-      ctx.ellipse(-14, y, 5, 6, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.ellipse(14, y, 5, 6, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Eye highlights
-      ctx.fillStyle = '#fff';
-      ctx.beginPath();
-      ctx.arc(-17, y - 4, 3, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(11, y - 4, 3, 0, Math.PI * 2);
-      ctx.fill();
-    } else {
-      // Closed eyes (lines)
-      ctx.strokeStyle = this.catDark;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(-22, y - 2); ctx.lineTo(-6, y - 2);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(6, y - 2); ctx.lineTo(22, y - 2);
-      ctx.stroke();
-      ctx.lineWidth = 1;
-    }
-
-    // Nose
-    ctx.fillStyle = this.nosePink;
-    ctx.beginPath();
-    ctx.moveTo(0, y + 5);
-    ctx.lineTo(-4, y + 10);
-    ctx.lineTo(4, y + 10);
-    ctx.closePath();
-    ctx.fill();
-
-    // Mouth
-    ctx.strokeStyle = this.catDark;
-    ctx.lineWidth = 1.5;
-    if (mouthOpen > 0) {
-      // Open mouth (meow)
-      ctx.fillStyle = '#4A1520';
-      ctx.beginPath();
-      ctx.ellipse(0, y + 18, 6 * mouthOpen, 5 * mouthOpen, 0, 0, Math.PI * 2);
-      ctx.fill();
-    } else {
-      // Normal mouth
-      ctx.beginPath();
-      ctx.moveTo(0, y + 12);
-      ctx.lineTo(-6, y + 16);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(0, y + 12);
-      ctx.lineTo(6, y + 16);
-      ctx.stroke();
-    }
-
-    // Whiskers
-    ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 1;
-    for (const side of [-1, 1]) {
-      for (let i = -1; i <= 1; i++) {
-        ctx.beginPath();
-        ctx.moveTo(side * 10, y + 8 + i * 3);
-        ctx.lineTo(side * 45, y + 5 + i * 10);
-        ctx.stroke();
-      }
-    }
-  }
-
-  /** Draw head with happy half-closed eyes on top of a regular head. */
-  private drawHeadHappy(ctx: CanvasRenderingContext2D, _t: number): void {
-    // Draw the full head first
-    this.drawHead(ctx, 0, 0);
-
-    // Overlay half-closed eyelids
-    const y = -38;
-    ctx.fillStyle = this.catOrange;
-    ctx.beginPath();
-    ctx.rect(-22, y - 8, 16, 5);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.rect(6, y - 8, 16, 5);
-    ctx.fill();
-  }
-
-  /** Draw tail with configurable wag angle and curl. */
-  private drawTail(ctx: CanvasRenderingContext2D, angle = 0.3, curl = 0): void {
-    ctx.strokeStyle = this.catOrange;
-    ctx.lineWidth = 8;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.moveTo(30, 40);
-    ctx.bezierCurveTo(55, 20 + curl * 15, 65, -10 - curl * 20, 50 + angle * 20, -30 - curl * 25);
-    ctx.stroke();
-
-    // Tail tip highlight
-    ctx.strokeStyle = this.catDark;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(48, -20 - curl * 15);
-    ctx.lineTo(52, -30 - curl * 25);
-    ctx.stroke();
-    ctx.lineWidth = 1;
-  }
-
-  // ────────────────────────────────────────
-  //  State-specific drawing
-  // ────────────────────────────────────────
-
-  private drawIdle(t: number): void {
-    const breathe = Math.sin(t * 2.5) * 2;
-    const ctx = this.ctx;
-    this.drawTail(ctx, 0.3 + Math.sin(t * 1.8) * 0.15);
-    this.drawBody(ctx, breathe * 0.3);
-    this.drawHead(ctx, breathe * 0.5);
-  }
-
-  private drawWalking(t: number): void {
-    const bob = Math.abs(Math.sin(t * 8)) * 4;
-    const legPhase = Math.sin(t * 10);
-    const ctx = this.ctx;
-
-    // Body bounces
+  private applyWalking(ctx: CanvasRenderingContext2D, t: number, s: number, iw: number, ih: number): void {
+    // Bounce up and down while walking
+    const bounceY = Math.abs(Math.sin(t * 8)) * 6;
     ctx.save();
-    ctx.translate(0, bob - 2);
-
-    // Alternate paws slightly
-    ctx.save();
-    ctx.translate(legPhase * 3, 0);
-    this.drawBody(ctx, 0);
-    ctx.restore();
-
-    this.drawHead(ctx, bob * 0.6);
-    this.drawTail(ctx, 0.5 + legPhase * 0.3);
+    ctx.translate(0, -bounceY);
+    ctx.scale(s, s);
+    ctx.drawImage(this.image!, -iw / 2, -ih / 2, iw, ih);
     ctx.restore();
   }
 
-  private drawSleeping(t: number): void {
-    const breathe = Math.sin(t * 1.5) * 3;
-    const ctx = this.ctx;
+  private applyChasing(ctx: CanvasRenderingContext2D, t: number, s: number, iw: number, ih: number): void {
+    // Faster, more eager bounce
+    const bounceY = Math.abs(Math.sin(t * 12)) * 4;
+    ctx.save();
+    ctx.translate(0, -bounceY);
+    ctx.scale(s * 1.03, s * 0.97); // slightly stretched forward
+    ctx.drawImage(this.image!, -iw / 2, -ih / 2, iw, ih);
+    ctx.restore();
+  }
 
-    // Curled up body (oval)
-    ctx.fillStyle = this.catOrange;
-    ctx.beginPath();
-    ctx.ellipse(0, 10, 55, 32, 0, 0, Math.PI * 2);
-    ctx.fill();
+  private applySleeping(ctx: CanvasRenderingContext2D, t: number, s: number, iw: number, ih: number): void {
+    // Slightly rotated, dimmed — cat curled up sleeping
+    ctx.save();
+    ctx.globalAlpha = 0.75;
+    ctx.rotate(Math.sin(t * 0.5) * 0.05);
+    ctx.scale(s * 0.85, s * 0.85);
+    ctx.drawImage(this.image!, -iw / 2, -ih / 2, iw, ih);
+    ctx.restore();
 
-    // Darker stripes
-    ctx.fillStyle = this.catDark;
-    ctx.beginPath();
-    ctx.arc(30, -5, 10, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(-20, 15, 8, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Curled tail wrapping
-    ctx.strokeStyle = this.catOrange;
-    ctx.lineWidth = 7;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.arc(20, 25, 25, 0, Math.PI * 1.2);
-    ctx.stroke();
-
-    // Head tucked in
-    ctx.fillStyle = this.catOrange;
-    ctx.beginPath();
-    ctx.ellipse(-25, -5, 28, 24, -0.3, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Ear tips visible
-    ctx.fillStyle = this.catOrange;
-    ctx.beginPath();
-    ctx.moveTo(-38, -22); ctx.lineTo(-35, -35); ctx.lineTo(-25, -20);
-    ctx.closePath(); ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(-18, -26); ctx.lineTo(-12, -38); ctx.lineTo(-5, -24);
-    ctx.closePath(); ctx.fill();
-
-    // Closed eyes
-    ctx.strokeStyle = this.catDark;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(-38, -5); ctx.lineTo(-28, -5);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(-18, -5); ctx.lineTo(-8, -5);
-    ctx.stroke();
-    ctx.lineWidth = 1;
-
-    // Sleeping Zs
-    ctx.fillStyle = 'rgba(255,255,255,0.8)';
-    ctx.font = 'bold 16px sans-serif';
+    // Zzz text
+    ctx.save();
     const zPhase = t * 2;
-    ctx.fillText('z', 38, -20 + Math.sin(zPhase) * 6);
-    ctx.fillText('Z', 50, -35 + Math.sin(zPhase + 1) * 6);
-    ctx.fillText('Z', 62, -50 + Math.sin(zPhase + 2) * 6);
-
-    // Breathing overlay
-    ctx.fillStyle = this.catLight;
-    ctx.beginPath();
-    ctx.ellipse(0, 10 + breathe * 0.4, 52, 29, 0, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  private drawHappy(t: number): void {
-    const purr = Math.sin(t * 20) * 1.5;
-    const ctx = this.ctx;
-
-    // Slight body vibration from purring
-    ctx.save();
-    ctx.translate(purr * 0.5, 0);
-
-    this.drawTail(ctx, 0.6 + Math.sin(t * 3) * 0.2, 0.5);
-    this.drawBody(ctx, 0);
-    this.drawHeadHappy(ctx, t);
-
+    ctx.fillStyle = 'rgba(200, 200, 255, 0.8)';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.fillText('z', iw * s * 0.35, -ih * s * 0.1 + Math.sin(zPhase) * 5);
+    ctx.fillText('Z', iw * s * 0.42, -ih * s * 0.2 + Math.sin(zPhase + 1) * 5);
+    ctx.fillText('Z', iw * s * 0.49, -ih * s * 0.3 + Math.sin(zPhase + 2) * 5);
     ctx.restore();
   }
 
-  private drawDragged(t: number): void {
-    const wobble = Math.sin(t * 6) * 3;
-    const ctx = this.ctx;
-
-    // Slightly elongated body
+  private applyMeowing(ctx: CanvasRenderingContext2D, t: number, s: number, iw: number, ih: number): void {
+    // Quick scale pulse — cat opens mouth
+    const pulse = 1 + Math.abs(Math.sin(t * 12)) * 0.06;
     ctx.save();
-    ctx.scale(1, 1.15);
-    this.drawBody(ctx, 5);
-    ctx.restore();
-
-    // Worried head
-    ctx.save();
-    ctx.translate(wobble * 0.3, 0);
-    this.drawHead(ctx, -8);
-    ctx.restore();
-
-    // Drooping tail
-    ctx.strokeStyle = this.catOrange;
-    ctx.lineWidth = 7;
-    ctx.lineCap = 'round';
-    ctx.beginPath();
-    ctx.moveTo(30, 45);
-    ctx.quadraticCurveTo(40, 75, 25, 90);
-    ctx.stroke();
-    ctx.lineWidth = 1;
-
-    // Worried eyebrows
-    ctx.strokeStyle = this.catDark;
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(-18, -40); ctx.lineTo(-6, -37);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(18, -40); ctx.lineTo(6, -37);
-    ctx.stroke();
-    ctx.lineWidth = 1;
-  }
-
-  private drawEating(t: number): void {
-    const nod = Math.sin(t * 10) * 5;
-    const ctx = this.ctx;
-    this.drawTail(ctx, 0.5);
-    this.drawBody(ctx);
-    this.drawHead(ctx, nod * 0.8);
-  }
-
-  private drawMeowing(t: number): void {
-    const mouthWide = 0.6 + Math.sin(t * 12) * 0.4;
-    const ctx = this.ctx;
-
-    this.drawTail(ctx, 0.4);
-    this.drawBody(ctx);
-
-    // Head tilted up slightly
-    ctx.save();
-    ctx.translate(0, -5);
-    this.drawHead(ctx, 0, Math.max(0, mouthWide));
+    ctx.scale(s * pulse, s * pulse);
+    ctx.drawImage(this.image!, -iw / 2, -ih / 2, iw, ih);
     ctx.restore();
   }
 
-  // ────────────────────────────────────────
-  //  Utils
-  // ────────────────────────────────────────
-
-  /** Rolling / cute animation — cat flops on its side then back */
-  private drawRolling(t: number): void {
-    const ctx = this.ctx;
-    const phase = t * 8; // rotation speed
-    const rollAngle = Math.sin(phase) * 0.8; // ±45 degrees max
-
+  private applyEating(ctx: CanvasRenderingContext2D, t: number, s: number, iw: number, ih: number): void {
+    // Head nod while eating
+    const nod = Math.sin(t * 10) * 3;
     ctx.save();
-    // Rotate the whole cat for the roll effect
+    ctx.translate(0, nod);
+    ctx.scale(s, s);
+    ctx.drawImage(this.image!, -iw / 2, -ih / 2, iw, ih);
+    ctx.restore();
+  }
+
+  private applyDragged(ctx: CanvasRenderingContext2D, t: number, s: number, iw: number, ih: number): void {
+    // Wobble + slight transparency when being dragged
+    const wobble = Math.sin(t * 6) * 1.5;
+    ctx.save();
+    ctx.globalAlpha = 0.85;
+    ctx.rotate(wobble * 0.02);
+    ctx.scale(s * 1.05, s * 0.95); // slightly stretched
+    ctx.drawImage(this.image!, -iw / 2, -ih / 2 + 3, iw, ih);
+    ctx.restore();
+  }
+
+  private applyRolling(ctx: CanvasRenderingContext2D, t: number, s: number, iw: number, ih: number): void {
+    // Full side-to-side roll
+    const rollAngle = Math.sin(t * 8) * 0.6;
+    ctx.save();
     ctx.rotate(rollAngle);
 
-    // Slightly squished body during roll
-    const squash = 1 + Math.abs(Math.sin(phase)) * 0.3;
-    ctx.save();
-    ctx.scale(1 / squash, squash);
-    this.drawBody(ctx, -5);
+    const squash = 1 + Math.abs(Math.sin(t * 8)) * 0.2;
+    ctx.scale(s / squash, s * squash);
+    ctx.drawImage(this.image!, -iw / 2, -ih / 2, iw, ih);
     ctx.restore();
 
-    // Head tilted
-    ctx.save();
-    ctx.rotate(-rollAngle * 0.5);
-    this.drawHead(ctx, 5);
-    ctx.restore();
-
-    // Happy wiggling tail
-    const tailWag = Math.sin(t * 15) * 0.4;
-    this.drawTail(ctx, 0.3 + tailWag, 0.3);
-
-    ctx.restore();
-
-    // Sparkle / heart particles around the cat
+    // Sparkle particles
     const sparkleCount = 4;
     for (let i = 0; i < sparkleCount; i++) {
-      const sx = Math.sin(t * 5 + i * 1.6) * 35;
-      const sy = -20 + Math.cos(t * 5 + i * 1.6) * 25;
+      const sx = Math.sin(t * 5 + i * 1.6) * iw * s * 0.25;
+      const sy = -ih * s * 0.15 + Math.cos(t * 5 + i * 1.6) * ih * s * 0.2;
       const alpha = 0.3 + Math.sin(t * 8 + i) * 0.3;
       ctx.fillStyle = `rgba(255, 150, 200, ${Math.max(0, alpha)})`;
       ctx.beginPath();
@@ -472,60 +195,36 @@ export class CatRenderer {
     }
   }
 
-  /** Grooming animation — cat washes its face with a paw */
-  private drawGrooming(t: number): void {
-    const ctx = this.ctx;
-    const cycle = Math.sin(t * 3); // slow paw movement
-    const pawY = -30 + cycle * 8; // paw moves up and down near face
-    const pawX = 18; // right paw at face
-
-    // Draw normal body and head
-    this.drawTail(ctx, 0.2);
-    this.drawBody(ctx, 0);
-    this.drawHead(ctx, 0);
-
-    // Right paw lifted to face
+  private applyGrooming(ctx: CanvasRenderingContext2D, t: number, s: number, iw: number, ih: number): void {
+    // Side-to-side tilt — cat cleaning itself
+    const tilt = Math.sin(t * 3) * 0.08;
     ctx.save();
-    ctx.fillStyle = this.catLight;
-    ctx.beginPath();
-    ctx.ellipse(pawX, pawY, 7, 5, 0.3, 0, Math.PI * 2);
-    ctx.fill();
-    // Paw outline
-    ctx.strokeStyle = this.catDark;
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.ellipse(pawX, pawY, 7, 5, 0.3, 0, Math.PI * 2);
-    ctx.stroke();
+    ctx.rotate(tilt);
+    ctx.scale(s, s);
+    ctx.drawImage(this.image!, -iw / 2, -ih / 2, iw, ih);
     ctx.restore();
-
-    // Tongue peeking out occasionally (when paw is near mouth)
-    if (Math.abs(cycle) < 0.3) {
-      ctx.fillStyle = '#FF8888';
-      ctx.beginPath();
-      ctx.arc(6, 6, 3, 0, Math.PI);
-      ctx.fill();
-    }
   }
 
-  // ── Utils ──
+  // ── Fallback ──
 
-  private roundRect(
-    ctx: CanvasRenderingContext2D,
-    x: number, y: number,
-    w: number, h: number,
-    r: number,
-  ): void {
+  private drawPlaceholder(ctx: CanvasRenderingContext2D, cx: number, cy: number, size: number): void {
+    // Draw a cute placeholder circle with text when image isn't loaded
+    ctx.save();
+    ctx.translate(cx, cy);
+
+    // Orange circle
+    ctx.fillStyle = '#F5A623';
     ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-    ctx.lineTo(x + r, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-    ctx.lineTo(x, y + r);
-    ctx.quadraticCurveTo(x, y, x + r, y);
-    ctx.closePath();
+    ctx.arc(0, 0, size / 2.5, 0, Math.PI * 2);
     ctx.fill();
+
+    // Cat face emoji text
+    ctx.fillStyle = '#fff';
+    ctx.font = `${size / 3}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🐱', 0, 0);
+
+    ctx.restore();
   }
 }
