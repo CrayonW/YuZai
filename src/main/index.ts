@@ -12,6 +12,10 @@ let mainWindow: BrowserWindow | null = null;
 
 app.whenReady().then(() => {
   const settings = loadSettings();
+
+  // Apply auto-start setting
+  app.setLoginItemSettings({ openAtLogin: settings.autoStart });
+
   mainWindow = createPetWindow(settings);
   createTray(mainWindow);
   registerIPC();
@@ -83,8 +87,12 @@ function registerIPC(): void {
   });
 
   ipcMain.handle(IPC.SETTINGS_SET, (_event, key: string, value: unknown) => {
-    saveSettings({ [key]: value } as Partial<Settings>);
-    return loadSettings();
+    const result = saveSettings({ [key]: value } as Partial<Settings>);
+    // Apply auto-start setting immediately
+    if (key === 'autoStart') {
+      app.setLoginItemSettings({ openAtLogin: !!value });
+    }
+    return result;
   });
 
   ipcMain.handle(IPC.SETTINGS_GET_ALL, () => loadSettings());

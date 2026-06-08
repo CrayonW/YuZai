@@ -77,6 +77,16 @@ export function createTray(mainWindow: BrowserWindow): Tray {
         checked: false,
         click: (menuItem) => mainWindow.webContents.send(IPC.PAUSE_TOGGLE, menuItem.checked),
       },
+      {
+        label: '🚀 开机自启',
+        type: 'checkbox',
+        checked: settings.autoStart,
+        click: (menuItem) => {
+          const { saveSettings } = require('./settings');
+          saveSettings({ autoStart: menuItem.checked });
+          app.setLoginItemSettings({ openAtLogin: menuItem.checked });
+        },
+      },
       { type: 'separator' },
       {
         label: '退出鱼仔',

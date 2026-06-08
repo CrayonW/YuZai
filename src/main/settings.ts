@@ -6,12 +6,14 @@ export type CatSize = 'small' | 'medium' | 'large';
 
 export interface Settings {
   catSize: CatSize;
+  autoStart: boolean;
   windowX?: number;
   windowY?: number;
 }
 
 const defaults: Settings = {
   catSize: 'medium',
+  autoStart: false,
 };
 
 function settingsPath(): string {
