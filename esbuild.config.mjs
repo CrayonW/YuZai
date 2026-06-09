@@ -12,6 +12,7 @@ await esbuild.build({
   bundle: true,
   platform: 'node',
   target: 'node18',
+  format: 'cjs',
   outfile: 'dist/main/index.js',
   external: ['electron'],
   sourcemap: true,
