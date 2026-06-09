@@ -62,10 +62,10 @@ export class CatRenderer {
       return;
     }
 
-    // Calculate scale to fit the image within the target pixel size
+    // Scale to fill window height (window is already sized for photo aspect ratio)
     const imgW = this.image.width;
     const imgH = this.image.height;
-    const scale = Math.min(targetSize / imgW, targetSize / imgH);
+    const scale = h / imgH;
 
     ctx.save();
     ctx.translate(cx, cy);

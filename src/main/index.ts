@@ -64,8 +64,8 @@ function registerIPC(): void {
   // — Window resize (after size setting change) —
   ipcMain.handle(IPC.WINDOW_RESIZE, (_event, catSize: 'small' | 'medium' | 'large') => {
     if (!mainWindow) return;
-    const newSize = getWindowSize(catSize);
-    mainWindow.setSize(newSize, newSize);
+    const { width, height } = getWindowSize(catSize);
+    mainWindow.setSize(width, height);
   });
 
   // — Mouse position (screen coordinates) —

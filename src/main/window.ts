@@ -3,11 +3,11 @@ import * as path from 'path';
 import { Settings, getWindowSize } from './settings';
 
 export function createPetWindow(settings: Settings): BrowserWindow {
-  const size = getWindowSize(settings.catSize);
+  const { width, height } = getWindowSize(settings.catSize);
 
   const win = new BrowserWindow({
-    width: size,
-    height: size,
+    width,
+    height,
     transparent: true,
     frame: false,
     alwaysOnTop: true,
@@ -28,7 +28,7 @@ export function createPetWindow(settings: Settings): BrowserWindow {
     win.setPosition(settings.windowX, settings.windowY);
   } else {
     const { width: screenW, height: screenH } = screen.getPrimaryDisplay().workAreaSize;
-    win.setPosition(screenW - size - 60, Math.round(screenH * 0.25));
+    win.setPosition(screenW - width - 60, Math.round(screenH * 0.25));
   }
 
   // Float above everything including fullscreen apps

@@ -36,11 +36,17 @@ export function saveSettings(partial: Partial<Settings>): Settings {
   return updated;
 }
 
-/** Map cat size label to window dimension in pixels. */
-export function getWindowSize(size: CatSize): number {
-  switch (size) {
-    case 'small':  return 170;
-    case 'medium': return 280;
-    case 'large':  return 390;
-  }
+/** Fish photo (yuzai.png) natural aspect ratio: 718 / 372 */
+const CAT_ASPECT_RATIO = 718 / 372;
+
+/** Map cat size label to window dimensions (width × height in CSS pixels). */
+export function getWindowSize(size: CatSize): { width: number; height: number } {
+  const h = (() => {
+    switch (size) {
+      case 'small':  return 170;
+      case 'medium': return 280;
+      case 'large':  return 390;
+    }
+  })();
+  return { width: Math.round(h * CAT_ASPECT_RATIO), height: h };
 }
