@@ -70,6 +70,9 @@ export class CatRenderer {
     ctx.save();
     ctx.translate(cx, cy);
 
+    // Draw soft drop shadow under the cat
+    this.drawShadow(ctx, scale * imgW * 0.85, scale * imgH * 0.1);
+
     // Apply facing direction flip
     ctx.scale(facingRight ? 1 : -1, 1);
 
@@ -203,6 +206,21 @@ export class CatRenderer {
     ctx.rotate(tilt);
     ctx.scale(s, s);
     ctx.drawImage(this.image!, -iw / 2, -ih / 2, iw, ih);
+    ctx.restore();
+  }
+
+  /** Draw a soft elliptical shadow beneath the cat. */
+  private drawShadow(ctx: CanvasRenderingContext2D, shadowW: number, offsetY: number): void {
+    ctx.save();
+    // Elliptical blur shadow below the cat
+    const gradient = ctx.createRadialGradient(0, offsetY, shadowW * 0.05, 0, offsetY, shadowW * 0.5);
+    gradient.addColorStop(0, 'rgba(0, 0, 0, 0.25)');
+    gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0.08)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.ellipse(0, offsetY, shadowW * 0.5, shadowW * 0.12, 0, 0, Math.PI * 2);
+    ctx.fill();
     ctx.restore();
   }
 
