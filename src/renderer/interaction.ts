@@ -66,7 +66,7 @@ export class InteractionManager {
         let newY = e.screenY - offset.y;
         // Clamp to keep cat window on screen (rectangular window)
         newX = Math.max(0, Math.min(screen.width - this.fsm.catPixelWidth, newX));
-        newY = Math.max(0, Math.min(screen.height - this.fsm.catPixelSize, newY));
+        newY = Math.max(0, Math.min(screen.height - this.fsm.catPixelHeight, newY));
         window.yuZaiAPI.moveWindow(newX, newY);
         this.fsm.screenPos = { x: newX + offset.x, y: newY + offset.y };
       }

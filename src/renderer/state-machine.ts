@@ -30,9 +30,11 @@ export class CatStateMachine {
   private size: CatSize = 'medium';
 
   setSize(s: CatSize) { this.size = s; }
+  /** Window width — base dimension for sizing */
   get catPixelSize() { return CAT_PIXEL_SIZE[this.size]; }
-  /** Width derived from cat height × photo aspect ratio */
-  get catPixelWidth() { return Math.round(CAT_PIXEL_SIZE[this.size] * (718 / 372)); }
+  /** Window height — derived from width × video aspect ratio (720×1280) */
+  get catPixelHeight() { return Math.round(CAT_PIXEL_SIZE[this.size] / (720 / 1280)); }
+  get catPixelWidth() { return CAT_PIXEL_SIZE[this.size]; }
 
   // ── Transitions ──
 
@@ -259,7 +261,7 @@ export class CatStateMachine {
 
   private randomScreenPoint(): Point {
     const mW = this.catPixelWidth / 2;
-    const mH = this.catPixelSize / 2;
+    const mH = this.catPixelHeight / 2;
     return {
       x: mW + Math.random() * (this.screenW - mW * 2),
       y: mH + Math.random() * (this.screenH - mH * 2),
@@ -268,7 +270,7 @@ export class CatStateMachine {
 
   private clampToScreen(x: number, y: number): Point {
     const mW = this.catPixelWidth / 2;
-    const mH = this.catPixelSize / 2;
+    const mH = this.catPixelHeight / 2;
     return {
       x: Math.max(mW, Math.min(this.screenW - mW, x)),
       y: Math.max(mH, Math.min(this.screenH - mH, y)),

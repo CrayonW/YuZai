@@ -36,17 +36,17 @@ export function saveSettings(partial: Partial<Settings>): Settings {
   return updated;
 }
 
-/** Fish photo (yuzai.png) natural aspect ratio: 718 / 372 */
-const CAT_ASPECT_RATIO = 718 / 372;
+/** Fish video (yuzai.mp4) natural aspect ratio: 720 / 1280 */
+const CAT_ASPECT_RATIO = 720 / 1280;
 
 /** Map cat size label to window dimensions (width × height in CSS pixels). */
 export function getWindowSize(size: CatSize): { width: number; height: number } {
-  const h = (() => {
+  const w = (() => {
     switch (size) {
       case 'small':  return 170;
       case 'medium': return 280;
       case 'large':  return 390;
     }
   })();
-  return { width: Math.round(h * CAT_ASPECT_RATIO), height: h };
+  return { width: w, height: Math.round(w / CAT_ASPECT_RATIO) };
 }
