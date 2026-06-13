@@ -1,107 +1,124 @@
-# Video-Sourced Sequence Animation Design
+# 基于源视频的序列帧桌宠动画设计
 
-## Goal
+## 目标
 
-YuZai should become a desktop-visible pet whose animation is driven by clean, controllable transparent sequence frames. The current phase only covers the actions that already have source videos in `assets/origin`. Missing actions should not be filled with old generated GIFs, old photos, or temporary derived sprites.
+鱼仔应成为一个桌面可见、动作可控的桌宠。运行时动画采用干净透明序列帧驱动。当前阶段只覆盖 `assets/origin` 中已经存在源视频的动作。缺失动作不能用旧生成 GIF、旧照片或临时派生 sprite 冒充。
 
-The production rule is: original videos are references for timing, pose, rhythm, and personality. They are not runtime assets.
+生产规则：原始视频只用于参考动作节奏、姿态、循环点和性格，不直接作为运行素材。
 
-## Confirmed Decisions
+## 已确认决策
 
-- Runtime animation uses sequence frames, not direct video playback.
-- Source videos with watermarks are used only as references. Final runtime frames must be rebuilt cleanly and contain no watermark pixels.
-- `assets/origin` is the only source-material entry point for this phase.
-- Phase 1 covers only the four current videos:
+- 运行时动画使用序列帧，不直接播放视频。
+- 带水印源视频只作为参考。最终运行帧必须干净重建，不能包含水印像素。
+- `assets/origin` 是当前阶段唯一源素材入口。
+- 第一阶段只覆盖当前四个视频：
   - `鱼仔待机动作1.mp4`
   - `鱼仔待机动作2.mp4`
   - `鱼仔晃动尾巴视频.mp4`
   - `鱼仔走路视频.mp4`
-- Additional state videos can be added later to `assets/origin` and processed through the same pipeline.
-- Full 13-state polish happens after all 13 reference actions exist.
-- Desktop validation must happen in the Electron transparent always-on-top window, not only through contact sheets or browser previews.
+- 后续新增状态视频继续放入 `assets/origin`，并按同一流水线处理。
+- 完整 13 状态优化要等全部参考动作存在后统一进行。
+- 桌面验收必须发生在 Electron 透明置顶窗口中，不能只看 contact sheet 或浏览器预览。
+- 项目文档默认使用中文。
+- 每次开始生成、删除、覆盖或接入动作素材前，必须先给用户列出清单并获得确认。
 
-## Phase 1 Action Mapping
+## 当前真实状态
 
-| Source material | Runtime action | Purpose |
+当前实现已经完成 manifest 驱动的运行壳、校验脚本、清理清单和占位兜底渲染的桌面烟雾测试。
+
+当前尚未完成：
+
+- 尚未从 `assets/origin` 源视频重建任何运行序列帧。
+- 尚未启用 `idle_primary`、`idle_secondary`、`tail_wag` 或 `walk` 的真实帧。
+- 桌面窗口当前看到的是占位兜底渲染，不是由源视频生成的鱼仔动作。
+
+因此，后续说明必须准确表述为“运行壳和 fallback 已验证”，不能说“桌宠动作已由原始素材实现”。
+
+## 第一阶段动作映射
+
+| 源素材 | 运行时动作 | 目的 |
 | --- | --- | --- |
-| `鱼仔待机动作1.mp4` | `idle_primary` | Default idle loop and fallback center. |
-| `鱼仔待机动作2.mp4` | `idle_secondary` | Alternate idle loop for variety. |
-| `鱼仔晃动尾巴视频.mp4` | `tail_wag` | Autonomous idle variation. |
-| `鱼仔走路视频.mp4` | `walk` | Movement loop. `walk_left` can be derived by mirroring after `walk` is approved. |
+| `鱼仔待机动作1.mp4` | `idle_primary` | 默认待机循环和回退中心。 |
+| `鱼仔待机动作2.mp4` | `idle_secondary` | 备用待机循环。 |
+| `鱼仔晃动尾巴视频.mp4` | `tail_wag` | 自主空闲变化。 |
+| `鱼仔走路视频.mp4` | `walk` | 移动循环。`walk_left` 在 `walk` 被批准后镜像生成。 |
 
-The existing 13-state runtime can temporarily map unsupported states back to `idle_primary` or another approved Phase 1 action. This avoids using old generated placeholder material to fake unsupported behaviors.
+现有 13 状态运行时可以暂时把未支持状态映射回 `idle_primary` 或其他第一阶段已批准动作。这样不会再用旧生成占位素材冒充缺失行为。
 
-## Asset Pipeline
+## 素材流水线
 
-1. Inventory files under `assets/origin`.
-2. Extract reference sheets and timing notes from each source video.
-3. Mark usable motion segments: start pose, loop start, loop end, recovery, and any unstable frames.
-4. Rebuild clean transparent sequence frames from the reference motion and the locked YuZai identity.
-5. Export approved runtime frames into a new runtime asset location.
-6. Generate an animation manifest with per-action metadata:
-   - source filename
-   - frame count
-   - fps
-   - loop mode
-   - interrupt policy
-   - fallback action
-   - desktop validation result
-7. Run automated validation for frame count, dimensions, alpha, non-empty pixels, mirror consistency, and missing assets.
-8. Launch Electron and validate the transparent desktop window visually.
+1. 开始前向用户列出本次处理清单并等待确认。
+2. 盘点 `assets/origin` 中的源文件。
+3. 从每个源视频抽取参考图和时序笔记。
+4. 标记可用动作段：起始姿态、循环起点、循环终点、回弹、异常帧。
+5. 基于参考动作和鱼仔身份锁定重建干净透明序列帧。
+6. 将批准后的运行帧导出到运行素材路径。
+7. 生成或更新动画 manifest，记录：
+   - 源文件名
+   - 帧数
+   - FPS
+   - 循环方式
+   - 打断策略
+   - 回退动作
+   - 桌面验收结果
+8. 运行自动校验，检查帧数、尺寸、alpha、非空像素、镜像一致性和缺失资源。
+9. 启动 Electron，在透明桌面窗口中目视验收。
 
-## Runtime Playback Logic
+## 运行播放逻辑
 
-`idle_primary` is the return center. When no interaction or movement is active, YuZai loops `idle_primary`. Idle variation can choose `idle_secondary` or `tail_wag`, then return to `idle_primary`.
+`idle_primary` 是回流中心。没有交互和移动时循环 `idle_primary`。空闲变化可以选择 `idle_secondary` 或 `tail_wag`，播放后回到 `idle_primary`。
 
-Movement uses `walk` for one direction and `walk_left` for the mirrored direction. Movement speed should be tuned against the visual paw cadence so the pet does not appear to slide.
+移动时一个方向使用 `walk`，另一个方向使用镜像后的 `walk_left`。移动速度要根据脚步节奏调整，避免看起来像滑动。
 
-Unsupported interactions in Phase 1 should fall back to available approved actions. For example, click, hover, and drag can briefly keep or restart `idle_primary` until their source videos are added later.
+第一阶段缺失的点击、悬停和拖拽交互应回退到已批准动作。比如在对应源视频补充前，点击、悬停和拖拽可以短暂保持或重启 `idle_primary`。
 
-## Interaction Logic For Later States
+## 后续交互状态
 
-The final 13-state target remains useful, but it is deferred. Each future source video should map to a named state, define whether it loops, and define how it returns to `idle_primary`.
+完整 13 状态仍然是目标，但先推迟。每个未来源视频都应映射到一个状态，明确是否循环，以及如何返回 `idle_primary`。
 
-The later complete set should include the project states already known by the app: `idle`, `walk`, `walk_left`, `sleep`, `sleepy`, `sleeping`, `waking`, `surprised`, `shy`, `dragging`, `waving`, `teaser`, plus any compatibility alias that remains necessary.
+后续完整集合应包含项目已有状态：`idle`、`walk`、`walk_left`、`sleep`、`sleepy`、`sleeping`、`waking`、`surprised`、`shy`、`dragging`、`waving`、`teaser`，以及仍有必要保留的兼容别名。
 
-## Cleanup Policy
+## 清理策略
 
-Clean up old generated assets only after the new documentation and manifest define the replacement path. Cleanup candidates include:
+只有在新文档和 manifest 已定义替代路径后，才能清理旧生成资产。清理前必须列清单给用户确认。
 
-- old generated GIFs
-- old generated preview contact sheets
-- old generated photos and AI image outputs
-- old temporary extracted frames
-- old derived sprite folders that are not produced by the new source-video pipeline
-- HyperFrames output for the previous generated-action experiment
+清理候选包括：
 
-Keep:
+- 旧生成 GIF。
+- 旧生成预览图。
+- 旧生成照片和 AI 图片输出。
+- 旧临时抽帧。
+- 不属于新源视频流水线的旧派生 sprite 目录。
+- 旧 HyperFrames 动作生成输出。
+
+必须保留：
 
 - `assets/origin`
-- project code
-- validation scripts that can be adapted
-- empty placeholder directories only when they are needed by git or tooling
+- 项目代码
+- 可继续改造的验证脚本
+- git 或工具需要的空目录占位文件
 
-## Validation Requirements
+## 验证要求
 
-Automated checks should confirm:
+自动检查应确认：
 
-- every enabled Phase 1 action has a manifest entry
-- every enabled action has the expected number of frames
-- every runtime frame has transparent background and visible pet pixels
-- no runtime asset path points to old generated GIF output
-- `walk_left` is generated from approved `walk`
+- 每个启用的第一阶段动作都有 manifest 条目。
+- 每个启用动作都有预期帧数。
+- 每个运行帧有透明背景和可见桌宠像素。
+- 运行素材路径不指向旧生成 GIF 输出。
+- `walk_left` 由已批准 `walk` 镜像生成。
 
-Desktop visual checks should confirm:
+桌面目视检查应确认：
 
-- no watermark remains
-- no flicker or blank frame appears
-- no scale popping occurs between loops
-- no dirty edge artifacts remain after transparency processing
-- walking movement speed matches the visual gait
-- the pet is visibly rendered in the Electron desktop window
+- 没有水印残留。
+- 没有闪烁或空白帧。
+- 循环之间没有比例跳变。
+- 透明边缘没有脏像素。
+- 走路速度匹配视觉步态。
+- 桌宠确实显示在 Electron 桌面窗口中。
 
-## Open Implementation Notes
+## 实现备注
 
-The current code and documentation disagree about the runtime asset format: some docs describe 16 PNG frames under `assets/sprites`, while current loading code points at `assets/generated/cat-actions` with high-frame-count HyperFrames output. Implementation should resolve this before generating new assets.
+当前代码已经转向 manifest 驱动加载器；当前 manifest 动作仍为禁用状态，`frameCount: 0`。在重建帧生成前，运行时显示占位兜底渲染是预期行为。
 
-The recommended implementation direction is a manifest-driven loader so frame count, fps, loop behavior, and fallback behavior come from data rather than hardcoded values.
+后续重点不是继续优化 placeholder，而是从 `assets/origin` 的源视频提取动作信息并重建真实透明序列帧。
