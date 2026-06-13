@@ -59,6 +59,14 @@ Keep:
 - validation scripts worth adapting
 - documentation describing current decisions
 
+Preview cleanup candidates with:
+
+```bash
+npm run list:animation-cleanup
+```
+
+This command is dry-run only. Actual deletion requires a separate reviewed cleanup step.
+
 ## Runtime Asset Contract
 
 The implementation should move toward a manifest-driven animation loader. The manifest should define each enabled action:
@@ -89,6 +97,14 @@ Exact `frameCount`, `fps`, and runtime output paths can be finalized during impl
 ## Validation
 
 Automated checks should verify:
+
+Run:
+
+```bash
+npm run validate:runtime-animations
+npm run typecheck
+npm run build
+```
 
 - enabled manifest actions exist
 - frame files exist and match the manifest frame count

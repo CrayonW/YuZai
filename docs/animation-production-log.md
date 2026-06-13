@@ -39,3 +39,20 @@ Decision:
 - Each accepted action has an entry in the runtime manifest.
 - Each accepted action is checked in the Electron desktop window.
 - Any rejected artifact must stay out of runtime paths.
+
+## 2026-06-13 Phase 1 Setup
+
+Date: 2026-06-13
+Source: `assets/origin`
+Target action: `idle_primary`, `idle_secondary`, `tail_wag`, `walk`
+Reference segment: Full source videos will be reviewed during extraction.
+Frame count: Manifest starts disabled with `frameCount: 0`; each action is enabled only after clean rebuilt frames exist.
+FPS: Initial target is 30 fps.
+Loop mode: `idle_primary`, `idle_secondary`, and `walk` loop. `tail_wag` plays as a short idle variation.
+Watermark handling: Source videos are references only. Runtime frames must be rebuilt cleanly and contain no watermark pixels.
+Rebuild method: Clean transparent sequence frame reconstruction from source-video motion and `鱼仔参考图.png` identity.
+Runtime output: `assets/runtime/animations/<action>/frames/frame_000001.png`.
+Validation commands: `npm run validate:runtime-animations`, `npm run typecheck`, `npm run build`.
+Desktop validation: Required after runtime frames are generated.
+Known issues: Runtime actions are disabled until rebuilt frame folders exist.
+Decision: Proceed with manifest-driven Phase 1 implementation before generating final frames.
