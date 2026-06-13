@@ -1,0 +1,127 @@
+{
+  "identitySource": "assets/references/cat-identity-lock.json",
+  "style": {
+    "target": "semi-realistic desktop pet sprite",
+    "mustKeep": [
+      "gray-and-white bicolor British-Shorthair-like cat",
+      "amber-yellow eyes",
+      "pink nose",
+      "white muzzle, chest, belly, and legs",
+      "gray head, ears, back, sides, and thick rounded tail",
+      "soft plush fur",
+      "consistent body scale across frames"
+    ],
+    "mustAvoid": [
+      "flat icon",
+      "sticker style",
+      "UI illustration style",
+      "watermark",
+      "text",
+      "motion blur",
+      "transparent-edge ghosting",
+      "clipping",
+      "duplicate-looking frames"
+    ]
+  },
+  "frameSpec": {
+    "framesPerAction": 16,
+    "width": 512,
+    "height": 512,
+    "background": "transparent PNG for final runtime; flat #00ff00 chroma key is acceptable only for intermediate source sheets",
+    "padding": "generous padding on all edges",
+    "looping": "loopable where the state is persistent; one-shot transition where noted"
+  },
+  "actions": [
+    {
+      "name": "idle",
+      "type": "loop",
+      "camera": "front",
+      "brief": "Sitting calmly, subtle chest breathing, tiny head settling, occasional blink, small ear twitch, tail tip micro-sway.",
+      "currentProblem": "Motion is minimal and still feels sheet-generated."
+    },
+    {
+      "name": "walk",
+      "type": "loop",
+      "camera": "right-facing side",
+      "brief": "Natural right-facing four-leg walk cycle, head and shoulder bob, paws contact the ground believably, tail counter-sways.",
+      "currentProblem": "Exists but should be rebuilt with more realistic gait."
+    },
+    {
+      "name": "walk_left",
+      "type": "derived",
+      "camera": "left-facing side",
+      "brief": "Exact horizontal mirror of final walk frames.",
+      "currentProblem": "Structurally correct; regenerate from final walk only."
+    },
+    {
+      "name": "walking",
+      "type": "alias-or-derived",
+      "camera": "side",
+      "brief": "Runtime walking state. Prefer using walk/walk_left directly; keep folder only for validation compatibility if needed.",
+      "currentProblem": "Exact duplicate of walk."
+    },
+    {
+      "name": "sleep",
+      "type": "loop",
+      "camera": "front-three-quarter curled",
+      "brief": "Curled sleep pose, eyes closed, slow natural breathing, tail wrapped near body, no alert motion.",
+      "currentProblem": "Exact duplicate of sleepy and sleeping."
+    },
+    {
+      "name": "sleepy",
+      "type": "transition-loop",
+      "camera": "front",
+      "brief": "Drowsy transition: eyelids droop, head lowers, posture softens, tiny yawn or slow blink, then settles toward sleep.",
+      "currentProblem": "Exact duplicate of sleep."
+    },
+    {
+      "name": "sleeping",
+      "type": "loop",
+      "camera": "front-three-quarter curled",
+      "brief": "Deep sleep loop: still curled body with only subtle breathing and tiny whisker/ear movement.",
+      "currentProblem": "Exact duplicate of sleep."
+    },
+    {
+      "name": "waking",
+      "type": "one-shot",
+      "camera": "front",
+      "brief": "Wake-up sequence: curled/sleepy start, eyes open, head lifts, small stretch, returns to awake seated posture.",
+      "currentProblem": "Exact duplicate of idle."
+    },
+    {
+      "name": "surprised",
+      "type": "one-shot",
+      "camera": "front",
+      "brief": "Click reaction: ears perk, eyes widen, head/body recoil upward slightly, paws tense, then recover.",
+      "currentProblem": "Exact duplicate of teaser."
+    },
+    {
+      "name": "shy",
+      "type": "one-shot-or-short-loop",
+      "camera": "front",
+      "brief": "Repeated-click reaction: head dips or turns slightly, eyes soften, paws tuck inward, tail wraps closer.",
+      "currentProblem": "Exact duplicate of idle."
+    },
+    {
+      "name": "dragging",
+      "type": "loop",
+      "camera": "front",
+      "brief": "Long-press drag pose: body feels gently lifted or pulled, paws tuck, ears react, tail lags with small sway.",
+      "currentProblem": "Exact duplicate of idle."
+    },
+    {
+      "name": "waving",
+      "type": "one-shot-or-loop",
+      "camera": "front",
+      "brief": "Greeting action: one front paw lifts and waves two small beats, head follows, tail tip moves subtly.",
+      "currentProblem": "Exact duplicate of teaser."
+    },
+    {
+      "name": "teaser",
+      "type": "loop",
+      "camera": "front",
+      "brief": "Mouse-over teaser interaction: cat tracks a feather toy or cursor, raises paw, swats playfully, body scale stays stable.",
+      "currentProblem": "Exists but should be refined; visible feather toy choice needs user confirmation."
+    }
+  ]
+}

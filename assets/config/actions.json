@@ -1,0 +1,69 @@
+{
+  "states": [
+    {
+      "name": "idle",
+      "priority": 4,
+      "description": "全局回流中心，站立呼吸和眨眼。"
+    },
+    {
+      "name": "walk",
+      "priority": 4,
+      "description": "向右侧自然慢行循环。"
+    },
+    {
+      "name": "walk_left",
+      "priority": 4,
+      "description": "向左侧自然慢行循环，由 walk 精确镜像生成。"
+    },
+    {
+      "name": "walking",
+      "priority": 4,
+      "description": "运行时移动状态，根据方向映射到 walk 或 walk_left。"
+    },
+    {
+      "name": "sleep",
+      "priority": 5,
+      "description": "蜷缩睡姿基础循环，只有轻微呼吸。"
+    },
+    {
+      "name": "sleepy",
+      "priority": 5,
+      "description": "入睡前的困倦中转。"
+    },
+    {
+      "name": "sleeping",
+      "priority": 5,
+      "description": "熟睡姿态，只能通过 waking 唤醒。"
+    },
+    {
+      "name": "waking",
+      "priority": 1,
+      "description": "熟睡唤醒过渡。"
+    },
+    {
+      "name": "surprised",
+      "priority": 1,
+      "description": "点击或唤醒后的惊讶反馈。"
+    },
+    {
+      "name": "shy",
+      "priority": 1,
+      "description": "连续点击后的害羞反馈。"
+    },
+    {
+      "name": "dragging",
+      "priority": 1,
+      "description": "长按拖拽中的跟随姿态。"
+    },
+    {
+      "name": "waving",
+      "priority": 1,
+      "description": "打招呼动作。"
+    },
+    {
+      "name": "teaser",
+      "priority": 2,
+      "description": "鼠标经过时的逗猫棒互动。"
+    }
+  ]
+}

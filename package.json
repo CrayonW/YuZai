@@ -1,17 +1,26 @@
 {
   "name": "yuzai-desktop-pet",
-  "version": "1.0.0",
-  "description": "鱼仔桌面宠物 - 你家里的猫鱼仔，现在在你的桌面上陪你工作 🐱",
-  "main": "dist/main/index.js",
+  "version": "0.1.0",
+  "description": "鱼仔桌面宠物 MVP",
+  "main": "dist/electron/main.js",
+  "type": "commonjs",
   "scripts": {
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
     "build": "node esbuild.config.mjs",
     "dev": "npm run build && electron .",
     "start": "npm run dev",
-    "dist": "npm run build && electron-builder",
-    "dist:mac": "npm run build && electron-builder --mac",
-    "dist:win": "npm run build && electron-builder --win",
+    "sprites:from-sheets": "node scripts/slice-reference-sheets.mjs",
+    "sprites:aliases": "node scripts/prepare-runtime-sprite-aliases.mjs",
+    "sprites:derive-states": "node scripts/derive-state-sprites.mjs",
+    "sprites:idle-from-video": "node scripts/build-idle-from-video-reference.mjs",
+    "audit:sprites": "node scripts/audit-sprite-actions.mjs",
+    "render:hyperframes-actions": "node scripts/render-hyperframes-cat-actions.mjs",
+    "validate:hyperframes-actions": "node scripts/validate-hyperframes-cat-actions.mjs",
     "validate:runtime-animations": "node scripts/validate-runtime-animations.mjs",
-    "list:animation-cleanup": "node scripts/list-animation-cleanup-candidates.mjs"
+    "list:animation-cleanup": "node scripts/list-animation-cleanup-candidates.mjs",
+    "video:reference": "node scripts/extract-video-reference.mjs",
+    "validate:sprites": "node scripts/validate-cat-sprites.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "electron": "^28.3.3",

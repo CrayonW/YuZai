@@ -1,0 +1,55 @@
+{
+  "status": "locked_from_reference_photos",
+  "sourcePhotos": [
+    "/Users/wangjun/Pictures/IMG_2790.jpeg",
+    "/Users/wangjun/Pictures/IMG_3035.jpeg",
+    "/Users/wangjun/Pictures/IMG_3036.jpeg",
+    "/Users/wangjun/Pictures/IMG_3077.jpeg",
+    "/Users/wangjun/Pictures/IMG_5686.jpeg",
+    "/Users/wangjun/Pictures/IMG_5687.jpeg",
+    "/Users/wangjun/Pictures/IMG_5688.jpeg",
+    "/Users/wangjun/Pictures/IMG_5723.jpeg",
+    "/Users/wangjun/Pictures/IMG_6056.jpeg"
+  ],
+  "lockedFeatures": {
+    "coatColor": "gray and white bicolor cat; dense plush gray fur on head, ears, back, sides, and tail; white muzzle, chest, belly, and legs",
+    "markingPositions": [
+      "gray cap covers top of head and both ears",
+      "white blaze runs from forehead/nose bridge down through muzzle",
+      "white muzzle and chin with soft rounded cheeks",
+      "large dark gray saddle across the back",
+      "irregular gray side patches near shoulders/flanks",
+      "mostly white chest, belly, front legs, rear legs, and paws",
+      "dark gray tail, visually thick and plush"
+    ],
+    "eyeColor": "warm golden yellow to amber",
+    "tailColor": "dark charcoal gray",
+    "tailShape": "thick plush tail with rounded tip, often curved or curled close to body",
+    "bodyType": "stocky rounded British Shorthair-like build; broad chest, short neck, compact legs, round paws, soft dense fur",
+    "facialFeatures": [
+      "round face with full cheeks",
+      "short pink nose",
+      "white nose bridge and muzzle dividing the gray face mask",
+      "small upright gray ears with lighter inner fur",
+      "long white whiskers",
+      "slightly serious, gentle expression"
+    ]
+  },
+  "hardCorrections": [],
+  "generationStyle": {
+    "style": "semi-realistic desktop pet sprite",
+    "requiredTraits": [
+      "soft fur",
+      "cute but preserves real pet identity",
+      "centered consistent scale",
+      "transparent PNG"
+    ],
+    "forbiddenTraits": [
+      "flat icon",
+      "gray placeholder",
+      "sticker style",
+      "UI illustration style",
+      "five-action thumbnail preview sheet"
+    ]
+  }
+}

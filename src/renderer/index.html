@@ -1,31 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>鱼仔 🐱</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <canvas id="pet-canvas"></canvas>
-
-  <!-- Audio elements — 将音频文件放入 assets/audio/ 后自动生效 -->
-  <audio id="audio-meow" preload="auto"></audio>
-  <audio id="audio-purr" preload="auto" loop></audio>
-
-  <!-- 右键快捷菜单 -->
-  <div id="context-menu" class="context-menu hidden">
-    <div class="menu-item" data-action="feed">🐟 喂食鱼仔</div>
-    <div class="menu-separator"></div>
-    <div class="menu-item menu-sub" data-action="size-small">🐱 小小只</div>
-    <div class="menu-item menu-sub" data-action="size-medium">🐱 中等个</div>
-    <div class="menu-item menu-sub" data-action="size-large">🐱 大胖猫</div>
-    <div class="menu-separator"></div>
-    <div class="menu-item" data-action="pause">⏸ 暂停动画</div>
-    <div class="menu-separator"></div>
-    <div class="menu-item menu-danger" data-action="quit">🚪 退出鱼仔</div>
-  </div>
-
-  <script src="app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YuZai Desktop Pet</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <canvas id="pet-canvas" width="280" height="280" aria-label="YuZai desktop pet"></canvas>
+    <script src="./main.js"></script>
+  </body>
 </html>

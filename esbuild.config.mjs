@@ -1,46 +1,50 @@
-import * as esbuild from 'esbuild';
-import { copyFileSync, mkdirSync } from 'fs';
+import { build } from "esbuild";
+import { cpSync, mkdirSync, rmSync } from "node:fs";
+import { dirname } from "node:path";
 
-// Ensure output directories exist
-mkdirSync('dist/main', { recursive: true });
-mkdirSync('dist/preload', { recursive: true });
-mkdirSync('dist/renderer', { recursive: true });
+const isWatch = process.argv.includes("--watch");
 
-// ── Main process ──
-await esbuild.build({
-  entryPoints: ['src/main/index.ts'],
+rmSync("dist", { recursive: true, force: true });
+mkdirSync("dist/electron", { recursive: true });
+mkdirSync("dist/renderer", { recursive: true });
+
+const common = {
   bundle: true,
-  platform: 'node',
-  target: 'node18',
-  format: 'cjs',
-  outfile: 'dist/main/index.js',
-  external: ['electron'],
   sourcemap: true,
+  logLevel: "info"
+};
+
+await build({
+  ...common,
+  entryPoints: ["electron/main.ts"],
+  outfile: "dist/electron/main.js",
+  platform: "node",
+  target: "node20",
+  external: ["electron"]
 });
 
-// ── Preload script ──
-await esbuild.build({
-  entryPoints: ['src/preload/index.ts'],
-  bundle: true,
-  platform: 'node',
-  target: 'node18',
-  outfile: 'dist/preload/index.js',
-  external: ['electron'],
-  sourcemap: true,
+await build({
+  ...common,
+  entryPoints: ["electron/preload.ts"],
+  outfile: "dist/electron/preload.js",
+  platform: "node",
+  target: "node20",
+  external: ["electron"]
 });
 
-// ── Renderer (browser) ──
-await esbuild.build({
-  entryPoints: ['src/renderer/app.ts'],
-  bundle: true,
-  platform: 'browser',
-  target: 'chrome120',
-  outfile: 'dist/renderer/app.js',
-  sourcemap: true,
+await build({
+  ...common,
+  entryPoints: ["src/renderer/main.ts"],
+  outfile: "dist/renderer/main.js",
+  platform: "browser",
+  target: "chrome120",
+  format: "iife"
 });
 
-// ── Copy static renderer files ──
-copyFileSync('src/renderer/index.html', 'dist/renderer/index.html');
-copyFileSync('src/renderer/style.css', 'dist/renderer/style.css');
+cpSync("src/renderer/index.html", "dist/renderer/index.html");
+cpSync("src/renderer/styles.css", "dist/renderer/styles.css");
+cpSync("assets", "dist/assets", { recursive: true });
 
-console.log('✅ Build complete!');
+if (isWatch) {
+  console.log("Watch mode is not implemented yet. Run npm run dev after edits.");
+}
