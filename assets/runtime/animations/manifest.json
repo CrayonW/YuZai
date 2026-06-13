@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "frameSize": 512,
+  "defaultAction": "idle_primary",
+  "actions": {
+    "idle_primary": {
+      "source": "assets/origin/鱼仔待机动作1.mp4",
+      "frameRoot": "../assets/runtime/animations/idle_primary/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 0,
+      "fps": 30,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": false
+    },
+    "idle_secondary": {
+      "source": "assets/origin/鱼仔待机动作2.mp4",
+      "frameRoot": "../assets/runtime/animations/idle_secondary/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 0,
+      "fps": 30,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": false
+    },
+    "tail_wag": {
+      "source": "assets/origin/鱼仔晃动尾巴视频.mp4",
+      "frameRoot": "../assets/runtime/animations/tail_wag/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 0,
+      "fps": 30,
+      "loop": false,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": false
+    },
+    "walk": {
+      "source": "assets/origin/鱼仔走路视频.mp4",
+      "frameRoot": "../assets/runtime/animations/walk/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 0,
+      "fps": 30,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": false
+    },
+    "walk_left": {
+      "source": "assets/origin/鱼仔走路视频.mp4",
+      "frameRoot": "../assets/runtime/animations/walk_left/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 0,
+      "fps": 30,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "walk",
+      "enabled": false,
+      "derivedFrom": "walk",
+      "derivation": "mirror-x"
+    }
+  },
+  "stateMap": {
+    "idle": "idle_primary",
+    "walk": "walk",
+    "walk_left": "walk_left",
+    "walking": {
+      "left": "walk_left",
+      "right": "walk",
+      "neutral": "walk"
+    },
+    "sleep": "idle_primary",
+    "sleepy": "idle_primary",
+    "sleeping": "idle_primary",
+    "waking": "idle_primary",
+    "surprised": "idle_primary",
+    "shy": "idle_primary",
+    "dragging": "idle_primary",
+    "waving": "idle_secondary",
+    "teaser": "tail_wag"
+  }
+}
