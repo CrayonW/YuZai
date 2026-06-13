@@ -10,7 +10,8 @@
     "dist": "npm run build && electron-builder",
     "dist:mac": "npm run build && electron-builder --mac",
     "dist:win": "npm run build && electron-builder --win",
-    "validate:runtime-animations": "node scripts/validate-runtime-animations.mjs"
+    "validate:runtime-animations": "node scripts/validate-runtime-animations.mjs",
+    "list:animation-cleanup": "node scripts/list-animation-cleanup-candidates.mjs"
   },
   "devDependencies": {
     "electron": "^28.3.3",
