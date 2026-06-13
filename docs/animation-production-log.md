@@ -73,3 +73,20 @@ Validation commands: `npm run validate:runtime-animations`, `npm run typecheck`,
 Desktop validation: Electron launched, captured a non-empty 560x560 RGBA window, and did not request old generated GIF output. The visible pet is the placeholder fallback until rebuilt Phase 1 frames exist.
 Known issues: Electron prints the existing development CSP warning. This is unrelated to the animation manifest workflow and should be handled in a separate security/config pass.
 Decision: Desktop smoke test passed for the manifest-driven loader and placeholder fallback stage.
+
+## 2026-06-14 Legacy Asset Cleanup
+
+Date: 2026-06-14
+Source: legacy generated animation directories from `npm run list:animation-cleanup`
+Target action: cleanup for Phase 1 source-video workflow
+Reference segment: Not applicable.
+Frame count: Removed untracked legacy frame directories; no runtime manifest frames were removed.
+FPS: Not applicable.
+Loop mode: Not applicable.
+Watermark handling: Removed old generated/reference outputs from the legacy workflow. Preserved all original source videos and the identity image in `assets/origin`.
+Rebuild method: Not applicable; this was cleanup only.
+Runtime output: Preserved `assets/runtime/animations/.gitkeep` and `assets/runtime/animations/manifest.json`.
+Validation commands: `npm run list:animation-cleanup`, `npm run validate:runtime-animations`, `npm run typecheck`, `npm run build`.
+Desktop validation: Not repeated after cleanup because no runtime-enabled frames were removed and the manifest remains disabled with placeholder fallback.
+Known issues: Cleanup candidates were untracked directories, so the file deletion itself produces no git diff. This log entry records the approved cleanup.
+Decision: Approved cleanup completed. `npm run list:animation-cleanup` now reports an empty `candidates` list.
