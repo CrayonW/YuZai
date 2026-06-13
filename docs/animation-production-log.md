@@ -56,3 +56,20 @@ Validation commands: `npm run validate:runtime-animations`, `npm run typecheck`,
 Desktop validation: Required after runtime frames are generated.
 Known issues: Runtime actions are disabled until rebuilt frame folders exist.
 Decision: Proceed with manifest-driven Phase 1 implementation before generating final frames.
+
+## 2026-06-13 Desktop Smoke Test
+
+Date: 2026-06-13
+Source: `assets/runtime/animations/manifest.json`
+Target action: Phase 1 manifest loader fallback
+Reference segment: No rebuilt runtime frames exist yet.
+Frame count: Enabled runtime actions remain at `frameCount: 0`.
+FPS: Manifest target remains 30 fps for future rebuilt actions.
+Loop mode: Placeholder fallback renders while Phase 1 runtime actions are disabled.
+Watermark handling: No source-video pixels are rendered in this smoke test.
+Rebuild method: Not started; this test validates the manifest-driven runtime shell.
+Runtime output: Electron transparent desktop window captured to `/private/tmp/yuzai-window-phase1.png`.
+Validation commands: `npm run validate:runtime-animations`, `npm run typecheck`, `npm run build`, `YUZAI_CAPTURE_PATH=/private/tmp/yuzai-window-phase1.png npm run dev`.
+Desktop validation: Electron launched, captured a non-empty 560x560 RGBA window, and did not request old generated GIF output. The visible pet is the placeholder fallback until rebuilt Phase 1 frames exist.
+Known issues: Electron prints the existing development CSP warning. This is unrelated to the animation manifest workflow and should be handled in a separate security/config pass.
+Decision: Desktop smoke test passed for the manifest-driven loader and placeholder fallback stage.
