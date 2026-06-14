@@ -10,6 +10,7 @@ let actionFrequency: Frequency = "normal";
 let petSize: PetSize = 280;
 let mouseProximityTimer: NodeJS.Timeout | null = null;
 let lastMouseNear = false;
+let testMouseNearUntil = 0;
 
 const SIZE_OPTIONS: Array<{ label: string; value: PetSize }> = [
   { label: "小", value: 220 },
@@ -19,6 +20,13 @@ const SIZE_OPTIONS: Array<{ label: string; value: PetSize }> = [
 
 function windowSize(): { width: number; height: number } {
   return { width: petSize, height: petSize };
+}
+
+function envNumber(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (!raw) return fallback;
+  const value = Number(raw);
+  return Number.isFinite(value) && value >= 0 ? value : fallback;
 }
 
 function createPetWindow(): void {
@@ -57,6 +65,17 @@ function createPetWindow(): void {
   });
   petWindow.webContents.on("did-finish-load", () => {
     const capturePath = process.env.YUZAI_CAPTURE_PATH;
+    const testMouseProximityMs = envNumber("YUZAI_TEST_MOUSE_PROXIMITY_MS", 0);
+    if (testMouseProximityMs > 0) {
+      setTimeout(() => {
+        if (!petWindow || petWindow.isDestroyed()) return;
+        testMouseNearUntil = Date.now() + envNumber("YUZAI_TEST_MOUSE_PROXIMITY_HOLD_MS", 2200);
+        lastMouseNear = true;
+        petWindow.webContents.send("mouse:proximity", true);
+        console.log("[test] mouse:proximity true");
+      }, testMouseProximityMs);
+    }
+
     if (!capturePath) return;
 
     setTimeout(() => {
@@ -70,7 +89,7 @@ function createPetWindow(): void {
           console.error("[capture:failed]", error);
           app.quit();
         });
-    }, 1200);
+    }, envNumber("YUZAI_CAPTURE_DELAY_MS", 1200));
   });
   petWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
 }
@@ -84,11 +103,13 @@ function startMouseProximityWatcher(): void {
     const cursor = screen.getCursorScreenPoint();
     const bounds = petWindow.getBounds();
     const margin = Math.round(Math.max(bounds.width, bounds.height) * 0.28);
+    const testNear = Date.now() < testMouseNearUntil;
     const near =
-      cursor.x >= bounds.x - margin &&
-      cursor.x <= bounds.x + bounds.width + margin &&
-      cursor.y >= bounds.y - margin &&
-      cursor.y <= bounds.y + bounds.height + margin;
+      testNear ||
+      (cursor.x >= bounds.x - margin &&
+        cursor.x <= bounds.x + bounds.width + margin &&
+        cursor.y >= bounds.y - margin &&
+        cursor.y <= bounds.y + bounds.height + margin);
 
     if (near === lastMouseNear) return;
     lastMouseNear = near;

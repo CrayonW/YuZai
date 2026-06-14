@@ -181,3 +181,21 @@ FPS：不变。
 桌面验收：Electron 透明桌面窗口成功截图，显示源素材猫和提醒气泡。
 已知问题：截图只能证明窗口正常渲染；真实靠近动作还需要后续用人工移动鼠标或录屏确认视觉触发。
 决定：接受全局鼠标靠近检测作为桌面宠物交互触发基础。
+
+## 2026-06-14 鼠标靠近自动验收补充
+
+日期：2026-06-14
+源文件：`assets/runtime/animations/paw_raise/frames`
+目标动作：`paw_raise`
+问题：第一次自动截图只发出一次 `mouse:proximity true`，随后真实鼠标位置轮询立即发出 `false`，导致交互被取消，截图仍停留在待机动作。
+参考片段：`paw_raise` 第 36 帧附近为明显抬爪姿态。
+帧数：不变，每个 action 72 帧。
+FPS：不变，24 fps。
+循环方式：`paw_raise` 仍为非循环 interactive 动作，结束后回到 `idle_primary`。
+水印处理：像素检查确认运行帧为 `TrueColorAlpha`，右下水印区域和绿幕背景为透明 alpha。
+重建方法：本次未重建帧；只在 Electron 测试钩子中加入 `YUZAI_TEST_MOUSE_PROXIMITY_HOLD_MS`，让自动验收时的“鼠标靠近”保持一段时间，避免被真实鼠标坐标冲掉。
+运行时输出：Electron 桌面窗口截图 `/private/tmp/yuzai-window-proximity-paw-raise.png`。
+验证命令：`npm run typecheck`、`npm run build`、`npm run validate:animation-director`、`YUZAI_TEST_MOUSE_PROXIMITY_MS=500 YUZAI_CAPTURE_DELAY_MS=2000 YUZAI_CAPTURE_PATH=/private/tmp/yuzai-window-proximity-paw-raise.png npm run dev`。
+桌面验收：截图中可见源素材猫在透明桌面窗口中执行抬爪反馈，并同时显示提醒气泡。
+已知问题：当前只验证“靠近触发可见抬爪”；后续需要用录屏或多帧截图继续检查动作起止衔接是否足够平滑。
+决定：接受该自动验收命令作为鼠标靠近 MVP 的可复现验证路径。
