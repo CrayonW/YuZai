@@ -54,6 +54,16 @@ npm run kling:generate -- --dry-run --action idle_primary
 npm run kling:generate -- --dry-run --all
 ```
 
+## 鉴权检查
+
+真实生成前可以先检查密钥是否能通过可灵 API 鉴权。这个命令只查询一个不存在的任务，不会生成视频。
+
+```bash
+npm run kling:auth-check
+```
+
+如果返回 `kind: "auth_failed"`，说明当前 `KLING_ACCESS_KEY` 和 `KLING_SECRET_KEY` 没有通过可灵鉴权。常见原因是 Secret Key 不匹配、密钥已失效、密钥没有开放平台 API 权限，或需要在可灵后台重新生成 API Key。
+
 ## 真实生成
 
 生成单个动作：
@@ -91,3 +101,14 @@ assets/origin/generated/kling/<action>.mp4
 - 动作是否平稳，开始和结束是否适合循环或回切
 
 确认可用后，再按现有流程转透明序列帧并更新 manifest。
+
+## 2026-06-14 联调记录
+
+使用本地 `.env.local` 中的密钥执行过一次 `idle_primary` 真实生成请求。网络请求成功到达可灵 API，但接口返回 `401 / Auth failed`。随后使用假任务 id 做鉴权探针，确认：
+
+- `Authorization: Bearer <JWT>` 格式正确。
+- 反向使用 key 会返回 `access key not found`。
+- 正常方向返回 `Auth failed`。
+- 可灵服务器时间与本机时间一致，不是 JWT 时间漂移问题。
+
+当前判断：Access Key 可被服务识别，但 Secret Key 不匹配、已失效或该 key 没有开放平台 API 权限。需要在可灵后台轮换或重新创建 API Key 后，再运行 `npm run kling:auth-check`。
