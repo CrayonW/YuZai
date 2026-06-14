@@ -7,6 +7,8 @@
 ## 当前实现范围
 
 - 透明、无边框、置顶 Electron 窗口
+- 基于 `assets/origin` 源视频生成的透明序列帧动画
+- 启动后定时气泡提醒喝水、休息
 - Canvas 2D 简易绘制鱼仔
 - `front / left / right` 三视角
 - `idle / walking / sleepy / sleeping / waking / surprised / shy / dragging / waving`
@@ -35,6 +37,11 @@
 - 定时气泡能自动出现，并显示喝水或休息提醒文案。
 - 用户能调整或重置桌宠位置，并能调整角色大小或使用默认尺寸配置。
 - 验收前必须先列出本次源素材、生成动作、覆盖路径和验证方式清单，得到确认后再执行。
+
+## 2026-06-14 第一版验收记录
+
+- 源视频序列帧：已通过 `npm run validate:runtime-animations`、`npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-source-mvp.png`。
+- 定时气泡：已通过 `npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-bubble-mvp.png`，启动后可见“喝口水吧”提醒。
 
 ## 明确不实现
 
