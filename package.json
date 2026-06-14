@@ -19,6 +19,7 @@
     "validate:runtime-animations": "node scripts/validate-runtime-animations.mjs",
     "validate:animation-smoothness": "node scripts/validate-animation-smoothness.mjs",
     "animations:build-from-origin": "node scripts/build-runtime-animations-from-origin.mjs",
+    "kling:generate": "node scripts/kling/generate-video.mjs",
     "list:animation-cleanup": "node scripts/list-animation-cleanup-candidates.mjs",
     "video:reference": "node scripts/extract-video-reference.mjs",
     "validate:sprites": "node scripts/validate-cat-sprites.mjs",

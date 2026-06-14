@@ -1,0 +1,112 @@
+{
+  "referenceImage": "assets/origin/鱼仔参考图.png",
+  "catProfile": "灰白双色短毛猫，圆脸，琥珀色眼睛，白色胸口和前爪，灰色背部和尾巴，安静可爱",
+  "outputRoot": "assets/origin/generated/kling",
+  "video": {
+    "durationSeconds": 3,
+    "fps": 24,
+    "aspectRatio": "4:5"
+  },
+  "basePrompt": "使用参考图中的同一只猫作为唯一角色。生成一个桌面宠物动作视频，竖版 4:5，固定机位，纯绿色绿幕背景。猫咪全身入镜，居中，脚底和尾巴不要被裁切，动作自然、轻柔、可爱，适合转成透明序列帧循环播放。保持猫咪的脸型、毛色、眼睛颜色、花纹位置、身体比例和毛发质感与参考图一致。画面中只能有这一只猫，没有人、没有道具、没有文字、没有水印、没有 logo。",
+  "defaultNegativePrompt": "不要改变猫咪品种、毛色、眼睛颜色、脸型和斑纹。不要出现两只猫、多余肢体、畸形爪子、断尾、身体穿模、脸部变形。不要出现人、手、玩具、家具、食盆、文字、水印、logo、边框、UI。不要镜头运动、不要变焦、不要旋转、不要切镜头、不要背景变化。不要裁切耳朵、尾巴、脚掌或身体边缘。不要复杂阴影、不要反光地面、不要透明背景，背景必须是纯绿色绿幕。不要大幅跳跃、快速奔跑、翻滚或剧烈动作。",
+  "actions": [
+    {
+      "action": "idle_primary",
+      "category": "daily",
+      "loop": true,
+      "prompt": "动作：猫咪正面坐着，保持安静自然的待机姿势，轻微呼吸起伏，偶尔眨眼，耳朵有非常轻微的自然抖动。动作幅度小，开始和结束姿势几乎一致，适合无缝循环。",
+      "output": "assets/origin/generated/kling/idle_primary.mp4"
+    },
+    {
+      "action": "idle_secondary",
+      "category": "daily",
+      "loop": true,
+      "prompt": "动作：猫咪正面坐着，头部缓慢轻微左右转动，眼睛保持灵动，身体基本稳定，尾巴贴近身体轻微摆动。动作自然缓慢，开始和结束回到接近正面坐姿。",
+      "output": "assets/origin/generated/kling/idle_secondary.mp4"
+    },
+    {
+      "action": "daily_tail_wag",
+      "category": "daily",
+      "loop": true,
+      "prompt": "动作：猫咪坐姿不变，尾巴从身体一侧轻柔摆动，摆动节奏平稳，身体和头部保持稳定，偶尔眨眼。动作适合循环播放，开始和结束尾巴位置尽量接近。",
+      "output": "assets/origin/generated/kling/daily_tail_wag.mp4"
+    },
+    {
+      "action": "slow_blink",
+      "category": "daily",
+      "loop": false,
+      "prompt": "动作：猫咪保持坐姿，缓慢眨眼，表情放松，头部微微下沉再恢复，像在安静陪伴用户。动作很轻，不改变整体姿势，适合穿插在日常待机中。",
+      "output": "assets/origin/generated/kling/slow_blink.mp4"
+    },
+    {
+      "action": "look_around",
+      "category": "daily",
+      "loop": false,
+      "prompt": "动作：猫咪保持坐姿，先缓慢看向左侧，再缓慢看向右侧，最后回到正面。身体稳定，只有头部和眼神移动，动作自然，不要突然转头。",
+      "output": "assets/origin/generated/kling/look_around.mp4"
+    },
+    {
+      "action": "walk",
+      "category": "daily",
+      "loop": true,
+      "prompt": "动作：猫咪以轻松小步向画面右侧走动，身体完整入镜，步伐稳定，头部和尾巴自然跟随。动作节奏均匀，适合桌宠在桌面上移动。",
+      "output": "assets/origin/generated/kling/walk.mp4"
+    },
+    {
+      "action": "paw_raise",
+      "category": "interactive",
+      "loop": false,
+      "prompt": "动作：猫咪从正面坐姿开始，缓慢抬起一只前爪，像在向用户打招呼或回应鼠标靠近，停顿一小会儿，然后前爪自然放回地面，结束时回到接近初始坐姿。",
+      "output": "assets/origin/generated/kling/paw_raise.mp4"
+    },
+    {
+      "action": "click_surprised",
+      "category": "interactive",
+      "loop": false,
+      "prompt": "动作：猫咪从坐姿开始，像被轻轻点到一样短暂睁大眼睛，耳朵轻微竖起，身体轻轻一震，然后恢复平静坐姿。动作可爱、轻微，不要害怕或夸张跳起。",
+      "output": "assets/origin/generated/kling/click_surprised.mp4"
+    },
+    {
+      "action": "shy",
+      "category": "interactive",
+      "loop": false,
+      "prompt": "动作：猫咪从正面坐姿开始，轻轻低头，眼神变柔和，耳朵轻微向两侧放松，像害羞一样停顿，然后慢慢抬头恢复正面坐姿。",
+      "output": "assets/origin/generated/kling/shy.mp4"
+    },
+    {
+      "action": "dragging",
+      "category": "interactive",
+      "loop": true,
+      "prompt": "动作：猫咪身体保持完整，四肢轻微收起，像被温柔托起一样有轻微悬浮感，尾巴自然下垂或轻摆，表情有点惊讶但可爱。动作幅度小，适合拖拽时循环。",
+      "output": "assets/origin/generated/kling/dragging.mp4"
+    },
+    {
+      "action": "waking",
+      "category": "interactive",
+      "loop": false,
+      "prompt": "动作：猫咪从困倦坐姿开始，眼睛半闭，轻轻抬头，慢慢睁眼，耳朵恢复竖起，最后回到清醒的正面坐姿。动作柔和，适合从睡眠状态恢复。",
+      "output": "assets/origin/generated/kling/waking.mp4"
+    },
+    {
+      "action": "stretch",
+      "category": "interactive",
+      "loop": false,
+      "prompt": "动作：猫咪从坐姿开始，前爪向前轻轻伸展，背部微微拉伸，尾巴自然摆动，然后收回前爪恢复坐姿。动作温和，不要离开画面，不要趴得过低导致身体被裁切。",
+      "output": "assets/origin/generated/kling/stretch.mp4"
+    },
+    {
+      "action": "idle_to_paw_raise",
+      "category": "transition",
+      "loop": false,
+      "prompt": "动作：猫咪从正面待机坐姿开始，身体重心轻微调整，肩部和前爪准备抬起，但不要完全抬爪。动作很短、很柔和，结束姿势要能自然衔接到抬前爪动作的第一帧。",
+      "output": "assets/origin/generated/kling/idle_to_paw_raise.mp4"
+    },
+    {
+      "action": "paw_raise_to_idle",
+      "category": "transition",
+      "loop": false,
+      "prompt": "动作：猫咪从前爪刚放下的姿势开始，轻微调整身体和头部，回到稳定正面坐姿。动作很短，结束姿势要接近日常待机第一帧。",
+      "output": "assets/origin/generated/kling/paw_raise_to_idle.mp4"
+    }
+  ]
+}

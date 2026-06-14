@@ -2,6 +2,8 @@
 
 本文档用于生成桌宠动作视频。默认角色参考为 `assets/origin/鱼仔参考图.png`，后续如果要换成其他猫，只需要替换参考图和猫咪特征描述，仍按同一套动作、规格和命名生成视频。
 
+如果使用可灵 AI 批量生成视频，先阅读 `docs/kling-integration.md`，并检查 `docs/kling-action-generation-plan.json` 中的动作计划。
+
 ## 使用目标
 
 - 所有桌宠动作视频都以同一张猫咪参考图为身份锚点。

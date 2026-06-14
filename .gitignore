@@ -3,3 +3,6 @@ dist/
 .tmp/
 .DS_Store
 npm-debug.log*
+.env.local
+assets/origin/generated/kling/*.mp4
+assets/origin/generated/kling/*.json
