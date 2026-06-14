@@ -20,6 +20,7 @@
     "audit:sprites": "node scripts/audit-sprite-actions.mjs",
     "render:hyperframes-actions": "node scripts/render-hyperframes-cat-actions.mjs",
     "validate:hyperframes-actions": "node scripts/validate-hyperframes-cat-actions.mjs",
+    "validate:all": "node scripts/validate-all.mjs",
     "validate:runtime-animations": "node scripts/validate-runtime-animations.mjs",
     "validate:animation-smoothness": "node scripts/validate-animation-smoothness.mjs",
     "validate:animation-director": "node scripts/validate-animation-director.mjs",

@@ -15,6 +15,12 @@ npm run dev
 常用验证：
 
 ```bash
+npm run validate:all
+```
+
+单项验证：
+
+```bash
 npm run validate:runtime-animations
 npm run validate:animation-smoothness
 npm run validate:animation-director
