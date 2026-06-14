@@ -13,7 +13,20 @@
       "loop": true,
       "interruptible": true,
       "fallback": "idle_primary",
-      "enabled": true
+      "enabled": true,
+      "category": "daily",
+      "entryFrames": [
+        1,
+        24,
+        48
+      ],
+      "exitFrames": [
+        24,
+        48,
+        72
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
     },
     "idle_secondary": {
       "source": "assets/origin/鱼仔待机动作2.mp4",
@@ -25,7 +38,20 @@
       "loop": true,
       "interruptible": true,
       "fallback": "idle_primary",
-      "enabled": true
+      "enabled": true,
+      "category": "daily",
+      "entryFrames": [
+        1,
+        24,
+        48
+      ],
+      "exitFrames": [
+        24,
+        48,
+        72
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
     },
     "tail_wag": {
       "source": "assets/origin/鱼仔晃动尾巴视频.mp4",
@@ -34,10 +60,23 @@
       "firstFrame": 1,
       "frameCount": 72,
       "fps": 24,
-      "loop": false,
+      "loop": true,
       "interruptible": true,
       "fallback": "idle_primary",
-      "enabled": true
+      "enabled": true,
+      "category": "daily",
+      "entryFrames": [
+        1,
+        24,
+        48
+      ],
+      "exitFrames": [
+        24,
+        48,
+        72
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
     },
     "walk": {
       "source": "assets/origin/鱼仔走路视频.mp4",
@@ -49,7 +88,20 @@
       "loop": true,
       "interruptible": true,
       "fallback": "idle_primary",
-      "enabled": true
+      "enabled": true,
+      "category": "daily",
+      "entryFrames": [
+        1,
+        24,
+        48
+      ],
+      "exitFrames": [
+        24,
+        48,
+        72
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
     },
     "walk_left": {
       "source": "assets/origin/鱼仔走路视频.mp4",
@@ -63,7 +115,20 @@
       "fallback": "walk",
       "enabled": true,
       "derivedFrom": "walk",
-      "derivation": "mirror-x"
+      "derivation": "mirror-x",
+      "category": "daily",
+      "entryFrames": [
+        1,
+        24,
+        48
+      ],
+      "exitFrames": [
+        24,
+        48,
+        72
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
     },
     "paw_raise": {
       "source": "assets/origin/鱼仔前肢抬起视频.mp4",
@@ -75,7 +140,16 @@
       "loop": false,
       "interruptible": true,
       "fallback": "idle_primary",
-      "enabled": true
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        72
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
     }
   },
   "stateMap": {

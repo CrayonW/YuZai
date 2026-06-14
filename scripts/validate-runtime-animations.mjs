@@ -46,6 +46,7 @@ if (manifest) {
       if (!Number.isInteger(config.frameCount) || config.frameCount < 0) failures.push(`${action}: frameCount must be a non-negative integer`);
       if (typeof config.fps !== "number" || config.fps <= 0) failures.push(`${action}: fps must be positive`);
       if (!manifest.actions[config.fallback]) failures.push(`${action}: fallback ${config.fallback} does not exist`);
+      validateSchedulingFields(action, config);
 
       if (!config.enabled) continue;
 
@@ -118,6 +119,38 @@ function validateFrames(action, config, frameSizeIsValid) {
     }
     if (!metrics.channels.includes("a")) failures.push(`${action}/${expected}: missing alpha channel`);
     if (metrics.maxAlpha <= 0) failures.push(`${action}/${expected}: no visible pixels`);
+  }
+}
+
+function validateSchedulingFields(action, config) {
+  if (config.category !== undefined && !["daily", "interactive", "transition"].includes(config.category)) {
+    failures.push(`${action}: category must be daily, interactive, or transition`);
+  }
+
+  if (config.interruptPolicy !== undefined && !["immediate", "at-safe-frame", "locked"].includes(config.interruptPolicy)) {
+    failures.push(`${action}: interruptPolicy must be immediate, at-safe-frame, or locked`);
+  }
+
+  validateFrameList(action, config, "entryFrames");
+  validateFrameList(action, config, "exitFrames");
+
+  for (const field of ["returnTo", "transitionIn", "transitionOut"]) {
+    if (config[field] === undefined || config[field] === null) continue;
+    if (!manifest.actions[config[field]]) failures.push(`${action}: ${field} ${config[field]} does not exist`);
+  }
+}
+
+function validateFrameList(action, config, field) {
+  if (config[field] === undefined) return;
+  if (!Array.isArray(config[field]) || config[field].length === 0) {
+    failures.push(`${action}: ${field} must be a non-empty array when present`);
+    return;
+  }
+
+  for (const frame of config[field]) {
+    if (!Number.isInteger(frame) || frame < config.firstFrame || frame >= config.firstFrame + config.frameCount) {
+      failures.push(`${action}: ${field} frame ${frame} is out of range`);
+    }
   }
 }
 

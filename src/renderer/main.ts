@@ -4,8 +4,10 @@ import { InteractionController } from "../core/behavior/interaction-controller";
 import { ReminderBubbleController } from "../core/behavior/reminder-bubble-controller";
 import { DEFAULT_CONFIG } from "../core/config/load-config";
 import { PetStateMachine } from "../core/fsm/state-machine";
+import { actionForPose, configForAction, runtimeAnimationManifest } from "../core/render/animation-manifest";
+import { AnimationDirector } from "../core/render/animation-director";
 import { CanvasRenderer } from "../core/render/canvas-renderer";
-import { preloadSpriteSequences } from "../core/render/sprite-assets";
+import { preloadSpriteSequences, sequenceForAction } from "../core/render/sprite-assets";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#pet-canvas");
 if (!canvas) throw new Error("Missing #pet-canvas");
@@ -15,6 +17,11 @@ if (!reminderBubble) throw new Error("Missing #reminder-bubble");
 
 const fsm = new PetStateMachine();
 const renderer = new CanvasRenderer(canvas);
+const animationDirector = new AnimationDirector({
+  defaultAction: runtimeAnimationManifest.defaultAction,
+  resolveSequence: sequenceForAction,
+  resolveConfig: configForAction
+});
 const autonomous = new AutonomousBehavior(fsm);
 const interaction = new InteractionController(canvas, fsm, () => autonomous.notifyStateChanged());
 const reminders = new ReminderBubbleController(reminderBubble);
@@ -22,6 +29,7 @@ const reminders = new ReminderBubbleController(reminderBubble);
 let lastFrameAt = performance.now();
 let screenBounds: { x: number; y: number; width: number; height: number } | null = null;
 let petSize = 280;
+let lastRequestedAnimationAction: string | null = null;
 
 window.yuzai.getScreenBounds().then((bounds) => {
   screenBounds = bounds;
@@ -39,7 +47,13 @@ async function tick(now: number): Promise<void> {
   fsm.update(now);
   autonomous.update(now);
   await updateWindowMotion(deltaSeconds);
-  renderer.render(fsm.snapshot, now, interaction.currentDragOffset);
+  const nextAnimationAction = actionForPose(fsm.snapshot.pose.state, fsm.snapshot.pose.direction);
+  if (nextAnimationAction !== lastRequestedAnimationAction) {
+    animationDirector.request(nextAnimationAction, now);
+    lastRequestedAnimationAction = nextAnimationAction;
+  }
+  const animationFrame = animationDirector.update(now);
+  renderer.render(fsm.snapshot, now, interaction.currentDragOffset, animationFrame);
 
   requestAnimationFrame((time) => void tick(time));
 }

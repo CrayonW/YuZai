@@ -16,6 +16,13 @@ export interface RuntimeAnimationConfig {
   enabled: boolean;
   derivedFrom?: RuntimeAnimationAction;
   derivation?: "mirror-x";
+  category?: "daily" | "interactive" | "transition";
+  entryFrames?: number[];
+  exitFrames?: number[];
+  interruptPolicy?: "immediate" | "at-safe-frame" | "locked";
+  returnTo?: RuntimeAnimationAction;
+  transitionIn?: RuntimeAnimationAction | null;
+  transitionOut?: RuntimeAnimationAction | null;
 }
 
 export interface DirectionalActionMap {
@@ -77,6 +84,10 @@ export function isRuntimeAnimationAction(action: string): action is RuntimeAnima
 
 export function isRenderableAction(config: RuntimeAnimationConfig | undefined): config is RuntimeAnimationConfig {
   return !!config && config.enabled && config.frameCount > 0;
+}
+
+export function configForAction(action: RuntimeAnimationAction): RuntimeAnimationConfig | undefined {
+  return getRuntimeAnimationConfig(action);
 }
 
 function getRuntimeAnimationConfig(action: string): RuntimeAnimationConfig | undefined {

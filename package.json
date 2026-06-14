@@ -18,6 +18,7 @@
     "validate:hyperframes-actions": "node scripts/validate-hyperframes-cat-actions.mjs",
     "validate:runtime-animations": "node scripts/validate-runtime-animations.mjs",
     "validate:animation-smoothness": "node scripts/validate-animation-smoothness.mjs",
+    "validate:animation-director": "node scripts/validate-animation-director.mjs",
     "animations:build-from-origin": "node scripts/build-runtime-animations-from-origin.mjs",
     "kling:generate": "node scripts/kling/generate-video.mjs",
     "kling:auth-check": "node scripts/kling/auth-check.mjs",

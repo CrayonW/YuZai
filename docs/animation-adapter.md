@@ -41,3 +41,13 @@ assets/origin/*.mp4
 - `sleeping` 唤醒必须经过 `waking`。
 - `walking` 停止或撞边必须经过过渡计时，不能硬切。
 - 同一时间只渲染一个情绪。
+
+## 运行时调度
+
+桌宠运行时通过 `AnimationDirector` 管理序列帧播放。日常动作保持自己的播放时间轴，交互动作通过请求插入，并在结束后回到日常动作。
+
+- `daily` 动作默认循环播放，不因普通渲染 tick 重置到第 1 帧。
+- `interactive` 动作在安全退出帧或等待超时后插入播放。
+- `interactive` 动作播放结束后根据 `returnTo` 回到日常动作。
+- `entryFrames` 和 `exitFrames` 用于标注适合切入/切出的安全帧。
+- `npm run validate:animation-director` 用于验证调度器不会把交互动作硬切成重复播放。

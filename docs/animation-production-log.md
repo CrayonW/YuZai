@@ -127,3 +127,21 @@ FPS：24 fps。
 桌面验收：Electron 透明桌面窗口成功截图到 `/private/tmp/yuzai-window-smoothness-fix.png`，72 帧资源能被运行时加载；另生成本地预览 `/private/tmp/yuzai-idle-24fps-preview.mp4` 用于查看待机序列帧流畅度。
 已知问题：PNG 序列帧目录从约 38MB 增长到约 120MB。后续如需降低仓库体积，可以切换到 WebP 或图集。
 决定：接受 24 fps、72 帧作为 MVP 流畅度基线；后续新增动作视频按该标准处理。
+
+## 2026-06-14 序列帧动作调度器接入
+
+日期：2026-06-14
+源文件：`assets/runtime/animations/manifest.json`
+目标动作：`idle_primary`、`idle_secondary`、`tail_wag`、`walk`、`walk_left`、`paw_raise`
+问题：原运行时直接由 FSM 状态映射 action，交互触发时容易从第 1 帧硬切，且缺少日常/交互动作分类。
+参考片段：沿用当前 24 fps、72 帧运行时序列帧。
+帧数：每个 action 72 帧。
+FPS：24 fps。
+循环方式：`daily` 动作循环；`interactive` 动作一次性播放后按 `returnTo` 回到日常动作。
+水印处理：不变。
+重建方法：本次未重建帧，新增 `AnimationDirector` 和 manifest 调度字段。
+运行时输出：Electron 桌面窗口截图 `/private/tmp/yuzai-window-director.png`。
+验证命令：`npm run validate:animation-director`、`npm run validate:runtime-animations`、`npm run validate:animation-smoothness`、`npm run typecheck`、`npm run build`、`YUZAI_CAPTURE_PATH=/private/tmp/yuzai-window-director.png npm run dev`。
+桌面验收：Electron 透明桌面窗口成功截图，显示源素材猫和提醒气泡。
+已知问题：安全帧仍为手工默认标注，后续 13 状态素材齐全后需要逐动作微调 `entryFrames` 和 `exitFrames`。
+决定：接受 `AnimationDirector` 作为后续 daily / interactive / transition 分类播放的运行时基础。

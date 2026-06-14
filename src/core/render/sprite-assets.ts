@@ -24,7 +24,7 @@ export function preloadSpriteSequences(): Promise<void> {
   return Promise.all(actions).then(() => undefined);
 }
 
-function sequenceForAction(action: SpriteAction): SpriteSequence {
+export function sequenceForAction(action: SpriteAction): SpriteSequence {
   let sequence = cache.get(action);
   if (!sequence) {
     const config = runtimeAnimationManifest.actions[action];
