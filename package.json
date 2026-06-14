@@ -2,6 +2,7 @@
   "name": "yuzai-desktop-pet",
   "version": "0.1.0",
   "description": "鱼仔桌面宠物 MVP",
+  "author": "CrayonW",
   "main": "dist/electron/main.js",
   "type": "commonjs",
   "scripts": {
@@ -9,6 +10,9 @@
     "build": "node esbuild.config.mjs",
     "dev": "npm run build && electron .",
     "start": "npm run dev",
+    "package:dir": "npm run build && electron-builder --dir",
+    "package:mac": "npm run build && electron-builder --mac dmg",
+    "package:win": "npm run build && electron-builder --win nsis",
     "sprites:from-sheets": "node scripts/slice-reference-sheets.mjs",
     "sprites:aliases": "node scripts/prepare-runtime-sprite-aliases.mjs",
     "sprites:derive-states": "node scripts/derive-state-sprites.mjs",
@@ -32,5 +36,39 @@
     "electron-builder": "^24.9.1",
     "esbuild": "^0.19.11",
     "typescript": "^5.3.3"
+  },
+  "build": {
+    "appId": "com.crayonw.yuzai",
+    "productName": "鱼仔桌面宠物",
+    "copyright": "Copyright © 2026 CrayonW",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/electron/**/*",
+      "dist/renderer/**/*",
+      "dist/assets/runtime/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "publish": null,
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.entertainment",
+      "identity": null
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}"
   }
 }

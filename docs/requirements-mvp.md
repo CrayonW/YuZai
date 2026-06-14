@@ -49,6 +49,7 @@
 - 设置持久化：已接入本地 JSON 设置文件，保存角色大小、窗口位置和动作频率；已通过临时 `YUZAI_SETTINGS_PATH=/private/tmp/yuzai-settings-test.json` 验证重启加载 340 尺寸，并通过 `YUZAI_TEST_MOVE_MS=500 YUZAI_TEST_MOVE_X=120 YUZAI_TEST_MOVE_Y=140` 验证移动后写回位置。
 - 鼠标靠近：已接入 Electron 主进程全局鼠标位置轮询，通过 `mouse:proximity` 通知渲染进程触发交互动作；已通过 `npm run typecheck`、`npm run build`、`npm run validate:animation-director` 和 Electron 自动触发截图 `/private/tmp/yuzai-window-proximity-paw-raise.png`。截图中可见 `paw_raise` 抬爪反馈。
 - 隐藏恢复：已接入托盘菜单，隐藏后可通过托盘重新显示桌宠；已通过 `YUZAI_TEST_HIDE_MS=500 YUZAI_TEST_SHOW_MS=1100 YUZAI_CAPTURE_DELAY_MS=1700 YUZAI_CAPTURE_PATH=/private/tmp/yuzai-window-tray-restore.png npm run dev` 自动复现隐藏和恢复路径。
+- 打包入口：已接入 electron-builder 配置，支持 `npm run package:dir` 本机应用包验证，并提供 `npm run package:mac`、`npm run package:win` 安装包脚本入口；产物输出到 `release/`，不提交 Git。
 
 ## 明确不实现
 
@@ -59,6 +60,6 @@
 
 ## 后续允许扩展
 
-- exe/dmg 安装包
+- 正式图标、签名和公证后的 exe/dmg 分发包
 - 天气联动动作
 - 日程提醒动作
