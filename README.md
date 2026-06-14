@@ -65,7 +65,7 @@ npm run dev
 - 角色大小、窗口位置、动作频率会保存到本地设置文件，重启后自动恢复。
 - 主进程全局鼠标靠近检测通过 `mouse:proximity` 触发渲染进程动作，当前可见反馈为 `paw_raise` 抬爪。
 - 渲染页已配置 Content Security Policy，Electron 启动时不再出现开发安全警告。
-- 已接入 electron-builder 打包配置，可生成本机应用包，并保留 macOS dmg / Windows nsis 安装包脚本入口。
+- 已接入 electron-builder 打包配置和临时鱼仔应用图标，可生成本机应用包，并保留 macOS dmg / Windows nsis 安装包脚本入口。
 - `.env.local` 可存放本地可灵密钥，已被 `.gitignore` 忽略，不能提交。
 
 ## 当前动作素材
@@ -190,7 +190,7 @@ scripts/
 - 增加多帧截图或录屏验收，继续检查日常动作和交互动作的起止衔接是否足够平滑。
 - 当前 PNG 序列帧体积较大，后续可评估 WebP 或图集方案。
 - 可灵 API 密钥恢复可用后，继续用 CLI 生成新动作视频，但生成结果必须先人工验收再接入运行时。
-- 增加正式图标、签名和公证配置，再输出面向分发的 macOS dmg / Windows exe。
+- 优化正式图标、签名和公证配置，再输出面向分发的 macOS dmg / Windows exe。
 
 ## 不建议随意改动
 

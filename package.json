@@ -45,6 +45,7 @@
       "output": "release",
       "buildResources": "build"
     },
+    "icon": "build/icon.png",
     "files": [
       "dist/electron/**/*",
       "dist/renderer/**/*",
@@ -54,6 +55,7 @@
     "asar": true,
     "publish": null,
     "mac": {
+      "icon": "build/icon.png",
       "target": [
         "dmg"
       ],
@@ -61,6 +63,7 @@
       "identity": null
     },
     "win": {
+      "icon": "build/icon.ico",
       "target": [
         "nsis"
       ]
