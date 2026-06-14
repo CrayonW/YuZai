@@ -18,6 +18,7 @@ npm run dev
 npm run validate:runtime-animations
 npm run validate:animation-smoothness
 npm run validate:animation-director
+npm run validate:daily-animation-rotator
 npm run typecheck
 npm run build
 ```
