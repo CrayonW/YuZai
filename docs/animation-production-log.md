@@ -109,3 +109,21 @@ FPS：12 fps。
 桌面验收：Electron 透明桌面窗口成功截图到 `/private/tmp/yuzai-window-source-mvp.png`，截图尺寸为 560x560，内容为源素材序列帧猫，不是占位兜底渲染。
 已知问题：当前只是第一版 MVP 运行帧，猫边缘仍有轻微绿幕残边；动作节奏、抠像质量和 13 状态统一设计留到全部素材补齐后处理。
 决定：第一版接受为“桌面上能看到一只会动的猫”的 MVP 基线。后续新增动作视频继续按本轮 `assets/origin` 到 `assets/runtime/animations` 的方式处理。
+
+## 2026-06-14 动作流畅度修复
+
+日期：2026-06-14
+源文件：`assets/origin/鱼仔待机动作1.mp4`、`assets/origin/鱼仔待机动作2.mp4`、`assets/origin/鱼仔晃动尾巴视频.mp4`、`assets/origin/鱼仔走路视频.mp4`、`assets/origin/鱼仔前肢抬起视频.mp4`
+目标动作：`idle_primary`、`idle_secondary`、`tail_wag`、`walk`、`walk_left`、`paw_raise`
+问题：第一版运行帧只有 12 fps、24 帧，而源视频为 24 fps、141 帧，导致桌面动作明显不流畅。
+参考片段：每个源视频取前 3 秒，按 24 fps 生成 72 帧。
+帧数：每个 action 72 帧；运行时总帧数 432 帧。
+FPS：24 fps。
+循环方式：保持原有 manifest 语义不变。
+水印处理：沿用右下角透明化和绿幕 chromakey 流程。
+重建方法：将 `scripts/build-runtime-animations-from-origin.mjs` 的输出参数提升到 24 fps、72 帧，并新增 `npm run validate:animation-smoothness` 防止回退。
+运行时输出：`assets/runtime/animations/<action>/frames/frame_000001.png` 到 `frame_000072.png`。
+验证命令：`npm run validate:animation-smoothness`、`npm run validate:runtime-animations`、`npm run typecheck`、`npm run build`、`YUZAI_CAPTURE_PATH=/private/tmp/yuzai-window-smoothness-fix.png npm run dev`。
+桌面验收：Electron 透明桌面窗口成功截图到 `/private/tmp/yuzai-window-smoothness-fix.png`，72 帧资源能被运行时加载；另生成本地预览 `/private/tmp/yuzai-idle-24fps-preview.mp4` 用于查看待机序列帧流畅度。
+已知问题：PNG 序列帧目录从约 38MB 增长到约 120MB。后续如需降低仓库体积，可以切换到 WebP 或图集。
+决定：接受 24 fps、72 帧作为 MVP 流畅度基线；后续新增动作视频按该标准处理。

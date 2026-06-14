@@ -6,8 +6,8 @@ import { fileURLToPath } from "node:url";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const originRoot = join(root, "assets", "origin");
 const runtimeRoot = join(root, "assets", "runtime", "animations");
-const frameCount = 24;
-const fps = 12;
+const frameCount = 72;
+const fps = 24;
 const frameSize = 512;
 const watermarkRegion = "122x67+390+445";
 
