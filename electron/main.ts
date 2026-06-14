@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Menu, screen } from "electron";
+import { app, BrowserWindow, ipcMain, Menu, nativeImage, screen, Tray } from "electron";
 import { writeFileSync } from "node:fs";
 import path from "node:path";
 
@@ -6,6 +6,7 @@ type Frequency = "low" | "normal" | "high";
 type PetSize = 220 | 280 | 340;
 
 let petWindow: BrowserWindow | null = null;
+let tray: Tray | null = null;
 let actionFrequency: Frequency = "normal";
 let petSize: PetSize = 280;
 let mouseProximityTimer: NodeJS.Timeout | null = null;
@@ -65,6 +66,21 @@ function createPetWindow(): void {
   });
   petWindow.webContents.on("did-finish-load", () => {
     const capturePath = process.env.YUZAI_CAPTURE_PATH;
+    const testHideMs = envNumber("YUZAI_TEST_HIDE_MS", 0);
+    const testShowMs = envNumber("YUZAI_TEST_SHOW_MS", 0);
+    if (testHideMs > 0) {
+      setTimeout(() => {
+        hidePet();
+        console.log("[test] pet hidden");
+      }, testHideMs);
+    }
+    if (testShowMs > 0) {
+      setTimeout(() => {
+        showPet();
+        console.log("[test] pet shown");
+      }, testShowMs);
+    }
+
     const testMouseProximityMs = envNumber("YUZAI_TEST_MOUSE_PROXIMITY_MS", 0);
     if (testMouseProximityMs > 0) {
       setTimeout(() => {
@@ -92,6 +108,22 @@ function createPetWindow(): void {
     }, envNumber("YUZAI_CAPTURE_DELAY_MS", 1200));
   });
   petWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
+}
+
+function createTray(): void {
+  if (tray) return;
+
+  const iconPath = path.join(__dirname, "../assets/runtime/animations/idle_primary/frames/frame_000001.png");
+  const icon = nativeImage.createFromPath(iconPath).resize({ width: 18, height: 18 });
+  tray = new Tray(icon);
+  tray.setToolTip("鱼仔桌面宠物");
+  tray.on("click", showPet);
+  updateTrayMenu();
+}
+
+function updateTrayMenu(): void {
+  if (!tray) return;
+  tray.setContextMenu(Menu.buildFromTemplate(menuTemplate()));
 }
 
 function startMouseProximityWatcher(): void {
@@ -127,17 +159,41 @@ function resetPosition(): void {
   );
 }
 
+function showPet(): void {
+  if (!petWindow || petWindow.isDestroyed()) {
+    createPetWindow();
+    updateTrayMenu();
+    return;
+  }
+
+  petWindow.show();
+  petWindow.focus();
+  petWindow.setAlwaysOnTop(true, "screen-saver");
+  updateTrayMenu();
+}
+
+function hidePet(): void {
+  petWindow?.hide();
+  updateTrayMenu();
+}
+
 function showContextMenu(): void {
   if (!petWindow) return;
+  Menu.buildFromTemplate(menuTemplate()).popup({ window: petWindow });
+}
 
-  const menu = Menu.buildFromTemplate([
+function menuTemplate(): Electron.MenuItemConstructorOptions[] {
+  const visible = Boolean(petWindow && !petWindow.isDestroyed() && petWindow.isVisible());
+  return [
     {
       label: "隐藏宠物",
-      click: () => petWindow?.hide()
+      enabled: visible,
+      click: hidePet
     },
     {
       label: "显示宠物",
-      click: () => petWindow?.show()
+      enabled: !visible,
+      click: showPet
     },
     {
       label: "重置位置",
@@ -160,9 +216,7 @@ function showContextMenu(): void {
       label: "退出程序",
       click: () => app.quit()
     }
-  ]);
-
-  menu.popup({ window: petWindow });
+  ];
 }
 
 function frequencyItem(label: string, value: Frequency): Electron.MenuItemConstructorOptions {
@@ -173,6 +227,7 @@ function frequencyItem(label: string, value: Frequency): Electron.MenuItemConstr
     click: () => {
       actionFrequency = value;
       petWindow?.webContents.send("settings:frequency", value);
+      updateTrayMenu();
     }
   };
 }
@@ -187,15 +242,18 @@ function sizeItem(option: { label: string; value: PetSize }): Electron.MenuItemC
       const [x, y] = petWindow?.getPosition() ?? [0, 0];
       petWindow?.setBounds({ x, y, width: petSize, height: petSize });
       petWindow?.webContents.send("settings:size", petSize);
+      updateTrayMenu();
     }
   };
 }
 
 app.whenReady().then(() => {
   createPetWindow();
+  createTray();
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createPetWindow();
+    showPet();
   });
 });
 

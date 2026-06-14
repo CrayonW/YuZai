@@ -18,6 +18,7 @@
 - 默认鼠标穿透，宠物命中区域可交互
 - 右键菜单：隐藏、显示、重置位置、动作频率、退出
 - 右键菜单：角色大小支持小、标准、大三档
+- 托盘菜单：隐藏后可恢复显示，并支持退出
 - 桌面边缘 20px 回弹
 
 ## MVP 必须包含
@@ -45,6 +46,7 @@
 - 定时气泡：已通过 `npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-bubble-mvp.png`，启动后可见“喝口水吧”提醒。
 - 角色大小/位置：已通过 `npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-size-mvp.png`；位置支持拖拽和右键重置，角色大小支持小、标准、大三档。
 - 鼠标靠近：已接入 Electron 主进程全局鼠标位置轮询，通过 `mouse:proximity` 通知渲染进程触发交互动作；已通过 `npm run typecheck`、`npm run build`、`npm run validate:animation-director` 和 Electron 自动触发截图 `/private/tmp/yuzai-window-proximity-paw-raise.png`。截图中可见 `paw_raise` 抬爪反馈。
+- 隐藏恢复：已接入托盘菜单，隐藏后可通过托盘重新显示桌宠；已通过 `YUZAI_TEST_HIDE_MS=500 YUZAI_TEST_SHOW_MS=1100 YUZAI_CAPTURE_DELAY_MS=1700 YUZAI_CAPTURE_PATH=/private/tmp/yuzai-window-tray-restore.png npm run dev` 自动复现隐藏和恢复路径。
 
 ## 明确不实现
 
