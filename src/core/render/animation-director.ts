@@ -47,7 +47,10 @@ export class AnimationDirector {
   }
 
   request(action: RuntimeAnimationAction, now = performance.now()): void {
-    if (action === this.currentAction && !this.pending) return;
+    if (action === this.currentAction) {
+      this.pending = null;
+      return;
+    }
 
     const currentConfig = this.configFor(this.currentAction);
     if (currentConfig.interruptPolicy === "immediate") {
@@ -64,6 +67,7 @@ export class AnimationDirector {
 
     if (this.shouldReturnToDaily(selection)) {
       const currentConfig = this.configFor(this.currentAction);
+      this.pending = null;
       this.switchTo(currentConfig.returnTo ?? this.options.defaultAction, now);
       selection = this.selectionFor(this.currentAction, now);
     }

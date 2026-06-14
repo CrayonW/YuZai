@@ -145,3 +145,21 @@ FPS：24 fps。
 桌面验收：Electron 透明桌面窗口成功截图，显示源素材猫和提醒气泡。
 已知问题：安全帧仍为手工默认标注，后续 13 状态素材齐全后需要逐动作微调 `entryFrames` 和 `exitFrames`。
 决定：接受 `AnimationDirector` 作为后续 daily / interactive / transition 分类播放的运行时基础。
+
+## 2026-06-14 交互回切边界修复
+
+日期：2026-06-14
+源文件：`src/core/render/animation-director.ts`
+目标动作：`idle_primary`、`paw_raise`
+问题：交互动作播放期间如果 FSM 提前回到 idle，会留下一个过期的 daily pending 请求，交互结束后可能再次重置日常动作时间轴。
+参考片段：不涉及帧重建。
+帧数：不变。
+FPS：不变。
+循环方式：不变。
+水印处理：不变。
+重建方法：新增验证场景，确认 locked 交互不会被 stale daily request 打断，且回到 daily 后不会重置时间轴。
+运行时输出：不涉及新截图。
+验证命令：`npm run validate:animation-director`、`npm run typecheck`、`npm run build`。
+桌面验收：本次为调度器边界修复，使用自动验证覆盖。
+已知问题：仍需要后续用真实鼠标靠近录屏验证视觉衔接。
+决定：修复 stale pending request，交互自动回日常时清理过期请求。

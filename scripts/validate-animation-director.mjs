@@ -48,7 +48,10 @@ const testSource = `
   assertEqual(director.update(2000).action, "paw_raise", "switches to interaction at safe exit frame or timeout");
   assertEqual(director.update(2000).frameIndex, 0, "interaction starts at its entry frame");
 
+  director.request("idle_primary", 2100);
+  assertEqual(director.update(2100).action, "paw_raise", "does not interrupt locked interaction with stale daily request");
   assertEqual(director.update(5000).action, "idle_primary", "returns to daily action after interaction ends");
+  assertEqual(director.update(6000).frameIndex, 24, "stale daily request does not reset daily timeline after return");
 
   function sequence(action, fps, loop, frameCount) {
     return {
