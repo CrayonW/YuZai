@@ -59,6 +59,7 @@ npm run dev
 - 当前运行帧来自 `assets/origin` 中已有鱼仔源视频，源视频水印区域在运行帧中透明化。
 - 默认待机、备用待机、摇尾、走路、镜像左走、前肢抬起动作已接入 manifest。
 - `AnimationDirector` 按 `daily / interactive / transition` 分类调度动作，交互动作结束后回到日常动作。
+- idle 状态会自动插入 `tail_wag` 和 `idle_secondary` 日常变化，避免长期只播放默认待机。
 - 定时气泡提醒喝水、休息。
 - 右键菜单支持隐藏、显示、重置位置、角色大小、动作频率和退出。
 - 托盘菜单支持隐藏后恢复显示，并提供退出入口，避免隐藏后找不回桌宠。

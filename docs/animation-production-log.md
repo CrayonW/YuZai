@@ -199,3 +199,21 @@ FPS：不变，24 fps。
 桌面验收：截图中可见源素材猫在透明桌面窗口中执行抬爪反馈，并同时显示提醒气泡。
 已知问题：当前只验证“靠近触发可见抬爪”；后续需要用录屏或多帧截图继续检查动作起止衔接是否足够平滑。
 决定：接受该自动验收命令作为鼠标靠近 MVP 的可复现验证路径。
+
+## 2026-06-15 日常动作轮换接入
+
+日期：2026-06-15
+源文件：`assets/runtime/animations/idle_secondary/frames`、`assets/runtime/animations/tail_wag/frames`
+目标动作：`idle_secondary`、`tail_wag`
+问题：两个 daily 动作已经存在于 manifest，但运行时每帧都从 FSM idle 映射回 `idle_primary`，导致备用待机和摇尾动作不会自然播放。
+参考片段：沿用当前 24 fps、72 帧运行时序列帧。
+帧数：不变，每个 action 72 帧。
+FPS：不变，24 fps。
+循环方式：运行时在 idle 状态定时插入一轮 daily variation，优先播放 `tail_wag`，下一轮播放 `idle_secondary`，每轮约 3 秒后回到 `idle_primary`。
+水印处理：不变。
+重建方法：本次未重建帧，只在 `src/renderer/main.ts` 中接入 idle 日常动作轮换。
+运行时输出：Electron 桌面窗口截图 `/private/tmp/yuzai-window-daily-variation.png`。
+验证命令：`npm run typecheck`、`npm run build`、`npm run validate:runtime-animations`、`npm run validate:animation-smoothness`、`npm run validate:animation-director`、`YUZAI_CAPTURE_DELAY_MS=2600 YUZAI_CAPTURE_PATH=/private/tmp/yuzai-window-daily-variation.png npm run dev`。
+桌面验收：截图中可见源素材猫处于摇尾姿态，不再只是默认待机。
+已知问题：当前日常轮换仍是固定顺序；后续 13 状态补齐后可以根据动作分类、时间段和用户频率设置做更细的随机权重。
+决定：接受 `tail_wag` 和 `idle_secondary` 作为 MVP 日常姿势变化，避免已接入素材闲置。

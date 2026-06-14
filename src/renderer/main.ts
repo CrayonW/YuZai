@@ -4,7 +4,7 @@ import { InteractionController } from "../core/behavior/interaction-controller";
 import { ReminderBubbleController } from "../core/behavior/reminder-bubble-controller";
 import { DEFAULT_CONFIG } from "../core/config/load-config";
 import { PetStateMachine } from "../core/fsm/state-machine";
-import { actionForPose, configForAction, runtimeAnimationManifest } from "../core/render/animation-manifest";
+import { actionForPose, configForAction, runtimeAnimationManifest, type RuntimeAnimationAction } from "../core/render/animation-manifest";
 import { AnimationDirector } from "../core/render/animation-director";
 import { CanvasRenderer } from "../core/render/canvas-renderer";
 import { preloadSpriteSequences, sequenceForAction } from "../core/render/sprite-assets";
@@ -29,7 +29,14 @@ const reminders = new ReminderBubbleController(reminderBubble);
 let lastFrameAt = performance.now();
 let screenBounds: { x: number; y: number; width: number; height: number } | null = null;
 let petSize = 280;
-let lastRequestedAnimationAction: string | null = null;
+let lastRequestedAnimationAction: RuntimeAnimationAction | null = null;
+let nextDailyVariationAt = performance.now() + 1500;
+let activeDailyVariation: { action: RuntimeAnimationAction; endsAt: number } | null = null;
+let dailyVariationIndex = 0;
+
+const DAILY_VARIATIONS: RuntimeAnimationAction[] = ["tail_wag", "idle_secondary"];
+const DAILY_VARIATION_DURATION_MS = 3000;
+const DAILY_VARIATION_GAP_MS = 7000;
 
 window.yuzai.getScreenBounds().then((bounds) => {
   screenBounds = bounds;
@@ -50,7 +57,7 @@ async function tick(now: number): Promise<void> {
   fsm.update(now);
   autonomous.update(now);
   await updateWindowMotion(deltaSeconds);
-  const nextAnimationAction = actionForPose(fsm.snapshot.pose.state, fsm.snapshot.pose.direction);
+  const nextAnimationAction = resolveAnimationAction(now);
   if (nextAnimationAction !== lastRequestedAnimationAction) {
     animationDirector.request(nextAnimationAction, now);
     lastRequestedAnimationAction = nextAnimationAction;
@@ -59,6 +66,37 @@ async function tick(now: number): Promise<void> {
   renderer.render(fsm.snapshot, now, interaction.currentDragOffset, animationFrame);
 
   requestAnimationFrame((time) => void tick(time));
+}
+
+function resolveAnimationAction(now: number): RuntimeAnimationAction {
+  const baseAction = actionForPose(fsm.snapshot.pose.state, fsm.snapshot.pose.direction);
+  if (baseAction !== runtimeAnimationManifest.defaultAction || fsm.snapshot.pose.state !== "idle") {
+    activeDailyVariation = null;
+    scheduleNextDailyVariation(now);
+    return baseAction;
+  }
+
+  if (activeDailyVariation) {
+    if (now < activeDailyVariation.endsAt) return activeDailyVariation.action;
+    activeDailyVariation = null;
+    scheduleNextDailyVariation(now);
+    return runtimeAnimationManifest.defaultAction;
+  }
+
+  if (now >= nextDailyVariationAt) {
+    activeDailyVariation = {
+      action: DAILY_VARIATIONS[dailyVariationIndex % DAILY_VARIATIONS.length],
+      endsAt: now + DAILY_VARIATION_DURATION_MS
+    };
+    dailyVariationIndex += 1;
+    return activeDailyVariation.action;
+  }
+
+  return runtimeAnimationManifest.defaultAction;
+}
+
+function scheduleNextDailyVariation(now: number): void {
+  nextDailyVariationAt = now + DAILY_VARIATION_GAP_MS;
 }
 
 async function updateWindowMotion(deltaSeconds: number): Promise<void> {
