@@ -1,15 +1,22 @@
 import { app, BrowserWindow, ipcMain, Menu, nativeImage, screen, Tray } from "electron";
-import { writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 type Frequency = "low" | "normal" | "high";
 type PetSize = 220 | 280 | 340;
+
+interface PetSettings {
+  petSize: PetSize;
+  actionFrequency: Frequency;
+  position: { x: number; y: number } | null;
+}
 
 let petWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
 let actionFrequency: Frequency = "normal";
 let petSize: PetSize = 280;
 let mouseProximityTimer: NodeJS.Timeout | null = null;
+let savePositionTimer: NodeJS.Timeout | null = null;
 let lastMouseNear = false;
 let testMouseNearUntil = 0;
 
@@ -23,6 +30,105 @@ function windowSize(): { width: number; height: number } {
   return { width: petSize, height: petSize };
 }
 
+function defaultSettings(): PetSettings {
+  return {
+    petSize: 280,
+    actionFrequency: "normal",
+    position: null
+  };
+}
+
+function settingsPath(): string {
+  return process.env.YUZAI_SETTINGS_PATH || path.join(app.getPath("userData"), "settings.json");
+}
+
+function loadSettings(): void {
+  const settings = readSettings();
+  petSize = settings.petSize;
+  actionFrequency = settings.actionFrequency;
+}
+
+function readSettings(): PetSettings {
+  const defaults = defaultSettings();
+  const filePath = settingsPath();
+  if (!existsSync(filePath)) return defaults;
+
+  try {
+    const parsed = JSON.parse(readFileSync(filePath, "utf8")) as Partial<PetSettings>;
+    return {
+      petSize: isPetSize(parsed.petSize) ? parsed.petSize : defaults.petSize,
+      actionFrequency: isFrequency(parsed.actionFrequency) ? parsed.actionFrequency : defaults.actionFrequency,
+      position: isPosition(parsed.position) ? parsed.position : defaults.position
+    };
+  } catch (error: unknown) {
+    console.warn("[settings] failed to read settings, using defaults", error);
+    return defaults;
+  }
+}
+
+function saveSettings(patch: Partial<PetSettings> = {}): void {
+  const current = readSettings();
+  const next: PetSettings = {
+    petSize,
+    actionFrequency,
+    position: current.position,
+    ...patch
+  };
+  const filePath = settingsPath();
+  mkdirSync(path.dirname(filePath), { recursive: true });
+  writeFileSync(filePath, `${JSON.stringify(next, null, 2)}\n`);
+}
+
+function isFrequency(value: unknown): value is Frequency {
+  return value === "low" || value === "normal" || value === "high";
+}
+
+function isPetSize(value: unknown): value is PetSize {
+  return value === 220 || value === 280 || value === 340;
+}
+
+function isPosition(value: unknown): value is { x: number; y: number } {
+  if (!value || typeof value !== "object") return false;
+  const point = value as { x?: unknown; y?: unknown };
+  return Number.isFinite(point.x) && Number.isFinite(point.y);
+}
+
+function savedOrDefaultPosition(workArea: Electron.Rectangle, size: { width: number; height: number }): { x: number; y: number } {
+  const saved = readSettings().position;
+  if (saved) {
+    return clampPointToWorkArea(saved, workArea, size);
+  }
+  return {
+    x: workArea.x + workArea.width - size.width - 80,
+    y: workArea.y + workArea.height - size.height - 80
+  };
+}
+
+function clampPointToWorkArea(
+  point: { x: number; y: number },
+  workArea: Electron.Rectangle,
+  size: { width: number; height: number }
+): { x: number; y: number } {
+  return {
+    x: Math.min(Math.max(Math.round(point.x), workArea.x), workArea.x + workArea.width - size.width),
+    y: Math.min(Math.max(Math.round(point.y), workArea.y), workArea.y + workArea.height - size.height)
+  };
+}
+
+function persistCurrentPosition(): void {
+  if (!petWindow || petWindow.isDestroyed()) return;
+  const [x, y] = petWindow.getPosition();
+  saveSettings({ position: { x, y } });
+}
+
+function schedulePositionSave(): void {
+  if (savePositionTimer) clearTimeout(savePositionTimer);
+  savePositionTimer = setTimeout(() => {
+    savePositionTimer = null;
+    persistCurrentPosition();
+  }, 250);
+}
+
 function envNumber(name: string, fallback: number): number {
   const raw = process.env[name];
   if (!raw) return fallback;
@@ -34,12 +140,13 @@ function createPetWindow(): void {
   const display = screen.getPrimaryDisplay();
   const { workArea } = display;
   const size = windowSize();
+  const position = savedOrDefaultPosition(workArea, size);
 
   petWindow = new BrowserWindow({
     width: size.width,
     height: size.height,
-    x: workArea.x + workArea.width - size.width - 80,
-    y: workArea.y + workArea.height - size.height - 80,
+    x: position.x,
+    y: position.y,
     frame: false,
     transparent: true,
     resizable: false,
@@ -57,6 +164,7 @@ function createPetWindow(): void {
   petWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   petWindow.setAlwaysOnTop(true, "screen-saver");
   petWindow.setIgnoreMouseEvents(true, { forward: true });
+  petWindow.on("moved", schedulePositionSave);
   startMouseProximityWatcher();
   petWindow.webContents.on("console-message", (_event, level, message, line, sourceId) => {
     console.log(`[renderer:${level}] ${message} (${sourceId}:${line})`);
@@ -79,6 +187,15 @@ function createPetWindow(): void {
         showPet();
         console.log("[test] pet shown");
       }, testShowMs);
+    }
+    const testMoveMs = envNumber("YUZAI_TEST_MOVE_MS", 0);
+    const testMoveX = envNumber("YUZAI_TEST_MOVE_X", Number.NaN);
+    const testMoveY = envNumber("YUZAI_TEST_MOVE_Y", Number.NaN);
+    if (testMoveMs > 0 && Number.isFinite(testMoveX) && Number.isFinite(testMoveY)) {
+      setTimeout(() => {
+        movePetTo({ x: testMoveX, y: testMoveY });
+        console.log(`[test] pet moved ${Math.round(testMoveX)},${Math.round(testMoveY)}`);
+      }, testMoveMs);
     }
 
     const testMouseProximityMs = envNumber("YUZAI_TEST_MOUSE_PROXIMITY_MS", 0);
@@ -157,6 +274,7 @@ function resetPosition(): void {
     workArea.x + workArea.width - size.width - 80,
     workArea.y + workArea.height - size.height - 80
   );
+  persistCurrentPosition();
 }
 
 function showPet(): void {
@@ -175,6 +293,11 @@ function showPet(): void {
 function hidePet(): void {
   petWindow?.hide();
   updateTrayMenu();
+}
+
+function movePetTo(point: { x: number; y: number }): void {
+  petWindow?.setPosition(Math.round(point.x), Math.round(point.y));
+  schedulePositionSave();
 }
 
 function showContextMenu(): void {
@@ -227,6 +350,7 @@ function frequencyItem(label: string, value: Frequency): Electron.MenuItemConstr
     click: () => {
       actionFrequency = value;
       petWindow?.webContents.send("settings:frequency", value);
+      saveSettings();
       updateTrayMenu();
     }
   };
@@ -242,12 +366,14 @@ function sizeItem(option: { label: string; value: PetSize }): Electron.MenuItemC
       const [x, y] = petWindow?.getPosition() ?? [0, 0];
       petWindow?.setBounds({ x, y, width: petSize, height: petSize });
       petWindow?.webContents.send("settings:size", petSize);
+      saveSettings({ position: { x, y } });
       updateTrayMenu();
     }
   };
 }
 
 app.whenReady().then(() => {
+  loadSettings();
   createPetWindow();
   createTray();
 
@@ -262,6 +388,11 @@ app.on("window-all-closed", () => {
     clearInterval(mouseProximityTimer);
     mouseProximityTimer = null;
   }
+  if (savePositionTimer) {
+    clearTimeout(savePositionTimer);
+    savePositionTimer = null;
+  }
+  persistCurrentPosition();
   if (process.platform !== "darwin") app.quit();
 });
 
@@ -274,7 +405,7 @@ ipcMain.on("window:set-interactive", (_event, interactive: boolean) => {
 });
 
 ipcMain.on("window:move-to", (_event, point: { x: number; y: number }) => {
-  petWindow?.setPosition(Math.round(point.x), Math.round(point.y));
+  movePetTo(point);
 });
 
 ipcMain.on("menu:context", showContextMenu);
