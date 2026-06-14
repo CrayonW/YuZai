@@ -14,6 +14,7 @@ export class InteractionController {
   private drag: DragSession | null = null;
   private interactive = false;
   private dragOffset = { x: 0, y: 0 };
+  private petSize = 280;
 
   constructor(
     private readonly canvas: HTMLCanvasElement,
@@ -25,6 +26,10 @@ export class InteractionController {
 
   get currentDragOffset(): { x: number; y: number } {
     return this.dragOffset;
+  }
+
+  setPetSize(size: number): void {
+    this.petSize = size;
   }
 
   private bind(): void {
@@ -146,6 +151,6 @@ export class InteractionController {
 
   private isHit(event: MouseEvent): boolean {
     const rect = this.canvas.getBoundingClientRect();
-    return hitTestYuzai(event.clientX - rect.left, event.clientY - rect.top);
+    return hitTestYuzai(event.clientX - rect.left, event.clientY - rect.top, this.petSize, this.petSize);
   }
 }

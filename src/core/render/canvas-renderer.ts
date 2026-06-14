@@ -8,17 +8,19 @@ export class CanvasRenderer {
   private currentAction: string | null = null;
   private actionStartedAt = 0;
   private lastDrawableFrame: HTMLImageElement | null = null;
+  private size = 280;
 
   constructor(private readonly canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) throw new Error("Canvas 2D context is unavailable.");
     this.ctx = ctx;
-    this.resize();
+    this.resize(this.size);
   }
 
-  resize(): void {
-    const width = 280;
-    const height = 280;
+  resize(size: number): void {
+    this.size = size;
+    const width = this.size;
+    const height = this.size;
     this.canvas.style.width = `${width}px`;
     this.canvas.style.height = `${height}px`;
     this.canvas.width = Math.floor(width * this.pixelRatio);
@@ -27,8 +29,8 @@ export class CanvasRenderer {
   }
 
   render(snapshot: StateSnapshot, now: number, dragOffset: { x: number; y: number }): void {
-    const width = 280;
-    const height = 280;
+    const width = this.size;
+    const height = this.size;
     const sequence = sequenceForState(snapshot.pose.state, snapshot.pose.direction);
     if (sequence.action !== this.currentAction) {
       this.currentAction = sequence.action;

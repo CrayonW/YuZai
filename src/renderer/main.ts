@@ -21,13 +21,16 @@ const reminders = new ReminderBubbleController(reminderBubble);
 
 let lastFrameAt = performance.now();
 let screenBounds: { x: number; y: number; width: number; height: number } | null = null;
-const windowSize = { width: 280, height: 280 };
+let petSize = 280;
 
 window.yuzai.getScreenBounds().then((bounds) => {
   screenBounds = bounds;
 });
 
 window.yuzai.onFrequencyChange((frequency) => autonomous.setFrequency(frequency));
+window.yuzai.onSizeChange((size) => {
+  applyPetSize(size);
+});
 
 async function tick(now: number): Promise<void> {
   const deltaSeconds = Math.min(0.08, (now - lastFrameAt) / 1000);
@@ -51,7 +54,12 @@ async function updateWindowMotion(deltaSeconds: number): Promise<void> {
     y
   };
 
-  const clamped = clampWindowToBounds(next, windowSize, screenBounds, DEFAULT_CONFIG.movement.edgePadding);
+  const clamped = clampWindowToBounds(
+    next,
+    { width: petSize, height: petSize },
+    screenBounds,
+    DEFAULT_CONFIG.movement.edgePadding
+  );
   window.yuzai.moveTo(clamped.position);
 
   if (clamped.bounced) {
@@ -66,6 +74,7 @@ async function updateWindowMotion(deltaSeconds: number): Promise<void> {
 
 async function start(): Promise<void> {
   lastFrameAt = performance.now();
+  applyPetSize(await window.yuzai.getSize());
   reminders.start();
   requestAnimationFrame((time) => void tick(time));
   preloadSpriteSequences().catch((error: unknown) => {
@@ -74,3 +83,9 @@ async function start(): Promise<void> {
 }
 
 void start();
+
+function applyPetSize(size: number): void {
+  petSize = size;
+  renderer.resize(size);
+  interaction.setPetSize(size);
+}

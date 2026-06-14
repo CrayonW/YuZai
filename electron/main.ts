@@ -3,21 +3,32 @@ import { writeFileSync } from "node:fs";
 import path from "node:path";
 
 type Frequency = "low" | "normal" | "high";
+type PetSize = 220 | 280 | 340;
 
 let petWindow: BrowserWindow | null = null;
 let actionFrequency: Frequency = "normal";
+let petSize: PetSize = 280;
 
-const WINDOW_SIZE = { width: 280, height: 280 };
+const SIZE_OPTIONS: Array<{ label: string; value: PetSize }> = [
+  { label: "小", value: 220 },
+  { label: "标准", value: 280 },
+  { label: "大", value: 340 }
+];
+
+function windowSize(): { width: number; height: number } {
+  return { width: petSize, height: petSize };
+}
 
 function createPetWindow(): void {
   const display = screen.getPrimaryDisplay();
   const { workArea } = display;
+  const size = windowSize();
 
   petWindow = new BrowserWindow({
-    width: WINDOW_SIZE.width,
-    height: WINDOW_SIZE.height,
-    x: workArea.x + workArea.width - WINDOW_SIZE.width - 80,
-    y: workArea.y + workArea.height - WINDOW_SIZE.height - 80,
+    width: size.width,
+    height: size.height,
+    x: workArea.x + workArea.width - size.width - 80,
+    y: workArea.y + workArea.height - size.height - 80,
     frame: false,
     transparent: true,
     resizable: false,
@@ -64,9 +75,10 @@ function createPetWindow(): void {
 function resetPosition(): void {
   if (!petWindow) return;
   const { workArea } = screen.getPrimaryDisplay();
+  const size = windowSize();
   petWindow.setPosition(
-    workArea.x + workArea.width - WINDOW_SIZE.width - 80,
-    workArea.y + workArea.height - WINDOW_SIZE.height - 80
+    workArea.x + workArea.width - size.width - 80,
+    workArea.y + workArea.height - size.height - 80
   );
 }
 
@@ -85,6 +97,10 @@ function showContextMenu(): void {
     {
       label: "重置位置",
       click: resetPosition
+    },
+    {
+      label: "角色大小",
+      submenu: SIZE_OPTIONS.map(sizeItem)
     },
     {
       label: "动作频率",
@@ -116,6 +132,20 @@ function frequencyItem(label: string, value: Frequency): Electron.MenuItemConstr
   };
 }
 
+function sizeItem(option: { label: string; value: PetSize }): Electron.MenuItemConstructorOptions {
+  return {
+    label: option.label,
+    type: "radio",
+    checked: petSize === option.value,
+    click: () => {
+      petSize = option.value;
+      const [x, y] = petWindow?.getPosition() ?? [0, 0];
+      petWindow?.setBounds({ x, y, width: petSize, height: petSize });
+      petWindow?.webContents.send("settings:size", petSize);
+    }
+  };
+}
+
 app.whenReady().then(() => {
   createPetWindow();
 
@@ -129,6 +159,7 @@ app.on("window-all-closed", () => {
 });
 
 ipcMain.handle("window:get-position", () => petWindow?.getPosition() ?? [0, 0]);
+ipcMain.handle("window:get-size", () => petSize);
 ipcMain.handle("window:get-screen-bounds", () => screen.getPrimaryDisplay().workArea);
 
 ipcMain.on("window:set-interactive", (_event, interactive: boolean) => {

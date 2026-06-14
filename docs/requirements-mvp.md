@@ -17,6 +17,7 @@
 - 点击、连续点击、长按拖拽
 - 默认鼠标穿透，宠物命中区域可交互
 - 右键菜单：隐藏、显示、重置位置、动作频率、退出
+- 右键菜单：角色大小支持小、标准、大三档
 - 桌面边缘 20px 回弹
 
 ## MVP 必须包含
@@ -42,6 +43,7 @@
 
 - 源视频序列帧：已通过 `npm run validate:runtime-animations`、`npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-source-mvp.png`。
 - 定时气泡：已通过 `npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-bubble-mvp.png`，启动后可见“喝口水吧”提醒。
+- 角色大小/位置：已通过 `npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-size-mvp.png`；位置支持拖拽和右键重置，角色大小支持小、标准、大三档。
 
 ## 明确不实现
 
