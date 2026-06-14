@@ -2,6 +2,8 @@
 
 MVP 动画以 `assets/origin` 中的源视频为唯一动作来源，先构建透明 PNG 序列帧，再由 `assets/runtime/animations/manifest.json` 映射到运行时状态。占位绘制只作为资源缺失时的兜底，不能作为验收结果。
 
+生成新的猫咪动作视频前，先使用 `docs/cat-video-prompt-guide.md` 中的提示词模板。该文档以 `assets/origin/鱼仔参考图.png` 为默认参考，也支持替换成其他猫咪参考图后生成同一套桌宠动作。
+
 ## 当前流程
 
 ```text
