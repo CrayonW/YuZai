@@ -20,5 +20,10 @@ contextBridge.exposeInMainWorld("yuzai", {
     const listener = (_event: Electron.IpcRendererEvent, size: PetSize) => callback(size);
     ipcRenderer.on("settings:size", listener);
     return () => ipcRenderer.removeListener("settings:size", listener);
+  },
+  onMouseProximityChange: (callback: (near: boolean) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, near: boolean) => callback(near);
+    ipcRenderer.on("mouse:proximity", listener);
+    return () => ipcRenderer.removeListener("mouse:proximity", listener);
   }
 });

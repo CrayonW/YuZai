@@ -39,6 +39,9 @@ window.yuzai.onFrequencyChange((frequency) => autonomous.setFrequency(frequency)
 window.yuzai.onSizeChange((size) => {
   applyPetSize(size);
 });
+window.yuzai.onMouseProximityChange((near) => {
+  interaction.setGlobalProximity(near);
+});
 
 async function tick(now: number): Promise<void> {
   const deltaSeconds = Math.min(0.08, (now - lastFrameAt) / 1000);

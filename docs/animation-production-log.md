@@ -163,3 +163,21 @@ FPS：不变。
 桌面验收：本次为调度器边界修复，使用自动验证覆盖。
 已知问题：仍需要后续用真实鼠标靠近录屏验证视觉衔接。
 决定：修复 stale pending request，交互自动回日常时清理过期请求。
+
+## 2026-06-14 全局鼠标靠近触发
+
+日期：2026-06-14
+源文件：`electron/main.ts`、`electron/preload.ts`、`src/core/behavior/interaction-controller.ts`
+目标动作：`paw_raise`
+问题：原鼠标靠近主要依赖透明窗口内的 mousemove，桌面穿透窗口场景下不够可靠。
+参考片段：不涉及帧重建。
+帧数：不变。
+FPS：不变。
+循环方式：不变。
+水印处理：不变。
+重建方法：主进程每 120ms 读取全局鼠标坐标和桌宠窗口 bounds，进入窗口周边距离后通过 `mouse:proximity` 通知 renderer，由 InteractionController 触发 teaser/paw_raise。
+运行时输出：Electron 桌面窗口截图 `/private/tmp/yuzai-window-proximity.png`。
+验证命令：`npm run typecheck`、`npm run build`、`npm run validate:animation-director`、`YUZAI_CAPTURE_PATH=/private/tmp/yuzai-window-proximity.png npm run dev`。
+桌面验收：Electron 透明桌面窗口成功截图，显示源素材猫和提醒气泡。
+已知问题：截图只能证明窗口正常渲染；真实靠近动作还需要后续用人工移动鼠标或录屏确认视觉触发。
+决定：接受全局鼠标靠近检测作为桌面宠物交互触发基础。

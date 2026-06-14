@@ -32,6 +32,10 @@ export class InteractionController {
     this.petSize = size;
   }
 
+  setGlobalProximity(near: boolean): void {
+    this.handleHoverChange(near);
+  }
+
   private bind(): void {
     window.addEventListener("mousemove", (event) => this.handleMouseMove(event));
     window.addEventListener("mousedown", (event) => void this.handleMouseDown(event));

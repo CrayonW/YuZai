@@ -11,6 +11,7 @@ declare global {
       showContextMenu(): void;
       onFrequencyChange(callback: (frequency: Frequency) => void): () => void;
       onSizeChange(callback: (size: PetSize) => void): () => void;
+      onMouseProximityChange(callback: (near: boolean) => void): () => void;
     };
   }
 }

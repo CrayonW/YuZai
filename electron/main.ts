@@ -8,6 +8,8 @@ type PetSize = 220 | 280 | 340;
 let petWindow: BrowserWindow | null = null;
 let actionFrequency: Frequency = "normal";
 let petSize: PetSize = 280;
+let mouseProximityTimer: NodeJS.Timeout | null = null;
+let lastMouseNear = false;
 
 const SIZE_OPTIONS: Array<{ label: string; value: PetSize }> = [
   { label: "小", value: 220 },
@@ -46,6 +48,7 @@ function createPetWindow(): void {
   petWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
   petWindow.setAlwaysOnTop(true, "screen-saver");
   petWindow.setIgnoreMouseEvents(true, { forward: true });
+  startMouseProximityWatcher();
   petWindow.webContents.on("console-message", (_event, level, message, line, sourceId) => {
     console.log(`[renderer:${level}] ${message} (${sourceId}:${line})`);
   });
@@ -70,6 +73,27 @@ function createPetWindow(): void {
     }, 1200);
   });
   petWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
+}
+
+function startMouseProximityWatcher(): void {
+  if (mouseProximityTimer) return;
+
+  mouseProximityTimer = setInterval(() => {
+    if (!petWindow || petWindow.isDestroyed() || !petWindow.isVisible()) return;
+
+    const cursor = screen.getCursorScreenPoint();
+    const bounds = petWindow.getBounds();
+    const margin = Math.round(Math.max(bounds.width, bounds.height) * 0.28);
+    const near =
+      cursor.x >= bounds.x - margin &&
+      cursor.x <= bounds.x + bounds.width + margin &&
+      cursor.y >= bounds.y - margin &&
+      cursor.y <= bounds.y + bounds.height + margin;
+
+    if (near === lastMouseNear) return;
+    lastMouseNear = near;
+    petWindow.webContents.send("mouse:proximity", near);
+  }, 120);
 }
 
 function resetPosition(): void {
@@ -155,6 +179,10 @@ app.whenReady().then(() => {
 });
 
 app.on("window-all-closed", () => {
+  if (mouseProximityTimer) {
+    clearInterval(mouseProximityTimer);
+    mouseProximityTimer = null;
+  }
   if (process.platform !== "darwin") app.quit();
 });
 
