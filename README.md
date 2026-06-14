@@ -33,6 +33,7 @@ npm run build
 
 ```bash
 npm run package:dir
+npm run validate:package
 ```
 
 正式安装包入口：
@@ -43,6 +44,7 @@ npm run package:win
 ```
 
 打包产物输出到 `release/`，该目录不会提交到 Git。当前打包内容只包含运行所需的 `dist/electron`、`dist/renderer` 和 `dist/assets/runtime`，不会把 `assets/origin` 源视频打进应用包。
+`validate:package` 会重新生成本机应用包，并检查 `app.asar` 包含运行入口和 runtime 动画资源、没有打入源视频或可灵生成素材，同时确认应用图标资源存在。
 
 桌面截图验收示例：
 
