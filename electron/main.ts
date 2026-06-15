@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, Menu, nativeImage, screen, Tray } from "electron";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { buildCapturePlan, type CaptureFramePlan } from "./capture-plan";
 
 type Frequency = "low" | "normal" | "high";
 type PetSize = 220 | 280 | 340;
@@ -173,7 +174,13 @@ function createPetWindow(): void {
     console.error(`[renderer:load-failed] ${errorCode} ${errorDescription}: ${validatedURL}`);
   });
   petWindow.webContents.on("did-finish-load", () => {
-    const capturePath = process.env.YUZAI_CAPTURE_PATH;
+    const capturePlan = buildCapturePlan({
+      singlePath: process.env.YUZAI_CAPTURE_PATH || "",
+      sequencePath: process.env.YUZAI_CAPTURE_SEQUENCE_PATH || "",
+      count: envNumber("YUZAI_CAPTURE_SEQUENCE_COUNT", 5),
+      intervalMs: envNumber("YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS", 180),
+      delayMs: envNumber("YUZAI_CAPTURE_DELAY_MS", 1200)
+    });
     const testHideMs = envNumber("YUZAI_TEST_HIDE_MS", 0);
     const testShowMs = envNumber("YUZAI_TEST_SHOW_MS", 0);
     if (testHideMs > 0) {
@@ -209,22 +216,32 @@ function createPetWindow(): void {
       }, testMouseProximityMs);
     }
 
-    if (!capturePath) return;
+    if (!capturePlan.enabled) return;
 
-    setTimeout(() => {
-      petWindow?.webContents.capturePage()
-        .then((image) => {
-          writeFileSync(capturePath, image.toPNG());
-          console.log(`[capture] ${capturePath}`);
-          app.quit();
-        })
-        .catch((error: unknown) => {
-          console.error("[capture:failed]", error);
-          app.quit();
-        });
-    }, envNumber("YUZAI_CAPTURE_DELAY_MS", 1200));
+    void captureFrames(capturePlan.frames, capturePlan.quitAfterCapture);
   });
   petWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
+}
+
+async function captureFrames(frames: CaptureFramePlan[], quitAfterCapture: boolean): Promise<void> {
+  const startedAt = Date.now();
+  try {
+    for (const frame of frames) {
+      await sleep(Math.max(0, frame.delayMs - (Date.now() - startedAt)));
+      const image = await petWindow?.webContents.capturePage();
+      if (!image) throw new Error("Pet window is not available for capture");
+      writeFileSync(frame.path, image.toPNG());
+      console.log(`[capture] ${frame.path}`);
+    }
+  } catch (error: unknown) {
+    console.error("[capture:failed]", error);
+  } finally {
+    if (quitAfterCapture) app.quit();
+  }
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function createTray(): void {

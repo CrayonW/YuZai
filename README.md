@@ -33,6 +33,7 @@ npm run validate:runtime-animations
 npm run validate:animation-smoothness
 npm run validate:animation-director
 npm run validate:daily-animation-rotator
+npm run validate:capture-plan
 npm run typecheck
 npm run build
 ```
@@ -69,6 +70,18 @@ YUZAI_CAPTURE_PATH=/private/tmp/yuzai-window-proximity-paw-raise.png \
 npm run dev
 ```
 
+多帧动画验收示例：
+
+```bash
+YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-animation.png \
+YUZAI_CAPTURE_SEQUENCE_COUNT=6 \
+YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=160 \
+YUZAI_CAPTURE_DELAY_MS=900 \
+npm run dev
+```
+
+该命令会输出 `/private/tmp/yuzai-window-animation-001.png` 到 `-006.png`，用于连续检查桌宠动作是否有空白帧、闪烁、明显卡顿或切换姿势是否突兀。
+
 ## 已实现的 MVP 能力
 
 - Electron 透明、无边框、置顶桌面宠物窗口。
@@ -82,6 +95,7 @@ npm run dev
 - 托盘菜单支持隐藏后恢复显示，并提供退出入口，避免隐藏后找不回桌宠。
 - 角色大小、窗口位置、动作频率会保存到本地设置文件，重启后自动恢复。
 - 主进程全局鼠标靠近检测通过 `mouse:proximity` 触发渲染进程动作，当前可见反馈为 `paw_raise` 抬爪。
+- 测试模式支持多帧桌面截图捕获，便于检查序列帧播放过程中的流畅度和姿势切换。
 - 渲染页已配置 Content Security Policy，Electron 启动时不再出现开发安全警告。
 - 已接入 electron-builder 打包配置和临时鱼仔应用图标，可生成本机应用包，并保留 macOS dmg / Windows nsis 安装包脚本入口。
 - `.env.local` 可存放本地可灵密钥，已被 `.gitignore` 忽略，不能提交。

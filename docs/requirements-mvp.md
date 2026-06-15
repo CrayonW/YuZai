@@ -51,6 +51,7 @@
 - 鼠标靠近：已接入 Electron 主进程全局鼠标位置轮询，通过 `mouse:proximity` 通知渲染进程触发交互动作；已通过 `npm run typecheck`、`npm run build`、`npm run validate:animation-director` 和 Electron 自动触发截图 `/private/tmp/yuzai-window-proximity-paw-raise.png`。截图中可见 `paw_raise` 抬爪反馈。
 - 隐藏恢复：已接入托盘菜单，隐藏后可通过托盘重新显示桌宠；已通过 `YUZAI_TEST_HIDE_MS=500 YUZAI_TEST_SHOW_MS=1100 YUZAI_CAPTURE_DELAY_MS=1700 YUZAI_CAPTURE_PATH=/private/tmp/yuzai-window-tray-restore.png npm run dev` 自动复现隐藏和恢复路径。
 - 打包入口：已接入 electron-builder 配置和临时鱼仔应用图标，支持 `npm run package:dir` 本机应用包验证，并提供 `npm run package:mac`、`npm run package:win` 安装包脚本入口；产物输出到 `release/`，不提交 Git。
+- 多帧动画验收：已接入 `YUZAI_CAPTURE_SEQUENCE_PATH`、`YUZAI_CAPTURE_SEQUENCE_COUNT` 和 `YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS` 测试钩子，可一次捕获连续桌面帧，用于检查播放过程中的空白帧、闪烁、卡顿和姿势切换；路径规划已通过 `npm run validate:capture-plan` 验证。
 
 ## 明确不实现
 

@@ -5,6 +5,7 @@ const steps = [
   ["validate:animation-smoothness", ["npm", "run", "validate:animation-smoothness"]],
   ["validate:animation-director", ["npm", "run", "validate:animation-director"]],
   ["validate:daily-animation-rotator", ["npm", "run", "validate:daily-animation-rotator"]],
+  ["validate:capture-plan", ["npm", "run", "validate:capture-plan"]],
   ["typecheck", ["npm", "run", "typecheck"]],
   ["build", ["npm", "run", "build"]]
 ];

@@ -26,6 +26,7 @@
     "validate:animation-smoothness": "node scripts/validate-animation-smoothness.mjs",
     "validate:animation-director": "node scripts/validate-animation-director.mjs",
     "validate:daily-animation-rotator": "node scripts/validate-daily-animation-rotator.mjs",
+    "validate:capture-plan": "node scripts/validate-capture-plan.mjs",
     "validate:package": "node scripts/validate-package.mjs",
     "animations:build-from-origin": "node scripts/build-runtime-animations-from-origin.mjs",
     "kling:generate": "node scripts/kling/generate-video.mjs",

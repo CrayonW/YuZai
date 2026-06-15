@@ -217,3 +217,21 @@ FPS：不变，24 fps。
 桌面验收：截图中可见源素材猫处于摇尾姿态，不再只是默认待机。
 已知问题：当前日常轮换仍是固定顺序；后续 13 状态补齐后可以根据动作分类、时间段和用户频率设置做更细的随机权重。
 决定：接受 `tail_wag` 和 `idle_secondary` 作为 MVP 日常姿势变化，避免已接入素材闲置。
+
+## 2026-06-15 多帧动画验收钩子
+
+日期：2026-06-15
+源文件：`electron/main.ts`、`electron/capture-plan.ts`
+目标动作：所有运行时动作
+问题：单张截图只能证明某一瞬间能渲染，无法复查序列帧播放过程中是否有空白帧、闪烁、明显卡顿或姿势切换突兀。
+参考片段：不涉及帧重建。
+帧数：不变，每个 action 72 帧。
+FPS：不变，24 fps。
+循环方式：不变。
+水印处理：不变。
+重建方法：本次未重建帧，新增 `YUZAI_CAPTURE_SEQUENCE_PATH`、`YUZAI_CAPTURE_SEQUENCE_COUNT`、`YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS` 测试钩子，一次启动 Electron 后按固定间隔输出连续截图。
+运行时输出：Electron 桌面窗口截图 `/private/tmp/yuzai-window-animation-001.png` 到 `/private/tmp/yuzai-window-animation-006.png`。
+验证命令：`npm run validate:capture-plan`、`npm run validate:all`、`YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-animation.png YUZAI_CAPTURE_SEQUENCE_COUNT=6 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=160 YUZAI_CAPTURE_DELAY_MS=900 npm run dev`。
+桌面验收：连续 6 张截图均成功生成且非空，首尾帧可见源素材猫和提醒气泡。
+已知问题：当前多帧验收仍是截图序列，不是完整录屏；后续可以增加自动像素差分或短视频导出，进一步量化流畅度。
+决定：接受多帧截图作为后续新增动作和交互切换的可复现验收方式。
