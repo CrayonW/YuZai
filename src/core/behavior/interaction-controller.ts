@@ -1,6 +1,7 @@
 import { DEFAULT_CONFIG } from "../config/load-config";
 import { hitTestYuzai } from "../render/placeholder-yuzai";
 import type { PetStateMachine } from "../fsm/state-machine";
+import { buildRuntimeInteractionSchedule, type RuntimeInteractionSchedule } from "../render/runtime-interaction-schedule";
 
 interface DragSession {
   startPointer: { x: number; y: number };
@@ -15,12 +16,15 @@ export class InteractionController {
   private interactive = false;
   private dragOffset = { x: 0, y: 0 };
   private petSize = 280;
+  private readonly runtimeInteractions: RuntimeInteractionSchedule;
 
   constructor(
     private readonly canvas: HTMLCanvasElement,
     private readonly fsm: PetStateMachine,
-    private readonly notifyStateChanged: () => void
+    private readonly notifyStateChanged: () => void,
+    runtimeInteractions = buildRuntimeInteractionSchedule()
   ) {
+    this.runtimeInteractions = runtimeInteractions;
     this.bind();
   }
 
@@ -83,7 +87,7 @@ export class InteractionController {
     window.setTimeout(() => {
       if (!this.drag) return;
       this.drag.active = true;
-      this.fsm.request({ state: "dragging", mood: "surprised", view: "front", direction: 0, cacheCurrent: true, force: true });
+      this.fsm.request({ state: this.runtimeInteractions.dragState, mood: "surprised", view: "front", direction: 0, cacheCurrent: true, force: true });
       this.notifyStateChanged();
     }, 160);
   }
@@ -107,12 +111,12 @@ export class InteractionController {
     if (this.drag?.active) return;
 
     if (hit && this.fsm.state === "idle") {
-      this.fsm.request({ state: "teaser", mood: "happy", view: "front", direction: 0, cacheCurrent: true, force: true });
+      this.fsm.request({ state: this.runtimeInteractions.mouseNearState, mood: "happy", view: "front", direction: 0, cacheCurrent: true, force: true });
       this.notifyStateChanged();
       return;
     }
 
-    if (!hit && this.fsm.state === "teaser") {
+    if (!hit && this.fsm.state === this.runtimeInteractions.mouseNearState) {
       this.fsm.restorePrevious();
       this.notifyStateChanged();
     }
@@ -127,10 +131,10 @@ export class InteractionController {
     this.lastClickAt = now;
 
     if (this.fsm.state === "sleeping") {
-      this.fsm.request({ state: "waking", mood: "sleepy", view: "front", direction: 0, cacheCurrent: true, force: true }, now);
+      this.fsm.request({ state: this.runtimeInteractions.wakeState, mood: "sleepy", view: "front", direction: 0, cacheCurrent: true, force: true }, now);
       this.fsm.lockFor(700, now);
       window.setTimeout(() => {
-        this.fsm.request({ state: "surprised", mood: "surprised", view: "front", direction: 0, force: true });
+        this.fsm.request({ state: this.runtimeInteractions.clickState, mood: "surprised", view: "front", direction: 0, force: true });
         this.fsm.lockFor(DEFAULT_CONFIG.timing.interactionMs);
         this.notifyStateChanged();
       }, 520);
@@ -139,14 +143,14 @@ export class InteractionController {
     }
 
     if (this.clickCount >= DEFAULT_CONFIG.timing.shyClickCount) {
-      this.fsm.request({ state: "shy", mood: "shy", view: "front", direction: 0, cacheCurrent: true, force: true }, now);
+      this.fsm.request({ state: this.runtimeInteractions.repeatedClickState, mood: "shy", view: "front", direction: 0, cacheCurrent: true, force: true }, now);
       this.fsm.lockFor(1600, now);
       this.clickCount = 0;
     } else if (longGap) {
-      this.fsm.request({ state: "waving", mood: "happy", view: "front", direction: 0, cacheCurrent: true, force: true }, now);
+      this.fsm.request({ state: this.runtimeInteractions.clickState, mood: "happy", view: "front", direction: 0, cacheCurrent: true, force: true }, now);
       this.fsm.lockFor(DEFAULT_CONFIG.timing.interactionMs, now);
     } else {
-      this.fsm.request({ state: "surprised", mood: "surprised", view: "front", direction: 0, cacheCurrent: true, force: true }, now);
+      this.fsm.request({ state: this.runtimeInteractions.clickState, mood: "surprised", view: "front", direction: 0, cacheCurrent: true, force: true }, now);
       this.fsm.lockFor(DEFAULT_CONFIG.timing.interactionMs, now);
     }
 

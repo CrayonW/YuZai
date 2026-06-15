@@ -397,3 +397,21 @@ FPS：不变。
 桌面验收：当前行为仍只播放已存在帧，不会调度尚未接入 manifest 的动作；后续真实视频补齐后再做桌面多帧验收。
 已知问题：`groom_face_wash`、`loaf_breathing`、`cursor_watch` 等动作仍未生成视频和运行时帧，所以不会实际播放。
 决定：接受运行时先接入策略可用子集，作为后续新增真实动作后的自动扩展入口。
+
+## 2026-06-15 运行时交互策略兜底接入
+
+日期：2026-06-15
+源文件：`docs/cat-behavior-schedule.json`、`assets/runtime/animations/manifest.json`
+目标动作：鼠标靠近、点击、连续点击、拖拽、唤醒
+问题：行为策略中规划了 `cursor_watch`、`click_surprised`、`poke_annoyed`、`dragging` 等交互动作，但当前 manifest 只有 `paw_raise` 交互帧；直接请求 `surprised`、`shy` 或 `dragging` 会视觉回落到待机，用户会感觉点击没有反馈。
+参考片段：当前可见交互兜底为 `paw_raise`，由 `teaser` 或 `waving` 状态触发。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：非循环交互动作仍由 `AnimationDirector` 播放结束后回到日常动作。
+水印处理：不涉及视频处理。
+重建方法：新增 `src/core/render/runtime-interaction-schedule.ts`，根据行为策略和 manifest 选择当前可播放的交互状态；`InteractionController` 使用该解析结果处理 hover、click、repeated click、drag 和 wake。
+运行时输出：本次使用自动验证覆盖，后续可用桌面截图进一步确认点击反馈。
+验证命令：`npm run validate:runtime-interaction-schedule`、`npm run validate:release`。
+桌面验收：当前阶段点击和连续点击会回退到可见的 `waving/paw_raise`，等 `click_surprised`、`poke_annoyed`、`dragging` 真实帧补齐后再自动升级到专属动作。
+已知问题：交互动作视觉多样性仍受当前素材限制；真实交互视频未生成前，只能使用已有 `paw_raise` 作为可见兜底。
+决定：接受交互策略兜底接入，避免用户交互落到不可见的 idle fallback。
