@@ -469,3 +469,21 @@ FPS：不变。
 桌面验收：本次为可灵素材生成入口；真实视频生成并接入 manifest 后再做桌面多帧验收。
 已知问题：真实批次生成仍依赖可灵 API 鉴权通过。
 决定：接受批次生成命令作为后续素材生产的执行入口。
+
+## 2026-06-15 可灵批次产物状态面板
+
+日期：2026-06-15
+源文件：`docs/kling-generation-batches.json`、`assets/origin/generated/kling`
+目标动作：第一批可灵生成动作
+问题：批次生成后需要快速确认哪些视频已生成、哪些是空文件、哪些仍缺失，方便进入人工验收和后续素材接入。
+参考片段：第一批 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised`。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不涉及运行时播放。
+水印处理：状态面板只判断文件存在和大小；水印仍需人工验收或后续视频处理流程处理。
+重建方法：新增 `npm run kling:batch-status`，支持 `--batch <number-or-id>` 和 `--write <path>`；当前输出 `docs/kling-batch-status-first.md`。
+运行时输出：不涉及运行时截图。
+验证命令：`npm run validate:kling-batch-status`、`npm run kling:batch-status -- --batch 1 --write docs/kling-batch-status-first.md`、`npm run validate:release`。
+桌面验收：本次为素材生产状态面板；真实视频接入 manifest 后再做桌面验收。
+已知问题：当前第一批 4 个视频均为 missing，仍需可灵 API 鉴权通过后生成。
+决定：接受批次状态面板作为可灵生成后的验收入口。
