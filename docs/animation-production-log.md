@@ -361,3 +361,21 @@ FPS：计划仍按 24 fps。
 桌面验收：本次为动作生成规划升级；真实视频生成后仍需进入素材清单确认、源视频预检、序列帧抽取和桌面多帧截图验收。
 已知问题：当前可灵密钥仍未通过开放 API 鉴权，无法生成真实视频；本次只完成可执行计划、提示词和校验工具。
 决定：接受“长日常动作池 + 短交互响应 + 过渡衔接”的方案，后续新增参考视频或可灵生成视频时按同一计划接入。
+
+## 2026-06-15 真实小猫行为调度策略
+
+日期：2026-06-15
+源文件：`docs/kling-action-generation-plan.json`
+目标动作：所有计划中的日常动作、交互动作和过渡动作
+问题：长视频提示词只能解决素材生成问题；运行时还需要明确如何避免短时间重复、哪些动作属于日常池、哪些动作由鼠标或点击触发、睡眠动作如何串联，才能让桌宠像真实小猫一样生活在桌面上。
+参考片段：以可灵动作计划中的 `durationSeconds`、`antiFatigueRole`、`minCooldownSeconds` 为行为策略来源。
+帧数：本次未生成帧。
+FPS：不变，后续仍按 24 fps 接入。
+循环方式：日常动作池间隔 45-150 秒，交互动作结束回到 `idle_primary`，拖拽动作可在拖拽期间循环。
+水印处理：本次不处理视频；策略仍要求只有通过源视频验收和去水印/抠绿流程后才允许进入运行时调度。
+重建方法：新增 `npm run animations:behavior-schedule`，从可灵动作计划派生 `docs/cat-behavior-schedule.json` 和 `docs/cat-behavior-schedule.md`；新增 `npm run validate:cat-behavior-schedule` 校验行为策略。
+运行时输出：不涉及新截图。
+验证命令：`npm run validate:cat-behavior-schedule`、`npm run animations:behavior-schedule -- --write-json docs/cat-behavior-schedule.json --write-md docs/cat-behavior-schedule.md`、`npm run validate:release`。
+桌面验收：本次为运行时调度策略准备，不直接切换播放器；等目标 action 已生成帧并写入 manifest 后，再按策略接入并做桌面多帧验收。
+已知问题：当前运行时 manifest 仍只有 6 个动作，新增策略中的动作必须等真实视频生成、抽帧、manifest 更新后才能实际播放。
+决定：接受 `docs/cat-behavior-schedule.md` 作为后续把真实小猫动作接入播放器的调度依据。
