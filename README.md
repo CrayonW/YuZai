@@ -170,9 +170,12 @@ assets/origin/*.mp4
 
 ```bash
 npm run animations:intake-checklist
+npm run animations:state-coverage
 ```
 
-它会扫描 `assets/origin` 和当前 manifest，输出中文“动作素材处理前确认清单”。如果同一个源视频会影响多个 action，例如 `walk` 和 `walk_left`，清单会合并列出所有目标 action 和覆盖路径。
+`animations:intake-checklist` 会扫描 `assets/origin` 和当前 manifest，输出中文“动作素材处理前确认清单”。如果同一个源视频会影响多个 action，例如 `walk` 和 `walk_left`，清单会合并列出所有目标 action 和覆盖路径。
+
+`animations:state-coverage` 会输出 13 个桌宠状态的动作覆盖报告，标出哪些状态已有独立/复用动作，哪些仍 fallback 到待机，并附上可灵提示词计划中的候选动作名称。
 
 接入后必须更新：
 
@@ -187,6 +190,7 @@ npm run validate:runtime-animations
 npm run validate:animation-intake-checklist
 npm run animations:audit-origin
 npm run validate:origin-video-audit
+npm run validate:state-coverage-report
 npm run validate:manifest-contract:current
 npm run validate:animation-director
 ```

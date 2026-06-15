@@ -55,6 +55,7 @@
 - Manifest 合约：已接入 `npm run validate:manifest-contract:current`，自动确认当前 13 个 `PetStateName` 都在运行时 manifest 中有映射，并检查动作分类、安全帧、打断策略和非循环交互动作回流配置。
 - 素材处理确认：已接入 `npm run animations:intake-checklist`，用于在新增、删除、覆盖或重新生成动作素材前输出中文确认清单，列出源视频、目标 action、分类、覆盖路径、manifest 修改判断和验证方式。
 - 源视频预检：已接入 `npm run animations:audit-origin`，在抽帧前检查 manifest 引用的源视频是否存在、包含视频流、时长足够生成当前 72 帧、尺寸不低于最低阈值。
+- 13 状态覆盖跟踪：已接入 `npm run animations:state-coverage`，输出每个桌宠状态当前是否有独立/复用动作、是否仍 fallback 到待机，以及可灵提示词计划中的候选动作。
 
 ## 明确不实现
 

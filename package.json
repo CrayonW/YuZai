@@ -31,6 +31,8 @@
     "validate:animation-intake-checklist": "node scripts/validate-animation-intake-checklist.mjs",
     "validate:origin-video-audit": "node scripts/validate-origin-video-audit.mjs",
     "animations:audit-origin": "node scripts/origin-video-audit.mjs",
+    "animations:state-coverage": "node scripts/state-coverage-report.mjs",
+    "validate:state-coverage-report": "node scripts/validate-state-coverage-report.mjs",
     "validate:capture-plan": "node scripts/validate-capture-plan.mjs",
     "validate:capture-sequence-inspector": "node scripts/validate-capture-sequence-inspector.mjs",
     "capture:inspect": "node scripts/capture-sequence-inspector.mjs",

@@ -289,3 +289,21 @@ FPS：不变。
 桌面验收：本次为素材预检工具，使用自动验证覆盖。
 已知问题：预检只检查源视频是否足够抽帧，不判断动作美感、猫咪身份一致性、水印位置和绿幕质量；这些仍需后续序列帧验证和桌面多帧验收。
 决定：接受源视频预检作为 `animations:build-from-origin` 之前的固定门禁。
+
+## 2026-06-15 13 状态覆盖报告
+
+日期：2026-06-15
+源文件：`assets/runtime/animations/manifest.json`、`src/core/fsm/state-types.ts`、`docs/kling-action-generation-plan.json`
+目标动作：全部 13 个桌宠状态
+问题：项目目标是后续补齐 13 状态真实动作；当前 manifest 已有 13 状态映射，但部分状态仍 fallback 到 `idle_primary`。需要一个固定报告明确当前覆盖度和下一步缺口。
+参考片段：不涉及帧重建。
+帧数：不变。
+FPS：不变。
+循环方式：不变。
+水印处理：不变。
+重建方法：本次未重建帧，新增 `npm run animations:state-coverage`，读取状态类型、manifest 和可灵动作计划，输出每个状态的覆盖状态、运行时 action、源视频和提示词候选。
+运行时输出：不涉及新截图。
+验证命令：`npm run validate:state-coverage-report`、`npm run animations:state-coverage`、`npm run validate:release`。
+桌面验收：本次为 13 状态覆盖跟踪工具，使用自动验证和报告输出覆盖。
+已知问题：报告只说明映射覆盖度，不代表 fallback 状态已经拥有独立真实视频；当前报告显示 13 状态中 6 个为 independent，7 个仍 fallback。
+决定：接受状态覆盖报告作为后续补齐 13 状态动作的进度追踪入口。
