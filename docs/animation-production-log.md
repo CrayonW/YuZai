@@ -301,9 +301,9 @@ FPS：不变。
 FPS：不变。
 循环方式：不变。
 水印处理：不变。
-重建方法：本次未重建帧，新增 `npm run animations:state-coverage`，读取状态类型、manifest 和可灵动作计划，输出每个状态的覆盖状态、运行时 action、源视频和提示词候选。
+重建方法：本次未重建帧，新增 `npm run animations:state-coverage`，读取状态类型、manifest 和可灵动作计划，输出每个状态的覆盖状态、运行时 action、源视频和提示词候选；同时支持 `--write docs/state-coverage.md` 保存当前缺口面板。
 运行时输出：不涉及新截图。
-验证命令：`npm run validate:state-coverage-report`、`npm run animations:state-coverage`、`npm run validate:release`。
+验证命令：`npm run validate:state-coverage-report`、`npm run animations:state-coverage`、`npm run animations:state-coverage -- --write docs/state-coverage.md`、`npm run validate:release`。
 桌面验收：本次为 13 状态覆盖跟踪工具，使用自动验证和报告输出覆盖。
 已知问题：报告只说明映射覆盖度，不代表 fallback 状态已经拥有独立真实视频；当前报告显示 13 状态中 6 个为 independent，7 个仍 fallback。
-决定：接受状态覆盖报告作为后续补齐 13 状态动作的进度追踪入口。
+决定：接受状态覆盖报告和 `docs/state-coverage.md` 作为后续补齐 13 状态动作的进度追踪入口。

@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { extractPetStateNames } from "./manifest-contract.mjs";
@@ -39,6 +39,13 @@ export function renderStateCoverageReport(report) {
   }
 
   return `${lines.join("\n")}\n`;
+}
+
+export function writeStateCoverageReport(report, outputPath) {
+  const text = renderStateCoverageReport(report);
+  mkdirSync(dirname(outputPath), { recursive: true });
+  writeFileSync(outputPath, text);
+  return text;
 }
 
 function stateCoverage(state, manifest, promptActions) {
@@ -96,9 +103,20 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const manifest = JSON.parse(readFileSync(join(root, "assets", "runtime", "animations", "manifest.json"), "utf8"));
   const stateSource = readFileSync(join(root, "src", "core", "fsm", "state-types.ts"), "utf8");
   const plan = JSON.parse(readFileSync(join(root, "docs", "kling-action-generation-plan.json"), "utf8"));
-  process.stdout.write(renderStateCoverageReport(buildStateCoverageReport({
+  const report = buildStateCoverageReport({
     manifest,
     stateNames: extractPetStateNames(stateSource),
     promptActions: (plan.actions || []).map((action) => action.action)
-  })));
+  });
+  const outputPath = parseWritePath(process.argv.slice(2));
+  const text = outputPath ? writeStateCoverageReport(report, join(root, outputPath)) : renderStateCoverageReport(report);
+  process.stdout.write(text);
+}
+
+function parseWritePath(args) {
+  const index = args.indexOf("--write");
+  if (index < 0) return null;
+  const outputPath = args[index + 1];
+  if (!outputPath) throw new Error("Missing path after --write");
+  return outputPath;
 }

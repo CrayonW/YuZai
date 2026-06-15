@@ -9,7 +9,9 @@ const bundlePath = join(tempRoot, "validate-state-coverage-report.mjs");
 const reportPath = join(process.cwd(), "scripts", "state-coverage-report.mjs");
 
 const testSource = `
-  import { buildStateCoverageReport, renderStateCoverageReport } from ${JSON.stringify(reportPath)};
+  import { buildStateCoverageReport, renderStateCoverageReport, writeStateCoverageReport } from ${JSON.stringify(reportPath)};
+  import { existsSync, readFileSync } from "node:fs";
+  import { join } from "node:path";
 
   const manifest = {
     defaultAction: "idle_primary",
@@ -53,6 +55,12 @@ const testSource = `
   assertIncludes(text, "sleepy | fallback", "renders fallback row");
   assertIncludes(text, "missing_state | missing", "renders missing row");
   assertIncludes(text, "prompt: sleepy", "renders prompt hint");
+
+  const outputPath = join(${JSON.stringify(tempRoot)}, "state-coverage.md");
+  const written = writeStateCoverageReport(report, outputPath);
+  assertEqual(existsSync(outputPath), true, "writes report file");
+  assertEqual(written, text, "write helper returns rendered text");
+  assertIncludes(readFileSync(outputPath, "utf8"), "覆盖摘要：independent 2", "written report includes summary");
 
   function assertEqual(actual, expected, label) {
     if (actual !== expected) {
