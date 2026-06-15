@@ -379,3 +379,21 @@ FPS：不变，后续仍按 24 fps 接入。
 桌面验收：本次为运行时调度策略准备，不直接切换播放器；等目标 action 已生成帧并写入 manifest 后，再按策略接入并做桌面多帧验收。
 已知问题：当前运行时 manifest 仍只有 6 个动作，新增策略中的动作必须等真实视频生成、抽帧、manifest 更新后才能实际播放。
 决定：接受 `docs/cat-behavior-schedule.md` 作为后续把真实小猫动作接入播放器的调度依据。
+
+## 2026-06-15 运行时行为策略子集接入
+
+日期：2026-06-15
+源文件：`docs/cat-behavior-schedule.json`、`assets/runtime/animations/manifest.json`
+目标动作：当前 manifest 已启用且适合 idle 期间播放的日常动作
+问题：播放器此前硬编码 `["tail_wag", "idle_secondary"]` 作为日常变化，无法体现策略文档，也容易在后续新增动作时忘记同步；但策略中很多动作尚未生成真实帧，不能直接调度。
+参考片段：当前可播放动作仍来自 manifest，未来动作只作为策略候选。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：运行时从策略中筛选已启用、可循环、daily、非行走/睡眠链路动作；当前可用子集为 `tail_wag` 和 `idle_secondary`。
+水印处理：不涉及视频处理。
+重建方法：新增 `src/core/render/runtime-behavior-schedule.ts`，由策略和 manifest 派生 `DailyAnimationRotator` 配置；播放器不再硬编码日常变化数组。
+运行时输出：本次使用自动验证覆盖，未新增桌面截图。
+验证命令：`npm run validate:runtime-behavior-schedule`、`npm run validate:release`。
+桌面验收：当前行为仍只播放已存在帧，不会调度尚未接入 manifest 的动作；后续真实视频补齐后再做桌面多帧验收。
+已知问题：`groom_face_wash`、`loaf_breathing`、`cursor_watch` 等动作仍未生成视频和运行时帧，所以不会实际播放。
+决定：接受运行时先接入策略可用子集，作为后续新增真实动作后的自动扩展入口。

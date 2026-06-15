@@ -105,7 +105,7 @@
 {通用负向提示词}
 ```
 
-### 3. 摇尾待机 `daily_tail_wag`
+### 3. 摇尾待机 `tail_wag`
 
 ```text
 {通用正向提示词}
@@ -275,7 +275,7 @@
 | --- | --- | --- | --- | --- |
 | 待机 | `daily` | `idle_primary` | 是 | 主循环 |
 | 备用待机 | `daily` | `idle_secondary` | 是 | 日常变化 |
-| 摇尾 | `daily` | `daily_tail_wag` | 是 | 可作为日常变化 |
+| 摇尾 | `daily` | `tail_wag` | 是 | 可作为日常变化 |
 | 眨眼 | `daily` | `slow_blink` | 否 | 可插入日常 |
 | 左右观察 | `daily` | `look_around` | 否 | 可插入日常 |
 | 右走 | `daily` | `walk` | 是 | 桌面移动 |

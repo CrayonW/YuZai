@@ -20,18 +20,18 @@
       "role": "主待机，提供长时间稳定陪伴，不抢用户注意力"
     },
     {
+      "action": "tail_wag",
+      "durationSeconds": 8,
+      "loop": true,
+      "minCooldownSeconds": 360,
+      "role": "安静摇尾，作为低强度循环变化"
+    },
+    {
       "action": "idle_secondary",
       "durationSeconds": 8,
       "loop": true,
       "minCooldownSeconds": 240,
       "role": "备用待机，替代主待机降低重复感"
-    },
-    {
-      "action": "daily_tail_wag",
-      "durationSeconds": 8,
-      "loop": true,
-      "minCooldownSeconds": 360,
-      "role": "安静摇尾，作为低强度循环变化"
     },
     {
       "action": "slow_blink",

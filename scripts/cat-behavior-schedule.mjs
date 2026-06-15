@@ -165,8 +165,8 @@ function compareDailyActions(left, right) {
 function dailyRank(action) {
   const ranks = [
     "idle_primary",
+    "tail_wag",
     "idle_secondary",
-    "daily_tail_wag",
     "slow_blink",
     "look_around",
     "groom_face_wash",

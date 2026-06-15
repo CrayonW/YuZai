@@ -8,6 +8,7 @@ import { actionForPose, configForAction, runtimeAnimationManifest, type RuntimeA
 import { AnimationDirector } from "../core/render/animation-director";
 import { CanvasRenderer } from "../core/render/canvas-renderer";
 import { DailyAnimationRotator } from "../core/render/daily-animation-rotator";
+import { buildRuntimeDailyRotatorOptions } from "../core/render/runtime-behavior-schedule";
 import { preloadSpriteSequences, sequenceForAction } from "../core/render/sprite-assets";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#pet-canvas");
@@ -31,10 +32,7 @@ let lastFrameAt = performance.now();
 let screenBounds: { x: number; y: number; width: number; height: number } | null = null;
 let petSize = 280;
 let lastRequestedAnimationAction: RuntimeAnimationAction | null = null;
-const dailyRotator = new DailyAnimationRotator({
-  defaultAction: runtimeAnimationManifest.defaultAction,
-  variations: ["tail_wag", "idle_secondary"]
-});
+const dailyRotator = new DailyAnimationRotator(buildRuntimeDailyRotatorOptions());
 
 window.yuzai.getScreenBounds().then((bounds) => {
   screenBounds = bounds;

@@ -34,14 +34,14 @@
       "output": "assets/origin/generated/kling/idle_secondary.mp4"
     },
     {
-      "action": "daily_tail_wag",
+      "action": "tail_wag",
       "category": "daily",
       "loop": true,
       "durationSeconds": 8,
       "antiFatigueRole": "安静摇尾，作为低强度循环变化",
       "minCooldownSeconds": 360,
       "prompt": "动作：猫咪坐姿不变，尾巴从身体一侧轻柔摆动，摆动节奏平稳且不机械，身体和头部保持稳定，偶尔眨眼。开始和结束尾巴位置尽量接近，适合循环播放。画面不要出现文字、水印或 logo。",
-      "output": "assets/origin/generated/kling/daily_tail_wag.mp4"
+      "output": "assets/origin/generated/kling/tail_wag.mp4"
     },
     {
       "action": "slow_blink",
