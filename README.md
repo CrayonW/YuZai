@@ -18,6 +18,14 @@ npm run dev
 npm run validate:all
 ```
 
+发布前总检查：
+
+```bash
+npm run validate:release
+```
+
+`validate:release` 会先跑核心运行验证，再重新生成本机应用包并检查打包内容，耗时会比 `validate:all` 更长。
+
 单项验证：
 
 ```bash
@@ -154,7 +162,7 @@ npm run kling:generate -- --action idle_primary
 docs/kling-integration.md
 ```
 
-截至 2026-06-14，本地请求能到达可灵 API，但当前密钥返回 `401 / Auth failed`。判断是 Secret Key 不匹配、已失效或没有开放平台 API 权限。密钥问题解决前，不要声称项目已经能真实批量生成可灵视频。
+截至 2026-06-15，本地请求能到达可灵 API，但当前密钥返回 `401 / Auth failed`。判断是 Secret Key 不匹配、已失效或没有开放平台 API 权限。密钥问题解决前，不要声称项目已经能真实批量生成可灵视频。
 
 ## 重要文档入口
 

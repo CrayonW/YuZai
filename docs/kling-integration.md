@@ -112,3 +112,15 @@ assets/origin/generated/kling/<action>.mp4
 - 可灵服务器时间与本机时间一致，不是 JWT 时间漂移问题。
 
 当前判断：Access Key 可被服务识别，但 Secret Key 不匹配、已失效或该 key 没有开放平台 API 权限。需要在可灵后台轮换或重新创建 API Key 后，再运行 `npm run kling:auth-check`。
+
+## 2026-06-15 直接接入验证记录
+
+按用户确认，已直接使用本机 `.env.local` 中的可灵 key 进行联调；密钥只保存在本地忽略文件中，没有写入代码、文档或提交历史。
+
+已验证：
+
+- `.env.local` 能被 CLI 正确读取，`KLING_ACCESS_KEY` 和 `KLING_SECRET_KEY` 均存在。
+- `npm run kling:auth-check` 能访问可灵 API，但返回 `401 / Auth failed`。
+- `npm run kling:generate -- --action idle_primary` 能把图生视频请求提交到可灵 API，但返回 `HTTP 401`，响应包含 `code: 1002` 和 `message: "Auth failed"`。
+
+当前结论：项目侧的 CLI、提示词计划、参考图读取、JWT 生成、请求提交链路已经接入；当前阻塞点仍是这组 key 没有通过可灵开放 API 鉴权。密钥可用前，不能生成真实视频文件，也不能把可灵产物接入 `assets/origin` 或运行时序列帧。
