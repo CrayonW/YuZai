@@ -86,6 +86,9 @@ function bestPromptHint(state, promptActions) {
   if (promptActions.includes(state)) return state;
   const aliases = {
     surprised: "click_surprised",
+    sleep: "sleep",
+    sleepy: "sleepy",
+    sleeping: "sleeping",
     waking: "waking",
     dragging: "dragging",
     shy: "shy",

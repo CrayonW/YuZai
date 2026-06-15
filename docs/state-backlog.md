@@ -6,9 +6,9 @@
 
 | state | suggested action | category | planned output | current action | next step |
 | --- | --- | --- | --- | --- | --- |
-| sleep | 待补提示词 | 待确认 | 待确认 | idle_primary | 先补动作提示词和目标 action |
-| sleepy | 待补提示词 | 待确认 | 待确认 | idle_primary | 先补动作提示词和目标 action |
-| sleeping | 待补提示词 | 待确认 | 待确认 | idle_primary | 先补动作提示词和目标 action |
+| sleep | sleep | daily | assets/origin/generated/kling/sleep.mp4 | idle_primary | 生成源视频并接入 manifest |
+| sleepy | sleepy | daily | assets/origin/generated/kling/sleepy.mp4 | idle_primary | 生成源视频并接入 manifest |
+| sleeping | sleeping | daily | assets/origin/generated/kling/sleeping.mp4 | idle_primary | 生成源视频并接入 manifest |
 | waking | waking | interactive | assets/origin/generated/kling/waking.mp4 | idle_primary | 生成源视频并接入 manifest |
 | surprised | click_surprised | interactive | assets/origin/generated/kling/click_surprised.mp4 | idle_primary | 生成源视频并接入 manifest |
 | shy | shy | interactive | assets/origin/generated/kling/shy.mp4 | idle_primary | 生成源视频并接入 manifest |

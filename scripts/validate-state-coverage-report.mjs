@@ -30,7 +30,7 @@ const testSource = `
   const report = buildStateCoverageReport({
     manifest,
     stateNames: ["idle", "walking", "teaser", "sleepy", "missing_state"],
-    promptActions: ["sleepy", "teaser"]
+    promptActions: ["sleep", "sleepy", "teaser"]
   });
 
   assertEqual(report.totalStates, 5, "reports total states");

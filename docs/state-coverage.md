@@ -10,9 +10,9 @@
 | walk | independent | walk | assets/origin/鱼仔走路视频.mp4 | prompt: walk |
 | walk_left | independent | walk_left | assets/origin/鱼仔走路视频.mp4 | prompt: walk |
 | walking | independent | walk_left、walk | assets/origin/鱼仔走路视频.mp4 | prompt: walk |
-| sleep | fallback | idle_primary | assets/origin/鱼仔待机动作1.mp4 | 无 |
-| sleepy | fallback | idle_primary | assets/origin/鱼仔待机动作1.mp4 | 无 |
-| sleeping | fallback | idle_primary | assets/origin/鱼仔待机动作1.mp4 | 无 |
+| sleep | fallback | idle_primary | assets/origin/鱼仔待机动作1.mp4 | prompt: sleep |
+| sleepy | fallback | idle_primary | assets/origin/鱼仔待机动作1.mp4 | prompt: sleepy |
+| sleeping | fallback | idle_primary | assets/origin/鱼仔待机动作1.mp4 | prompt: sleeping |
 | waking | fallback | idle_primary | assets/origin/鱼仔待机动作1.mp4 | prompt: waking |
 | surprised | fallback | idle_primary | assets/origin/鱼仔待机动作1.mp4 | prompt: click_surprised |
 | shy | fallback | idle_primary | assets/origin/鱼仔待机动作1.mp4 | prompt: shy |

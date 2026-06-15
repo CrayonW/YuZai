@@ -56,7 +56,7 @@
 - 素材处理确认：已接入 `npm run animations:intake-checklist`，用于在新增、删除、覆盖或重新生成动作素材前输出中文确认清单，列出源视频、目标 action、分类、覆盖路径、manifest 修改判断和验证方式。
 - 源视频预检：已接入 `npm run animations:audit-origin`，在抽帧前检查 manifest 引用的源视频是否存在、包含视频流、时长足够生成当前 72 帧、尺寸不低于最低阈值。
 - 13 状态覆盖跟踪：已接入 `npm run animations:state-coverage`，输出每个桌宠状态当前是否有独立/复用动作、是否仍 fallback 到待机，以及可灵提示词计划中的候选动作；当前缺口面板可写入 `docs/state-coverage.md`。
-- 13 状态补齐待办：已接入 `npm run animations:state-backlog -- --write docs/state-backlog.md`，将 fallback / missing 状态转成建议生成 action、计划输出路径和下一步接入动作。
+- 13 状态补齐待办：已接入 `npm run animations:state-backlog -- --write docs/state-backlog.md`，将 fallback / missing 状态转成建议生成 action、计划输出路径和下一步接入动作；当前 7 个 fallback 状态均已有候选生成动作。
 
 ## 明确不实现
 

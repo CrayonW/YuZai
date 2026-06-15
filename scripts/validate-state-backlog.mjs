@@ -18,11 +18,12 @@ const testSource = `
       { state: "idle", status: "independent", actions: ["idle_primary"], promptAction: null },
       { state: "waking", status: "fallback", actions: ["idle_primary"], promptAction: "waking" },
       { state: "surprised", status: "fallback", actions: ["idle_primary"], promptAction: "click_surprised" },
-      { state: "sleep", status: "fallback", actions: ["idle_primary"], promptAction: null }
+      { state: "sleep", status: "fallback", actions: ["idle_primary"], promptAction: "sleep" }
     ]
   };
   const plan = {
     actions: [
+      { action: "sleep", category: "daily", output: "assets/origin/generated/kling/sleep.mp4" },
       { action: "waking", category: "interactive", output: "assets/origin/generated/kling/waking.mp4" },
       { action: "click_surprised", category: "interactive", output: "assets/origin/generated/kling/click_surprised.mp4" }
     ]
@@ -33,12 +34,12 @@ const testSource = `
   assertEqual(backlog.items[0].state, "waking", "keeps fallback state order");
   assertEqual(backlog.items[0].suggestedAction, "waking", "uses prompt action when available");
   assertEqual(backlog.items[0].output, "assets/origin/generated/kling/waking.mp4", "uses plan output");
-  assertEqual(backlog.items[2].suggestedAction, "待补提示词", "missing prompt is explicit");
+  assertEqual(backlog.items[2].suggestedAction, "sleep", "sleep fallback maps to sleep prompt");
 
   const text = renderStateBacklog(backlog);
   assertIncludes(text, "## 13 状态动作补齐待办", "renders Chinese title");
   assertIncludes(text, "| waking | waking | interactive | assets/origin/generated/kling/waking.mp4 |", "renders waking row");
-  assertIncludes(text, "| sleep | 待补提示词 | 待确认 | 待确认 |", "renders prompt gap row");
+  assertIncludes(text, "| sleep | sleep | daily | assets/origin/generated/kling/sleep.mp4 |", "renders sleep row");
   assertIncludes(text, "先生成/补充源视频，再运行素材处理前确认清单", "renders process note");
 
   const outputPath = join(${JSON.stringify(tempRoot)}, "state-backlog.md");

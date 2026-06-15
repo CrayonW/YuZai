@@ -325,3 +325,21 @@ FPS：不变。
 桌面验收：本次为 13 状态素材规划工具，使用自动验证和文档输出覆盖。
 已知问题：`sleep`、`sleepy`、`sleeping` 当前缺少明确提示词计划，待办文档会标记为“待补提示词”；其余 fallback 状态已能关联到可灵计划中的候选动作。
 决定：接受 `docs/state-backlog.md` 作为后续补齐 13 状态动作的执行清单。
+
+## 2026-06-15 睡眠三态提示词补齐
+
+日期：2026-06-15
+源文件：`docs/kling-action-generation-plan.json`
+目标动作：`sleepy`、`sleep`、`sleeping`
+问题：`docs/state-backlog.md` 中 `sleep`、`sleepy`、`sleeping` 仍标记为“待补提示词”，无法直接进入可灵生成和素材接入流程。
+参考片段：以 `assets/origin/鱼仔参考图.png` 为统一猫咪参考图。
+帧数：未生成帧。
+FPS：不变，后续仍按 24 fps、72 帧接入。
+循环方式：`sleepy` 和 `sleep` 为非循环 daily 动作，`sleeping` 为循环 daily 动作。
+水印处理：本次未生成视频；后续生成视频仍必须要求无文字、无水印、无 logo，并在抽帧流程中执行水印区域透明化。
+重建方法：本次未重建帧，只补充可灵动作计划和状态提示词映射。
+运行时输出：不涉及新截图。
+验证命令：`npm run kling:generate -- --dry-run --action sleepy`、`npm run animations:state-coverage -- --write docs/state-coverage.md`、`npm run animations:state-backlog -- --write docs/state-backlog.md`、`npm run validate:release`。
+桌面验收：本次为素材生成计划补齐，使用 dry-run 和文档输出覆盖。
+已知问题：睡眠三态仍没有真实源视频和运行时独立动作，待可灵密钥可用或用户补充源视频后再接入 manifest。
+决定：接受 `sleepy`、`sleep`、`sleeping` 作为后续补齐睡眠状态的候选生成动作。

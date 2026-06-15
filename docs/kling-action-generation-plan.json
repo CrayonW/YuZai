@@ -46,6 +46,27 @@
       "output": "assets/origin/generated/kling/look_around.mp4"
     },
     {
+      "action": "sleepy",
+      "category": "daily",
+      "loop": false,
+      "prompt": "动作：猫咪从正面坐姿开始，眼睛逐渐半闭，头部轻轻下沉，耳朵放松，身体保持稳定，像慢慢变困。动作柔和缓慢，结束时停在困倦坐姿，适合衔接睡眠动作。",
+      "output": "assets/origin/generated/kling/sleepy.mp4"
+    },
+    {
+      "action": "sleep",
+      "category": "daily",
+      "loop": false,
+      "prompt": "动作：猫咪从困倦坐姿开始，缓慢趴下或蜷起身体准备睡觉，眼睛闭上，尾巴自然贴近身体，动作温和，不要离开画面。结束姿势要自然衔接到睡着循环。",
+      "output": "assets/origin/generated/kling/sleep.mp4"
+    },
+    {
+      "action": "sleeping",
+      "category": "daily",
+      "loop": true,
+      "prompt": "动作：猫咪保持安静睡着姿势，身体有非常轻微的呼吸起伏，耳朵或尾巴偶尔极轻微动一下。动作幅度很小，开始和结束姿势几乎一致，适合无缝循环。",
+      "output": "assets/origin/generated/kling/sleeping.mp4"
+    },
+    {
       "action": "walk",
       "category": "daily",
       "loop": true,
