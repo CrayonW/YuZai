@@ -451,3 +451,21 @@ FPS：不变，后续仍按 24 fps 接入。
 桌面验收：本次为素材生产排期，不改变运行时；真实视频生成并接入 manifest 后再做桌面多帧验收。
 已知问题：可灵 API 鉴权仍需通过后才能按批次真实生成视频。
 决定：接受三批生成顺序，优先解决视觉疲劳和关键交互，再补睡眠链路和剩余状态。
+
+## 2026-06-15 可灵批次生成命令
+
+日期：2026-06-15
+源文件：`docs/kling-generation-batches.json`、`docs/kling-action-generation-plan.json`
+目标动作：按批次选择的可灵动作
+问题：虽然已有批次文档，但真实生成时仍需要人工逐条复制命令；需要一个批次入口，让 key 可用后能按第一批、睡眠批等顺序 dry-run 或真实生成。
+参考片段：第一批 `fatigue-and-key-interaction`，第二批 `sleep-routine`。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：按动作计划保留各 action 的 loop 设置。
+水印处理：不涉及视频处理；生成后仍需人工检查无水印、无 logo、无文字。
+重建方法：新增 `npm run kling:generate-batch`，支持 `--batch <number-or-id>`、`--dry-run` 和 `--force`。
+运行时输出：不涉及运行时截图。
+验证命令：`npm run validate:kling-batch-plan`、`npm run kling:generate-batch -- --batch 1 --dry-run`、`npm run kling:generate-batch -- --batch sleep-routine --dry-run`、`npm run validate:release`。
+桌面验收：本次为可灵素材生成入口；真实视频生成并接入 manifest 后再做桌面多帧验收。
+已知问题：真实批次生成仍依赖可灵 API 鉴权通过。
+决定：接受批次生成命令作为后续素材生产的执行入口。

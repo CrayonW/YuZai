@@ -6,6 +6,20 @@
 
 生成前仍需遵守项目规则：新增、删除或覆盖素材前，先列清单给用户确认；生成后先人工检查无水印、无文字、无 logo、全身入镜，再进入抽帧和 manifest 接入。
 
+批次 dry-run：
+
+```bash
+npm run kling:generate-batch -- --batch 1 --dry-run
+npm run kling:generate-batch -- --batch sleep-routine --dry-run
+```
+
+鉴权通过后的批次生成：
+
+```bash
+npm run kling:generate-batch -- --batch 1
+npm run kling:generate-batch -- --batch sleep-routine
+```
+
 ## 第一批：降低疲劳与关键交互
 
 优先补最像真实小猫生活的长日常动作，并让鼠标/点击拥有专属反馈。
