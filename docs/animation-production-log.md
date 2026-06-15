@@ -307,3 +307,21 @@ FPS：不变。
 桌面验收：本次为 13 状态覆盖跟踪工具，使用自动验证和报告输出覆盖。
 已知问题：报告只说明映射覆盖度，不代表 fallback 状态已经拥有独立真实视频；当前报告显示 13 状态中 6 个为 independent，7 个仍 fallback。
 决定：接受状态覆盖报告和 `docs/state-coverage.md` 作为后续补齐 13 状态动作的进度追踪入口。
+
+## 2026-06-15 13 状态补齐待办文档
+
+日期：2026-06-15
+源文件：`docs/state-coverage.md`、`docs/kling-action-generation-plan.json`
+目标动作：fallback / missing 状态
+问题：状态覆盖报告能说明现状，但后续执行还需要明确“下一批该生成什么视频、对应哪个 action、生成后要接入哪里”。需要把 fallback 状态转成可执行待办清单。
+参考片段：不涉及帧重建。
+帧数：不变。
+FPS：不变。
+循环方式：不变。
+水印处理：不变。
+重建方法：本次未重建帧，新增 `npm run animations:state-backlog -- --write docs/state-backlog.md`，根据覆盖报告和可灵动作计划生成补齐待办。
+运行时输出：不涉及新截图。
+验证命令：`npm run validate:state-backlog`、`npm run animations:state-backlog -- --write docs/state-backlog.md`、`npm run validate:release`。
+桌面验收：本次为 13 状态素材规划工具，使用自动验证和文档输出覆盖。
+已知问题：`sleep`、`sleepy`、`sleeping` 当前缺少明确提示词计划，待办文档会标记为“待补提示词”；其余 fallback 状态已能关联到可灵计划中的候选动作。
+决定：接受 `docs/state-backlog.md` 作为后续补齐 13 状态动作的执行清单。

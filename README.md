@@ -172,12 +172,15 @@ assets/origin/*.mp4
 npm run animations:intake-checklist
 npm run animations:state-coverage
 npm run animations:state-coverage -- --write docs/state-coverage.md
+npm run animations:state-backlog -- --write docs/state-backlog.md
 ```
 
 `animations:intake-checklist` 会扫描 `assets/origin` 和当前 manifest，输出中文“动作素材处理前确认清单”。如果同一个源视频会影响多个 action，例如 `walk` 和 `walk_left`，清单会合并列出所有目标 action 和覆盖路径。
 
 `animations:state-coverage` 会输出 13 个桌宠状态的动作覆盖报告，标出哪些状态已有独立/复用动作，哪些仍 fallback 到待机，并附上可灵提示词计划中的候选动作名称。
 需要保存当前缺口面板时，使用 `--write docs/state-coverage.md`。
+
+`animations:state-backlog` 会把 fallback / missing 状态转成补齐待办，输出建议 action、类别、计划产物和下一步动作。需要保存当前执行清单时，使用 `--write docs/state-backlog.md`。
 
 接入后必须更新：
 
@@ -233,6 +236,7 @@ docs/kling-integration.md
 - `docs/cat-video-prompt-guide.md`：后续生成日常动作、交互动作和过渡动作的视频提示词。
 - `docs/kling-integration.md`：可灵 AI 接入说明和鉴权状态。
 - `docs/state-coverage.md`：当前 13 状态动作覆盖报告和缺口面板。
+- `docs/state-backlog.md`：当前 13 状态动作补齐待办和建议生成顺序。
 
 ## 代码结构
 
