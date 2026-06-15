@@ -36,6 +36,7 @@ export function buildAnimationIntakeChecklist({ manifest, originFiles }) {
     generatedAt: new Date().toISOString(),
     items,
     validations: [
+      "npm run animations:audit-origin",
       "npm run animations:build-from-origin",
       "npm run validate:runtime-animations",
       "npm run validate:manifest-contract:current",

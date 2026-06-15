@@ -29,6 +29,8 @@
     "validate:manifest-contract": "node scripts/validate-manifest-contract.mjs",
     "validate:manifest-contract:current": "node scripts/manifest-contract.mjs",
     "validate:animation-intake-checklist": "node scripts/validate-animation-intake-checklist.mjs",
+    "validate:origin-video-audit": "node scripts/validate-origin-video-audit.mjs",
+    "animations:audit-origin": "node scripts/origin-video-audit.mjs",
     "validate:capture-plan": "node scripts/validate-capture-plan.mjs",
     "validate:capture-sequence-inspector": "node scripts/validate-capture-sequence-inspector.mjs",
     "capture:inspect": "node scripts/capture-sequence-inspector.mjs",

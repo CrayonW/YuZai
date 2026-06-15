@@ -151,6 +151,7 @@ assets/runtime/animations/<action>/frames/frame_000001.png
 ```text
 assets/origin/*.mp4
   -> npm run animations:intake-checklist
+  -> npm run animations:audit-origin
   -> npm run animations:build-from-origin
   -> assets/runtime/animations/<action>/frames/*.png
   -> assets/runtime/animations/manifest.json
@@ -184,6 +185,8 @@ docs/animation-production-log.md
 ```bash
 npm run validate:runtime-animations
 npm run validate:animation-intake-checklist
+npm run animations:audit-origin
+npm run validate:origin-video-audit
 npm run validate:manifest-contract:current
 npm run validate:animation-director
 ```
