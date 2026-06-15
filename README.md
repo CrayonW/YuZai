@@ -89,10 +89,12 @@ npm run dev
 npm run capture:inspect -- \
   --sequence-path /private/tmp/yuzai-window-animation.png \
   --count 6 \
-  --min-changed-frames 2
+  --min-changed-frames 2 \
+  --min-width 200 \
+  --min-height 200
 ```
 
-检查器会确认连续帧是否存在、非空，并用文件哈希确认至少有指定数量的不同帧。它不能替代肉眼检查动作美感，但能快速发现漏帧、空帧和完全不动的问题。
+检查器会确认连续帧是否存在、非空、是有效 PNG、尺寸不低于阈值，并用文件哈希确认至少有指定数量的不同帧。它不能替代肉眼检查动作美感，但能快速发现漏帧、空帧、坏图、异常尺寸和完全不动的问题。
 
 ## 已实现的 MVP 能力
 
