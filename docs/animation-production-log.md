@@ -343,3 +343,21 @@ FPS：不变，后续仍按 24 fps、72 帧接入。
 桌面验收：本次为素材生成计划补齐，使用 dry-run 和文档输出覆盖。
 已知问题：睡眠三态仍没有真实源视频和运行时独立动作，待可灵密钥可用或用户补充源视频后再接入 manifest。
 决定：接受 `sleepy`、`sleep`、`sleeping` 作为后续补齐睡眠状态的候选生成动作。
+
+## 2026-06-15 真实小猫动作计划升级
+
+日期：2026-06-15
+源文件：`assets/origin/鱼仔参考图.png`、`docs/kling-action-generation-plan.json`
+目标动作：日常动作、交互动作、过渡动作的可灵生成计划
+问题：当前动作时间偏短，日常动作重复度高，长期观看容易视觉疲劳；目标是让鱼仔更像真实小猫生活在电脑桌面里，并能对鼠标靠近、点击、拖拽、召唤等行为做出自然反应。
+参考片段：以 `assets/origin/鱼仔参考图.png` 为统一猫咪身份参考。
+帧数：本次未生成帧；后续按动作视频时长转换为 24 fps 序列帧，再由运行时决定抽样或全量播放。
+FPS：计划仍按 24 fps。
+循环方式：日常循环动作优先 8 秒，日常插入动作 6-8 秒；交互动作 4 秒；过渡动作 2 秒。
+水印处理：提示词明确禁止文字、水印、logo；若平台仍产出水印，进入序列帧前必须先去除或透明化水印区域。
+重建方法：本次未重建帧，升级 `docs/kling-action-generation-plan.json`，新增动作级 `durationSeconds`、`antiFatigueRole`、`minCooldownSeconds`，并新增 `npm run validate:kling-plan-quality` 作为质量门禁。
+运行时输出：不涉及新截图。
+验证命令：`npm run validate:kling-plan-quality`、`npm run kling:generate -- --dry-run --action groom_face_wash`、`npm run kling:generate -- --dry-run --action cursor_watch`、`npm run validate:release`。
+桌面验收：本次为动作生成规划升级；真实视频生成后仍需进入素材清单确认、源视频预检、序列帧抽取和桌面多帧截图验收。
+已知问题：当前可灵密钥仍未通过开放 API 鉴权，无法生成真实视频；本次只完成可执行计划、提示词和校验工具。
+决定：接受“长日常动作池 + 短交互响应 + 过渡衔接”的方案，后续新增参考视频或可灵生成视频时按同一计划接入。

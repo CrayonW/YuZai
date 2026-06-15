@@ -35,6 +35,7 @@
     "animations:state-backlog": "node scripts/state-backlog.mjs",
     "validate:state-coverage-report": "node scripts/validate-state-coverage-report.mjs",
     "validate:state-backlog": "node scripts/validate-state-backlog.mjs",
+    "validate:kling-plan-quality": "node scripts/validate-kling-plan-quality.mjs",
     "validate:capture-plan": "node scripts/validate-capture-plan.mjs",
     "validate:capture-sequence-inspector": "node scripts/validate-capture-sequence-inspector.mjs",
     "capture:inspect": "node scripts/capture-sequence-inspector.mjs",

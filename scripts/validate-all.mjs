@@ -12,6 +12,7 @@ const steps = [
   ["animations:audit-origin", ["npm", "run", "animations:audit-origin"]],
   ["validate:state-coverage-report", ["npm", "run", "validate:state-coverage-report"]],
   ["validate:state-backlog", ["npm", "run", "validate:state-backlog"]],
+  ["validate:kling-plan-quality", ["npm", "run", "validate:kling-plan-quality"]],
   ["validate:capture-plan", ["npm", "run", "validate:capture-plan"]],
   ["validate:capture-sequence-inspector", ["npm", "run", "validate:capture-sequence-inspector"]],
   ["typecheck", ["npm", "run", "typecheck"]],

@@ -34,8 +34,10 @@ function normalizePlan(plan) {
     ...plan,
     actions: plan.actions.map((action) => ({
       ...action,
+      durationSeconds: action.durationSeconds || durationForCategory(plan, action.category),
       fullPrompt: [
         plan.basePrompt,
+        `视频时长：${action.durationSeconds || durationForCategory(plan, action.category)} 秒。`,
         `猫咪特征：${plan.catProfile}`,
         action.prompt
       ].filter(Boolean).join("\n"),
@@ -72,6 +74,9 @@ function validatePlan(root, plan) {
     if (typeof action.loop !== "boolean") {
       throw new Error(`${action.action}: loop must be a boolean`);
     }
+    if (typeof action.durationSeconds !== "number" || action.durationSeconds <= 0) {
+      throw new Error(`${action.action}: durationSeconds must be a positive number`);
+    }
     if (!validCategories.has(action.category)) {
       throw new Error(`${action.action}: category must be daily, interactive, or transition`);
     }
@@ -80,6 +85,13 @@ function validatePlan(root, plan) {
     }
     seen.add(action.action);
   }
+}
+
+function durationForCategory(plan, category) {
+  if (category === "daily") return plan.video?.defaultDailyDurationSeconds || plan.video?.durationSeconds || 6;
+  if (category === "interactive") return plan.video?.defaultInteractiveDurationSeconds || plan.video?.durationSeconds || 4;
+  if (category === "transition") return plan.video?.defaultTransitionDurationSeconds || plan.video?.durationSeconds || 2;
+  return plan.video?.durationSeconds || 5;
 }
 
 function requireString(object, key) {

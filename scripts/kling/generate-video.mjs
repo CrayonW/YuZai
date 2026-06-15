@@ -73,6 +73,7 @@ function printDryRun(plan, actions) {
       action: action.action,
       category: action.category,
       loop: action.loop,
+      durationSeconds: action.durationSeconds,
       output: action.output,
       promptPreview: action.fullPrompt.slice(0, 180),
       negativePromptPreview: action.negativePrompt.slice(0, 120)

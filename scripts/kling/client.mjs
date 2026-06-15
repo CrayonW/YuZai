@@ -58,7 +58,7 @@ export class KlingClient {
       negative_prompt: action.negativePrompt,
       cfg_scale: this.cfgScale,
       mode: this.mode,
-      duration: this.duration,
+      duration: String(action.durationSeconds || this.duration),
       aspect_ratio: plan.video?.aspectRatio || "4:5"
     };
 

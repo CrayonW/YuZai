@@ -30,6 +30,8 @@ KLING_DURATION=5
 KLING_CFG_SCALE=0.5
 ```
 
+说明：`KLING_DURATION` 只是兜底值。正常生成时优先使用 `docs/kling-action-generation-plan.json` 中每个 action 的 `durationSeconds`，例如日常动作 6-8 秒、交互动作 4 秒、过渡动作 2 秒。
+
 ## 动作计划
 
 动作计划文件：
@@ -44,6 +46,15 @@ docs/kling-action-generation-plan.json
 - 猫咪特征描述
 - 输出目录：`assets/origin/generated/kling`
 - 日常动作、交互动作、过渡动作的提示词
+- 每个动作的 `durationSeconds`、减少重复感说明和最小冷却时间
+
+计划质量校验：
+
+```bash
+npm run validate:kling-plan-quality
+```
+
+该命令会检查日常动作数量、交互动作数量、日常动作时长、水印/logo 排除、输出路径和减少重复感字段，避免动作计划退回到短促重复的状态。
 
 ## Dry Run
 
