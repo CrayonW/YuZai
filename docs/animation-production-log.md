@@ -235,3 +235,21 @@ FPS：不变，24 fps。
 桌面验收：连续 6 张截图均成功生成且非空，首尾帧可见源素材猫和提醒气泡；自动检查确认 6 张帧文件存在、非空、是有效 PNG、尺寸为 440x440，且至少 2 张不同。
 已知问题：当前多帧验收仍是截图序列，不是完整录屏；哈希检查只能发现完全相同或缺失的帧，不能替代肉眼检查动作美感。后续可以增加自动像素差分、透明背景像素占比或短视频导出，进一步量化流畅度。
 决定：接受多帧截图作为后续新增动作和交互切换的可复现验收方式。
+
+## 2026-06-15 Manifest 合约验证
+
+日期：2026-06-15
+源文件：`assets/runtime/animations/manifest.json`、`src/core/fsm/state-types.ts`
+目标动作：所有运行时动作和状态映射
+问题：后续会继续补齐 13 状态素材，如果新增动作或状态映射时漏配 `stateMap`、`category`、`entryFrames`、`exitFrames`、`interruptPolicy` 或非循环交互动作的 `returnTo`，运行时可能在切换动作时退回默认动作或出现不可预期的回切。
+参考片段：不涉及帧重建。
+帧数：不变。
+FPS：不变。
+循环方式：不变。
+水印处理：不变。
+重建方法：本次未重建帧，新增 manifest 合约检查器，从 `src/core/fsm/state-types.ts` 提取 `PetStateName` 联合类型，并验证 manifest 中 13 个状态都存在映射。
+运行时输出：不涉及新截图。
+验证命令：`npm run validate:manifest-contract`、`npm run validate:manifest-contract:current`、`npm run validate:release`。
+桌面验收：本次为 manifest 配置质量门禁，使用自动验证覆盖。
+已知问题：合约检查只能证明配置完整，不能证明每个语义状态已有独立真实视频；完整 13 状态仍需后续补齐素材。
+决定：接受 manifest 合约检查作为新增动作和状态映射的必跑验证门禁。

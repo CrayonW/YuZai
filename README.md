@@ -33,6 +33,8 @@ npm run validate:runtime-animations
 npm run validate:animation-smoothness
 npm run validate:animation-director
 npm run validate:daily-animation-rotator
+npm run validate:manifest-contract
+npm run validate:manifest-contract:current
 npm run validate:capture-plan
 npm run validate:capture-sequence-inspector
 npm run typecheck
@@ -103,6 +105,7 @@ npm run capture:inspect -- \
 - 当前运行帧来自 `assets/origin` 中已有鱼仔源视频，源视频水印区域在运行帧中透明化。
 - 默认待机、备用待机、摇尾、走路、镜像左走、前肢抬起动作已接入 manifest。
 - `AnimationDirector` 按 `daily / interactive / transition` 分类调度动作，交互动作结束后回到日常动作。
+- manifest 合约验证会检查 13 个状态映射、动作分类、切换安全帧和交互回流配置，避免新增动作时破坏调度。
 - idle 状态会自动插入 `tail_wag` 和 `idle_secondary` 日常变化，避免长期只播放默认待机。
 - 定时气泡提醒喝水、休息。
 - 右键菜单支持隐藏、显示、重置位置、角色大小、动作频率和退出。
@@ -166,6 +169,16 @@ assets/origin/*.mp4
 ```text
 docs/animation-production-log.md
 ```
+
+接入后至少运行：
+
+```bash
+npm run validate:runtime-animations
+npm run validate:manifest-contract:current
+npm run validate:animation-director
+```
+
+其中 `validate:manifest-contract:current` 会确认当前 `PetStateName` 的 13 个状态都已在 manifest 中有映射，并检查动作调度字段是否完整。
 
 ## 可灵 AI 视频生成
 
