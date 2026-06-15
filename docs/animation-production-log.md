@@ -231,7 +231,7 @@ FPS：不变，24 fps。
 水印处理：不变。
 重建方法：本次未重建帧，新增 `YUZAI_CAPTURE_SEQUENCE_PATH`、`YUZAI_CAPTURE_SEQUENCE_COUNT`、`YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS` 测试钩子，一次启动 Electron 后按固定间隔输出连续截图。
 运行时输出：Electron 桌面窗口截图 `/private/tmp/yuzai-window-animation-001.png` 到 `/private/tmp/yuzai-window-animation-006.png`。
-验证命令：`npm run validate:capture-plan`、`npm run validate:all`、`YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-animation.png YUZAI_CAPTURE_SEQUENCE_COUNT=6 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=160 YUZAI_CAPTURE_DELAY_MS=900 npm run dev`。
-桌面验收：连续 6 张截图均成功生成且非空，首尾帧可见源素材猫和提醒气泡。
-已知问题：当前多帧验收仍是截图序列，不是完整录屏；后续可以增加自动像素差分或短视频导出，进一步量化流畅度。
+验证命令：`npm run validate:capture-plan`、`npm run validate:capture-sequence-inspector`、`npm run validate:all`、`YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-animation.png YUZAI_CAPTURE_SEQUENCE_COUNT=6 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=160 YUZAI_CAPTURE_DELAY_MS=900 npm run dev`、`npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-animation.png --count 6 --min-changed-frames 2`。
+桌面验收：连续 6 张截图均成功生成且非空，首尾帧可见源素材猫和提醒气泡；自动检查确认 6 张帧文件存在、非空且至少 2 张不同。
+已知问题：当前多帧验收仍是截图序列，不是完整录屏；哈希检查只能发现完全相同或缺失的帧，不能替代肉眼检查动作美感。后续可以增加自动像素差分或短视频导出，进一步量化流畅度。
 决定：接受多帧截图作为后续新增动作和交互切换的可复现验收方式。

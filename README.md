@@ -34,6 +34,7 @@ npm run validate:animation-smoothness
 npm run validate:animation-director
 npm run validate:daily-animation-rotator
 npm run validate:capture-plan
+npm run validate:capture-sequence-inspector
 npm run typecheck
 npm run build
 ```
@@ -81,6 +82,17 @@ npm run dev
 ```
 
 该命令会输出 `/private/tmp/yuzai-window-animation-001.png` 到 `-006.png`，用于连续检查桌宠动作是否有空白帧、闪烁、明显卡顿或切换姿势是否突兀。
+
+捕获后可以运行自动检查：
+
+```bash
+npm run capture:inspect -- \
+  --sequence-path /private/tmp/yuzai-window-animation.png \
+  --count 6 \
+  --min-changed-frames 2
+```
+
+检查器会确认连续帧是否存在、非空，并用文件哈希确认至少有指定数量的不同帧。它不能替代肉眼检查动作美感，但能快速发现漏帧、空帧和完全不动的问题。
 
 ## 已实现的 MVP 能力
 
