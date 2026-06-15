@@ -1,5 +1,6 @@
 import { DEFAULT_CONFIG, frequencyMultiplier, type RuntimeConfig } from "../config/load-config";
 import type { PetStateMachine } from "../fsm/state-machine";
+import { buildRuntimeAutonomousSchedule, type RuntimeAutonomousSchedule } from "../render/runtime-autonomous-schedule";
 
 export type Frequency = "low" | "normal" | "high";
 
@@ -7,9 +8,13 @@ export class AutonomousBehavior {
   private config: RuntimeConfig = DEFAULT_CONFIG;
   private frequency: Frequency = "normal";
   private lastStateChange = performance.now();
-  private stateDeadline = performance.now() + DEFAULT_CONFIG.timing.minIdleMs;
+  private readonly schedule: RuntimeAutonomousSchedule;
+  private stateDeadline: number;
 
-  constructor(private readonly fsm: PetStateMachine) {}
+  constructor(private readonly fsm: PetStateMachine, schedule = buildRuntimeAutonomousSchedule()) {
+    this.schedule = schedule;
+    this.stateDeadline = performance.now() + schedule.minIdleMs;
+  }
 
   setFrequency(frequency: Frequency): void {
     this.frequency = frequency;
@@ -83,7 +88,9 @@ export class AutonomousBehavior {
 
   private scheduleNextIdleAction(now: number): void {
     const multiplier = frequencyMultiplier(this.frequency);
-    const jitter = 900 + Math.random() * 2200;
-    this.stateDeadline = now + this.config.timing.minIdleMs * multiplier + jitter;
+    const minDelay = this.schedule.minIdleMs * multiplier;
+    const maxDelay = Math.max(minDelay, this.schedule.maxIdleMs * multiplier);
+    const jitter = Math.random() * Math.max(0, maxDelay - minDelay);
+    this.stateDeadline = now + minDelay + jitter;
   }
 }

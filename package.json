@@ -26,6 +26,7 @@
     "validate:animation-smoothness": "node scripts/validate-animation-smoothness.mjs",
     "validate:animation-director": "node scripts/validate-animation-director.mjs",
     "validate:daily-animation-rotator": "node scripts/validate-daily-animation-rotator.mjs",
+    "validate:autonomous-behavior-schedule": "node scripts/validate-autonomous-behavior-schedule.mjs",
     "validate:runtime-behavior-schedule": "node scripts/validate-runtime-behavior-schedule.mjs",
     "validate:runtime-interaction-schedule": "node scripts/validate-runtime-interaction-schedule.mjs",
     "validate:manifest-contract": "node scripts/validate-manifest-contract.mjs",

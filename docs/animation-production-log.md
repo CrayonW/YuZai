@@ -415,3 +415,21 @@ FPS：不变。
 桌面验收：当前阶段点击和连续点击会回退到可见的 `waving/paw_raise`，等 `click_surprised`、`poke_annoyed`、`dragging` 真实帧补齐后再自动升级到专属动作。
 已知问题：交互动作视觉多样性仍受当前素材限制；真实交互视频未生成前，只能使用已有 `paw_raise` 作为可见兜底。
 决定：接受交互策略兜底接入，避免用户交互落到不可见的 idle fallback。
+
+## 2026-06-15 自动行为低疲劳间隔接入
+
+日期：2026-06-15
+源文件：`docs/cat-behavior-schedule.json`
+目标动作：自动走路、自动抬爪/打招呼等 idle 后自动触发动作
+问题：自动行为此前基于 `DEFAULT_CONFIG.timing.minIdleMs = 3000`，几秒钟就可能触发一次走路或交互，和真实小猫生活节奏不符，也会加重视觉疲劳。
+参考片段：行为策略中的 `rules.minDailyGapSeconds = 45`、`rules.maxDailyGapSeconds = 150`。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：自动行为使用策略间隔调度；日常序列帧播放仍由 `DailyAnimationRotator` 和 `AnimationDirector` 负责。
+水印处理：不涉及视频处理。
+重建方法：新增 `src/core/render/runtime-autonomous-schedule.ts`，由行为策略派生自动行为间隔；`AutonomousBehavior` 构造时读取该间隔，避免 3 秒级自动触发。
+运行时输出：本次使用自动验证覆盖。
+验证命令：`npm run validate:autonomous-behavior-schedule`、`npm run validate:release`。
+桌面验收：该改动减少自动触发频率，不改变当前可见帧资源；后续可通过长时间桌面观察确认节奏。
+已知问题：真实小猫生活动作仍需要后续源视频/序列帧补齐；本次只降低当前动作重复频率。
+决定：接受 45-150 秒策略间隔作为当前自动行为默认节奏，降低视觉疲劳。
