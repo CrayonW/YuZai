@@ -7,6 +7,7 @@ const steps = [
   ["validate:daily-animation-rotator", ["npm", "run", "validate:daily-animation-rotator"]],
   ["validate:manifest-contract", ["npm", "run", "validate:manifest-contract"]],
   ["validate:manifest-contract:current", ["npm", "run", "validate:manifest-contract:current"]],
+  ["validate:animation-intake-checklist", ["npm", "run", "validate:animation-intake-checklist"]],
   ["validate:capture-plan", ["npm", "run", "validate:capture-plan"]],
   ["validate:capture-sequence-inspector", ["npm", "run", "validate:capture-sequence-inspector"]],
   ["typecheck", ["npm", "run", "typecheck"]],

@@ -150,6 +150,7 @@ assets/runtime/animations/<action>/frames/frame_000001.png
 
 ```text
 assets/origin/*.mp4
+  -> npm run animations:intake-checklist
   -> npm run animations:build-from-origin
   -> assets/runtime/animations/<action>/frames/*.png
   -> assets/runtime/animations/manifest.json
@@ -164,6 +165,14 @@ assets/origin/*.mp4
 - 是否会修改 manifest。
 - 验证命令和桌面验收方式。
 
+可先运行：
+
+```bash
+npm run animations:intake-checklist
+```
+
+它会扫描 `assets/origin` 和当前 manifest，输出中文“动作素材处理前确认清单”。如果同一个源视频会影响多个 action，例如 `walk` 和 `walk_left`，清单会合并列出所有目标 action 和覆盖路径。
+
 接入后必须更新：
 
 ```text
@@ -174,6 +183,7 @@ docs/animation-production-log.md
 
 ```bash
 npm run validate:runtime-animations
+npm run validate:animation-intake-checklist
 npm run validate:manifest-contract:current
 npm run validate:animation-director
 ```

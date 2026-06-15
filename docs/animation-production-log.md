@@ -253,3 +253,21 @@ FPS：不变。
 桌面验收：本次为 manifest 配置质量门禁，使用自动验证覆盖。
 已知问题：合约检查只能证明配置完整，不能证明每个语义状态已有独立真实视频；完整 13 状态仍需后续补齐素材。
 决定：接受 manifest 合约检查作为新增动作和状态映射的必跑验证门禁。
+
+## 2026-06-15 动作素材接入清单生成器
+
+日期：2026-06-15
+源文件：`assets/origin`、`assets/runtime/animations/manifest.json`
+目标动作：所有待处理源视频
+问题：用户要求后续开始动作前必须先列清单确认；此前清单主要靠人工整理，容易漏掉同一源视频影响多个 action 的情况，例如 `鱼仔走路视频.mp4` 同时影响 `walk` 和镜像派生的 `walk_left`。
+参考片段：不涉及帧重建。
+帧数：不变。
+FPS：不变。
+循环方式：不变。
+水印处理：不变。
+重建方法：本次未重建帧，新增 `npm run animations:intake-checklist`，扫描 `assets/origin` 视频和 manifest，输出中文处理前确认清单。
+运行时输出：不涉及新截图。
+验证命令：`npm run validate:animation-intake-checklist`、`npm run animations:intake-checklist`、`npm run validate:release`。
+桌面验收：本次为素材流程工具，使用自动验证和清单输出覆盖。
+已知问题：脚本只能根据现有 manifest 判断已接入动作；全新视频的目标 action、分类和 manifest 修改仍需用户确认后再执行。
+决定：接受该清单生成器作为后续新增、删除、覆盖动作素材前的固定第一步。
