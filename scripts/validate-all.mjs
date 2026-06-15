@@ -16,6 +16,7 @@ const steps = [
   ["validate:state-coverage-report", ["npm", "run", "validate:state-coverage-report"]],
   ["validate:state-backlog", ["npm", "run", "validate:state-backlog"]],
   ["validate:kling-plan-quality", ["npm", "run", "validate:kling-plan-quality"]],
+  ["validate:kling-generation-batches", ["npm", "run", "validate:kling-generation-batches"]],
   ["validate:cat-behavior-schedule", ["npm", "run", "validate:cat-behavior-schedule"]],
   ["validate:capture-plan", ["npm", "run", "validate:capture-plan"]],
   ["validate:capture-sequence-inspector", ["npm", "run", "validate:capture-sequence-inspector"]],

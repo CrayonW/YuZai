@@ -433,3 +433,21 @@ FPS：不变。
 桌面验收：该改动减少自动触发频率，不改变当前可见帧资源；后续可通过长时间桌面观察确认节奏。
 已知问题：真实小猫生活动作仍需要后续源视频/序列帧补齐；本次只降低当前动作重复频率。
 决定：接受 45-150 秒策略间隔作为当前自动行为默认节奏，降低视觉疲劳。
+
+## 2026-06-15 可灵视频生成优先批次
+
+日期：2026-06-15
+源文件：`docs/kling-action-generation-plan.json`、`docs/state-backlog.md`
+目标动作：第一批 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised`；第二批睡眠链路；第三批剩余状态和生活化变化。
+问题：动作计划已经覆盖很多动作，但缺少“key 可用后先生成哪些”的执行顺序，容易在生成阶段分散注意力，无法优先解决视觉疲劳和关键交互。
+参考片段：13 状态补齐待办、行为策略和可灵动作计划。
+帧数：未生成新帧。
+FPS：不变，后续仍按 24 fps 接入。
+循环方式：按动作计划保留各 action 的 loop 设置。
+水印处理：批次文档要求每个生成视频先人工检查无水印、无 logo、无文字，再进入抽帧和 manifest 接入。
+重建方法：新增 `npm run kling:generation-batches`，生成 `docs/kling-generation-batches.json` 和 `docs/kling-generation-batches.md`；新增 `npm run validate:kling-generation-batches` 校验批次。
+运行时输出：不涉及运行时截图。
+验证命令：`npm run validate:kling-generation-batches`、`npm run kling:generation-batches -- --write-json docs/kling-generation-batches.json --write-md docs/kling-generation-batches.md`、`npm run validate:release`。
+桌面验收：本次为素材生产排期，不改变运行时；真实视频生成并接入 manifest 后再做桌面多帧验收。
+已知问题：可灵 API 鉴权仍需通过后才能按批次真实生成视频。
+决定：接受三批生成顺序，优先解决视觉疲劳和关键交互，再补睡眠链路和剩余状态。

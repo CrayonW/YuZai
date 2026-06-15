@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "sourcePlan": "docs/kling-action-generation-plan.json",
+  "sourceBacklog": "docs/state-backlog.md",
+  "prerequisite": "先运行 auth-check，确认可灵 API 鉴权通过，再按批次生成。",
+  "summary": {
+    "totalBatches": 3,
+    "totalActions": 14
+  },
+  "batches": [
+    {
+      "id": "fatigue-and-key-interaction",
+      "name": "第一批：降低疲劳与关键交互",
+      "reason": "优先补最像真实小猫生活的长日常动作，并让鼠标/点击拥有专属反馈。",
+      "actions": [
+        {
+          "action": "groom_face_wash",
+          "category": "daily",
+          "durationSeconds": 8,
+          "output": "assets/origin/generated/kling/groom_face_wash.mp4",
+          "antiFatigueRole": "真实小猫生活动作，提供强烈陪伴感",
+          "backlogState": null
+        },
+        {
+          "action": "loaf_breathing",
+          "category": "daily",
+          "durationSeconds": 8,
+          "output": "assets/origin/generated/kling/loaf_breathing.mp4",
+          "antiFatigueRole": "香箱趴长陪伴状态，可替代长时间坐姿",
+          "backlogState": null
+        },
+        {
+          "action": "cursor_watch",
+          "category": "interactive",
+          "durationSeconds": 4,
+          "output": "assets/origin/generated/kling/cursor_watch.mp4",
+          "antiFatigueRole": "鼠标靠近时的低强度关注反应",
+          "backlogState": null
+        },
+        {
+          "action": "click_surprised",
+          "category": "interactive",
+          "durationSeconds": 4,
+          "output": "assets/origin/generated/kling/click_surprised.mp4",
+          "antiFatigueRole": "点击反馈，给用户明确互动感",
+          "backlogState": "surprised"
+        }
+      ]
+    },
+    {
+      "id": "sleep-routine",
+      "name": "第二批：睡眠作息链路",
+      "reason": "补齐变困、入睡、睡着、唤醒，让桌宠有更真实的日常作息。",
+      "actions": [
+        {
+          "action": "sleepy",
+          "category": "daily",
+          "durationSeconds": 6,
+          "output": "assets/origin/generated/kling/sleepy.mp4",
+          "antiFatigueRole": "睡眠链路入口，让日常作息更像真实小猫",
+          "backlogState": "sleepy"
+        },
+        {
+          "action": "sleep",
+          "category": "daily",
+          "durationSeconds": 6,
+          "output": "assets/origin/generated/kling/sleep.mp4",
+          "antiFatigueRole": "入睡过渡，让状态变化有过程",
+          "backlogState": "sleep"
+        },
+        {
+          "action": "sleeping",
+          "category": "daily",
+          "durationSeconds": 8,
+          "output": "assets/origin/generated/kling/sleeping.mp4",
+          "antiFatigueRole": "睡着循环，提供低打扰长期陪伴",
+          "backlogState": "sleeping"
+        },
+        {
+          "action": "waking",
+          "category": "interactive",
+          "durationSeconds": 4,
+          "output": "assets/origin/generated/kling/waking.mp4",
+          "antiFatigueRole": "从睡眠回到互动的状态恢复",
+          "backlogState": "waking"
+        }
+      ]
+    },
+    {
+      "id": "remaining-state-and-variety",
+      "name": "第三批：剩余状态与生活化变化",
+      "reason": "补齐剩余 fallback 状态，并增加好奇、伸懒腰、拖拽等变化。",
+      "actions": [
+        {
+          "action": "desk_sniff",
+          "category": "daily",
+          "durationSeconds": 6,
+          "output": "assets/origin/generated/kling/desk_sniff.mp4",
+          "antiFatigueRole": "好奇探索动作，让猫像在电脑桌面生活",
+          "backlogState": null
+        },
+        {
+          "action": "stretch_yawn",
+          "category": "daily",
+          "durationSeconds": 6,
+          "output": "assets/origin/generated/kling/stretch_yawn.mp4",
+          "antiFatigueRole": "作息变化动作，可连接休息提醒或睡前状态",
+          "backlogState": null
+        },
+        {
+          "action": "poke_annoyed",
+          "category": "interactive",
+          "durationSeconds": 4,
+          "output": "assets/origin/generated/kling/poke_annoyed.mp4",
+          "antiFatigueRole": "多次点击后的情绪变化，避免交互只有一种反应",
+          "backlogState": null
+        },
+        {
+          "action": "shy",
+          "category": "interactive",
+          "durationSeconds": 4,
+          "output": "assets/origin/generated/kling/shy.mp4",
+          "antiFatigueRole": "温柔互动反馈，可用于停留或夸奖触发",
+          "backlogState": "shy"
+        },
+        {
+          "action": "dragging",
+          "category": "interactive",
+          "durationSeconds": 4,
+          "output": "assets/origin/generated/kling/dragging.mp4",
+          "antiFatigueRole": "拖拽专用循环，让移动宠物时仍有生命感",
+          "backlogState": "dragging"
+        },
+        {
+          "action": "call_response",
+          "category": "interactive",
+          "durationSeconds": 4,
+          "output": "assets/origin/generated/kling/call_response.mp4",
+          "antiFatigueRole": "用户召唤或气泡互动时的回应",
+          "backlogState": null
+        }
+      ]
+    }
+  ]
+}
