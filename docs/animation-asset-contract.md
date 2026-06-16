@@ -27,6 +27,52 @@
 | interactive | 8 | 1 | 7 |
 | transition | 3 | 0 | 3 |
 
+## 优先补齐批次
+
+### 第一批：降低视觉疲劳并补关键互动
+优先补一个强生活化日常动作和一个鼠标靠近反馈，让桌宠不再只重复短待机，也让用户靠近时有专属反应。
+
+| action | 分类 | 时长 | 预期源视频 |
+| --- | --- | ---: | --- |
+| groom_face_wash | daily | 8s | assets/origin/generated/kling/groom_face_wash.mp4 |
+| loaf_breathing | daily | 8s | assets/origin/generated/kling/loaf_breathing.mp4 |
+| cursor_watch | interactive | 4s | assets/origin/generated/kling/cursor_watch.mp4 |
+| click_surprised | interactive | 4s | assets/origin/generated/kling/click_surprised.mp4 |
+
+### 第二批：睡眠作息链路
+补齐变困、入睡、睡着和唤醒，让桌宠更像在电脑里生活，而不是永远站桩。
+
+| action | 分类 | 时长 | 预期源视频 |
+| --- | --- | ---: | --- |
+| sleepy | daily | 6s | assets/origin/generated/kling/sleepy.mp4 |
+| sleep | daily | 6s | assets/origin/generated/kling/sleep.mp4 |
+| sleeping | daily | 8s | assets/origin/generated/kling/sleeping.mp4 |
+| waking | interactive | 4s | assets/origin/generated/kling/waking.mp4 |
+
+### 第三批：日常探索与情绪变化
+补充观察、嗅闻、伸懒腰和连续点击后的情绪变化，增加真实小猫的随机生活感。
+
+| action | 分类 | 时长 | 预期源视频 |
+| --- | --- | ---: | --- |
+| slow_blink | daily | 6s | assets/origin/generated/kling/slow_blink.mp4 |
+| look_around | daily | 6s | assets/origin/generated/kling/look_around.mp4 |
+| desk_sniff | daily | 6s | assets/origin/generated/kling/desk_sniff.mp4 |
+| stretch_yawn | daily | 6s | assets/origin/generated/kling/stretch_yawn.mp4 |
+| poke_annoyed | interactive | 4s | assets/origin/generated/kling/poke_annoyed.mp4 |
+| shy | interactive | 4s | assets/origin/generated/kling/shy.mp4 |
+| dragging | interactive | 4s | assets/origin/generated/kling/dragging.mp4 |
+| call_response | interactive | 4s | assets/origin/generated/kling/call_response.mp4 |
+
+### 第四批：动作衔接过渡
+补齐短过渡动作，用于降低待机到交互、交互回待机时的序列帧跳变。
+
+| action | 分类 | 时长 | 预期源视频 |
+| --- | --- | ---: | --- |
+| idle_to_paw_raise | transition | 2s | assets/origin/generated/kling/idle_to_paw_raise.mp4 |
+| paw_raise_to_idle | transition | 2s | assets/origin/generated/kling/paw_raise_to_idle.mp4 |
+| idle_to_cursor_watch | transition | 2s | assets/origin/generated/kling/idle_to_cursor_watch.mp4 |
+
+
 ## 缺失动作
 
 - `slow_blink`（daily，6s）：亲近感插入动作，像小猫在陪用户；预期源视频：assets/origin/generated/kling/slow_blink.mp4

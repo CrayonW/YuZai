@@ -62,6 +62,7 @@ export function buildAssetContractReport({
     .flatMap((action) => compareRuntimeMetadata(action, runtimeActions[action.action]));
 
   const categoryCoverage = buildCategoryCoverage(planActions, playableRuntimeActions);
+  const priorityBatches = buildPriorityBatches(missingActions);
 
   return {
     ok: invalidPlanActions.length === 0,
@@ -82,6 +83,7 @@ export function buildAssetContractReport({
       watermarkRule: "prompt 必须明确排除文字、水印和 logo；源视频进 runtime 前必须完成水印检查和去除。"
     },
     categoryCoverage,
+    priorityBatches,
     invalidPlanActions,
     missingActions,
     shortRuntimeActions,
@@ -120,6 +122,23 @@ export function renderAssetContractMarkdown(report) {
 
   for (const item of report.categoryCoverage) {
     lines.push(`| ${item.category} | ${item.planned} | ${item.playable} | ${item.missing} |`);
+  }
+
+  lines.push("", "## 优先补齐批次", "");
+  if (report.priorityBatches.length === 0) {
+    lines.push("当前没有需要补齐的计划动作。");
+  } else {
+    for (const batch of report.priorityBatches) {
+      lines.push(`### ${batch.title}`);
+      lines.push(batch.reason);
+      lines.push("");
+      lines.push("| action | 分类 | 时长 | 预期源视频 |");
+      lines.push("| --- | --- | ---: | --- |");
+      for (const item of batch.actions) {
+        lines.push(`| ${item.action} | ${item.category} | ${item.durationSeconds}s | ${item.expectedOutput} |`);
+      }
+      lines.push("");
+    }
   }
 
   lines.push("", "## 缺失动作", "");
@@ -247,6 +266,57 @@ function buildCategoryCoverage(planActions, playableRuntimeActions) {
       missing: plannedActions.length - playable
     };
   });
+}
+
+function buildPriorityBatches(missingActions) {
+  const remaining = new Map(missingActions.map((action) => [action.action, action]));
+  const batches = [];
+
+  addBatch(batches, remaining, {
+    title: "第一批：降低视觉疲劳并补关键互动",
+    reason: "优先补一个强生活化日常动作和一个鼠标靠近反馈，让桌宠不再只重复短待机，也让用户靠近时有专属反应。",
+    actions: ["groom_face_wash", "loaf_breathing", "cursor_watch", "click_surprised"]
+  });
+
+  addBatch(batches, remaining, {
+    title: "第二批：睡眠作息链路",
+    reason: "补齐变困、入睡、睡着和唤醒，让桌宠更像在电脑里生活，而不是永远站桩。",
+    actions: ["sleepy", "sleep", "sleeping", "waking"]
+  });
+
+  addBatch(batches, remaining, {
+    title: "第三批：日常探索与情绪变化",
+    reason: "补充观察、嗅闻、伸懒腰和连续点击后的情绪变化，增加真实小猫的随机生活感。",
+    actions: ["slow_blink", "look_around", "desk_sniff", "stretch_yawn", "poke_annoyed", "shy", "dragging", "call_response"]
+  });
+
+  addBatch(batches, remaining, {
+    title: "第四批：动作衔接过渡",
+    reason: "补齐短过渡动作，用于降低待机到交互、交互回待机时的序列帧跳变。",
+    actions: ["idle_to_paw_raise", "paw_raise_to_idle", "idle_to_cursor_watch"]
+  });
+
+  const uncategorized = Array.from(remaining.values());
+  if (uncategorized.length > 0) {
+    batches.push({
+      title: "待归类补齐动作",
+      reason: "这些动作在计划中缺失 runtime 帧，但还没有进入固定优先级批次。",
+      actions: uncategorized
+    });
+  }
+
+  return batches;
+}
+
+function addBatch(batches, remaining, batch) {
+  const actions = batch.actions
+    .map((action) => remaining.get(action))
+    .filter(Boolean);
+  if (actions.length === 0) return;
+  for (const action of actions) {
+    remaining.delete(action.action);
+  }
+  batches.push({ ...batch, actions });
 }
 
 function isPlayable(config) {

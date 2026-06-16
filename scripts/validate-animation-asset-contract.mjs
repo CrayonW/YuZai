@@ -32,6 +32,26 @@ writeFileSync(planPath, JSON.stringify({
       antiFatigueRole: "鼠标靠近回应",
       prompt: "观察鼠标，没有文字、水印、logo。",
       output: "assets/origin/generated/kling/cursor_watch.mp4"
+    },
+    {
+      action: "groom_face_wash",
+      category: "daily",
+      loop: false,
+      durationSeconds: 8,
+      minCooldownSeconds: 900,
+      antiFatigueRole: "真实小猫生活动作",
+      prompt: "洗脸理毛，没有文字、水印、logo。",
+      output: "assets/origin/generated/kling/groom_face_wash.mp4"
+    },
+    {
+      action: "idle_to_cursor_watch",
+      category: "transition",
+      loop: false,
+      durationSeconds: 2,
+      minCooldownSeconds: 0,
+      antiFatigueRole: "衔接",
+      prompt: "从待机转向鼠标，没有文字、水印、logo。",
+      output: "assets/origin/generated/kling/idle_to_cursor_watch.mp4"
     }
   ]
 }, null, 2));
@@ -64,11 +84,15 @@ const markdown = renderAssetContractMarkdown(report);
 writeFileSync(reportPath, markdown);
 
 const checks = [
-  ["counts planned actions", report.summary.plannedActions, 2],
+  ["counts planned actions", report.summary.plannedActions, 4],
   ["counts playable actions", report.summary.playableActions, 1],
-  ["reports missing action", report.missingActions.map((item) => item.action).join(","), "cursor_watch"],
+  ["reports missing action", report.missingActions.map((item) => item.action).join(","), "cursor_watch,groom_face_wash,idle_to_cursor_watch"],
   ["reports short runtime action", report.shortRuntimeActions.map((item) => item.action).join(","), "idle_primary"],
+  ["first priority batch starts with lifestyle daily action", report.priorityBatches[0].actions[0].action, "groom_face_wash"],
+  ["first priority batch includes key mouse interaction", report.priorityBatches[0].actions.some((item) => item.action === "cursor_watch"), true],
+  ["second priority batch includes transition", report.priorityBatches[1].actions.map((item) => item.action).join(","), "idle_to_cursor_watch"],
   ["renders Chinese title", markdown.includes("# 小猫动作资产契约与缺口报告"), true],
+  ["renders priority section", markdown.includes("## 优先补齐批次"), true],
   ["renders missing action section", markdown.includes("## 缺失动作"), true],
   ["writes validation report", readFileSync(reportPath, "utf8").includes("cursor_watch"), true]
 ];
