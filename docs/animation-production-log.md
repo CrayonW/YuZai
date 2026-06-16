@@ -505,3 +505,21 @@ FPS：不变，接入时仍按 24 fps 预期处理。
 桌面验收：本次为素材接入前确认文档；真实视频生成、验收、抽帧并更新 manifest 后，再执行桌面多帧截图和变化检查。
 已知问题：当前第一批视频文件仍未生成，清单中的源视频路径是可灵生成后的预期产物路径。
 决定：接受 `docs/kling-batch-intake-first.md` 作为第一批动作处理前必须给用户确认的清单。
+
+## 2026-06-16 可灵生成前置检查
+
+日期：2026-06-16
+源文件：`docs/kling-generation-batches.json`、`docs/kling-action-generation-plan.json`、`.env.local`
+目标动作：第一批 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised`
+问题：真实生成前需要一次集中检查：密钥是否被读取、参考图是否存在、可灵鉴权是否通过、第一批视频是否已生成。否则容易误以为可以开始生成，实际进入 401 或缺素材状态。
+参考片段：第一批动作、鱼仔参考图、可灵鉴权探针。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不涉及运行时播放。
+水印处理：本次不处理视频；如果 preflight 通过并生成视频，仍必须先确认无水印、无 logo、无文字，再进入抽帧流程。
+重建方法：新增 `npm run kling:preflight`，支持 `--batch <number-or-id>`、`--write <path>` 和 `--strict`；当前输出 `docs/kling-preflight-first.md`。
+运行时输出：不涉及运行时截图。
+验证命令：`npm run validate:kling-preflight`、`npm run kling:preflight -- --batch 1 --write docs/kling-preflight-first.md`、`npm run validate:release`。
+桌面验收：本次为生成前检查，不改变桌宠可见动作；真实视频接入后再做桌面多帧验收。
+已知问题：当前 `.env.local` 中 key 已读取，但可灵返回 `401 auth_failed / Auth failed`；第一批 4 个视频仍为 missing。
+决定：接受 `docs/kling-preflight-first.md` 作为每次真实生成前的状态入口；只有 preflight 显示鉴权通过后，才进入 `npm run kling:generate-batch -- --batch 1`。

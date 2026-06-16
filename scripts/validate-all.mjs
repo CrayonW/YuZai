@@ -20,6 +20,7 @@ const steps = [
   ["validate:kling-batch-plan", ["npm", "run", "validate:kling-batch-plan"]],
   ["validate:kling-batch-status", ["npm", "run", "validate:kling-batch-status"]],
   ["validate:kling-batch-intake-checklist", ["npm", "run", "validate:kling-batch-intake-checklist"]],
+  ["validate:kling-preflight", ["npm", "run", "validate:kling-preflight"]],
   ["validate:cat-behavior-schedule", ["npm", "run", "validate:cat-behavior-schedule"]],
   ["validate:capture-plan", ["npm", "run", "validate:capture-plan"]],
   ["validate:capture-sequence-inspector", ["npm", "run", "validate:capture-sequence-inspector"]],
