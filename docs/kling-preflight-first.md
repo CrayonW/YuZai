@@ -14,6 +14,18 @@
 - 鉴权状态：401 auth_failed
 - 鉴权信息：Auth failed
 
+### 鉴权诊断
+
+- 探测地址：https://api.klingai.com/v1/videos/image2video/nonexistent-auth-probe
+- 服务端时间差：-1 秒
+- JWT 有效期：1800 秒
+- JWT 可用起始时间：2026-06-16T05:52:42.000Z
+- JWT 过期时间：2026-06-16T06:22:47.000Z
+- 建议：
+  - 确认 Access Key 与 Secret Key 来自同一组可灵开放平台 API Key，Secret Key 复制完整，并确认该 Key 已开通开放平台 API 权限。
+  - 确认该 Key 不是仅能用于网页端或其他产品入口的账号凭据。
+  - 确认 KLING_API_BASE_URL 和 image2video query path 与当前可灵开放平台文档一致。
+
 ### 参考图
 
 - 路径：assets/origin/鱼仔参考图.png

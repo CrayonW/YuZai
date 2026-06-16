@@ -721,3 +721,21 @@ FPS：不变。
 桌面验收：鉴权通过并生成第一批视频后再进行桌面验收。
 已知问题：当前 `npm run kling:auth-check` 仍返回 `401 / Auth failed`；本次诊断显示服务端时间差为 0 秒，JWT 时间窗正常，真实视频仍未生成。
 决定：接受增强诊断作为可灵接入的下一步排查入口；在 key/权限/API 入口问题解决前，不继续调用真实生成命令。
+
+## 2026-06-16 可灵 preflight 合并鉴权诊断
+
+日期：2026-06-16
+源文件：`scripts/kling-preflight.mjs`、`scripts/validate-kling-preflight.mjs`、`docs/kling-preflight-first.md`
+目标动作：第一批 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised`
+问题：`kling:auth-check` 已能输出详细诊断，但第一批生成前的 `kling:preflight` 报告仍只显示简短鉴权失败，不能作为单页生成前检查入口。
+参考片段：`scripts/kling/auth-diagnostics.mjs` 的 probe URL、JWT 时间窗、服务端时间差和建议字段。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变运行时播放逻辑。
+水印处理：不涉及视频处理。
+重建方法：`buildKlingPreflightReport` 现在保留 `auth.diagnostics`；Markdown 新增“鉴权诊断”章节；CLI 的 `checkAuth` 复用 `buildKlingAuthDiagnostics`，避免 auth-check 与 preflight 输出漂移。
+运行时输出：不涉及桌面截图。
+验证命令：`npm run validate:kling-preflight`、`npm run kling:preflight -- --batch 1 --write docs/kling-preflight-first.md`、`npm run validate:release`。
+桌面验收：鉴权通过并生成第一批视频后再进行桌面验收。
+已知问题：当前 preflight 仍显示 `401 auth_failed`，第一批 4 个视频仍缺失，不能开始真实生成。
+决定：接受 `docs/kling-preflight-first.md` 作为第一批可灵生成前的单页状态入口。

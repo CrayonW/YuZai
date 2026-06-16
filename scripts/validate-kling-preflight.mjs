@@ -38,7 +38,22 @@ const testSource = `
     batches,
     batch: "1",
     env: { KLING_ACCESS_KEY: "12345678901234567890123456789012", KLING_SECRET_KEY: "abcdefghijklmnopqrstuvwxyz123456" },
-    auth: { ok: false, status: 401, kind: "auth_failed", message: "Auth failed" }
+    auth: {
+      ok: false,
+      status: 401,
+      kind: "auth_failed",
+      message: "Auth failed",
+      diagnostics: {
+        probeUrl: "https://api.klingai.com/v1/videos/image2video/nonexistent-auth-probe",
+        serverClockSkewSeconds: 0,
+        jwt: {
+          expiresAtIso: "2026-06-16T06:19:00.000Z"
+        },
+        recommendations: [
+          "确认 Access Key 与 Secret Key 来自同一组可灵开放平台 API Key，Secret Key 复制完整，并确认该 Key 已开通开放平台 API 权限。"
+        ]
+      }
+    }
   });
 
   assertEqual(report.ok, false, "auth failure blocks preflight");
@@ -48,6 +63,8 @@ const testSource = `
   assertEqual(report.batch.actionCount, 2, "counts batch actions");
   assertEqual(report.outputs.readyCount, 1, "counts ready videos");
   assertEqual(report.outputs.missingCount, 1, "counts missing videos");
+  assertEqual(report.authDiagnostics.probeUrl, "https://api.klingai.com/v1/videos/image2video/nonexistent-auth-probe", "keeps auth diagnostics probe url");
+  assertEqual(report.authDiagnostics.serverClockSkewSeconds, 0, "keeps auth diagnostics clock skew");
   assertIncludes(report.nextSteps[0], "npm run kling:auth-check", "auth failure directs to auth check");
 
   const markdown = renderKlingPreflightReport(report);
@@ -55,6 +72,9 @@ const testSource = `
   assertIncludes(markdown, "鉴权未通过", "renders auth failure");
   assertIncludes(markdown, "ready.mp4", "renders ready output");
   assertIncludes(markdown, "missing.mp4", "renders missing output");
+  assertIncludes(markdown, "### 鉴权诊断", "renders auth diagnostics section");
+  assertIncludes(markdown, "服务端时间差：0 秒", "renders clock skew");
+  assertIncludes(markdown, "JWT 过期时间：2026-06-16T06:19:00.000Z", "renders jwt expiration");
   assertIncludes(markdown, "不输出真实密钥", "states secret safety");
 
   function assertEqual(actual, expected, label) {

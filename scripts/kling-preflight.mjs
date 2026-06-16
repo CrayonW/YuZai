@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { createKlingJwt } from "./kling/jwt.mjs";
 import { loadDotEnv } from "./kling/env.mjs";
 import { selectBatchActions } from "./kling/batch-plan.mjs";
+import { buildKlingAuthDiagnostics } from "./kling/auth-diagnostics.mjs";
 
 export function buildKlingPreflightReport({ root, plan, batches, batch, env, auth }) {
   const actions = selectBatchActions(plan, batches, { batch });
@@ -37,6 +38,7 @@ export function buildKlingPreflightReport({ root, plan, batches, batch, env, aut
     batch,
     credentials,
     auth,
+    authDiagnostics: auth.diagnostics ?? null,
     referenceImage: {
       path: referencePath,
       exists: !referenceMissing
@@ -71,7 +73,27 @@ export function renderKlingPreflightReport(report) {
     `- 鉴权：${report.auth.ok ? "通过" : "鉴权未通过"}`,
     `- 鉴权状态：${report.auth.status ?? "-"} ${report.auth.kind ?? ""}`.trim(),
     `- 鉴权信息：${report.auth.message || "-"}`,
-    "",
+    ""
+  ];
+
+  if (report.authDiagnostics) {
+    lines.push(
+      "### 鉴权诊断",
+      "",
+      `- 探测地址：${report.authDiagnostics.probeUrl || "-"}`,
+      `- 服务端时间差：${renderNullableSeconds(report.authDiagnostics.serverClockSkewSeconds)}`,
+      `- JWT 有效期：${report.authDiagnostics.jwt?.ttlSeconds ?? "-"} 秒`,
+      `- JWT 可用起始时间：${report.authDiagnostics.jwt?.notBeforeIso ?? "-"}`,
+      `- JWT 过期时间：${report.authDiagnostics.jwt?.expiresAtIso ?? "-"}`,
+      "- 建议："
+    );
+    for (const item of report.authDiagnostics.recommendations ?? []) {
+      lines.push(`  - ${item}`);
+    }
+    lines.push("");
+  }
+
+  lines.push(
     "### 参考图",
     "",
     `- 路径：${report.referenceImage.path || "-"}`,
@@ -82,7 +104,7 @@ export function renderKlingPreflightReport(report) {
     `- 已有视频：${report.outputs.readyCount}`,
     `- 缺失视频：${report.outputs.missingCount}`,
     ""
-  ];
+  );
 
   for (const item of report.outputs.items) {
     lines.push(`- ${item.action}：${item.exists && item.size > 0 ? "ready" : "missing"}，${item.path}，${item.size} bytes`);
@@ -166,6 +188,7 @@ async function checkAuth(root, options) {
   }
 
   try {
+    const startedAtMs = Date.now();
     const token = createKlingJwt(accessKey, secretKey);
     const probePath = options.queryPath.replace("{task_id}", "nonexistent-auth-probe");
     const response = await fetch(`${options.baseUrl}${probePath}`, {
@@ -180,13 +203,35 @@ async function checkAuth(root, options) {
       status: response.status,
       kind: response.status === 401 ? "auth_failed" : "auth_accepted",
       message: parsed?.message || parsed?.raw || "",
-      serverDate: response.headers.get("date")
+      serverDate: response.headers.get("date"),
+      diagnostics: buildKlingAuthDiagnostics({
+        accessKey,
+        secretKey,
+        baseUrl: options.baseUrl,
+        probePath,
+        status: response.status,
+        kind: response.status === 401 ? "auth_failed" : "auth_accepted",
+        message: parsed?.message || parsed?.raw || "",
+        serverDate: response.headers.get("date"),
+        nowMs: startedAtMs
+      })
     };
   } catch (error) {
+    const probePath = options.queryPath.replace("{task_id}", "nonexistent-auth-probe");
     return {
       ok: false,
       kind: "network_error",
-      message: error instanceof Error ? error.message : String(error)
+      message: error instanceof Error ? error.message : String(error),
+      diagnostics: buildKlingAuthDiagnostics({
+        accessKey,
+        secretKey,
+        baseUrl: options.baseUrl,
+        probePath,
+        status: null,
+        kind: "network_error",
+        message: error instanceof Error ? error.message : String(error),
+        serverDate: null
+      })
     };
   }
 }
@@ -200,6 +245,10 @@ function describeSecret(value) {
 
 function renderSecret(secret) {
   return secret.present ? `已配置，长度 ${secret.length}` : "缺失";
+}
+
+function renderNullableSeconds(value) {
+  return typeof value === "number" ? `${value} 秒` : "-";
 }
 
 function buildNextSteps({ missingCredentials, referenceMissing, auth, batch, missingCount }) {
