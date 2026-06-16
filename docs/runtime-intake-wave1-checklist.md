@@ -6,6 +6,7 @@
 机器可读执行计划：`docs/runtime-intake-waves.json` 中的 `wave1`。后续正式执行时，以该 JSON 的来源视频、审查证据、桥接入口、衔接策略和确认状态作为自动验证依据。
 执行前用户确认清单：`docs/runtime-intake-wave1-execution-checklist.md`。该文件由 `npm run runtime:intake-checklist -- --wave wave1 --write docs/runtime-intake-wave1-execution-checklist.md` 生成。
 接入前预检报告：`docs/runtime-intake-wave1-preflight.md`。该文件由 `npm run runtime:intake-preflight -- --wave wave1 --write docs/runtime-intake-wave1-preflight.md` 生成，只证明视频元数据和审查证据齐全，不代表已批准接入 runtime。
+执行 dry-run 报告：`docs/runtime-intake-wave1-dry-run.md`。该文件由 `npm run runtime:intake-executor -- --wave wave1 --dry-run --write docs/runtime-intake-wave1-dry-run.md` 生成，只列出用户批准后将写入的 manifest、帧目录和桥接计划。
 
 ## 当前 runtime 现状
 
@@ -73,6 +74,7 @@
 - 机器可读分波计划：`docs/runtime-intake-waves.json`
 - 第一波执行前用户确认清单：`docs/runtime-intake-wave1-execution-checklist.md`
 - 第一波接入前预检报告：`docs/runtime-intake-wave1-preflight.md`
+- 第一波执行 dry-run 报告：`docs/runtime-intake-wave1-dry-run.md`
 - 第二波执行前用户确认清单：`docs/runtime-intake-wave2-execution-checklist.md`
 - 第二波接入前预检报告：`docs/runtime-intake-wave2-preflight.md`
 - 睡眠链路执行前用户确认清单：`docs/runtime-intake-sleep-routine-execution-checklist.md`

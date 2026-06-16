@@ -1225,3 +1225,21 @@ FPS：runtime FPS 不变。
 桌面验收：尚未进行；本次是接入前素材预检同步，不代表任何新动作已进入桌宠。
 已知问题：全部 action 仍处于 `needs-user-confirmation` 状态；预检通过只代表可进入人工播放检查，不代表已批准抽帧或 runtime 接入。
 决定：接受四份 runtime 接入前素材预检报告，并把同步校验纳入全量发布校验。
+
+## 2026-06-17 第一波 runtime 接入执行 dry-run 门禁
+
+日期：2026-06-17
+源文件：`docs/runtime-intake-waves.json`、`assets/runtime/animations/manifest.json`、`assets/config/action-bridges.json`、`scripts/runtime-intake-executor.mjs`、`scripts/validate-runtime-intake-executor.mjs`、`docs/runtime-intake-wave1-dry-run.md`
+目标动作：`slow_blink`、`look_around`、`cursor_watch`、`click_surprised`、`poke_annoyed`、`call_response`、`stretch_yawn`
+问题：第一波已经具备清单和素材预检，但真正执行前还需要明确将新增哪些 manifest action、写入哪些 frame 目录、哪些桥接已引用、哪些桥接需要人工设计，并确保未批准时不能写 runtime。
+参考片段：执行 `npm run runtime:intake-executor -- --wave wave1 --dry-run --write docs/runtime-intake-wave1-dry-run.md`，生成只读 dry-run 报告。
+帧数：尚未抽帧为 runtime 序列帧；本次只生成 dry-run 写入计划。
+FPS：runtime FPS 不变。
+循环方式：未修改；报告只记录建议的 `interruptPolicy`、`returnTo` 和 `transitionPlan`。
+水印处理：未执行去水印；报告继续要求正式抽帧前逐视频人工播放检查。
+重建方法：新增 `npm run runtime:intake-executor -- --wave wave1 --dry-run --write docs/runtime-intake-wave1-dry-run.md` 和 `npm run validate:runtime-intake-executor`。非 dry-run 需要批准文件 `docs/runtime-intake-approvals/wave1.approved.json`，当前未创建。
+运行时输出：不涉及桌面截图；尚未接入 runtime manifest。dry-run 显示第一波会新增 7 个 manifest action 和 7 个帧目录。
+验证命令：`npm run validate:runtime-intake-executor`、`npm run validate:release`
+桌面验收：尚未进行；本次是接入执行 dry-run，不代表第一波动作已进入桌宠。
+已知问题：`slow_blink`、`look_around` 的 `daily-rotation.low-fatigue` 仍需要后续日常轮换接入设计；其余 5 个动作已被现有 action bridge 候选引用。
+决定：接受 `docs/runtime-intake-wave1-dry-run.md` 作为第一波接入执行前写入计划，并把执行器验证纳入全量发布校验。
