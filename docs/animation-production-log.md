@@ -1153,3 +1153,21 @@ FPS：runtime FPS 不变。
 桌面验收：尚未进行；本次是接入前门禁，不代表素材已进入桌宠。
 已知问题：所有候选仍保持 `needs-user-confirmation`，正式抽帧和 manifest 接入前仍需先列清单确认。
 决定：接受 `docs/runtime-intake-waves.json` 作为后续 runtime 接入的机器可读入口，并纳入全量发布校验。
+
+## 2026-06-17 第一波 runtime 接入前用户确认清单生成器
+
+日期：2026-06-17
+源文件：`docs/runtime-intake-waves.json`、`scripts/runtime-intake-checklist.mjs`、`scripts/validate-runtime-intake-checklist.mjs`、`docs/runtime-intake-wave1-execution-checklist.md`
+目标动作：`slow_blink`、`look_around`、`cursor_watch`、`click_surprised`、`poke_annoyed`、`call_response`、`stretch_yawn`
+问题：第一波接入前需要给用户看的确认清单必须稳定、中文、可重复生成，避免后续手工遗漏来源视频、审查证据、桥接入口、衔接策略或禁止项。
+参考片段：读取 `docs/runtime-intake-waves.json` 的 `wave1`，渲染到 `docs/runtime-intake-wave1-execution-checklist.md`。
+帧数：尚未抽帧为 runtime 序列帧；本次只生成确认清单。
+FPS：runtime FPS 不变。
+循环方式：未修改；清单只记录建议的 `interruptPolicy`、`returnTo` 和 `transitionPlan`。
+水印处理：未执行去水印；清单要求正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和明显变形。
+重建方法：新增 `npm run runtime:intake-checklist -- --wave wave1 --write docs/runtime-intake-wave1-execution-checklist.md`，并用 `npm run validate:runtime-intake-checklist` 覆盖渲染行为。
+运行时输出：不涉及桌面截图；尚未接入 runtime manifest。
+验证命令：`npm run validate:runtime-intake-checklist`、`npm run validate:release`
+桌面验收：尚未进行；本次是接入前用户确认清单，不代表第一波动作已进入桌宠。
+已知问题：清单仍处于 `needs-user-confirmation` 状态，未得到用户确认前禁止抽帧、去水印/抠绿、修改 manifest 或覆盖 runtime 目录。
+决定：接受 `docs/runtime-intake-wave1-execution-checklist.md` 作为下一步第一波 runtime 接入前需要展示给用户确认的清单。
