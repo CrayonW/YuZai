@@ -51,7 +51,8 @@ const testSource = `
   director.request("idle_primary", 2100);
   assertEqual(director.update(2100).action, "paw_raise", "does not interrupt locked interaction with stale daily request");
   assertEqual(director.update(5000).action, "idle_primary", "returns to daily action after interaction ends");
-  assertEqual(director.update(6000).frameIndex, 24, "stale daily request does not reset daily timeline after return");
+  assertEqual(director.update(5000).frameIndex, 48, "returns to the suspended daily frame instead of restarting");
+  assertEqual(director.update(6000).frameIndex, 0, "daily timeline continues from the restored frame after return");
 
   function sequence(action, fps, loop, frameCount) {
     return {

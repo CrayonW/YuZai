@@ -34,12 +34,18 @@ interface PendingRequest {
   requestedAt: number;
 }
 
+interface SuspendedDailyPlayback {
+  action: RuntimeAnimationAction;
+  frameIndex: number;
+}
+
 export class AnimationDirector {
   private readonly maxSafeFrameWaitMs: number;
   private currentAction: RuntimeAnimationAction;
   private actionStartedAt = 0;
   private actionFrameOffset = 0;
   private pending: PendingRequest | null = null;
+  private suspendedDaily: SuspendedDailyPlayback | null = null;
 
   constructor(private readonly options: AnimationDirectorOptions) {
     this.currentAction = options.defaultAction;
@@ -97,6 +103,20 @@ export class AnimationDirector {
 
   private switchTo(action: RuntimeAnimationAction, now: number): void {
     const config = this.configFor(action);
+    this.captureSuspendedDaily(action, now);
+
+    if (config.category === "daily" && this.suspendedDaily?.action === action) {
+      this.currentAction = action;
+      this.actionStartedAt = now;
+      this.actionFrameOffset = this.suspendedDaily.frameIndex;
+      this.suspendedDaily = null;
+      return;
+    }
+
+    if (config.category === "daily") {
+      this.suspendedDaily = null;
+    }
+
     const sequence = this.options.resolveSequence(action);
     const entryFrame = firstValidFrame(config.entryFrames, sequence.frames.length);
     this.currentAction = action;
@@ -130,6 +150,19 @@ export class AnimationDirector {
 
   private isExitFrame(zeroBasedFrameIndex: number, config: RequiredSchedulingConfig): boolean {
     return config.exitFrames.includes(zeroBasedFrameIndex + 1);
+  }
+
+  private captureSuspendedDaily(nextAction: RuntimeAnimationAction, now: number): void {
+    const currentConfig = this.configFor(this.currentAction);
+    const nextConfig = this.configFor(nextAction);
+    if (currentConfig.category !== "daily") return;
+    if (nextConfig.category === "daily") return;
+
+    const selection = this.selectionFor(this.currentAction, now);
+    this.suspendedDaily = {
+      action: this.currentAction,
+      frameIndex: selection.frameIndex
+    };
   }
 
   private configFor(action: RuntimeAnimationAction): RequiredSchedulingConfig {

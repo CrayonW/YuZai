@@ -48,6 +48,6 @@ assets/origin/*.mp4
 
 - `daily` 动作默认循环播放，不因普通渲染 tick 重置到第 1 帧。
 - `interactive` 动作在安全退出帧或等待超时后插入播放。
-- `interactive` 动作播放结束后根据 `returnTo` 回到日常动作。
+- `interactive` 动作播放结束后根据 `returnTo` 回到日常动作；如果交互前正在播放同一个日常动作，回流时恢复交互插入前的日常帧进度，而不是从入口帧重启。
 - `entryFrames` 和 `exitFrames` 用于标注适合切入/切出的安全帧。
 - `npm run validate:animation-director` 用于验证调度器不会把交互动作硬切成重复播放。

@@ -523,3 +523,21 @@ FPS：不变。
 桌面验收：本次为生成前检查，不改变桌宠可见动作；真实视频接入后再做桌面多帧验收。
 已知问题：当前 `.env.local` 中 key 已读取，但可灵返回 `401 auth_failed / Auth failed`；第一批 4 个视频仍为 missing。
 决定：接受 `docs/kling-preflight-first.md` 作为每次真实生成前的状态入口；只有 preflight 显示鉴权通过后，才进入 `npm run kling:generate-batch -- --batch 1`。
+
+## 2026-06-16 交互插入后恢复日常帧进度
+
+日期：2026-06-16
+源文件：`src/core/render/animation-director.ts`、`scripts/validate-animation-director.mjs`
+目标动作：所有 `daily` 到 `interactive` 或 `transition` 的切换
+问题：交互动作结束后回到日常动作时，旧逻辑会从日常动作入口帧重新开始。用户会感觉日常序列帧被重置，尤其在长日常动作和鼠标靠近/点击频繁插入时，会出现不自然的重复。
+参考片段：用户提出“日常动作按照视频转化的序列帧顺序进行播放，当需要交互时插入新的交互序列帧，结束后再切回日常动作”。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：日常动作继续按 24 fps 循环；交互插入前保存日常 zero-based frameIndex，交互结束回到同一个日常 action 时恢复该帧作为新的播放偏移。
+水印处理：不涉及视频处理。
+重建方法：更新 `AnimationDirector`，在 daily 切入 interactive/transition 前保存当前帧，回到同一个 daily action 时恢复进度；更新 `npm run validate:animation-director` 覆盖该行为。
+运行时输出：本次用自动验证覆盖，未新增桌面截图。
+验证命令：`npm run validate:animation-director`、`npm run validate:release`。
+桌面验收：真实视频补齐后仍需通过多帧截图检查交互插入和回流是否肉眼顺滑。
+已知问题：当前真实动作数量仍受 manifest 限制；该改动改善切换时间线，不替代后续可灵视频生成和素材接入。
+决定：接受“交互结束恢复日常帧进度”作为序列帧播放器默认规则，减少交互插入带来的重启感。
