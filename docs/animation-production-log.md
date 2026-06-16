@@ -1081,3 +1081,21 @@ FPS：runtime FPS 不变。
 桌面验收：尚未进行；需逐视频人工检查并确认正式接入清单后，才能进入去水印、抽帧、manifest 接入和桌面验收。
 已知问题：两个动作只完成元数据和抽样检查，尚未全程播放确认。
 决定：把 `slow_blink` 与 `look_around` 记录为低疲劳日常动作候选；等待正式接入清单确认。
+
+## 2026-06-16 第一波 runtime 接入候选清单
+
+日期：2026-06-16
+源文件：`docs/runtime-intake-wave1-checklist.md`、`assets/runtime/animations/manifest.json`、`assets/config/action-bridges.json`
+目标动作：`slow_blink`、`look_around`、`cursor_watch`、`click_surprised`、`poke_annoyed`、`call_response`、`stretch_yawn`
+问题：已经生成多批可灵素材，但进入抽帧和 runtime 前需要明确第一波接入边界，避免一次接入太多状态导致衔接问题难排查。
+参考片段：当前 manifest 只有 6 个 action，多个状态仍回退 `idle_primary`；行为桥接已经预留 reminder、proximity、click、drag 候选。
+帧数：尚未抽帧。
+FPS：runtime FPS 不变。
+循环方式：未修改；清单建议 daily 动作使用安全帧中断，interactive 动作使用 locked 后回到 `idle_primary`。
+水印处理：未执行去水印；清单要求确认后先逐视频播放检查再处理。
+重建方法：人工维护 `docs/runtime-intake-wave1-checklist.md`，基于当前审查证据和 runtime 行为入口整理。
+运行时输出：不涉及桌面截图；尚未接入 runtime manifest。
+验证命令：`npm run validate:release`
+桌面验收：尚未进行；需用户确认第一波清单后，才能进入去水印、抽帧、manifest 接入和桌面验收。
+已知问题：第一波清单仍是确认文档，不代表素材已经进入桌宠。
+决定：暂停在 runtime 接入前确认点；等待用户确认 `docs/runtime-intake-wave1-checklist.md`。
