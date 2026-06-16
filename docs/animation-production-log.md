@@ -775,3 +775,21 @@ FPS：不变。
 桌面验收：第一批视频仍未生成，不能进入桌面动作验收。
 已知问题：账号余额仍不足，第一批 4 个可灵视频仍缺失。
 决定：接受 `docs/kling-batch-status-first.md` 作为余额补足前后的批次状态入口；余额补足后重新运行生成命令，并刷新该状态页。
+
+## 2026-06-16 日常动作随机间隔反疲劳
+
+日期：2026-06-16
+源文件：`src/core/render/daily-animation-rotator.ts`、`src/core/render/runtime-behavior-schedule.ts`、`scripts/validate-daily-animation-rotator.mjs`、`scripts/validate-runtime-behavior-schedule.mjs`
+目标动作：当前已接入的 `tail_wag`、`idle_secondary`，以及后续可灵生成的 `groom_face_wash`、`loaf_breathing`、`desk_sniff`、`stretch_yawn` 等日常动作。
+问题：`docs/cat-behavior-schedule.json` 已定义日常动作间隔为 `minDailyGapSeconds` 到 `maxDailyGapSeconds`，但运行时 rotator 只使用固定 `gapMs`，日常变化会像节拍器一样出现，长期陪伴时仍容易产生机械重复感。
+参考片段：`cat-behavior-schedule` 的调度原则要求日常动作间隔 45-150 秒，避免短时间重复。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：`DailyAnimationRotator` 现在支持 `maxGapMs` 和可注入 `random`；每次日常变化结束后，在 `gapMs` 到 `maxGapMs` 之间随机安排下一次变化。未配置 `maxGapMs` 时保持旧固定间隔行为。
+水印处理：不涉及视频处理。
+重建方法：`buildRuntimeDailyRotatorOptions` 现在从策略中的 `maxDailyGapSeconds` 派生 `maxGapMs`；验证脚本用固定随机数确认下一次变化会等待到随机间隔之后再触发。
+运行时输出：不涉及桌面截图；这是调度时间行为改动。
+验证命令：`npm run validate:daily-animation-rotator`、`npm run validate:runtime-behavior-schedule`、`npm run validate:release`。
+桌面验收：后续接入更多真实日常视频后，应观察待机变化是否不再以固定节拍出现，减少视觉疲劳。
+已知问题：第一批可灵视频仍因账号余额不足未生成，当前实际可见日常变化仍受运行时已有 6 个 action 限制。
+决定：接受随机日常间隔作为真实小猫感的运行时基础；后续可灵视频接入后会自动继承该反疲劳调度。

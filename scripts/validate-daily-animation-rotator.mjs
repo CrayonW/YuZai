@@ -88,6 +88,26 @@ checks.push(
   ["per-action duration keeps longer second variation active", durationRotator.resolve("idle_primary", true, 4000), "idle_secondary"]
 );
 
+const variableGapRotator = new DailyAnimationRotator(
+  {
+    defaultAction: "idle_primary",
+    variations: ["tail_wag", "idle_secondary"],
+    firstDelayMs: 0,
+    variationDurationMs: 1000,
+    gapMs: 1000,
+    maxGapMs: 3000,
+    random: () => 0.5
+  },
+  0
+);
+
+checks.push(
+  ["variable gap starts first variation", variableGapRotator.resolve("idle_primary", true, 0), "tail_wag"],
+  ["variable gap first variation ends", variableGapRotator.resolve("idle_primary", true, 1000), "idle_primary"],
+  ["variable gap waits past minimum", variableGapRotator.resolve("idle_primary", true, 2999), "idle_primary"],
+  ["variable gap starts after randomized gap", variableGapRotator.resolve("idle_primary", true, 3000), "idle_secondary"]
+);
+
 const failures = checks
   .filter(([, actual, expected]) => actual !== expected)
   .map(([name, actual, expected]) => ({ name, actual, expected }));

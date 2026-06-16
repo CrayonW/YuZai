@@ -7,13 +7,17 @@ export interface DailyAnimationRotatorOptions {
   variationDurationMs?: number;
   variationDurationByActionMs?: Partial<Record<RuntimeAnimationAction, number>>;
   gapMs?: number;
+  maxGapMs?: number;
   variationCooldownMs?: Partial<Record<RuntimeAnimationAction, number>>;
+  random?: () => number;
 }
 
 export class DailyAnimationRotator {
   private readonly firstDelayMs: number;
   private readonly variationDurationMs: number;
   private readonly gapMs: number;
+  private readonly maxGapMs: number;
+  private readonly random: () => number;
   private nextVariationAt: number;
   private activeVariation: { action: RuntimeAnimationAction; endsAt: number } | null = null;
   private lastStartedAt = new Map<RuntimeAnimationAction, number>();
@@ -23,6 +27,8 @@ export class DailyAnimationRotator {
     this.firstDelayMs = options.firstDelayMs ?? 1500;
     this.variationDurationMs = options.variationDurationMs ?? 3000;
     this.gapMs = options.gapMs ?? 7000;
+    this.maxGapMs = Math.max(this.gapMs, options.maxGapMs ?? this.gapMs);
+    this.random = options.random ?? Math.random;
     this.nextVariationAt = startedAt + this.firstDelayMs;
   }
 
@@ -58,7 +64,7 @@ export class DailyAnimationRotator {
   }
 
   private scheduleNext(now: number): void {
-    this.nextVariationAt = now + this.gapMs;
+    this.nextVariationAt = now + this.nextGapMs();
   }
 
   private durationFor(action: RuntimeAnimationAction): number {
@@ -80,5 +86,11 @@ export class DailyAnimationRotator {
     if (cooldownMs <= 0) return false;
     const lastStartedAt = this.lastStartedAt.get(action);
     return lastStartedAt !== undefined && now - lastStartedAt < cooldownMs;
+  }
+
+  private nextGapMs(): number {
+    if (this.maxGapMs <= this.gapMs) return this.gapMs;
+    const roll = Math.min(1, Math.max(0, this.random()));
+    return Math.round(this.gapMs + (this.maxGapMs - this.gapMs) * roll);
   }
 }

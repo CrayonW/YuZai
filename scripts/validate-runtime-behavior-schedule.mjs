@@ -54,6 +54,7 @@ const checks = [
   ["uses manifest default action", options.defaultAction, "idle_primary"],
   ["keeps idle-compatible enabled loop and one-shot variations", options.variations.join(","), "tail_wag,idle_secondary,groom_face_wash"],
   ["uses schedule daily gap for anti-fatigue", options.gapMs, 45000],
+  ["uses schedule max daily gap for natural timing", options.maxGapMs, 150000],
   ["uses longest available daily duration", options.variationDurationMs, 8000],
   ["uses action duration for tail_wag", options.variationDurationByActionMs.tail_wag, 8000],
   ["uses action duration for groom_face_wash", options.variationDurationByActionMs.groom_face_wash, 8000],

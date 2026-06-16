@@ -50,6 +50,7 @@ export function buildRuntimeDailyRotatorOptions(
     })
   ) as Partial<Record<RuntimeAnimationAction, number>>;
   const gapMs = Math.round((schedule.rules?.minDailyGapSeconds ?? 45) * 1000);
+  const maxGapMs = Math.max(gapMs, Math.round((schedule.rules?.maxDailyGapSeconds ?? schedule.rules?.minDailyGapSeconds ?? 45) * 1000));
 
   return {
     defaultAction,
@@ -58,7 +59,8 @@ export function buildRuntimeDailyRotatorOptions(
     variationDurationMs,
     variationDurationByActionMs,
     variationCooldownMs,
-    gapMs
+    gapMs,
+    maxGapMs
   };
 }
 
