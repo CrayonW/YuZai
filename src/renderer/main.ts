@@ -1,10 +1,17 @@
 import { AutonomousBehavior } from "../core/behavior/autonomous-behavior";
 import { clampWindowToBounds } from "../core/behavior/bounds-controller";
 import { InteractionController } from "../core/behavior/interaction-controller";
+import { resolveReminderAnimationAction } from "../core/behavior/reminder-action-bridge";
 import { ReminderBubbleController } from "../core/behavior/reminder-bubble-controller";
 import { DEFAULT_CONFIG } from "../core/config/load-config";
 import { PetStateMachine } from "../core/fsm/state-machine";
-import { actionForPose, configForAction, runtimeAnimationManifest, type RuntimeAnimationAction } from "../core/render/animation-manifest";
+import {
+  actionForPose,
+  configForAction,
+  isRenderableRuntimeAnimationAction,
+  runtimeAnimationManifest,
+  type RuntimeAnimationAction
+} from "../core/render/animation-manifest";
 import { AnimationDirector } from "../core/render/animation-director";
 import { CanvasRenderer } from "../core/render/canvas-renderer";
 import { DailyAnimationRotator } from "../core/render/daily-animation-rotator";
@@ -26,7 +33,14 @@ const animationDirector = new AnimationDirector({
 });
 const autonomous = new AutonomousBehavior(fsm);
 const interaction = new InteractionController(canvas, fsm, () => autonomous.notifyStateChanged());
-const reminders = new ReminderBubbleController(reminderBubble);
+const reminders = new ReminderBubbleController(reminderBubble, {
+  onShow(event) {
+    const action = resolveReminderAnimationAction(event, isRenderableRuntimeAnimationAction);
+    if (action && isRenderableRuntimeAnimationAction(action)) {
+      animationDirector.request(action, performance.now());
+    }
+  }
+});
 
 let lastFrameAt = performance.now();
 let screenBounds: { x: number; y: number; width: number; height: number } | null = null;

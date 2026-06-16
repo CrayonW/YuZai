@@ -10,6 +10,7 @@ const steps = [
   ["validate:runtime-interaction-schedule", ["npm", "run", "validate:runtime-interaction-schedule"]],
   ["validate:interaction-cooldowns", ["npm", "run", "validate:interaction-cooldowns"]],
   ["validate:reminder-bubble-controller", ["npm", "run", "validate:reminder-bubble-controller"]],
+  ["validate:reminder-action-bridge", ["npm", "run", "validate:reminder-action-bridge"]],
   ["validate:manifest-contract", ["npm", "run", "validate:manifest-contract"]],
   ["validate:manifest-contract:current", ["npm", "run", "validate:manifest-contract:current"]],
   ["validate:animation-asset-contract", ["npm", "run", "validate:animation-asset-contract"]],

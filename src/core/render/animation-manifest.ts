@@ -86,6 +86,10 @@ export function isRenderableAction(config: RuntimeAnimationConfig | undefined): 
   return !!config && config.enabled && config.frameCount > 0;
 }
 
+export function isRenderableRuntimeAnimationAction(action: string): action is RuntimeAnimationAction {
+  return isRuntimeAnimationAction(action) && isRenderableAction(runtimeAnimationManifest.actions[action]);
+}
+
 export function configForAction(action: RuntimeAnimationAction): RuntimeAnimationConfig | undefined {
   return getRuntimeAnimationConfig(action);
 }

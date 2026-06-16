@@ -31,6 +31,7 @@
     "validate:runtime-interaction-schedule": "node scripts/validate-runtime-interaction-schedule.mjs",
     "validate:interaction-cooldowns": "node scripts/validate-interaction-cooldowns.mjs",
     "validate:reminder-bubble-controller": "node scripts/validate-reminder-bubble-controller.mjs",
+    "validate:reminder-action-bridge": "node scripts/validate-reminder-action-bridge.mjs",
     "validate:manifest-contract": "node scripts/validate-manifest-contract.mjs",
     "validate:manifest-contract:current": "node scripts/manifest-contract.mjs",
     "validate:animation-asset-contract": "node scripts/validate-animation-asset-contract.mjs",

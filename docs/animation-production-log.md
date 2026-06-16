@@ -847,3 +847,21 @@ FPS：不变。
 桌面验收：后续接入 `stretch_yawn`、`sleepy` 或 `call_response` 后，再验证气泡出现时是否能自然插入对应动作。
 已知问题：第一批可灵视频仍因账号余额不足未生成，当前事件只能作为后续动作联动入口。
 决定：接受提醒事件类型化作为作息互动的运行时基础；后续新视频进入 manifest 后，再把 `rest` 类型优先连接到伸懒腰/犯困类动作。
+
+## 2026-06-16 提醒动作桥接
+
+日期：2026-06-16
+源文件：`src/core/behavior/reminder-action-bridge.ts`、`src/core/render/animation-manifest.ts`、`src/renderer/main.ts`、`scripts/validate-reminder-action-bridge.mjs`
+目标动作：`stretch_yawn`、`sleepy`、`sleep`、`call_response`、`cursor_watch`
+问题：提醒气泡已经有 `water/rest` 类型，但运行时尚未建立“提醒类型 -> 可播放动作”的安全桥接；后续视频进入 manifest 后仍需要手工改渲染入口。
+参考片段：休息提醒应优先连接伸懒腰、犯困、入睡等真实小猫日常动作；喝水提醒应优先连接回应或看向用户的低强度互动动作。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变序列帧播放；`AnimationDirector` 仍负责在安全帧切换、非循环互动动作结束后回到日常动作。
+水印处理：不涉及视频处理。
+重建方法：新增 `resolveReminderAnimationAction`，按提醒类型选择候选动作；新增 `isRenderableRuntimeAnimationAction`，只有 manifest 中已存在、启用且有帧的动作才会被请求；renderer 在气泡显示时尝试桥接动作，缺失候选会静默跳过。
+运行时输出：当前 manifest 尚未包含上述候选动作，因此桌宠仍只显示提醒气泡，不播放伪动作；后续可灵视频接入 manifest 后会自动触发对应候选。
+验证命令：`npm run validate:reminder-action-bridge`、`npm run typecheck`
+桌面验收：后续接入 `stretch_yawn` 或 `call_response` 等动作后，再观察气泡出现时是否能插入对应互动序列，并在动作结束后回到日常动作。
+已知问题：第一批可灵视频仍因账号余额不足未生成，桥接链路目前只能验证解析与安全跳过。
+决定：接受提醒动作桥接作为作息互动入口；后续素材接入时不再需要改提醒控制器，只需补齐 manifest 动作。
