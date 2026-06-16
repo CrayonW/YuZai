@@ -1,11 +1,9 @@
 import type { ReminderBubbleShowEvent } from "./reminder-bubble-controller";
+import actionBridges from "../../../assets/config/action-bridges.json";
 
 export type ReminderActionAvailability = (action: string) => boolean;
 
-const REMINDER_ACTION_CANDIDATES: Record<ReminderBubbleShowEvent["kind"], string[]> = {
-  water: ["call_response", "cursor_watch"],
-  rest: ["stretch_yawn", "sleepy", "sleep"]
-};
+export const REMINDER_ACTION_CANDIDATES = actionBridges.reminder as Record<ReminderBubbleShowEvent["kind"], string[]>;
 
 export function resolveReminderAnimationAction(
   event: ReminderBubbleShowEvent,

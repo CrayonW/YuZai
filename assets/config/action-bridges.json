@@ -1,0 +1,17 @@
+{
+  "reminder": {
+    "water": ["call_response", "cursor_watch"],
+    "rest": ["stretch_yawn", "sleepy", "sleep"]
+  },
+  "proximity": {
+    "mouse_near": ["cursor_watch", "paw_raise"]
+  },
+  "click": {
+    "single": ["click_surprised", "paw_raise"],
+    "repeated": ["poke_annoyed", "shy", "paw_raise"],
+    "wake": ["waking", "click_surprised", "paw_raise"]
+  },
+  "drag": {
+    "start": ["dragging", "paw_raise"]
+  }
+}

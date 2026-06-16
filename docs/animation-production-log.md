@@ -919,3 +919,21 @@ FPS：不变。
 桌面验收：后续接入 `dragging` 后，长按拖动桌宠时应播放拖拽专用动作，松开后回到日常状态。
 已知问题：可灵 `dragging` 视频仍未生成，真实拖拽视频动作尚不可播放。
 决定：接受拖拽动作桥接作为移动桌宠的互动入口；后续无需再改拖拽分支即可接入 `dragging`。
+
+## 2026-06-16 运行时动作桥接矩阵
+
+日期：2026-06-16
+源文件：`assets/config/action-bridges.json`、`scripts/runtime-action-bridge-report.mjs`、`scripts/validate-runtime-action-bridge-report.mjs`、`docs/runtime-action-bridge-report.md`
+目标动作：提醒、鼠标靠近、普通点击、多次点击、睡眠叫醒和拖拽入口的全部候选动作。
+问题：互动入口已经分批接入，但缺少一张统一表格说明每个入口会请求哪些动作，以及当前哪些动作已经可播放，后续排查容易在代码、manifest 和文档之间来回找。
+参考片段：用户要求项目过程生成对应中文文档，方便后续查看纠错。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变序列帧播放；本次只生成桥接状态报告。
+水印处理：不涉及视频处理。
+重建方法：新增 `assets/config/action-bridges.json` 作为桥接候选的单一配置源；提醒、靠近、点击、拖拽桥接模块都读取该配置；`npm run runtime:action-bridge-report -- --write docs/runtime-action-bridge-report.md` 读取配置和 runtime manifest，生成中文矩阵。
+运行时输出：当前 manifest 可播放动作仍为 `idle_primary`、`idle_secondary`、`tail_wag`、`walk`、`walk_left`、`paw_raise`；真实互动候选中 `paw_raise` 为 ready，其余候选仍 missing。
+验证命令：`npm run validate:runtime-action-bridge-report`、`npm run runtime:action-bridge-report -- --write docs/runtime-action-bridge-report.md`
+桌面验收：后续每次接入新动作后，重新生成矩阵，确认对应入口从 `missing` 变为 `ready`，再做桌面交互验收。
+已知问题：可灵生成仍受账号余额限制，真实互动视频尚未生成。
+决定：接受运行时动作桥接矩阵作为后续素材接入和纠错的主入口；新增动作进入 manifest 后必须刷新该文档。

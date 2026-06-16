@@ -1,10 +1,12 @@
+import actionBridges from "../../../assets/config/action-bridges.json";
+
 export interface ProximityActionEvent {
   near: boolean;
 }
 
 export type ProximityActionAvailability = (action: string) => boolean;
 
-const MOUSE_NEAR_ACTION_CANDIDATES = ["cursor_watch", "paw_raise"];
+export const MOUSE_NEAR_ACTION_CANDIDATES = actionBridges.proximity.mouse_near;
 
 export function resolveProximityAnimationAction(
   event: ProximityActionEvent,
