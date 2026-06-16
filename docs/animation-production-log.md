@@ -1063,3 +1063,21 @@ FPS：runtime FPS 不变。
 桌面验收：尚未进行；需逐视频人工检查 v3 并确认替换清单后，才能进入去水印、抽帧、manifest 接入和桌面验收。
 已知问题：v3 只完成抽样检查，尚未全程播放确认。
 决定：把 `cursor_watch_clean_candidate_v3` 记录为优先替换候选；保留旧 `cursor_watch.mp4`，等待正式替换清单确认。
+
+## 2026-06-16 日常低疲劳补充动作生成
+
+日期：2026-06-16
+源文件：`assets/origin/generated/kling/slow_blink.mp4`、`assets/origin/generated/kling/look_around.mp4`、`assets/reviews/kling-generated/slow_blink_sweep.png`、`assets/reviews/kling-generated/look_around_sweep.png`、`docs/kling-daily-antifatigue-supplement.md`
+目标动作：`slow_blink`、`look_around`
+问题：现有桌宠日常动作仍容易依赖待机循环，长时间观看会重复；需要补充低强度、生活化、不会打扰用户的日常插入动作。
+参考片段：`npm run kling:generate -- --action slow_blink`、`npm run kling:generate -- --action look_around` 生成两个动作视频。
+帧数：尚未抽帧为 runtime 序列帧；本次只抽取 review 证据图。
+FPS：runtime FPS 不变。
+循环方式：不改变序列帧播放；本次只生成原始候选视频。
+水印处理：未执行去水印；时间轴抽样未发现明显文字、水印、logo、道具或额外物体。
+重建方法：分别运行 `npm run kling:generate -- --action slow_blink` 和 `npm run kling:generate -- --action look_around`，再用 ffmpeg 抽取 `slow_blink_sweep.png` 与 `look_around_sweep.png`。
+运行时输出：不涉及桌面截图；视频尚未接入 runtime manifest。
+验证命令：`npm run kling:generate -- --action slow_blink --dry-run`、`npm run kling:generate -- --action look_around --dry-run`、`ffprobe -v error -select_streams v:0 -show_entries stream=width,height,duration -show_entries format=duration -of json assets/origin/generated/kling/slow_blink.mp4`、`ffprobe -v error -select_streams v:0 -show_entries stream=width,height,duration -show_entries format=duration -of json assets/origin/generated/kling/look_around.mp4`
+桌面验收：尚未进行；需逐视频人工检查并确认正式接入清单后，才能进入去水印、抽帧、manifest 接入和桌面验收。
+已知问题：两个动作只完成元数据和抽样检查，尚未全程播放确认。
+决定：把 `slow_blink` 与 `look_around` 记录为低疲劳日常动作候选；等待正式接入清单确认。

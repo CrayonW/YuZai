@@ -41,6 +41,8 @@
 
 以下动作在抽样总览中暂未发现明显多猫、文字、logo 或水印，但仍需要逐视频人工检查：
 
+- `slow_blink`
+- `look_around`
 - `groom_face_wash`
 - `loaf_breathing`
 - `click_surprised`
@@ -54,6 +56,15 @@
 - `shy`
 - `dragging`
 - `call_response`
+
+### 日常低疲劳补充动作
+
+- `slow_blink`：`assets/reviews/kling-generated/slow_blink_sweep.png`
+  - 时间轴抽样未发现文字、水印、logo、道具或额外物体。
+  - 当前建议：作为低频亲近感插入动作候选。
+- `look_around`：`assets/reviews/kling-generated/look_around_sweep.png`
+  - 时间轴抽样未发现文字、水印、logo、道具或额外物体。
+  - 当前建议：作为低频环境观察动作候选。
 
 ## 后续接入门禁
 
