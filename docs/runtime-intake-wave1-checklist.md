@@ -5,6 +5,7 @@
 
 机器可读执行计划：`docs/runtime-intake-waves.json` 中的 `wave1`。后续正式执行时，以该 JSON 的来源视频、审查证据、桥接入口、衔接策略和确认状态作为自动验证依据。
 执行前用户确认清单：`docs/runtime-intake-wave1-execution-checklist.md`。该文件由 `npm run runtime:intake-checklist -- --wave wave1 --write docs/runtime-intake-wave1-execution-checklist.md` 生成。
+接入前预检报告：`docs/runtime-intake-wave1-preflight.md`。该文件由 `npm run runtime:intake-preflight -- --wave wave1 --write docs/runtime-intake-wave1-preflight.md` 生成，只证明视频元数据和审查证据齐全，不代表已批准接入 runtime。
 
 ## 当前 runtime 现状
 
@@ -71,6 +72,7 @@
 - 第二波/暂缓动作时间轴抽样记录：`docs/runtime-intake-wave2-sweep-review.md`
 - 机器可读分波计划：`docs/runtime-intake-waves.json`
 - 第一波执行前用户确认清单：`docs/runtime-intake-wave1-execution-checklist.md`
+- 第一波接入前预检报告：`docs/runtime-intake-wave1-preflight.md`
 - 第二波执行前用户确认清单：`docs/runtime-intake-wave2-execution-checklist.md`
 - 睡眠链路执行前用户确认清单：`docs/runtime-intake-sleep-routine-execution-checklist.md`
 - 拖拽专项执行前用户确认清单：`docs/runtime-intake-dragging-special-execution-checklist.md`

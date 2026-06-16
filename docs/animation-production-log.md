@@ -1189,3 +1189,21 @@ FPS：runtime FPS 不变。
 桌面验收：尚未进行；本次是接入前用户确认清单同步，不代表任何新动作已进入桌宠。
 已知问题：全部清单仍处于 `needs-user-confirmation` 状态，未得到用户确认前禁止抽帧、去水印/抠绿、修改 manifest 或覆盖 runtime 目录。
 决定：接受四份 runtime 接入前用户确认清单，并把同步校验纳入全量发布校验。
+
+## 2026-06-17 第一波 runtime 接入前素材预检
+
+日期：2026-06-17
+源文件：`docs/runtime-intake-waves.json`、`assets/origin/generated/kling/slow_blink.mp4`、`assets/origin/generated/kling/look_around.mp4`、`assets/origin/generated/kling/cursor_watch_clean_candidate_v3.mp4`、`assets/origin/generated/kling/click_surprised.mp4`、`assets/origin/generated/kling/poke_annoyed.mp4`、`assets/origin/generated/kling/call_response.mp4`、`assets/origin/generated/kling/stretch_yawn.mp4`、`scripts/runtime-intake-preflight.mjs`、`scripts/validate-runtime-intake-preflight.mjs`、`docs/runtime-intake-wave1-preflight.md`
+目标动作：`slow_blink`、`look_around`、`cursor_watch`、`click_surprised`、`poke_annoyed`、`call_response`、`stretch_yawn`
+问题：第一波已经有执行前确认清单，但在用户批准抽帧前还需要可复现地确认来源视频、审查证据、时长、分辨率和确认状态齐全。
+参考片段：执行 `npm run runtime:intake-preflight -- --wave wave1 --write docs/runtime-intake-wave1-preflight.md`，读取 ffprobe 元数据和 review 证据文件。
+帧数：尚未抽帧为 runtime 序列帧；本次只读取视频元数据并生成预检报告。
+FPS：runtime FPS 不变。
+循环方式：未修改；报告只记录建议的 `interruptPolicy`、`returnTo` 和 `transitionPlan`。
+水印处理：未执行去水印；报告明确仍需逐视频人工播放检查无文字、水印、logo、额外物体、变形和裁切。
+重建方法：新增 `npm run runtime:intake-preflight -- --wave wave1 --write docs/runtime-intake-wave1-preflight.md` 和 `npm run validate:runtime-intake-preflight`。
+运行时输出：不涉及桌面截图；尚未接入 runtime manifest。
+验证命令：`npm run validate:runtime-intake-preflight`、`npm run validate:release`
+桌面验收：尚未进行；本次是接入前素材预检，不代表第一波动作已进入桌宠。
+已知问题：全部 action 仍处于 `needs-user-confirmation` 状态；预检通过只代表可进入人工播放检查，不代表已批准抽帧或 runtime 接入。
+决定：接受 `docs/runtime-intake-wave1-preflight.md` 作为第一波接入前素材健康报告，并把预检验证纳入全量发布校验。
