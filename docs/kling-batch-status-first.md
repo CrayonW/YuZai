@@ -1,20 +1,14 @@
 # 可灵批次产物状态
 
 批次：第一批：降低疲劳与关键交互 (fatigue-and-key-interaction)
-汇总：ready 0 / empty 0 / missing 4 / total 4
+汇总：ready 4 / empty 0 / missing 0 / total 4
 
 | action | status | size | output |
 | --- | --- | ---: | --- |
-| groom_face_wash | missing | 0 | assets/origin/generated/kling/groom_face_wash.mp4 |
-| loaf_breathing | missing | 0 | assets/origin/generated/kling/loaf_breathing.mp4 |
-| cursor_watch | missing | 0 | assets/origin/generated/kling/cursor_watch.mp4 |
-| click_surprised | missing | 0 | assets/origin/generated/kling/click_surprised.mp4 |
-
-## 最近一次生成阻塞
-
-- 类型：余额不足
-- 信息：可灵账号余额不足，真实视频没有生成。
-- 处理：账号余额补足后，重新运行批次生成命令。
+| groom_face_wash | ready | 7333436 | assets/origin/generated/kling/groom_face_wash.mp4 |
+| loaf_breathing | ready | 5427337 | assets/origin/generated/kling/loaf_breathing.mp4 |
+| cursor_watch | ready | 6248472 | assets/origin/generated/kling/cursor_watch.mp4 |
+| click_surprised | ready | 6447862 | assets/origin/generated/kling/click_surprised.mp4 |
 
 ## 下一步
 

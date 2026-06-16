@@ -19,8 +19,8 @@
 - 探测地址：https://api-beijing.klingai.com/v1/videos/image2video/nonexistent-auth-probe
 - 服务端时间差：0 秒
 - JWT 有效期：1800 秒
-- JWT 可用起始时间：2026-06-16T12:35:38.000Z
-- JWT 过期时间：2026-06-16T13:05:43.000Z
+- JWT 可用起始时间：2026-06-16T12:40:40.000Z
+- JWT 过期时间：2026-06-16T13:10:45.000Z
 - 建议：
   - 鉴权已被服务端接受，可以继续执行 `npm run kling:preflight -- --batch 1` 或第一批生成命令。
 

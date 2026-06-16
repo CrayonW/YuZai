@@ -973,3 +973,21 @@ FPS：不变。
 桌面验收：第一批真实视频仍未生成，不能进入抽帧、manifest 接入或桌面动作验收。
 已知问题：可灵账号余额仍不足，第一批 4 个视频仍缺失。
 决定：继续保留运行时桥接和文档门禁；余额补足后再次执行第一批生成命令，并先列素材检查清单给用户确认。
+
+## 2026-06-16 可灵第一批视频生成完成
+
+日期：2026-06-16
+源文件：`assets/origin/generated/kling/groom_face_wash.mp4`、`assets/origin/generated/kling/loaf_breathing.mp4`、`assets/origin/generated/kling/cursor_watch.mp4`、`assets/origin/generated/kling/click_surprised.mp4`、`docs/kling-batch-status-first.md`、`docs/kling-batch-intake-first.md`
+目标动作：第一批 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised`
+问题：用户已给可灵账号充值，需要重新生成第一批真实小猫日常和交互视频。
+参考片段：`npm run kling:preflight -- --batch 1 --write docs/kling-preflight-first.md` 显示“可以开始生成”；`npm run kling:generate-batch -- --batch 1` 依次生成并下载 4 个视频。
+帧数：尚未抽帧。
+FPS：尚未进入抽帧阶段，runtime FPS 不变。
+循环方式：不改变序列帧播放；本次只生成原始可灵视频素材。
+水印处理：尚未处理；生成后必须先人工检查无水印、无文字、无 logo、全身入镜和绿幕稳定。
+重建方法：使用本地 `.env.local` 中的可灵 key 执行 `npm run kling:generate-batch -- --batch 1`，生成视频保存在 `assets/origin/generated/kling/`；随后刷新 `docs/kling-batch-status-first.md` 和 `docs/kling-batch-intake-first.md`。
+运行时输出：不涉及桌面截图；视频尚未接入 runtime manifest。
+验证命令：`npm run kling:preflight -- --batch 1 --write docs/kling-preflight-first.md`、`npm run kling:generate-batch -- --batch 1`、`npm run kling:batch-status -- --batch 1 --write docs/kling-batch-status-first.md`、`npm run kling:batch-intake-checklist -- --batch 1 --write docs/kling-batch-intake-first.md`
+桌面验收：尚未进行；需用户确认清单和人工素材检查后，才能进入去水印、抽帧、manifest 接入和桌面验收。
+已知问题：4 个视频已经生成，但未检查水印和画面质量，不能直接接入桌宠。
+决定：暂停在素材处理前确认点；等待用户确认 `docs/kling-batch-intake-first.md` 后，再处理水印、抽帧并接入 runtime。
