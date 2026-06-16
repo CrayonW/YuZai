@@ -57,6 +57,7 @@
     "validate:kling-batch-status": "node scripts/validate-kling-batch-status.mjs",
     "validate:kling-batch-intake-checklist": "node scripts/validate-kling-batch-intake-checklist.mjs",
     "validate:kling-generated-video-audit": "node scripts/validate-kling-generated-video-audit.mjs",
+    "validate:runtime-intake-waves": "node scripts/validate-runtime-intake-waves.mjs",
     "validate:kling-preflight": "node scripts/validate-kling-preflight.mjs",
     "validate:kling-auth-diagnostics": "node scripts/validate-kling-auth-diagnostics.mjs",
     "validate:cat-behavior-schedule": "node scripts/validate-cat-behavior-schedule.mjs",

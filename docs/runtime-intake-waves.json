@@ -1,0 +1,292 @@
+{
+  "version": 1,
+  "updatedAt": "2026-06-17",
+  "purpose": "记录可灵生成视频进入桌宠 runtime 前的分波、衔接和门禁策略。此文件不代表已批准抽帧或接入。",
+  "confirmationRule": "每一波正式处理前，必须先把清单给用户确认；确认前禁止抽帧、禁止去水印/抠绿、禁止修改 runtime manifest。",
+  "waves": [
+    {
+      "id": "wave1",
+      "name": "第一波：低疲劳日常与关键交互",
+      "intent": "先降低待机重复感，并让鼠标靠近、点击和提醒拥有更真实的小猫反馈。",
+      "actions": [
+        {
+          "action": "slow_blink",
+          "category": "daily",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/slow_blink.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/slow_blink_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/slow_blink/frames",
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "daily-rotation.low-fatigue",
+          "transitionPlan": "从 idle_primary 或 idle_secondary 的安全帧切入，播放一轮后回到 idle_primary。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        },
+        {
+          "action": "look_around",
+          "category": "daily",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_around.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_around_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_around/frames",
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "daily-rotation.low-fatigue",
+          "transitionPlan": "作为低频环境观察动作，从正坐待机安全帧切入，结束回到 idle_primary。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        },
+        {
+          "action": "cursor_watch",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/cursor_watch_clean_candidate_v3.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/cursor_watch_clean_candidate_v3_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/cursor_watch/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "proximity.mouse_near",
+          "transitionPlan": "鼠标靠近时插入一轮关注动作；结束后回到当前日常基线，避免原 cursor_watch 的实体道具问题。",
+          "watermarkGate": "正式替换前逐视频播放检查 v3 全程无文字、水印、logo、光点和额外实体。"
+        },
+        {
+          "action": "click_surprised",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/click_surprised.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/click_surprised_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/click_surprised/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "click.single",
+          "transitionPlan": "单次点击触发短反应，锁定播放结束后回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        },
+        {
+          "action": "poke_annoyed",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/poke_annoyed.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/poke_annoyed_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/poke_annoyed/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "click.repeated",
+          "transitionPlan": "连续点击后触发情绪变化；抽帧时重点检查尾巴和身体边缘裁切。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和边缘裁切问题。"
+        },
+        {
+          "action": "call_response",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/call_response.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/call_response_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/call_response/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "reminder.water",
+          "transitionPlan": "气泡提醒或用户召唤时插入回应动作，结束后回到日常。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        },
+        {
+          "action": "stretch_yawn",
+          "category": "daily",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/stretch_yawn.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/stretch_yawn_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/stretch_yawn/frames",
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "reminder.rest",
+          "transitionPlan": "休息提醒或低频日常变化时播放；按打哈欠/抬前爪语义接入，不按完整伸懒腰预期。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        }
+      ]
+    },
+    {
+      "id": "wave2",
+      "name": "第二波：日常生活和互动变化",
+      "intent": "补充洗脸、嗅闻、轻呼吸和害羞等生活感动作，让桌宠更像真实小猫在电脑里生活。",
+      "actions": [
+        {
+          "action": "groom_face_wash",
+          "category": "daily",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/groom_face_wash.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/groom_face_wash_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/groom_face_wash/frames",
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "daily-rotation.life",
+          "transitionPlan": "从正坐待机安全帧切入，洗脸/舔爪结束后回到 idle_primary。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        },
+        {
+          "action": "loaf_breathing",
+          "category": "daily",
+          "status": "deferred",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/loaf_breathing.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/loaf_breathing_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/loaf_breathing/frames",
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "daily-rotation.low-fatigue",
+          "transitionPlan": "当前素材更像正坐轻呼吸，先作为低疲劳循环候选；明确香箱趴需要重新生成素材。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        },
+        {
+          "action": "desk_sniff",
+          "category": "daily",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/desk_sniff.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/desk_sniff_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/desk_sniff/frames",
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "daily-rotation.explore",
+          "transitionPlan": "作为日常探索或鼠标靠近后的低强度探索动作，注意和 cursor_watch 区分触发语义。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        },
+        {
+          "action": "shy",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/shy.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/shy_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/shy/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "interaction.gentle",
+          "transitionPlan": "用于长时间注视、停留或轻互动结束后的短反应，播放结束回到日常。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        }
+      ]
+    },
+    {
+      "id": "sleep-routine",
+      "name": "第三波：睡眠作息链路",
+      "intent": "把变困、入睡、睡眠循环和醒来设计成成组状态，避免睡眠相关动作硬切。",
+      "actions": [
+        {
+          "action": "sleepy",
+          "category": "sleep-routine",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/sleepy.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/sleepy_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/sleepy/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "sleep",
+          "bridge": "sleep.entering",
+          "transitionPlan": "作为变困入口，播放结束后进入 sleep 入睡过渡。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        },
+        {
+          "action": "sleep",
+          "category": "sleep-routine",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/sleep.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/sleep_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/sleep/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "sleeping",
+          "bridge": "sleep.transition",
+          "transitionPlan": "从正坐进入蜷伏睡姿，锁定播放结束后进入 sleeping 或后续更明确睡眠循环。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        },
+        {
+          "action": "sleeping",
+          "category": "sleep-routine",
+          "status": "deferred",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/sleeping.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/sleeping_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/sleeping/frames",
+          "interruptPolicy": "never",
+          "returnTo": "waking",
+          "bridge": "sleep.loop",
+          "transitionPlan": "当前素材更像正坐轻闭眼；可短期作为低能量循环，真实睡眠循环建议重新生成更明确蜷伏睡姿。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        },
+        {
+          "action": "waking",
+          "category": "sleep-routine",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/waking.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/waking_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/waking/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "sleep.exit",
+          "transitionPlan": "作为睡眠结束后回到正坐日常的过渡，播放结束后回到 idle_primary。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        }
+      ]
+    },
+    {
+      "id": "dragging-special",
+      "name": "拖拽专项",
+      "intent": "拖拽动作必须和窗口移动事件、置顶窗口和鼠标手感一起验收，不能只按普通互动动作接入。",
+      "actions": [
+        {
+          "action": "dragging",
+          "category": "interactive",
+          "status": "deferred",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/dragging.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/dragging_sweep.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/dragging/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "drag.active",
+          "transitionPlan": "当前动作幅度较小，正式接入前需和窗口拖拽移动、鼠标释放和回到日常动作一起桌面验收。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
+        }
+      ]
+    }
+  ]
+}

@@ -3,6 +3,7 @@
 日期：2026-06-17
 范围：第一波暂缓接入的日常、睡眠、拖拽和互动变化候选。
 目的：在不修改 runtime、不抽取运行帧、不改 manifest 的前提下，补充更密的时间轴证据，方便后续决定第二波接入顺序。
+机器可读执行计划：`docs/runtime-intake-waves.json` 中的 `wave2`、`sleep-routine` 和 `dragging-special`。
 
 ## 审查边界
 
@@ -10,6 +11,7 @@
 - 本次没有执行去水印、抠绿、序列帧生成或 runtime manifest 接入。
 - 本次结论不能替代正式接入前的逐视频播放检查。
 - 后续正式处理前仍需要先列清单给用户确认。
+- `npm run validate:runtime-intake-waves` 会检查每个候选是否具备来源视频、审查证据、衔接策略、桥接入口和确认状态。
 
 ## 抽样证据
 
@@ -56,3 +58,12 @@
 3. 每个 action 的衔接策略：起始动作、结束返回动作、安全帧或锁定播放策略。
 4. 去水印/抠绿/裁切处理方式。
 5. 桌面验收命令和预期截图或录屏证据。
+
+## 自动验证
+
+```bash
+npm run validate:runtime-intake-waves
+npm run validate:release
+```
+
+验证通过只代表接入计划完整，不代表已经批准或完成 runtime 抽帧接入。

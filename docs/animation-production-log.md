@@ -1135,3 +1135,21 @@ FPS：runtime FPS 不变。
 桌面验收：尚未进行；需用户确认第二波接入清单并完成全程人工播放检查后，才能进入去水印、抽帧、manifest 接入和桌面验收。
 已知问题：`loaf_breathing` 更像正坐轻呼吸，不是明确香箱趴；`sleeping` 抽样更像正坐轻闭眼，不建议单独作为真正睡眠循环；`dragging` 动作幅度较小，建议留到拖拽专项。
 决定：补充第二波/暂缓动作时间轴抽样证据；正式 runtime 接入仍暂停在用户确认清单前。
+
+## 2026-06-17 runtime 接入分波计划门禁
+
+日期：2026-06-17
+源文件：`docs/runtime-intake-waves.json`、`scripts/validate-runtime-intake-waves.mjs`、`docs/runtime-intake-wave1-checklist.md`、`docs/runtime-intake-wave2-sweep-review.md`
+目标动作：第一波、第二波、睡眠链路和拖拽专项中的可灵生成候选动作
+问题：素材审查记录已经分散在多份中文文档中，但正式接入 runtime 前缺少机器可读的分波、桥接入口、衔接策略和确认状态门禁。
+参考片段：基于第一波清单、第一波 P1 时间轴审查和第二波/暂缓动作时间轴审查整理 `docs/runtime-intake-waves.json`。
+帧数：尚未抽帧为 runtime 序列帧；本次只新增接入计划门禁。
+FPS：runtime FPS 不变。
+循环方式：未修改；JSON 中只记录建议的 `interruptPolicy`、`returnTo` 和 `transitionPlan`。
+水印处理：未执行去水印；JSON 中为每个 action 记录正式抽帧前必须执行的 `watermarkGate`。
+重建方法：新增 `npm run validate:runtime-intake-waves`，检查来源视频、审查证据、runtime 输出路径、桥接入口、衔接策略和用户确认状态。
+运行时输出：不涉及桌面截图；尚未接入 runtime manifest。
+验证命令：`npm run validate:runtime-intake-waves`、`npm run validate:release`
+桌面验收：尚未进行；本次是接入前门禁，不代表素材已进入桌宠。
+已知问题：所有候选仍保持 `needs-user-confirmation`，正式抽帧和 manifest 接入前仍需先列清单确认。
+决定：接受 `docs/runtime-intake-waves.json` 作为后续 runtime 接入的机器可读入口，并纳入全量发布校验。

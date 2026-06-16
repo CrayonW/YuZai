@@ -105,3 +105,6 @@
 2. 对 `cursor_watch` 决定是重生成、暂时跳过，还是人工裁剪修复。
 3. 对通过素材逐个执行去水印/抠绿、序列帧生成和 manifest 接入。
 4. 接入后必须做桌面可视化验收：桌面上能看到会动的猫、置顶显示、鼠标靠近有反应、姿势切换自然、气泡提醒正常。
+
+机器可读分波计划：`docs/runtime-intake-waves.json`。
+自动验证命令：`npm run validate:runtime-intake-waves`。

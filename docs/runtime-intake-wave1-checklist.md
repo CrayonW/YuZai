@@ -3,6 +3,8 @@
 日期：2026-06-16
 目的：把已经生成并完成抽样初筛的可灵动作，整理成第一波可确认的 runtime 接入范围。确认前禁止抽帧、禁止去水印/抠绿、禁止修改 `assets/runtime/animations/manifest.json`。
 
+机器可读执行计划：`docs/runtime-intake-waves.json` 中的 `wave1`。后续正式执行时，以该 JSON 的来源视频、审查证据、桥接入口、衔接策略和确认状态作为自动验证依据。
+
 ## 当前 runtime 现状
 
 - 当前 manifest 已启用 action：`idle_primary`、`idle_secondary`、`tail_wag`、`walk`、`walk_left`、`paw_raise`。
@@ -66,6 +68,7 @@
 
 - 第一波 P1 时间轴抽样记录：`docs/runtime-intake-wave1-sweep-review.md`
 - 第二波/暂缓动作时间轴抽样记录：`docs/runtime-intake-wave2-sweep-review.md`
+- 机器可读分波计划：`docs/runtime-intake-waves.json`
 - 抽样图：
   - `assets/reviews/kling-generated/click_surprised_sweep.png`
   - `assets/reviews/kling-generated/poke_annoyed_sweep.png`
