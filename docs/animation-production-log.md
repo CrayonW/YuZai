@@ -937,3 +937,21 @@ FPS：不变。
 桌面验收：后续每次接入新动作后，重新生成矩阵，确认对应入口从 `missing` 变为 `ready`，再做桌面交互验收。
 已知问题：可灵生成仍受账号余额限制，真实互动视频尚未生成。
 决定：接受运行时动作桥接矩阵作为后续素材接入和纠错的主入口；新增动作进入 manifest 后必须刷新该文档。
+
+## 2026-06-16 动作桥接候选契约校验
+
+日期：2026-06-16
+源文件：`assets/config/action-bridges.json`、`docs/kling-action-generation-plan.json`、`assets/runtime/animations/manifest.json`、`scripts/action-bridge-contract.mjs`、`scripts/validate-action-bridge-contract.mjs`
+目标动作：运行时桥接配置中的全部候选动作。
+问题：桥接候选已经集中到配置文件，但如果后续误写 action 名，运行时会静默跳过，素材生成计划也不会覆盖该动作。
+参考片段：所有真实互动动作要么已在 runtime manifest 可播放，要么应在可灵动作计划中等待生成。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变序列帧播放；本次只增加配置一致性门禁。
+水印处理：不涉及视频处理。
+重建方法：新增 `npm run validate:action-bridge-contract`，校验 `assets/config/action-bridges.json` 中每个候选 action 必须存在于 `docs/kling-action-generation-plan.json` 或 `assets/runtime/animations/manifest.json`。
+运行时输出：不改变桌宠显示；当前桥接候选总数为 11，均能在可灵计划或 runtime manifest 中找到。
+验证命令：`npm run validate:action-bridge-contract`、`node scripts/action-bridge-contract.mjs`
+桌面验收：无需单独桌面验收；该门禁用于防止后续接入素材时出现 action 名漂移。
+已知问题：该校验不证明视频已生成，只证明候选动作在计划或 manifest 中登记。
+决定：接受动作桥接契约校验作为修改 `action-bridges.json` 的必跑门禁，并加入总验证。

@@ -37,6 +37,7 @@
     "validate:drag-action-bridge": "node scripts/validate-drag-action-bridge.mjs",
     "runtime:action-bridge-report": "node scripts/runtime-action-bridge-report.mjs",
     "validate:runtime-action-bridge-report": "node scripts/validate-runtime-action-bridge-report.mjs",
+    "validate:action-bridge-contract": "node scripts/validate-action-bridge-contract.mjs",
     "validate:manifest-contract": "node scripts/validate-manifest-contract.mjs",
     "validate:manifest-contract:current": "node scripts/manifest-contract.mjs",
     "validate:animation-asset-contract": "node scripts/validate-animation-asset-contract.mjs",

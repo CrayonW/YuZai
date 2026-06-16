@@ -15,6 +15,7 @@ const steps = [
   ["validate:click-action-bridge", ["npm", "run", "validate:click-action-bridge"]],
   ["validate:drag-action-bridge", ["npm", "run", "validate:drag-action-bridge"]],
   ["validate:runtime-action-bridge-report", ["npm", "run", "validate:runtime-action-bridge-report"]],
+  ["validate:action-bridge-contract", ["npm", "run", "validate:action-bridge-contract"]],
   ["validate:manifest-contract", ["npm", "run", "validate:manifest-contract"]],
   ["validate:manifest-contract:current", ["npm", "run", "validate:manifest-contract:current"]],
   ["validate:animation-asset-contract", ["npm", "run", "validate:animation-asset-contract"]],
