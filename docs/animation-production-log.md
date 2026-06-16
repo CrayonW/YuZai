@@ -793,3 +793,21 @@ FPS：不变。
 桌面验收：后续接入更多真实日常视频后，应观察待机变化是否不再以固定节拍出现，减少视觉疲劳。
 已知问题：第一批可灵视频仍因账号余额不足未生成，当前实际可见日常变化仍受运行时已有 6 个 action 限制。
 决定：接受随机日常间隔作为真实小猫感的运行时基础；后续可灵视频接入后会自动继承该反疲劳调度。
+
+## 2026-06-16 提醒气泡随机间隔
+
+日期：2026-06-16
+源文件：`src/core/behavior/reminder-bubble-controller.ts`、`scripts/validate-reminder-bubble-controller.mjs`、`package.json`、`scripts/validate-all.mjs`
+目标动作：喝水提醒、休息提醒，以及后续可连接到 `stretch_yawn`、`sleepy` 等作息类动作的轻量互动。
+问题：旧提醒气泡使用固定 `setInterval(45s)`，长期运行时会像闹钟一样机械出现，不符合“像一只小猫住在电脑里”的陪伴感。
+参考片段：MVP 要求定时弹气泡提醒喝水/休息；真实小猫感要求减少重复和视觉疲劳。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变动画帧播放；提醒气泡由固定 interval 改为递归 timeout，并在 45-90 秒之间随机安排下一次出现。首次提醒仍保留 900ms，方便启动后快速验证。
+水印处理：不涉及视频处理。
+重建方法：`ReminderBubbleController` 支持注入 messages、firstDelay、min/max interval、visibleMs、random 和 timer；新增 `npm run validate:reminder-bubble-controller`，并加入 `validate:all`。
+运行时输出：不涉及桌面截图；这是提醒节奏改动。
+验证命令：`npm run validate:reminder-bubble-controller`、`npm run typecheck`、`npm run validate:release`。
+桌面验收：后续可观察气泡不再严格每 45 秒出现，而是在区间内自然浮现。
+已知问题：提醒气泡目前只显示文案，尚未把休息提醒主动绑定到 `stretch_yawn` 或 `sleepy` 动作；需要等相关动作视频生成并接入 manifest。
+决定：接受随机提醒间隔作为降低机械感的基础；后续作息类动作接入后，再把提醒与姿势变化联动。
