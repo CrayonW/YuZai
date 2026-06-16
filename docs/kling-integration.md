@@ -135,3 +135,16 @@ assets/origin/generated/kling/<action>.mp4
 - `npm run kling:generate -- --action idle_primary` 能把图生视频请求提交到可灵 API，但返回 `HTTP 401`，响应包含 `code: 1002` 和 `message: "Auth failed"`。
 
 当前结论：项目侧的 CLI、提示词计划、参考图读取、JWT 生成、请求提交链路已经接入；当前阻塞点仍是这组 key 没有通过可灵开放 API 鉴权。密钥可用前，不能生成真实视频文件，也不能把可灵产物接入 `assets/origin` 或运行时序列帧。
+
+## 2026-06-16 直接接入复测记录
+
+按用户要求“不用再问，直接使用已提供 key”，再次执行 `npm run kling:auth-check`。结果仍为 `401 / Auth failed`，可灵服务端返回时间为 `Tue, 16 Jun 2026 00:26:17 GMT`。
+
+本次同时做了不泄露密钥内容的本地诊断：
+
+- `.env.local` 已被读取。
+- `KLING_ACCESS_KEY` 存在，长度为 32。
+- `KLING_SECRET_KEY` 存在，长度为 32。
+- 未把真实 key 写入仓库文件。
+
+当前结论不变：项目侧可灵 CLI 已接入，当前不能真实生成视频的原因仍是这组 key 没有通过可灵开放 API 鉴权。下一次换 key 或开放平台权限调整后，先运行 `npm run kling:auth-check`；通过后再执行 `npm run kling:generate-batch -- --batch 1`，生成第一批视频，并按 `docs/kling-batch-intake-first.md` 先给用户确认清单后再处理素材。
