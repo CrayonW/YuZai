@@ -23,6 +23,7 @@ const { ReminderBubbleController } = await import(pathToFileURL(outfile).href);
 
 const scheduled = [];
 const cleared = [];
+const shown = [];
 let nextTimerId = 1;
 const element = {
   textContent: "",
@@ -44,6 +45,9 @@ const controller = new ReminderBubbleController(element, {
   maxIntervalMs: 90_000,
   visibleMs: 3_000,
   random: () => 0.5,
+  onShow(event) {
+    shown.push(event);
+  },
   setTimeout(callback, delay) {
     const id = nextTimerId;
     nextTimerId += 1;
@@ -64,6 +68,9 @@ const secondTimer = scheduled.shift();
 const checks = [
   ["first reminder uses configured delay", firstTimer.delay, 500],
   ["first message shows water reminder", element.textContent, "喝口水吧"],
+  ["first reminder event has water kind", shown[0]?.kind, "water"],
+  ["first reminder event keeps message", shown[0]?.message, "喝口水吧"],
+  ["first reminder event has index", shown[0]?.index, 0],
   ["bubble becomes visible", element.classes.has("is-visible"), true],
   ["hide timer uses configured visible time", hideTimer.delay, 3000],
   ["next reminder uses randomized interval", secondTimer.delay, 67500]
@@ -71,6 +78,8 @@ const checks = [
 
 secondTimer.callback();
 checks.push(["second message alternates to rest reminder", element.textContent, "休息一下眼睛"]);
+checks.push(["second reminder event has rest kind", shown[1]?.kind, "rest"]);
+checks.push(["second reminder event has index", shown[1]?.index, 1]);
 
 controller.stop();
 checks.push(["stop clears timers", cleared.length >= 2, true]);
