@@ -32,6 +32,7 @@ const steps = [
   ["validate:kling-generated-video-audit", ["npm", "run", "validate:kling-generated-video-audit"]],
   ["validate:runtime-intake-waves", ["npm", "run", "validate:runtime-intake-waves"]],
   ["validate:runtime-intake-checklist", ["npm", "run", "validate:runtime-intake-checklist"]],
+  ["validate:runtime-intake-checklists-current", ["npm", "run", "validate:runtime-intake-checklists-current"]],
   ["validate:kling-preflight", ["npm", "run", "validate:kling-preflight"]],
   ["validate:kling-auth-diagnostics", ["npm", "run", "validate:kling-auth-diagnostics"]],
   ["validate:cat-behavior-schedule", ["npm", "run", "validate:cat-behavior-schedule"]],

@@ -71,6 +71,9 @@
 - 第二波/暂缓动作时间轴抽样记录：`docs/runtime-intake-wave2-sweep-review.md`
 - 机器可读分波计划：`docs/runtime-intake-waves.json`
 - 第一波执行前用户确认清单：`docs/runtime-intake-wave1-execution-checklist.md`
+- 第二波执行前用户确认清单：`docs/runtime-intake-wave2-execution-checklist.md`
+- 睡眠链路执行前用户确认清单：`docs/runtime-intake-sleep-routine-execution-checklist.md`
+- 拖拽专项执行前用户确认清单：`docs/runtime-intake-dragging-special-execution-checklist.md`
 - 抽样图：
   - `assets/reviews/kling-generated/click_surprised_sweep.png`
   - `assets/reviews/kling-generated/poke_annoyed_sweep.png`

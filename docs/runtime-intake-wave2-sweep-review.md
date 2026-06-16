@@ -4,6 +4,11 @@
 范围：第一波暂缓接入的日常、睡眠、拖拽和互动变化候选。
 目的：在不修改 runtime、不抽取运行帧、不改 manifest 的前提下，补充更密的时间轴证据，方便后续决定第二波接入顺序。
 机器可读执行计划：`docs/runtime-intake-waves.json` 中的 `wave2`、`sleep-routine` 和 `dragging-special`。
+执行前用户确认清单：
+
+- `docs/runtime-intake-wave2-execution-checklist.md`
+- `docs/runtime-intake-sleep-routine-execution-checklist.md`
+- `docs/runtime-intake-dragging-special-execution-checklist.md`
 
 ## 审查边界
 
@@ -63,6 +68,7 @@
 
 ```bash
 npm run validate:runtime-intake-waves
+npm run validate:runtime-intake-checklists-current
 npm run validate:release
 ```
 

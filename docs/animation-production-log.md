@@ -1171,3 +1171,21 @@ FPS：runtime FPS 不变。
 桌面验收：尚未进行；本次是接入前用户确认清单，不代表第一波动作已进入桌宠。
 已知问题：清单仍处于 `needs-user-confirmation` 状态，未得到用户确认前禁止抽帧、去水印/抠绿、修改 manifest 或覆盖 runtime 目录。
 决定：接受 `docs/runtime-intake-wave1-execution-checklist.md` 作为下一步第一波 runtime 接入前需要展示给用户确认的清单。
+
+## 2026-06-17 全部 runtime 接入波次确认清单同步
+
+日期：2026-06-17
+源文件：`docs/runtime-intake-waves.json`、`docs/runtime-intake-wave1-execution-checklist.md`、`docs/runtime-intake-wave2-execution-checklist.md`、`docs/runtime-intake-sleep-routine-execution-checklist.md`、`docs/runtime-intake-dragging-special-execution-checklist.md`、`scripts/validate-runtime-intake-checklists-current.mjs`
+目标动作：`docs/runtime-intake-waves.json` 中全部 4 个波次的 16 个候选动作
+问题：只有第一波确认清单会让后续第二波、睡眠链路和拖拽专项仍依赖人工临时整理，容易遗漏动作、来源视频、桥接入口或衔接策略。
+参考片段：使用 `npm run runtime:intake-checklist -- --wave <wave-id> --write <doc>` 为 `wave2`、`sleep-routine`、`dragging-special` 补齐确认清单。
+帧数：尚未抽帧为 runtime 序列帧；本次只生成确认清单并校验同步。
+FPS：runtime FPS 不变。
+循环方式：未修改；每份清单只记录建议的 `interruptPolicy`、`returnTo` 和 `transitionPlan`。
+水印处理：未执行去水印；每份清单继续要求正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和明显变形。
+重建方法：新增 `npm run validate:runtime-intake-checklists-current`，检查每个波次清单存在，并包含对应 action 的来源视频、runtime 输出路径和桥接入口。
+运行时输出：不涉及桌面截图；尚未接入 runtime manifest。
+验证命令：`npm run validate:runtime-intake-checklists-current`、`npm run validate:release`
+桌面验收：尚未进行；本次是接入前用户确认清单同步，不代表任何新动作已进入桌宠。
+已知问题：全部清单仍处于 `needs-user-confirmation` 状态，未得到用户确认前禁止抽帧、去水印/抠绿、修改 manifest 或覆盖 runtime 目录。
+决定：接受四份 runtime 接入前用户确认清单，并把同步校验纳入全量发布校验。
