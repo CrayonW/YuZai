@@ -4,16 +4,22 @@ import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { createKlingJwt } from "./jwt.mjs";
 import { envNumber, requireEnv } from "./env.mjs";
+import {
+  envKlingApiBaseUrl,
+  envKlingImageToVideoQueryPath,
+  envKlingImageToVideoSubmitPath,
+  envKlingModelName
+} from "./config.mjs";
 
 export class KlingClient {
   constructor(root) {
     this.root = root;
     this.accessKey = requireEnv("KLING_ACCESS_KEY");
     this.secretKey = requireEnv("KLING_SECRET_KEY");
-    this.baseUrl = (process.env.KLING_API_BASE_URL || "https://api.klingai.com").replace(/\/$/, "");
-    this.submitPath = process.env.KLING_IMAGE_TO_VIDEO_SUBMIT_PATH || "/v1/videos/image2video";
-    this.queryPath = process.env.KLING_IMAGE_TO_VIDEO_QUERY_PATH || "/v1/videos/image2video/{task_id}";
-    this.modelName = process.env.KLING_MODEL_NAME || "kling-v1";
+    this.baseUrl = envKlingApiBaseUrl();
+    this.submitPath = envKlingImageToVideoSubmitPath();
+    this.queryPath = envKlingImageToVideoQueryPath();
+    this.modelName = envKlingModelName();
     this.mode = process.env.KLING_MODE || "std";
     this.duration = process.env.KLING_DURATION || "5";
     this.cfgScale = Number(process.env.KLING_CFG_SCALE || "0.5");
@@ -58,7 +64,7 @@ export class KlingClient {
       negative_prompt: action.negativePrompt,
       cfg_scale: this.cfgScale,
       mode: this.mode,
-      duration: String(action.durationSeconds || this.duration),
+      duration: String(action.generationDurationSeconds || action.durationSeconds || this.duration),
       aspect_ratio: plan.video?.aspectRatio || "4:5"
     };
 

@@ -66,13 +66,27 @@ export function renderKlingGenerationBatches(report) {
     `前置要求：${report.prerequisite}`,
     "",
     "生成前仍需遵守项目规则：新增、删除或覆盖素材前，先列清单给用户确认；生成后先人工检查无水印、无文字、无 logo、全身入镜，再进入抽帧和 manifest 接入。",
+    "",
+    "批次 dry-run：",
+    "",
+    "```bash",
+    "npm run kling:generate-batch -- --batch 1 --dry-run",
+    "npm run kling:generate-batch -- --batch sleep-routine --dry-run",
+    "```",
+    "",
+    "鉴权通过且账号余额充足后的批次生成：",
+    "",
+    "```bash",
+    "npm run kling:generate-batch -- --batch 1",
+    "npm run kling:generate-batch -- --batch sleep-routine",
+    "```",
     ""
   ];
 
   for (const batch of report.batches) {
     lines.push(`## ${batch.name}`, "", batch.reason, "", "| action | 分类 | 时长 | 输出 | 覆盖状态 | 生成命令 |", "| --- | --- | ---: | --- | --- | --- |");
     for (const action of batch.actions) {
-      lines.push(`| ${action.action} | ${action.category} | ${action.durationSeconds}s | ${action.output} | ${action.backlogState ?? "-"} | \`npm run kling:generate -- --action ${action.action}\` |`);
+      lines.push(`| ${action.action} | ${action.category} | ${renderDuration(action)} | ${action.output} | ${action.backlogState ?? "-"} | \`npm run kling:generate -- --action ${action.action}\` |`);
     }
     lines.push("");
   }
@@ -105,10 +119,18 @@ function toBatchAction(action, backlogState) {
     action: action.action,
     category: action.category,
     durationSeconds: action.durationSeconds,
+    generationDurationSeconds: action.generationDurationSeconds ?? action.durationSeconds,
     output: action.output,
     antiFatigueRole: action.antiFatigueRole,
     backlogState: backlogState ?? null
   };
+}
+
+function renderDuration(action) {
+  if (action.generationDurationSeconds && action.generationDurationSeconds !== action.durationSeconds) {
+    return `${action.durationSeconds}s / API ${action.generationDurationSeconds}s`;
+  }
+  return `${action.durationSeconds}s`;
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

@@ -4,6 +4,7 @@ import { createKlingJwt } from "./kling/jwt.mjs";
 import { loadDotEnv } from "./kling/env.mjs";
 import { selectBatchActions } from "./kling/batch-plan.mjs";
 import { buildKlingAuthDiagnostics } from "./kling/auth-diagnostics.mjs";
+import { envKlingApiBaseUrl, envKlingImageToVideoQueryPath } from "./kling/config.mjs";
 
 export function buildKlingPreflightReport({ root, plan, batches, batch, env, auth }) {
   const actions = selectBatchActions(plan, batches, { batch });
@@ -151,8 +152,8 @@ function parseArgs(args) {
     write: "",
     strict: false,
     skipAuth: false,
-    baseUrl: (process.env.KLING_API_BASE_URL || "https://api.klingai.com").replace(/\/$/, ""),
-    queryPath: process.env.KLING_IMAGE_TO_VIDEO_QUERY_PATH || "/v1/videos/image2video/{task_id}"
+    baseUrl: envKlingApiBaseUrl(),
+    queryPath: envKlingImageToVideoQueryPath()
   };
 
   for (let index = 0; index < args.length; index += 1) {

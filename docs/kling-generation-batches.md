@@ -13,7 +13,7 @@ npm run kling:generate-batch -- --batch 1 --dry-run
 npm run kling:generate-batch -- --batch sleep-routine --dry-run
 ```
 
-鉴权通过后的批次生成：
+鉴权通过且账号余额充足后的批次生成：
 
 ```bash
 npm run kling:generate-batch -- --batch 1
@@ -26,10 +26,10 @@ npm run kling:generate-batch -- --batch sleep-routine
 
 | action | 分类 | 时长 | 输出 | 覆盖状态 | 生成命令 |
 | --- | --- | ---: | --- | --- | --- |
-| groom_face_wash | daily | 8s | assets/origin/generated/kling/groom_face_wash.mp4 | - | `npm run kling:generate -- --action groom_face_wash` |
-| loaf_breathing | daily | 8s | assets/origin/generated/kling/loaf_breathing.mp4 | - | `npm run kling:generate -- --action loaf_breathing` |
-| cursor_watch | interactive | 4s | assets/origin/generated/kling/cursor_watch.mp4 | - | `npm run kling:generate -- --action cursor_watch` |
-| click_surprised | interactive | 4s | assets/origin/generated/kling/click_surprised.mp4 | surprised | `npm run kling:generate -- --action click_surprised` |
+| groom_face_wash | daily | 8s / API 5s | assets/origin/generated/kling/groom_face_wash.mp4 | - | `npm run kling:generate -- --action groom_face_wash` |
+| loaf_breathing | daily | 8s / API 5s | assets/origin/generated/kling/loaf_breathing.mp4 | - | `npm run kling:generate -- --action loaf_breathing` |
+| cursor_watch | interactive | 4s / API 5s | assets/origin/generated/kling/cursor_watch.mp4 | - | `npm run kling:generate -- --action cursor_watch` |
+| click_surprised | interactive | 4s / API 5s | assets/origin/generated/kling/click_surprised.mp4 | surprised | `npm run kling:generate -- --action click_surprised` |
 
 ## 第二批：睡眠作息链路
 
@@ -37,10 +37,10 @@ npm run kling:generate-batch -- --batch sleep-routine
 
 | action | 分类 | 时长 | 输出 | 覆盖状态 | 生成命令 |
 | --- | --- | ---: | --- | --- | --- |
-| sleepy | daily | 6s | assets/origin/generated/kling/sleepy.mp4 | sleepy | `npm run kling:generate -- --action sleepy` |
-| sleep | daily | 6s | assets/origin/generated/kling/sleep.mp4 | sleep | `npm run kling:generate -- --action sleep` |
-| sleeping | daily | 8s | assets/origin/generated/kling/sleeping.mp4 | sleeping | `npm run kling:generate -- --action sleeping` |
-| waking | interactive | 4s | assets/origin/generated/kling/waking.mp4 | waking | `npm run kling:generate -- --action waking` |
+| sleepy | daily | 6s / API 5s | assets/origin/generated/kling/sleepy.mp4 | sleepy | `npm run kling:generate -- --action sleepy` |
+| sleep | daily | 6s / API 5s | assets/origin/generated/kling/sleep.mp4 | sleep | `npm run kling:generate -- --action sleep` |
+| sleeping | daily | 8s / API 5s | assets/origin/generated/kling/sleeping.mp4 | sleeping | `npm run kling:generate -- --action sleeping` |
+| waking | interactive | 4s / API 5s | assets/origin/generated/kling/waking.mp4 | waking | `npm run kling:generate -- --action waking` |
 
 ## 第三批：剩余状态与生活化变化
 
@@ -48,12 +48,12 @@ npm run kling:generate-batch -- --batch sleep-routine
 
 | action | 分类 | 时长 | 输出 | 覆盖状态 | 生成命令 |
 | --- | --- | ---: | --- | --- | --- |
-| desk_sniff | daily | 6s | assets/origin/generated/kling/desk_sniff.mp4 | - | `npm run kling:generate -- --action desk_sniff` |
-| stretch_yawn | daily | 6s | assets/origin/generated/kling/stretch_yawn.mp4 | - | `npm run kling:generate -- --action stretch_yawn` |
-| poke_annoyed | interactive | 4s | assets/origin/generated/kling/poke_annoyed.mp4 | - | `npm run kling:generate -- --action poke_annoyed` |
-| shy | interactive | 4s | assets/origin/generated/kling/shy.mp4 | shy | `npm run kling:generate -- --action shy` |
-| dragging | interactive | 4s | assets/origin/generated/kling/dragging.mp4 | dragging | `npm run kling:generate -- --action dragging` |
-| call_response | interactive | 4s | assets/origin/generated/kling/call_response.mp4 | - | `npm run kling:generate -- --action call_response` |
+| desk_sniff | daily | 6s / API 5s | assets/origin/generated/kling/desk_sniff.mp4 | - | `npm run kling:generate -- --action desk_sniff` |
+| stretch_yawn | daily | 6s / API 5s | assets/origin/generated/kling/stretch_yawn.mp4 | - | `npm run kling:generate -- --action stretch_yawn` |
+| poke_annoyed | interactive | 4s / API 5s | assets/origin/generated/kling/poke_annoyed.mp4 | - | `npm run kling:generate -- --action poke_annoyed` |
+| shy | interactive | 4s / API 5s | assets/origin/generated/kling/shy.mp4 | shy | `npm run kling:generate -- --action shy` |
+| dragging | interactive | 4s / API 5s | assets/origin/generated/kling/dragging.mp4 | dragging | `npm run kling:generate -- --action dragging` |
+| call_response | interactive | 4s / API 5s | assets/origin/generated/kling/call_response.mp4 | - | `npm run kling:generate -- --action call_response` |
 
 ## 批次后处理
 

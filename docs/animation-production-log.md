@@ -739,3 +739,21 @@ FPS：不变。
 桌面验收：鉴权通过并生成第一批视频后再进行桌面验收。
 已知问题：当前 preflight 仍显示 `401 auth_failed`，第一批 4 个视频仍缺失，不能开始真实生成。
 决定：接受 `docs/kling-preflight-first.md` 作为第一批可灵生成前的单页状态入口。
+
+## 2026-06-16 可灵官方入口修正与余额阻塞
+
+日期：2026-06-16
+源文件：`scripts/kling/config.mjs`、`scripts/kling/client.mjs`、`scripts/kling/auth-check.mjs`、`scripts/kling-preflight.mjs`、`docs/kling-integration.md`、`docs/kling-action-generation-plan.json`、`docs/kling-generation-batches.md`
+目标动作：第一批 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised`
+问题：旧默认入口 `https://api.klingai.com` 持续返回 `401 auth_failed`；切到官方文档示例入口后，8 秒生成又返回 `duration value '8' is invalid`。
+参考片段：可灵官方图生视频文档页显示 `POST /v1/videos/image2video`，示例域名为 `https://api-beijing.klingai.com`，示例模型为 `kling-v2-6`，示例时长为 `5`。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：设计时长仍保留在 `durationSeconds`；新增 `generationDurationSeconds: 5` 作为当前 API 提交时长，后续运行时通过序列帧循环和调度保持日常陪伴时长。
+水印处理：未生成视频，尚未进入去水印或人工水印检查。
+重建方法：新增 `scripts/kling/config.mjs` 统一默认 API 配置；`client`、`auth-check`、`preflight` 均复用该配置；批次文档显示“设计时长 / API 时长”；本机 `.env.local` 的非密钥配置同步到北京 API 入口和 `kling-v2-6`。
+运行时输出：不涉及桌面截图。
+验证命令：`npm run validate:kling-auth-diagnostics`、`npm run validate:kling-generation-batches`、`npm run validate:kling-plan-quality`、`npm run kling:auth-check`、`npm run kling:preflight -- --batch 1 --write docs/kling-preflight-first.md`、`npm run kling:generate-batch -- --batch 1`。
+桌面验收：第一批视频仍未生成，不能进入抽帧、manifest 接入或桌面动作验收。
+已知问题：`npm run kling:generate-batch -- --batch 1` 已通过鉴权并进入业务接口，但返回 `HTTP 429 / Account balance not enough`；当前账号余额不足，第一批视频文件仍缺失。
+决定：接受当前可灵 API 接入状态；余额补足后继续执行第一批生成命令，再按清单进行人工检查、去水印、抽帧和 runtime 接入。

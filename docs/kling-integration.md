@@ -21,16 +21,16 @@ KLING_SECRET_KEY=你的 Secret Key
 如果官方 API 文档字段变化，可以在 `.env.local` 里覆盖：
 
 ```text
-KLING_API_BASE_URL=https://api.klingai.com
+KLING_API_BASE_URL=https://api-beijing.klingai.com
 KLING_IMAGE_TO_VIDEO_SUBMIT_PATH=/v1/videos/image2video
 KLING_IMAGE_TO_VIDEO_QUERY_PATH=/v1/videos/image2video/{task_id}
-KLING_MODEL_NAME=kling-v1
+KLING_MODEL_NAME=kling-v2-6
 KLING_MODE=std
 KLING_DURATION=5
 KLING_CFG_SCALE=0.5
 ```
 
-说明：`KLING_DURATION` 只是兜底值。正常生成时优先使用 `docs/kling-action-generation-plan.json` 中每个 action 的 `durationSeconds`，例如日常动作 6-8 秒、交互动作 4 秒、过渡动作 2 秒。
+说明：`KLING_DURATION` 只是兜底值。动作计划里的 `durationSeconds` 表示桌宠设计目标时长；`generationDurationSeconds` 表示当前可灵 API 实际提交时长。2026-06-16 实测当前模型/模式拒绝 8 秒生成，因此第一版统一用 `generationDurationSeconds: 5` 跑通生成链路，运行时再通过序列帧循环和动作调度保持日常动作的陪伴时长。
 
 ## 动作计划
 
@@ -163,3 +163,29 @@ assets/origin/generated/kling/<action>.mp4
 - 建议：检查 Access Key/Secret Key 是否同组、Secret Key 是否完整、该 Key 是否开通开放平台 API 权限，以及 API base/path 是否仍符合当前可灵开放平台文档。
 
 当前判断：JWT 时间窗和本机时间不是主要问题；更可能是 key/权限/API 入口配置问题。真实视频生成仍不能继续，第一批动作仍需等 `npm run kling:auth-check` 返回 `ok: true` 后再执行。
+
+## 2026-06-16 官方入口修正与余额状态
+
+通过可灵官方文档页 `https://klingai.com/document-api/apiReference%2Fmodel%2FimageToVideo` 核对图生视频接口，官方示例使用：
+
+```text
+POST https://api-beijing.klingai.com/v1/videos/image2video
+Authorization: Bearer <token>
+model_name: kling-v2-6
+duration: 5
+```
+
+本次已同步项目默认配置：
+
+- 默认 API base URL 改为 `https://api-beijing.klingai.com`。
+- 默认模型改为 `kling-v2-6`。
+- 本机 `.env.local` 的非密钥配置已同步到北京 API 入口和 `kling-v2-6`。
+- `docs/kling-action-generation-plan.json` 新增 `generationDurationSeconds: 5`，保留原 `durationSeconds` 作为桌宠动作设计目标。
+
+验证结果：
+
+- `npm run kling:auth-check` 返回 `ok: true`，探测任务返回 `400 auth_accepted` 和 “Task not found”，说明 JWT 和 key 已被服务端接受。
+- `npm run kling:preflight -- --batch 1 --write docs/kling-preflight-first.md` 显示“可以开始生成”。
+- `npm run kling:generate-batch -- --batch 1` 已进入真实提交，但返回 `HTTP 429`，错误信息为 `Account balance not enough`。
+
+当前结论：项目侧可灵 API 接入已打通到真实业务接口；当前不能生成第一批视频的原因变为账号余额不足，不再是鉴权或接口入口问题。余额补足后，继续执行 `npm run kling:generate-batch -- --batch 1` 即可从第一批 `groom_face_wash` 开始生成。

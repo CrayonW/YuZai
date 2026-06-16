@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { createKlingJwt } from "./jwt.mjs";
 import { loadDotEnv, requireEnv } from "./env.mjs";
 import { buildKlingAuthDiagnostics } from "./auth-diagnostics.mjs";
+import { envKlingApiBaseUrl, envKlingImageToVideoQueryPath } from "./config.mjs";
 
 const root = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
 
@@ -10,8 +11,8 @@ loadDotEnv(root);
 
 const accessKey = requireEnv("KLING_ACCESS_KEY");
 const secretKey = requireEnv("KLING_SECRET_KEY");
-const baseUrl = (process.env.KLING_API_BASE_URL || "https://api.klingai.com").replace(/\/$/, "");
-const queryPath = process.env.KLING_IMAGE_TO_VIDEO_QUERY_PATH || "/v1/videos/image2video/{task_id}";
+const baseUrl = envKlingApiBaseUrl();
+const queryPath = envKlingImageToVideoQueryPath();
 const probePath = queryPath.replace("{task_id}", "nonexistent-auth-probe");
 const token = createKlingJwt(accessKey, secretKey);
 const startedAtMs = Date.now();

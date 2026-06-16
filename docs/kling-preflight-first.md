@@ -2,7 +2,7 @@
 
 安全原则：本报告只记录密钥是否存在和长度，不输出真实密钥。
 
-总体状态：暂不能生成
+总体状态：可以开始生成
 批次：1
 动作数量：4
 
@@ -10,21 +10,19 @@
 
 - Access Key：已配置，长度 32
 - Secret Key：已配置，长度 32
-- 鉴权：鉴权未通过
-- 鉴权状态：401 auth_failed
-- 鉴权信息：Auth failed
+- 鉴权：通过
+- 鉴权状态：400 auth_accepted
+- 鉴权信息：Task not found by id/external id: nonexistent-auth-probe
 
 ### 鉴权诊断
 
-- 探测地址：https://api.klingai.com/v1/videos/image2video/nonexistent-auth-probe
-- 服务端时间差：-1 秒
+- 探测地址：https://api-beijing.klingai.com/v1/videos/image2video/nonexistent-auth-probe
+- 服务端时间差：0 秒
 - JWT 有效期：1800 秒
-- JWT 可用起始时间：2026-06-16T05:52:42.000Z
-- JWT 过期时间：2026-06-16T06:22:47.000Z
+- JWT 可用起始时间：2026-06-16T06:18:35.000Z
+- JWT 过期时间：2026-06-16T06:48:40.000Z
 - 建议：
-  - 确认 Access Key 与 Secret Key 来自同一组可灵开放平台 API Key，Secret Key 复制完整，并确认该 Key 已开通开放平台 API 权限。
-  - 确认该 Key 不是仅能用于网页端或其他产品入口的账号凭据。
-  - 确认 KLING_API_BASE_URL 和 image2video query path 与当前可灵开放平台文档一致。
+  - 鉴权已被服务端接受，可以继续执行 `npm run kling:preflight -- --batch 1` 或第一批生成命令。
 
 ### 参考图
 
@@ -43,4 +41,5 @@
 
 ### 下一步
 
-- 先运行 `npm run kling:auth-check` 并处理可灵开放 API 鉴权问题。
+- 运行 `npm run kling:generate-batch -- --batch 1` 生成缺失视频。
+- 生成后运行 `npm run kling:batch-intake-checklist -- --batch 1 --write docs/kling-batch-intake-first.md`，先给用户确认清单。

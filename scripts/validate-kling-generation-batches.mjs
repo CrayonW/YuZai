@@ -51,11 +51,13 @@ const testSource = `
 
   const text = renderKlingGenerationBatches(batches);
   assertIncludes(text, "可灵视频生成优先批次", "renders Chinese title");
+  assertIncludes(text, "npm run kling:generate-batch -- --batch 1 --dry-run", "renders batch dry-run command");
   assertIncludes(text, "npm run kling:generate -- --action groom_face_wash", "renders generation command");
+  assertIncludes(text, "8s / API 5s", "renders separate design and API duration");
   assertIncludes(text, "先运行 auth-check", "renders auth prerequisite");
 
   function action(action, category, durationSeconds, antiFatigueRole) {
-    return { action, category, durationSeconds, antiFatigueRole, output: "assets/origin/generated/kling/" + action + ".mp4" };
+    return { action, category, durationSeconds, generationDurationSeconds: 5, antiFatigueRole, output: "assets/origin/generated/kling/" + action + ".mp4" };
   }
 
   function assertEqual(actual, expected, label) {
