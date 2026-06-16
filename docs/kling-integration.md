@@ -189,3 +189,22 @@ duration: 5
 - `npm run kling:generate-batch -- --batch 1` 已进入真实提交，但返回 `HTTP 429`，错误信息为 `Account balance not enough`。
 
 当前结论：项目侧可灵 API 接入已打通到真实业务接口；当前不能生成第一批视频的原因变为账号余额不足，不再是鉴权或接口入口问题。余额补足后，继续执行 `npm run kling:generate-batch -- --batch 1` 即可从第一批 `groom_face_wash` 开始生成。
+
+## 2026-06-16 直接使用本地 key 复测记录
+
+按用户要求“直接接入，不用再问”，本次直接使用本机 `.env.local` 中已配置的可灵 key 执行联调；真实密钥仍只保存在本地忽略文件中，没有写入代码、文档或提交历史。
+
+执行结果：
+
+- `npm run kling:auth-check` 返回 `ok: true`，可灵服务端接受 JWT 和 key。
+- `npm run kling:preflight -- --batch 1 --write docs/kling-preflight-first.md` 显示“可以开始生成”，第一批 4 个视频仍缺失。
+- `npm run kling:generate-batch -- --batch 1` 已提交到图生视频业务接口，但返回 `HTTP 429` 和 `Account balance not enough`。
+- `npm run kling:batch-status -- --batch 1 --write docs/kling-batch-status-first.md --last-error "<最近一次错误>"` 已刷新第一批状态页，阻塞类型为“余额不足”。
+
+当前结论：项目侧可灵接入已按当前 key 打通到真实业务接口；现在不是鉴权失败，也不是项目代码未接入，而是可灵账号余额不足。余额补足后，从下面命令继续：
+
+```bash
+npm run kling:generate-batch -- --batch 1
+```
+
+生成成功后，先刷新素材清单并给用户确认，再进入水印检查、去水印、抽帧和 runtime manifest 接入。

@@ -811,3 +811,21 @@ FPS：不变。
 桌面验收：后续可观察气泡不再严格每 45 秒出现，而是在区间内自然浮现。
 已知问题：提醒气泡目前只显示文案，尚未把休息提醒主动绑定到 `stretch_yawn` 或 `sleepy` 动作；需要等相关动作视频生成并接入 manifest。
 决定：接受随机提醒间隔作为降低机械感的基础；后续作息类动作接入后，再把提醒与姿势变化联动。
+
+## 2026-06-16 可灵本地 key 直接复测
+
+日期：2026-06-16
+源文件：`.env.local`、`docs/kling-preflight-first.md`、`docs/kling-batch-status-first.md`、`docs/kling-integration.md`
+目标动作：第一批 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised`
+问题：用户要求直接使用已提供 key 接入可灵，不再二次确认；需要确认当前阻塞是否仍是项目接入问题。
+参考片段：`npm run kling:auth-check` 返回 `ok: true`、`400 auth_accepted`；`npm run kling:generate-batch -- --batch 1` 返回 `HTTP 429 / Account balance not enough`。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变运行时播放逻辑。
+水印处理：未生成视频，尚未进入水印检查或去水印。
+重建方法：直接使用本机 `.env.local` 中的可灵 key 运行鉴权、preflight 和第一批真实生成；真实密钥仍只保存在本地忽略文件中，没有写入代码、文档或提交历史。
+运行时输出：不涉及桌面截图。
+验证命令：`npm run kling:auth-check`、`npm run kling:preflight -- --batch 1 --write docs/kling-preflight-first.md`、`npm run kling:generate-batch -- --batch 1`、`npm run kling:batch-status -- --batch 1 --write docs/kling-batch-status-first.md --last-error "<最近一次错误>"`
+桌面验收：第一批视频仍未生成，不能进入抽帧、manifest 接入或桌面动作验收。
+已知问题：可灵账号余额不足，第一批 4 个视频仍缺失。
+决定：确认项目侧已直接接入当前 key 并通过鉴权；余额补足后继续运行第一批生成命令，再按清单进行人工检查、去水印、抽帧和 runtime 接入。
