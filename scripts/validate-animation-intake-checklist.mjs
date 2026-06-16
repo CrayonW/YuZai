@@ -44,12 +44,13 @@ const testSource = `
     "鱼仔待机动作1.mp4",
     "鱼仔前肢抬起视频.mp4",
     "鱼仔走路视频.mp4",
+    "鱼仔左右转头看动作.mp4",
     "鱼仔新动作.mp4",
     "鱼仔参考图.png"
   ];
 
   const checklist = buildAnimationIntakeChecklist({ manifest, originFiles });
-  assertEqual(checklist.items.length, 4, "only video files are listed");
+  assertEqual(checklist.items.length, 5, "only video files are listed");
   assertEqual(checklist.items[0].source, "assets/origin/鱼仔待机动作1.mp4", "known source keeps origin path");
   assertEqual(checklist.items[0].action, "idle_primary", "known source maps to manifest action");
   assertEqual(checklist.items[0].category, "daily", "known source keeps category");
@@ -63,10 +64,17 @@ const testSource = `
   assertEqual(unknownItem.action, "待确认", "unknown source requires action confirmation");
   assertEqual(unknownItem.status, "待确认", "unknown source status");
 
+  const lookAroundItem = checklist.items.find((item) => item.source.endsWith("鱼仔左右转头看动作.mp4"));
+  assertEqual(lookAroundItem.action, "look_around", "turn head source suggests look around action");
+  assertEqual(lookAroundItem.category, "daily", "turn head source suggests daily category");
+  assertEqual(lookAroundItem.status, "待确认", "suggested source still requires confirmation");
+  assertEqual(lookAroundItem.manifestChange, "是，确认后新增 manifest action", "suggested source explains manifest add");
+
   const text = renderAnimationIntakeChecklist(checklist);
   assertIncludes(text, "## 动作素材处理前确认清单", "renders Chinese title");
   assertIncludes(text, "assets/origin/鱼仔新动作.mp4", "renders unknown source");
   assertIncludes(text, "目标 action：待确认", "renders action confirmation field");
+  assertIncludes(text, "目标 action：look_around", "renders suggested action");
   assertIncludes(text, "会覆盖路径：assets/runtime/animations/idle_primary/frames", "renders overwrite path");
   assertIncludes(text, "是否修改 manifest：待确认", "renders manifest decision");
   assertIncludes(text, "npm run validate:manifest-contract:current", "renders required validation command");

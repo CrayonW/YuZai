@@ -613,3 +613,21 @@ FPS：不变。
 桌面验收：真实生活化动作补齐后，需做长时间桌面观察，确认短动作不会被额外拖长。
 已知问题：当前 runtime manifest 尚未包含第一批生活化动作，实际可见效果等待素材补齐。
 决定：接受动作级播放时长作为日常变化池默认策略，让未来素材按自身视频长度自然播放。
+
+## 2026-06-16 新增左右转头源视频接入前清单
+
+日期：2026-06-16
+源文件：`assets/origin/鱼仔左右转头看动作.mp4`、`scripts/animation-intake-checklist.mjs`
+目标动作：候选 `look_around`
+问题：`assets/origin` 中新增了左右转头观察视频。用户要求“下次开始动作前先列一下清单给我看”，所以不能直接抽帧或修改 manifest，需要先把候选 action、分类、覆盖路径和验证命令列出。
+参考片段：`docs/cat-video-prompt-guide.md` 中 `look_around` 左右观察动作；`docs/cat-behavior-schedule.json` 中 `look_around` 为 daily 环境观察动作。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：候选 `look_around` 为非循环 daily，确认并接入后可进入生活化日常变化池。
+水印处理：本次不处理视频；确认后仍需先审查并去除水印、logo、文字，再进入 runtime。
+重建方法：增强 `npm run animations:intake-checklist`，对“左右/转头/观察/看”类未接入源视频建议 `look_around`；生成当前确认清单 `docs/animation-intake-current.md`。
+运行时输出：不涉及运行时截图。
+验证命令：`npm run validate:animation-intake-checklist`、`npm run animations:intake-checklist`、`npm run validate:release`。
+桌面验收：确认并接入 `look_around` 后，需要做桌面多帧截图，确认左右转头动作可见且能回到日常动作。
+已知问题：该源视频仍未确认、未去水印、未抽帧、未写入 manifest。
+决定：接受 `docs/animation-intake-current.md` 作为当前新增 origin 视频处理前确认清单，等待用户确认后再处理 `look_around`。

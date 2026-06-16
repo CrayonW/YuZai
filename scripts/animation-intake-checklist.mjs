@@ -3,6 +3,28 @@ import { dirname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const VIDEO_EXTENSIONS = new Set([".mp4", ".mov", ".webm", ".mkv"]);
+const SOURCE_SUGGESTIONS = [
+  {
+    patterns: ["左右", "转头", "观察", "看"],
+    action: "look_around",
+    category: "daily"
+  },
+  {
+    patterns: ["洗脸", "舔爪"],
+    action: "groom_face_wash",
+    category: "daily"
+  },
+  {
+    patterns: ["嗅闻", "闻"],
+    action: "desk_sniff",
+    category: "daily"
+  },
+  {
+    patterns: ["伸懒腰", "哈欠"],
+    action: "stretch_yawn",
+    category: "daily"
+  }
+];
 
 export function buildAnimationIntakeChecklist({ manifest, originFiles }) {
   const actionBySource = new Map();
@@ -21,14 +43,15 @@ export function buildAnimationIntakeChecklist({ manifest, originFiles }) {
       const source = normalize(`assets/origin/${file}`);
       const mapped = actionBySource.get(source) || [];
       const mappedConfigs = mapped.map((entry) => entry.config);
+      const suggestion = mapped.length ? null : suggestActionForSource(file);
       return {
         source,
-        action: mapped.length ? mapped.map((entry) => entry.action).join("、") : "待确认",
-        category: uniqueJoined(mappedConfigs.map((config) => config.category)) || "待确认",
+        action: mapped.length ? mapped.map((entry) => entry.action).join("、") : suggestion?.action ?? "待确认",
+        category: uniqueJoined(mappedConfigs.map((config) => config.category)) || suggestion?.category || "待确认",
         status: mapped.length ? "已接入" : "待确认",
         overwritePath: uniqueJoined(mappedConfigs.map((config) => config.frameRoot).filter(Boolean).map(runtimePathToDisplay)) || "待确认",
         frameCount: uniqueJoined(mappedConfigs.map((config) => config.frameCount).filter((value) => value !== undefined)) || "待确认",
-        manifestChange: mapped.length ? "否，除非本次要覆盖调度字段" : "待确认"
+        manifestChange: mapped.length ? "否，除非本次要覆盖调度字段" : suggestion ? "是，确认后新增 manifest action" : "待确认"
       };
     });
 
@@ -101,4 +124,10 @@ function runtimePathToDisplay(frameRoot) {
 
 function uniqueJoined(values) {
   return Array.from(new Set(values.map(String).filter(Boolean))).join("、");
+}
+
+function suggestActionForSource(file) {
+  return SOURCE_SUGGESTIONS.find((suggestion) =>
+    suggestion.patterns.some((pattern) => file.includes(pattern))
+  ) || null;
 }
