@@ -757,3 +757,21 @@ FPS：不变。
 桌面验收：第一批视频仍未生成，不能进入抽帧、manifest 接入或桌面动作验收。
 已知问题：`npm run kling:generate-batch -- --batch 1` 已通过鉴权并进入业务接口，但返回 `HTTP 429 / Account balance not enough`；当前账号余额不足，第一批视频文件仍缺失。
 决定：接受当前可灵 API 接入状态；余额补足后继续执行第一批生成命令，再按清单进行人工检查、去水印、抽帧和 runtime 接入。
+
+## 2026-06-16 可灵批次状态增加生成错误分类
+
+日期：2026-06-16
+源文件：`scripts/kling/batch-status.mjs`、`scripts/validate-kling-batch-status.mjs`、`docs/kling-batch-status-first.md`
+目标动作：第一批 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised`
+问题：第一批生成失败后，旧批次状态页只能显示视频缺失，不能说明缺失原因是余额不足、鉴权失败、参数错误还是网络错误。
+参考片段：最近一次真实生成返回 `HTTP 429`，业务信息为 `Account balance not enough`。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变运行时播放逻辑。
+水印处理：未生成视频，尚未进入水印检查或去水印。
+重建方法：`npm run kling:batch-status` 新增 `--last-error` 参数；状态报告会把最近一次生成错误分类为余额不足、鉴权失败、请求参数错误、网络错误或未知错误，并给出中文恢复步骤。
+运行时输出：不涉及桌面截图。
+验证命令：`npm run validate:kling-batch-status`、`npm run kling:batch-status -- --batch 1 --write docs/kling-batch-status-first.md --last-error "<最近一次错误>"`
+桌面验收：第一批视频仍未生成，不能进入桌面动作验收。
+已知问题：账号余额仍不足，第一批 4 个可灵视频仍缺失。
+决定：接受 `docs/kling-batch-status-first.md` 作为余额补足前后的批次状态入口；余额补足后重新运行生成命令，并刷新该状态页。

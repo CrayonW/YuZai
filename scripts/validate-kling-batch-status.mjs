@@ -31,16 +31,26 @@ const testSource = `
     ]
   };
 
-  const status = buildKlingBatchStatus(${JSON.stringify(tempRoot)}, batches, { batch: "1" });
+  const status = buildKlingBatchStatus(${JSON.stringify(tempRoot)}, batches, {
+    batch: "1",
+    lastError: "Kling API POST /v1/videos/image2video failed with HTTP 429: {\\"code\\":1102,\\"message\\":\\"Account balance not enough\\"}"
+  });
   assertEqual(status.summary.ready, 1, "counts ready file");
   assertEqual(status.summary.empty, 1, "counts empty file");
   assertEqual(status.summary.missing, 1, "counts missing file");
+  assertEqual(status.generationBlocker.kind, "balance_not_enough", "classifies balance blocker");
   assertEqual(status.actions.map((item) => item.status).join(","), "ready,empty,missing", "keeps batch order and statuses");
   assertEqual(status.actions[0].sizeBytes > 0, true, "records ready size");
+
+  assertEqual(buildKlingBatchStatus(${JSON.stringify(tempRoot)}, batches, { batch: "first", lastError: "HTTP 401 Auth failed" }).generationBlocker.kind, "auth_failed", "classifies auth blocker");
+  assertEqual(buildKlingBatchStatus(${JSON.stringify(tempRoot)}, batches, { batch: "first", lastError: "duration value '8' is invalid" }).generationBlocker.kind, "invalid_request", "classifies request blocker");
+  assertEqual(buildKlingBatchStatus(${JSON.stringify(tempRoot)}, batches, { batch: "first", lastError: "fetch failed" }).generationBlocker.kind, "network_error", "classifies network blocker");
 
   const text = renderKlingBatchStatus(status);
   assertIncludes(text, "可灵批次产物状态", "renders Chinese title");
   assertIncludes(text, "| ready | ready |", "renders ready row");
+  assertIncludes(text, "余额不足", "renders balance blocker");
+  assertIncludes(text, "账号余额补足后", "renders balance recovery step");
   assertIncludes(text, "npm run kling:generate-batch -- --batch first", "renders generation hint");
 
   function assertEqual(actual, expected, label) {

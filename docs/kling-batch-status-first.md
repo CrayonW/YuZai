@@ -10,6 +10,12 @@
 | cursor_watch | missing | 0 | assets/origin/generated/kling/cursor_watch.mp4 |
 | click_surprised | missing | 0 | assets/origin/generated/kling/click_surprised.mp4 |
 
+## 最近一次生成阻塞
+
+- 类型：余额不足
+- 信息：可灵账号余额不足，真实视频没有生成。
+- 处理：账号余额补足后，重新运行批次生成命令。
+
 ## 下一步
 
 - 生成缺失视频：`npm run kling:generate-batch -- --batch 1`

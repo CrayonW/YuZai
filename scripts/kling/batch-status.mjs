@@ -33,6 +33,7 @@ export function buildKlingBatchStatus(rootDir, batches, options) {
       empty: actions.filter((action) => action.status === "empty").length,
       missing: actions.filter((action) => action.status === "missing").length
     },
+    generationBlocker: classifyGenerationBlocker(options.lastError),
     actions
   };
 }
@@ -51,6 +52,17 @@ export function renderKlingBatchStatus(status, options = {}) {
 
   for (const action of status.actions) {
     lines.push(`| ${action.action} | ${action.status} | ${action.sizeBytes} | ${action.output} |`);
+  }
+
+  if (status.generationBlocker) {
+    lines.push(
+      "",
+      "## 最近一次生成阻塞",
+      "",
+      `- 类型：${status.generationBlocker.label}`,
+      `- 信息：${status.generationBlocker.message}`,
+      `- 处理：${status.generationBlocker.recovery}`
+    );
   }
 
   lines.push(
@@ -80,6 +92,7 @@ function parseArgs(args) {
   const options = {
     batch: "",
     batches: "docs/kling-generation-batches.json",
+    lastError: "",
     write: ""
   };
 
@@ -91,6 +104,8 @@ function parseArgs(args) {
       options.batches = args[++index];
     } else if (arg === "--write") {
       options.write = args[++index];
+    } else if (arg === "--last-error") {
+      options.lastError = args[++index];
     } else {
       throw new Error(`Unknown argument: ${arg}`);
     }
@@ -109,4 +124,47 @@ function findBatch(batches, batchSelector) {
   const batch = batches.batches.find((candidate) => candidate.id === batchSelector || candidate.name === batchSelector);
   if (batch) return batch;
   throw new Error(`Batch not found: ${batchSelector}`);
+}
+
+function classifyGenerationBlocker(errorText) {
+  const text = String(errorText || "").trim();
+  if (!text) return null;
+  if (/Account balance not enough|balance not enough|code["']?:?1102|HTTP 429/i.test(text)) {
+    return {
+      kind: "balance_not_enough",
+      label: "余额不足",
+      message: "可灵账号余额不足，真实视频没有生成。",
+      recovery: "账号余额补足后，重新运行批次生成命令。"
+    };
+  }
+  if (/Auth failed|auth_failed|HTTP 401|code["']?:?1002/i.test(text)) {
+    return {
+      kind: "auth_failed",
+      label: "鉴权失败",
+      message: "可灵 API 没有接受当前 Access Key/Secret Key 或 JWT。",
+      recovery: "先运行 `npm run kling:auth-check`，确认鉴权通过后再生成。"
+    };
+  }
+  if (/duration value|invalid|HTTP 400|code["']?:?1201/i.test(text)) {
+    return {
+      kind: "invalid_request",
+      label: "请求参数不符合可灵接口",
+      message: "可灵 API 拒绝了当前请求参数。",
+      recovery: "检查模型、mode、duration 和动作计划中的 generationDurationSeconds。"
+    };
+  }
+  if (/fetch failed|network|ECONN|ENOTFOUND|ETIMEDOUT/i.test(text)) {
+    return {
+      kind: "network_error",
+      label: "网络错误",
+      message: "本机没有成功连接到可灵 API。",
+      recovery: "确认网络和代理可用后重新运行生成命令。"
+    };
+  }
+  return {
+    kind: "unknown",
+    label: "未知生成错误",
+    message: text.slice(0, 240),
+    recovery: "保留完整命令输出，优先更新错误分类和文档，再决定是否重试。"
+  };
 }
