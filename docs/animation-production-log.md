@@ -649,3 +649,21 @@ FPS：不变。
 桌面验收：后续补齐真实交互视频后，需要做鼠标靠近和连续点击桌面验收，确认交互不会刷屏，日常动作能稳定恢复。
 已知问题：当前真实交互素材仍未由可灵生成并接入，实际视觉多样性仍受现有 manifest 限制。
 决定：接受交互冷却作为第一版平滑策略，先降低重复触发造成的打断，再等待真实交互动作素材补齐。
+
+## 2026-06-16 动作资产契约与缺口报告
+
+日期：2026-06-16
+源文件：`docs/kling-action-generation-plan.json`、`assets/runtime/animations/manifest.json`、`scripts/animation-asset-contract.mjs`、`scripts/validate-animation-asset-contract.mjs`、`docs/animation-asset-contract.md`
+目标动作：全部计划动作，重点是 13 个日常动作、8 个交互动作和 3 个过渡动作
+问题：当前可灵计划已经定义较完整的生活化动作，但 runtime manifest 仍只有少量短动作。缺口如果只靠人工记忆追踪，后续补素材时容易漏掉时长、分类、循环、去水印和回切要求。
+参考片段：可灵动作计划中的 `durationSeconds`、`category`、`loop`、`prompt`、`output`；runtime manifest 中的 `frameCount`、`fps`、`enabled`。
+帧数：未生成新帧。
+FPS：契约目标为 24 FPS，runtime 帧数应达到 `durationSeconds * fps`。
+循环方式：本次不改变播放逻辑，只把计划循环字段和 manifest 循环字段纳入一致性报告。
+水印处理：报告明确要求 prompt 排除文字、水印和 logo；源视频进入 runtime 前仍必须做水印检查和去除。
+重建方法：新增 `npm run animations:asset-contract -- --write docs/animation-asset-contract.md`，生成中文资产契约与缺口报告；新增 `npm run validate:animation-asset-contract`，用 fixture 验证缺失动作和时长不足能被识别。
+运行时输出：不涉及桌面截图。
+验证命令：`npm run validate:animation-asset-contract`、`npm run animations:asset-contract -- --write docs/animation-asset-contract.md`、`npm run validate:release`。
+桌面验收：后续每次接入新动作后，需要刷新该报告并做桌面多帧截图验收，确认覆盖率提升且动作能自然回到日常序列。
+已知问题：当前报告显示计划动作 24 个、runtime 可播放动作 6 个、可播放覆盖率 21%、缺失动作 19 个、时长不足动作 5 个，目标项目仍未完成。
+决定：接受资产契约报告作为后续素材补齐和回归检查的固定入口，先把“为什么不流畅、缺什么动作、哪些动作太短”变成可追踪状态。
