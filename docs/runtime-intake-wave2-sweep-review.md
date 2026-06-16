@@ -10,6 +10,12 @@
 - `docs/runtime-intake-sleep-routine-execution-checklist.md`
 - `docs/runtime-intake-dragging-special-execution-checklist.md`
 
+接入前预检报告：
+
+- `docs/runtime-intake-wave2-preflight.md`
+- `docs/runtime-intake-sleep-routine-preflight.md`
+- `docs/runtime-intake-dragging-special-preflight.md`
+
 ## 审查边界
 
 - 本次只审查 `assets/origin/generated/kling/*.mp4` 的时间轴抽样图。
@@ -69,6 +75,7 @@
 ```bash
 npm run validate:runtime-intake-waves
 npm run validate:runtime-intake-checklists-current
+npm run validate:runtime-intake-preflights-current
 npm run validate:release
 ```
 

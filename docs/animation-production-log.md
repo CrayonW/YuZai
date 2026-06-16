@@ -1207,3 +1207,21 @@ FPS：runtime FPS 不变。
 桌面验收：尚未进行；本次是接入前素材预检，不代表第一波动作已进入桌宠。
 已知问题：全部 action 仍处于 `needs-user-confirmation` 状态；预检通过只代表可进入人工播放检查，不代表已批准抽帧或 runtime 接入。
 决定：接受 `docs/runtime-intake-wave1-preflight.md` 作为第一波接入前素材健康报告，并把预检验证纳入全量发布校验。
+
+## 2026-06-17 全部 runtime 接入波次素材预检同步
+
+日期：2026-06-17
+源文件：`docs/runtime-intake-waves.json`、`docs/runtime-intake-wave1-preflight.md`、`docs/runtime-intake-wave2-preflight.md`、`docs/runtime-intake-sleep-routine-preflight.md`、`docs/runtime-intake-dragging-special-preflight.md`、`scripts/validate-runtime-intake-preflights-current.mjs`
+目标动作：`docs/runtime-intake-waves.json` 中全部 4 个波次的 16 个候选动作
+问题：只有第一波预检报告会让后续第二波、睡眠链路和拖拽专项仍缺少接入前素材健康证据。
+参考片段：使用 `npm run runtime:intake-preflight -- --wave <wave-id> --write <doc>` 为 `wave2`、`sleep-routine`、`dragging-special` 补齐预检报告。
+帧数：尚未抽帧为 runtime 序列帧；本次只读取视频元数据并生成预检报告。
+FPS：runtime FPS 不变。
+循环方式：未修改；报告只记录建议的 `interruptPolicy`、`returnTo` 和 `transitionPlan`。
+水印处理：未执行去水印；每份报告明确仍需逐视频人工播放检查无文字、水印、logo、额外物体、变形和裁切。
+重建方法：新增 `npm run validate:runtime-intake-preflights-current`，检查每个波次预检报告存在，并包含对应 action 的来源视频、桥接入口和水印门禁。
+运行时输出：不涉及桌面截图；尚未接入 runtime manifest。
+验证命令：`npm run validate:runtime-intake-preflights-current`、`npm run validate:release`
+桌面验收：尚未进行；本次是接入前素材预检同步，不代表任何新动作已进入桌宠。
+已知问题：全部 action 仍处于 `needs-user-confirmation` 状态；预检通过只代表可进入人工播放检查，不代表已批准抽帧或 runtime 接入。
+决定：接受四份 runtime 接入前素材预检报告，并把同步校验纳入全量发布校验。

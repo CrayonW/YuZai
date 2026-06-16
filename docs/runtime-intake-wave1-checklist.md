@@ -74,8 +74,11 @@
 - 第一波执行前用户确认清单：`docs/runtime-intake-wave1-execution-checklist.md`
 - 第一波接入前预检报告：`docs/runtime-intake-wave1-preflight.md`
 - 第二波执行前用户确认清单：`docs/runtime-intake-wave2-execution-checklist.md`
+- 第二波接入前预检报告：`docs/runtime-intake-wave2-preflight.md`
 - 睡眠链路执行前用户确认清单：`docs/runtime-intake-sleep-routine-execution-checklist.md`
+- 睡眠链路接入前预检报告：`docs/runtime-intake-sleep-routine-preflight.md`
 - 拖拽专项执行前用户确认清单：`docs/runtime-intake-dragging-special-execution-checklist.md`
+- 拖拽专项接入前预检报告：`docs/runtime-intake-dragging-special-preflight.md`
 - 抽样图：
   - `assets/reviews/kling-generated/click_surprised_sweep.png`
   - `assets/reviews/kling-generated/poke_annoyed_sweep.png`

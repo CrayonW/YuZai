@@ -61,6 +61,7 @@
     "validate:runtime-intake-checklist": "node scripts/validate-runtime-intake-checklist.mjs",
     "validate:runtime-intake-checklists-current": "node scripts/validate-runtime-intake-checklists-current.mjs",
     "validate:runtime-intake-preflight": "node scripts/validate-runtime-intake-preflight.mjs",
+    "validate:runtime-intake-preflights-current": "node scripts/validate-runtime-intake-preflights-current.mjs",
     "validate:kling-preflight": "node scripts/validate-kling-preflight.mjs",
     "validate:kling-auth-diagnostics": "node scripts/validate-kling-auth-diagnostics.mjs",
     "validate:cat-behavior-schedule": "node scripts/validate-cat-behavior-schedule.mjs",
