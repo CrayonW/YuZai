@@ -41,6 +41,7 @@ const manifest = {
     idle_primary: { enabled: true, frameCount: 72, loop: true, category: "daily" },
     tail_wag: { enabled: true, frameCount: 72, loop: true, category: "daily" },
     idle_secondary: { enabled: true, frameCount: 72, loop: true, category: "daily" },
+    groom_face_wash: { enabled: true, frameCount: 192, loop: false, category: "daily", returnTo: "idle_primary" },
     walk: { enabled: true, frameCount: 72, loop: true, category: "daily" },
     paw_raise: { enabled: true, frameCount: 72, loop: false, category: "interactive" }
   }
@@ -51,7 +52,7 @@ const currentOptions = buildRuntimeDailyRotatorOptions();
 
 const checks = [
   ["uses manifest default action", options.defaultAction, "idle_primary"],
-  ["keeps only idle-compatible enabled variations", options.variations.join(","), "tail_wag,idle_secondary"],
+  ["keeps idle-compatible enabled loop and one-shot variations", options.variations.join(","), "tail_wag,idle_secondary,groom_face_wash"],
   ["uses schedule daily gap for anti-fatigue", options.gapMs, 45000],
   ["uses longest available daily duration", options.variationDurationMs, 8000],
   ["keeps first variation delayed enough to avoid instant loop", options.firstDelayMs, 4500],

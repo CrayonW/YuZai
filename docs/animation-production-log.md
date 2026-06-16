@@ -559,3 +559,21 @@ FPS：不变。
 桌面验收：真实过渡视频生成并接入 manifest 后，需要重新做桌面多帧截图，确认过渡动作确实可见且没有闪断。
 已知问题：当前 runtime manifest 尚无启用的过渡动作，所以本次改动是先打通调度能力，等待真实素材补齐。
 决定：接受 `transitionIn`/`transitionOut` 作为日常动作和交互动作之间的标准衔接机制。
+
+## 2026-06-16 非循环日常动作进入生活变化池
+
+日期：2026-06-16
+源文件：`src/core/render/runtime-behavior-schedule.ts`、`scripts/validate-runtime-behavior-schedule.mjs`、`docs/animation-adapter.md`
+目标动作：后续可灵生成的 `groom_face_wash`、`desk_sniff`、`stretch_yawn` 等非循环 `daily` 动作
+问题：运行时日常变化池此前只接收 `loop: true` 的 daily 动作。这样会把洗脸、嗅闻、伸懒腰等更像真实小猫日常生活的一次性动作排除，导致桌宠仍然主要重复待机和摇尾，容易视觉疲劳。
+参考片段：行为计划中的生活化 daily 动作和用户提出“更接近真实小猫每天会干的动作”。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：随机日常池现在允许启用、有帧、category 为 `daily` 的非循环动作；睡眠链路和走路动作仍被排除，避免随机插入破坏状态语义。
+水印处理：不涉及视频处理；未来新增视频仍必须先确认无水印、无 logo、无文字。
+重建方法：更新 `buildRuntimeDailyRotatorOptions` 的过滤规则，允许 idle 兼容的非循环 daily 进入 variations；更新 `npm run validate:runtime-behavior-schedule` 覆盖 `groom_face_wash`。
+运行时输出：本次用自动验证覆盖，当前 manifest 尚无该动作真实帧。
+验证命令：`npm run validate:runtime-behavior-schedule`、`npm run validate:release`。
+桌面验收：等 `groom_face_wash` 等视频生成并接入 manifest 后，需要做长时间桌面观察和多帧截图，确认生活化动作能自然插入并回到日常。
+已知问题：当前 runtime manifest 仍只有 6 个动作；非循环生活化动作只有在真实素材接入后才会实际播放。
+决定：接受非循环生活化 daily 进入日常变化池，作为降低视觉疲劳的默认调度规则。

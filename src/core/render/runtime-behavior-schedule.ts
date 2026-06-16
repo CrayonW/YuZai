@@ -27,7 +27,7 @@ export function buildRuntimeDailyRotatorOptions(
     .filter((action): action is RuntimeAnimationAction => isRuntimeAction(action, manifest))
     .filter((action) => action !== defaultAction)
     .filter((action) => !nonIdleDailyActions.has(action))
-    .filter((action) => isEnabledLoopingDaily(action, manifest));
+    .filter((action) => isEnabledIdleCompatibleDaily(action, manifest));
 
   const variationDurationMs = Math.max(
     3000,
@@ -54,10 +54,10 @@ function isRuntimeAction(
   return Object.prototype.hasOwnProperty.call(manifest.actions, action);
 }
 
-function isEnabledLoopingDaily(
+function isEnabledIdleCompatibleDaily(
   action: RuntimeAnimationAction,
   manifest: Pick<RuntimeAnimationManifest, "actions">
 ): boolean {
   const config = manifest.actions[action];
-  return !!config && config.enabled && config.frameCount > 0 && config.loop && config.category === "daily";
+  return !!config && config.enabled && config.frameCount > 0 && config.category === "daily";
 }
