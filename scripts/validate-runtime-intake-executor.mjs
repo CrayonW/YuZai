@@ -53,6 +53,9 @@ const testSource = `
     }
   };
   const bridges = {
+    dailyRotation: {
+      lowFatigue: ["slow_blink"]
+    },
     click: {
       single: ["click_surprised", "paw_raise"]
     }
@@ -63,7 +66,7 @@ const testSource = `
   assertEqual(executionPlan.actions.length, 2, "plans all actions");
   assertEqual(executionPlan.actions[0].manifestOperation, "add", "new action is add");
   assertEqual(executionPlan.actions[0].frameOperation, "create", "new frames are create");
-  assertEqual(executionPlan.actions[0].bridgeOperation, "manual", "daily rotation bridge is manual");
+  assertEqual(executionPlan.actions[0].bridgeOperation, "already-referenced", "daily rotation bridge is detected");
   assertEqual(executionPlan.actions[1].bridgeOperation, "already-referenced", "existing bridge reference is detected");
   assertEqual(executionPlan.summary.actionsToAdd, 2, "counts manifest additions");
   assertEqual(executionPlan.summary.framesToCreate, 2, "counts frame directories");

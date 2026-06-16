@@ -24,6 +24,7 @@ const { buildActionBridgeContractReport } = await import(pathToFileURL(outfile).
 
 const validReport = buildActionBridgeContractReport({
   bridges: {
+    dailyRotation: { lowFatigue: ["slow_blink", "look_around"] },
     reminder: { water: ["call_response"], rest: ["stretch_yawn"] },
     proximity: { mouse_near: ["cursor_watch", "paw_raise"] },
     click: { single: ["click_surprised"], repeated: ["poke_annoyed"], wake: ["waking"] },
@@ -31,6 +32,8 @@ const validReport = buildActionBridgeContractReport({
   },
   plan: { actions: [
     { action: "call_response" },
+    { action: "slow_blink" },
+    { action: "look_around" },
     { action: "stretch_yawn" },
     { action: "cursor_watch" },
     { action: "click_surprised" },
@@ -43,6 +46,7 @@ const validReport = buildActionBridgeContractReport({
 
 const invalidReport = buildActionBridgeContractReport({
   bridges: {
+    dailyRotation: { lowFatigue: ["not_in_plan"] },
     reminder: { water: ["not_in_plan"], rest: [] },
     proximity: { mouse_near: [] },
     click: { single: [], repeated: [], wake: [] },
@@ -54,7 +58,7 @@ const invalidReport = buildActionBridgeContractReport({
 
 const checks = [
   ["valid fixture is ok", validReport.ok, true],
-  ["valid fixture lists unique candidates", validReport.candidateCount, 8],
+  ["valid fixture lists unique candidates", validReport.candidateCount, 10],
   ["invalid fixture is not ok", invalidReport.ok, false],
   ["invalid fixture reports unknown action", invalidReport.failures[0]?.action, "not_in_plan"],
   ["current project report is ok", buildActionBridgeContractReport().ok, true]

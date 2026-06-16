@@ -8,6 +8,7 @@ const manifestJson = JSON.parse(readFileSync(join(root, "assets/runtime/animatio
 const actionBridges = JSON.parse(readFileSync(join(root, "assets/config/action-bridges.json"), "utf8"));
 
 const TRIGGER_LABELS = {
+  daily_low_fatigue: "低疲劳日常轮换",
   reminder_water: "喝水提醒",
   reminder_rest: "休息提醒",
   mouse_near: "鼠标靠近",
@@ -19,6 +20,7 @@ const TRIGGER_LABELS = {
 
 export function buildRuntimeActionBridgeReport({ manifest = manifestJson } = {}) {
   const triggerSpecs = [
+    { id: "daily_low_fatigue", candidates: actionBridges.dailyRotation?.lowFatigue ?? [] },
     { id: "reminder_water", candidates: actionBridges.reminder.water },
     { id: "reminder_rest", candidates: actionBridges.reminder.rest },
     { id: "mouse_near", candidates: actionBridges.proximity.mouse_near },
@@ -87,6 +89,7 @@ function summarizeManifest(manifest) {
     .filter(([, config]) => config.enabled && config.frameCount > 0)
     .map(([action]) => action);
   const triggerCandidates = [
+    ...(actionBridges.dailyRotation?.lowFatigue ?? []),
     ...actionBridges.reminder.water,
     ...actionBridges.reminder.rest,
     ...actionBridges.proximity.mouse_near,

@@ -136,15 +136,26 @@ export function renderRuntimeIntakeExecutionPlan(executionPlan) {
 }
 
 function bridgeOperationForAction(bridges, action) {
-  const pathParts = action.bridge.split(".");
-  let node = bridges;
-  for (const part of pathParts) {
-    node = node?.[part];
-  }
+  let node = valueAtBridgePath(bridges, action.bridge);
   if (Array.isArray(node) && node.includes(action.action)) {
     return "already-referenced";
   }
   return "manual";
+}
+
+function valueAtBridgePath(bridges, bridgePath) {
+  const aliases = {
+    "daily-rotation.low-fatigue": "dailyRotation.lowFatigue",
+    "proximity.mouse_near": "proximity.mouse_near",
+    "reminder.water": "reminder.water",
+    "reminder.rest": "reminder.rest",
+    "click.single": "click.single",
+    "click.repeated": "click.repeated",
+    "click.wake": "click.wake",
+    "drag.active": "drag.start"
+  };
+  const normalizedPath = aliases[bridgePath] ?? bridgePath;
+  return normalizedPath.split(".").reduce((node, part) => node?.[part], bridges);
 }
 
 function parseArgs(argv) {

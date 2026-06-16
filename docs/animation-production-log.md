@@ -1241,5 +1241,23 @@ FPS：runtime FPS 不变。
 运行时输出：不涉及桌面截图；尚未接入 runtime manifest。dry-run 显示第一波会新增 7 个 manifest action 和 7 个帧目录。
 验证命令：`npm run validate:runtime-intake-executor`、`npm run validate:release`
 桌面验收：尚未进行；本次是接入执行 dry-run，不代表第一波动作已进入桌宠。
-已知问题：`slow_blink`、`look_around` 的 `daily-rotation.low-fatigue` 仍需要后续日常轮换接入设计；其余 5 个动作已被现有 action bridge 候选引用。
+已知问题：dry-run 只证明桥接入口和写入计划已经明确；未得到用户确认和批准文件前，仍禁止抽帧、去水印/抠绿、修改 manifest 或覆盖 runtime 目录。
 决定：接受 `docs/runtime-intake-wave1-dry-run.md` 作为第一波接入执行前写入计划，并把执行器验证纳入全量发布校验。
+
+## 2026-06-17 低疲劳日常轮换桥接补齐
+
+日期：2026-06-17
+源文件：`assets/config/action-bridges.json`、`scripts/action-bridge-contract.mjs`、`scripts/runtime-action-bridge-report.mjs`、`scripts/runtime-intake-executor.mjs`、`docs/runtime-action-bridge-report.md`、`docs/runtime-intake-wave1-dry-run.md`
+目标动作：`slow_blink`、`look_around`
+问题：第一波 dry-run 中 `slow_blink` 和 `look_around` 已有视频、清单和预检，但还没有被运行时桥接矩阵明确归入日常低疲劳轮换，导致接入后仍需临时设计日常动作入口。
+参考片段：新增 `dailyRotation.lowFatigue` 桥接组，包含 `slow_blink`、`look_around`；同步扩展 action bridge 契约、运行时桥接报告和 runtime intake dry-run 的桥接识别。
+帧数：尚未抽帧为 runtime 序列帧；本次只补齐桥接配置和报告。
+FPS：runtime FPS 不变。
+循环方式：未修改；`dailyRotation.lowFatigue` 只是接入后的候选入口，不代表动作已经可播放。
+水印处理：未执行去水印；后续正式接入仍需逐视频人工播放检查。
+重建方法：更新 `assets/config/action-bridges.json`，重新生成 `docs/runtime-action-bridge-report.md` 和 `docs/runtime-intake-wave1-dry-run.md`。
+运行时输出：不涉及桌面截图；尚未接入 runtime manifest。更新后的 dry-run 显示第一波 7 个动作均已被桥接引用。
+验证命令：`npm run validate:action-bridge-contract`、`npm run validate:runtime-action-bridge-report`、`npm run validate:runtime-intake-executor`、`npm run validate:release`
+桌面验收：尚未进行；本次只是桥接准备，不代表 `slow_blink` 或 `look_around` 已进入桌宠。
+已知问题：`slow_blink`、`look_around` 当前在桥接矩阵中仍显示 `missing`，需要用户确认后抽帧并接入 manifest 才会变成 `ready`。
+决定：接受 `dailyRotation.lowFatigue` 作为第一波低疲劳日常动作的运行时入口。

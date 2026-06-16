@@ -36,11 +36,13 @@ const report = buildRuntimeActionBridgeReport({
 const markdown = renderRuntimeActionBridgeReportMarkdown(report);
 
 const triggerIds = report.triggers.map((trigger) => trigger.id);
+const lowFatigue = report.triggers.find((trigger) => trigger.id === "daily_low_fatigue");
 const mouseNear = report.triggers.find((trigger) => trigger.id === "mouse_near");
 const singleClick = report.triggers.find((trigger) => trigger.id === "click_single");
 const dragStart = report.triggers.find((trigger) => trigger.id === "drag_start");
 
 const checks = [
+  ["has low fatigue daily trigger", triggerIds.includes("daily_low_fatigue"), true],
   ["has water reminder trigger", triggerIds.includes("reminder_water"), true],
   ["has rest reminder trigger", triggerIds.includes("reminder_rest"), true],
   ["has mouse near trigger", triggerIds.includes("mouse_near"), true],
@@ -48,6 +50,8 @@ const checks = [
   ["has repeated click trigger", triggerIds.includes("click_repeated"), true],
   ["has wake click trigger", triggerIds.includes("click_wake"), true],
   ["has drag start trigger", triggerIds.includes("drag_start"), true],
+  ["low fatigue tracks slow_blink", lowFatigue?.candidates[0]?.action, "slow_blink"],
+  ["low fatigue marks slow_blink missing", lowFatigue?.candidates[0]?.status, "missing"],
   ["mouse near marks cursor_watch missing", mouseNear?.candidates.find((item) => item.action === "cursor_watch")?.status, "missing"],
   ["mouse near marks paw_raise ready", mouseNear?.candidates.find((item) => item.action === "paw_raise")?.status, "ready"],
   ["single click tracks click_surprised", singleClick?.candidates[0]?.action, "click_surprised"],

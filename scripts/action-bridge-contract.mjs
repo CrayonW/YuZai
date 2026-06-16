@@ -30,6 +30,7 @@ export function buildActionBridgeContractReport({
 
 function collectBridgeCandidates(bridges) {
   return [
+    ...collectGroup("dailyRotation.lowFatigue", bridges.dailyRotation?.lowFatigue),
     ...collectGroup("reminder.water", bridges.reminder?.water),
     ...collectGroup("reminder.rest", bridges.reminder?.rest),
     ...collectGroup("proximity.mouse_near", bridges.proximity?.mouse_near),

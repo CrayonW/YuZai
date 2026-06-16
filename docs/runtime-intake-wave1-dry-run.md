@@ -13,8 +13,8 @@
 - manifest 更新：0
 - 新建帧目录：7
 - 覆盖帧目录：0
-- 桥接已引用：5
-- 桥接需人工设计：2
+- 桥接已引用：7
+- 桥接需人工设计：0
 
 ## 动作执行计划
 
@@ -24,7 +24,7 @@
 - runtimeFrameRoot=assets/runtime/animations/slow_blink/frames
 - manifest=add
 - frames=create
-- bridge=manual
+- bridge=already-referenced
 - bridgeKey=daily-rotation.low-fatigue
 - interruptPolicy=at-safe-frame
 - returnTo=idle_primary
@@ -39,7 +39,7 @@
 - runtimeFrameRoot=assets/runtime/animations/look_around/frames
 - manifest=add
 - frames=create
-- bridge=manual
+- bridge=already-referenced
 - bridgeKey=daily-rotation.low-fatigue
 - interruptPolicy=at-safe-frame
 - returnTo=idle_primary

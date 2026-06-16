@@ -1,4 +1,7 @@
 {
+  "dailyRotation": {
+    "lowFatigue": ["slow_blink", "look_around"]
+  },
   "reminder": {
     "water": ["call_response", "cursor_watch"],
     "rest": ["stretch_yawn", "sleepy", "sleep"]

@@ -6,12 +6,14 @@
 
 - 当前 manifest 可播放动作：idle_primary、idle_secondary、tail_wag、walk、walk_left、paw_raise
 - 可播放动作数量：6
-- 候选缺失数量：12
+- 候选缺失数量：14
 
 ## 矩阵
 
 | 触发入口 | 优先级 | action | 状态 | 帧数 |
 | --- | ---: | --- | --- | ---: |
+| 低疲劳日常轮换 | 1 | slow_blink | missing | 0 |
+| 低疲劳日常轮换 | 2 | look_around | missing | 0 |
 | 喝水提醒 | 1 | call_response | missing | 0 |
 | 喝水提醒 | 2 | cursor_watch | missing | 0 |
 | 休息提醒 | 1 | stretch_yawn | missing | 0 |
