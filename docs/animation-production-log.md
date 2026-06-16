@@ -487,3 +487,21 @@ FPS：不变。
 桌面验收：本次为素材生产状态面板；真实视频接入 manifest 后再做桌面验收。
 已知问题：当前第一批 4 个视频均为 missing，仍需可灵 API 鉴权通过后生成。
 决定：接受批次状态面板作为可灵生成后的验收入口。
+
+## 2026-06-16 可灵批次素材接入前确认清单
+
+日期：2026-06-16
+源文件：`docs/kling-generation-batches.json`、`docs/kling-action-generation-plan.json`、`assets/runtime/animations/manifest.json`
+目标动作：第一批 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised`
+问题：用户明确要求“下次开始动作前先列一下清单给我看”，所以可灵视频生成后不能直接抽帧、去水印、覆盖 runtime 或修改 manifest；需要先把源视频、目标 action、覆盖路径、manifest 状态和必跑验证集中列出，确认后再执行素材处理。
+参考片段：第一批动作由可灵批次计划选出，运行时 manifest 用来判断动作是新增还是覆盖。
+帧数：未生成新帧。
+FPS：不变，接入时仍按 24 fps 预期处理。
+循环方式：按动作计划保留各 action 的 loop 设置，实际接入前需再次确认。
+水印处理：本次只生成接入前清单；后续必须先检查并去除水印、logo、文字，再允许进入 runtime。
+重建方法：新增 `npm run kling:batch-intake-checklist`，支持 `--batch <number-or-id>` 和 `--write <path>`；当前输出 `docs/kling-batch-intake-first.md`。
+运行时输出：不涉及运行时截图。
+验证命令：`npm run validate:kling-batch-intake-checklist`、`npm run kling:batch-intake-checklist -- --batch 1 --write docs/kling-batch-intake-first.md`、`npm run validate:release`。
+桌面验收：本次为素材接入前确认文档；真实视频生成、验收、抽帧并更新 manifest 后，再执行桌面多帧截图和变化检查。
+已知问题：当前第一批视频文件仍未生成，清单中的源视频路径是可灵生成后的预期产物路径。
+决定：接受 `docs/kling-batch-intake-first.md` 作为第一批动作处理前必须给用户确认的清单。
