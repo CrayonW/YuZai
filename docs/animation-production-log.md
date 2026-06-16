@@ -1045,3 +1045,21 @@ FPS：runtime FPS 不变。
 桌面验收：尚未进行；需用户确认清单和人工素材检查后，才能进入去水印、抽帧、manifest 接入和桌面验收。
 已知问题：`cursor_watch` 抽样图中出现额外实体物体，外形像小鼠/道具，不适合作为鼠标靠近交互；已记录在 `docs/kling-generated-video-visual-review.md`，建议重生成或暂缓接入。
 决定：先提交审查工具和证据文档；runtime 接入继续等待清单确认与逐视频人工检查。
+
+## 2026-06-16 cursor_watch 重生成候选
+
+日期：2026-06-16
+源文件：`docs/kling-cursor-watch-regeneration.md`、`docs/kling-cursor-watch-regeneration-plan.json`、`assets/origin/generated/kling/cursor_watch_clean_candidate.mp4`、`assets/origin/generated/kling/cursor_watch_clean_candidate_v2.mp4`、`assets/origin/generated/kling/cursor_watch_clean_candidate_v3.mp4`、`assets/reviews/kling-generated/cursor_watch_clean_candidate*.png`
+目标动作：`cursor_watch`
+问题：原 `cursor_watch` 抽样帧中出现额外实体小鼠/道具；v1 候选出现星光；v2 候选仍有细小亮点。
+参考片段：使用 `npm run kling:generate -- --action cursor_watch_clean_candidate_v3 --plan docs/kling-cursor-watch-regeneration-plan.json` 生成 v3 候选。
+帧数：尚未抽帧为 runtime 序列帧；本次只抽取 review 证据图。
+FPS：runtime FPS 不变。
+循环方式：不改变序列帧播放；本次只生成替换候选。
+水印处理：未执行去水印；v3 抽样图和时间轴抽样图未发现明显文字、水印、logo、实体物体或光点。
+重建方法：运行 `npm run kling:generate -- --action cursor_watch_clean_candidate_v3 --plan docs/kling-cursor-watch-regeneration-plan.json`，再用 ffmpeg 抽取 `assets/reviews/kling-generated/cursor_watch_clean_candidate_v3.png` 和 `assets/reviews/kling-generated/cursor_watch_clean_candidate_v3_sweep.png`。
+运行时输出：不涉及桌面截图；候选视频尚未替换正式 `cursor_watch`，也尚未接入 runtime manifest。
+验证命令：`npm run kling:generate -- --action cursor_watch_clean_candidate_v3 --plan docs/kling-cursor-watch-regeneration-plan.json --dry-run`、`ffprobe -v error -select_streams v:0 -show_entries stream=width,height,duration -show_entries format=duration -of json assets/origin/generated/kling/cursor_watch_clean_candidate_v3.mp4`
+桌面验收：尚未进行；需逐视频人工检查 v3 并确认替换清单后，才能进入去水印、抽帧、manifest 接入和桌面验收。
+已知问题：v3 只完成抽样检查，尚未全程播放确认。
+决定：把 `cursor_watch_clean_candidate_v3` 记录为优先替换候选；保留旧 `cursor_watch.mp4`，等待正式替换清单确认。

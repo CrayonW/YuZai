@@ -1,0 +1,48 @@
+{
+  "referenceImage": "assets/origin/鱼仔参考图.png",
+  "catProfile": "灰白双色短毛猫，圆脸，琥珀色眼睛，白色胸口和前爪，灰色背部和尾巴，安静可爱",
+  "outputRoot": "assets/origin/generated/kling",
+  "video": {
+    "durationSeconds": 5,
+    "defaultInteractiveDurationSeconds": 4,
+    "fps": 24,
+    "aspectRatio": "4:5"
+  },
+  "basePrompt": "使用参考图中的同一只猫作为唯一角色。生成一个桌面宠物鼠标靠近反馈视频，竖版 4:5，固定机位，纯绿色绿幕背景。猫咪全身入镜，居中，脚底和尾巴不要被裁切，动作自然、轻柔、可爱，适合转成透明序列帧播放。保持猫咪的脸型、毛色、眼睛颜色、花纹位置、身体比例和毛发质感与参考图一致。画面中只能有这一只猫，没有人、没有道具、没有动物、没有玩具、没有实体鼠标、没有鼠标线、没有文字、没有水印、没有 logo。",
+  "defaultNegativePrompt": "不要改变猫咪品种、毛色、眼睛颜色、脸型和斑纹。不要出现任何其他动物、小鼠、老鼠、玩具、实体鼠标、鼠标线、道具、家具、食盆、人、手、文字、水印、logo、边框、UI。不要出现两只猫、多余肢体、畸形爪子、断尾、身体穿模、脸部变形。不要镜头运动、不要变焦、不要旋转、不要切镜头、不要背景变化。不要裁切耳朵、尾巴、脚掌或身体边缘。不要复杂阴影、不要反光地面、不要透明背景，背景必须是纯绿色绿幕。不要大幅跳跃、快速奔跑、翻滚或剧烈动作。不要短促重复机械动作。",
+  "actions": [
+    {
+      "action": "cursor_watch_clean_candidate",
+      "category": "interactive",
+      "loop": false,
+      "durationSeconds": 4,
+      "antiFatigueRole": "鼠标靠近时的低强度关注反应候选，修复原 cursor_watch 出现实体物体的问题",
+      "minCooldownSeconds": 6,
+      "prompt": "动作：猫咪从正面坐姿开始，像注意到屏幕上的无形光标靠近一样，眼睛先轻轻看向一侧，耳朵轻微朝向目标，头部小幅缓慢跟随无形光标方向，然后自然回到正面坐姿。画面中不要出现任何可见物体，不能出现小鼠、老鼠、玩具、实体鼠标、鼠标线、道具、家具或人手。只能通过猫咪的眼神、耳朵和头部表达鼠标靠近反应。动作好奇、安静，不要跳起，不要奔跑，不要夸张转身。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/cursor_watch_clean_candidate.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "cursor_watch_clean_candidate_v2",
+      "category": "interactive",
+      "loop": false,
+      "durationSeconds": 4,
+      "antiFatigueRole": "鼠标靠近时的低强度关注反应候选 v2，排除实体物体和视觉特效",
+      "minCooldownSeconds": 6,
+      "prompt": "动作：猫咪从正面坐姿开始，像注意到屏幕上的无形光标靠近一样，眼睛先轻轻看向一侧，耳朵轻微朝向目标，头部小幅缓慢跟随无形光标方向，然后自然回到正面坐姿。画面中只能有一只猫和纯绿色绿幕背景。不要出现任何可见物体，不能出现小鼠、老鼠、玩具、实体鼠标、鼠标线、道具、家具或人手。不要出现星光、闪光、光点、粒子、魔法特效、标记点、箭头、光标图形或任何提示性视觉元素。只能通过猫咪的眼神、耳朵和头部表达鼠标靠近反应。动作好奇、安静，不要跳起，不要奔跑，不要夸张转身。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/cursor_watch_clean_candidate_v2.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "cursor_watch_clean_candidate_v3",
+      "category": "interactive",
+      "loop": false,
+      "durationSeconds": 4,
+      "antiFatigueRole": "鼠标靠近时的低强度关注反应候选 v3，避免模型生成任何目标点或特效",
+      "minCooldownSeconds": 6,
+      "prompt": "动作：猫咪从正面坐姿开始，像听到或注意到画面一侧空气中很轻微的动静一样，眼睛先轻轻看向一侧，耳朵轻微朝向同一侧，头部小幅缓慢转动，然后自然回到正面坐姿。画面中只能有一只猫和纯绿色绿幕背景。不要出现任何可见目标物，不能出现小鼠、老鼠、玩具、实体鼠标、鼠标线、道具、家具或人手。不要出现星光、闪光、光点、粒子、魔法特效、标记点、箭头、光标图形、目标点或任何提示性视觉元素。只通过猫咪的眼神、耳朵和头部表达它注意到用户鼠标靠近。动作好奇、安静，不要跳起，不要奔跑，不要夸张转身。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/cursor_watch_clean_candidate_v3.mp4",
+      "generationDurationSeconds": 5
+    }
+  ]
+}
