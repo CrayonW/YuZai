@@ -7,6 +7,7 @@ interface BehaviorSchedule {
   interactionTriggers?: Record<string, {
     primaryAction?: string;
     fallbackAction?: string;
+    cooldownSeconds?: number;
   }>;
 }
 
@@ -16,6 +17,11 @@ export interface RuntimeInteractionSchedule {
   repeatedClickState: PetStateName;
   dragState: PetStateName;
   wakeState: PetStateName;
+  mouseNearCooldownMs: number;
+  clickCooldownMs: number;
+  repeatedClickCooldownMs: number;
+  dragCooldownMs: number;
+  wakeCooldownMs: number;
 }
 
 const preferredStates: Record<string, PetStateName[]> = {
@@ -35,8 +41,18 @@ export function buildRuntimeInteractionSchedule(
     clickState: stateForTrigger("click", schedule, manifest),
     repeatedClickState: stateForTrigger("repeated_click", schedule, manifest),
     dragState: stateForTrigger("drag", schedule, manifest),
-    wakeState: stateForTrigger("wake", schedule, manifest)
+    wakeState: stateForTrigger("wake", schedule, manifest),
+    mouseNearCooldownMs: cooldownMsForTrigger("mouse_near", schedule),
+    clickCooldownMs: cooldownMsForTrigger("click", schedule),
+    repeatedClickCooldownMs: cooldownMsForTrigger("repeated_click", schedule),
+    dragCooldownMs: cooldownMsForTrigger("drag", schedule),
+    wakeCooldownMs: cooldownMsForTrigger("wake", schedule)
   };
+}
+
+function cooldownMsForTrigger(trigger: string, schedule: BehaviorSchedule): number {
+  const seconds = schedule.interactionTriggers?.[trigger]?.cooldownSeconds ?? 0;
+  return Math.max(0, Math.round(seconds * 1000));
 }
 
 function stateForTrigger(

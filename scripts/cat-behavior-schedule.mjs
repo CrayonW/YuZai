@@ -115,6 +115,8 @@ export function renderCatBehaviorSchedule(schedule) {
 
   lines.push(
     "",
+    "运行时会把表中的冷却时间转换成毫秒，并在 `InteractionController` 内分别记录每种触发的最后执行时间。鼠标靠近、单次点击、连续点击、拖拽和唤醒互不共享冷却；冷却期内重复触发会被忽略，避免同一交互动作用极短间隔连续插入，影响日常动作序列帧的流畅播放。`dragging` 当前冷却为 0 秒，仍允许每次拖拽立即进入拖拽反馈。",
+    "",
     "## 睡眠链路",
     "",
     `推荐顺序：${schedule.sleepRoutine.join(" -> ")}`,

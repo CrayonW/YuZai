@@ -8,6 +8,7 @@ const steps = [
   ["validate:autonomous-behavior-schedule", ["npm", "run", "validate:autonomous-behavior-schedule"]],
   ["validate:runtime-behavior-schedule", ["npm", "run", "validate:runtime-behavior-schedule"]],
   ["validate:runtime-interaction-schedule", ["npm", "run", "validate:runtime-interaction-schedule"]],
+  ["validate:interaction-cooldowns", ["npm", "run", "validate:interaction-cooldowns"]],
   ["validate:manifest-contract", ["npm", "run", "validate:manifest-contract"]],
   ["validate:manifest-contract:current", ["npm", "run", "validate:manifest-contract:current"]],
   ["validate:animation-intake-checklist", ["npm", "run", "validate:animation-intake-checklist"]],

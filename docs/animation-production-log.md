@@ -631,3 +631,21 @@ FPS：不变。
 桌面验收：确认并接入 `look_around` 后，需要做桌面多帧截图，确认左右转头动作可见且能回到日常动作。
 已知问题：该源视频仍未确认、未去水印、未抽帧、未写入 manifest。
 决定：接受 `docs/animation-intake-current.md` 作为当前新增 origin 视频处理前确认清单，等待用户确认后再处理 `look_around`。
+
+## 2026-06-16 交互触发冷却门控
+
+日期：2026-06-16
+源文件：`docs/cat-behavior-schedule.md`、`src/core/render/runtime-interaction-schedule.ts`、`src/core/behavior/interaction-cooldowns.ts`、`src/core/behavior/interaction-controller.ts`、`scripts/validate-runtime-interaction-schedule.mjs`、`scripts/validate-interaction-cooldowns.mjs`
+目标动作：`mouse_near`、`click`、`repeated_click`、`drag`、`wake`
+问题：鼠标靠近、单击和连点可能在短时间内反复插入同一个交互序列帧，导致日常序列帧被频繁打断，也会放大当前素材不足带来的卡顿感。
+参考片段：`docs/cat-behavior-schedule.json` 的 `interactionTriggers.*.cooldownSeconds`。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：交互动作仍由 `AnimationDirector` 插入并在结束后回到日常动作；本次只增加触发门控，冷却期内不重复插入同类交互。
+水印处理：不涉及视频处理。
+重建方法：`buildRuntimeInteractionSchedule` 把交互冷却转换成毫秒；`InteractionCooldowns` 独立记录每种触发的最后执行时间；`InteractionController` 在鼠标靠近、点击、连点、拖拽和唤醒前检查冷却。
+运行时输出：本次用自动验证覆盖。
+验证命令：`npm run validate:interaction-cooldowns`、`npm run validate:runtime-interaction-schedule`、`npm run validate:release`。
+桌面验收：后续补齐真实交互视频后，需要做鼠标靠近和连续点击桌面验收，确认交互不会刷屏，日常动作能稳定恢复。
+已知问题：当前真实交互素材仍未由可灵生成并接入，实际视觉多样性仍受现有 manifest 限制。
+决定：接受交互冷却作为第一版平滑策略，先降低重复触发造成的打断，再等待真实交互动作素材补齐。

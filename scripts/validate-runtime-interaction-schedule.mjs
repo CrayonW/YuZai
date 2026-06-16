@@ -23,11 +23,11 @@ const { buildRuntimeInteractionSchedule } = await import(pathToFileURL(outfile).
 
 const schedule = {
   interactionTriggers: {
-    mouse_near: { primaryAction: "cursor_watch", fallbackAction: "paw_raise", returnTo: "idle_primary" },
-    click: { primaryAction: "click_surprised", fallbackAction: "paw_raise", returnTo: "idle_primary" },
-    repeated_click: { primaryAction: "poke_annoyed", fallbackAction: "shy", returnTo: "idle_primary" },
-    drag: { primaryAction: "dragging", fallbackAction: "paw_raise", returnTo: "idle_primary" },
-    wake: { primaryAction: "waking", fallbackAction: "idle_primary", returnTo: "idle_primary" }
+    mouse_near: { primaryAction: "cursor_watch", fallbackAction: "paw_raise", cooldownSeconds: 6, returnTo: "idle_primary" },
+    click: { primaryAction: "click_surprised", fallbackAction: "paw_raise", cooldownSeconds: 8, returnTo: "idle_primary" },
+    repeated_click: { primaryAction: "poke_annoyed", fallbackAction: "shy", cooldownSeconds: 20, returnTo: "idle_primary" },
+    drag: { primaryAction: "dragging", fallbackAction: "paw_raise", cooldownSeconds: 0, returnTo: "idle_primary" },
+    wake: { primaryAction: "waking", fallbackAction: "idle_primary", cooldownSeconds: 60, returnTo: "idle_primary" }
   }
 };
 
@@ -60,6 +60,10 @@ const checks = [
   ["repeated click falls back to visible waving state", interactions.repeatedClickState, "waving"],
   ["drag falls back to visible waving state until dragging frames exist", interactions.dragState, "waving"],
   ["wake keeps waking state semantics until waking frames exist", interactions.wakeState, "waking"],
+  ["mouse near uses schedule cooldown", interactions.mouseNearCooldownMs, 6000],
+  ["click uses schedule cooldown", interactions.clickCooldownMs, 8000],
+  ["repeated click uses schedule cooldown", interactions.repeatedClickCooldownMs, 20000],
+  ["wake uses schedule cooldown", interactions.wakeCooldownMs, 60000],
   ["current project click is visible", currentInteractions.clickState, "waving"],
   ["current project repeated click is visible", currentInteractions.repeatedClickState, "waving"]
 ];
