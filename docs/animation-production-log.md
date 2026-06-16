@@ -955,3 +955,21 @@ FPS：不变。
 桌面验收：无需单独桌面验收；该门禁用于防止后续接入素材时出现 action 名漂移。
 已知问题：该校验不证明视频已生成，只证明候选动作在计划或 manifest 中登记。
 决定：接受动作桥接契约校验作为修改 `action-bridges.json` 的必跑门禁，并加入总验证。
+
+## 2026-06-16 可灵第一批生成复测仍余额不足
+
+日期：2026-06-16
+源文件：`docs/kling-preflight-first.md`、`docs/kling-batch-status-first.md`
+目标动作：第一批 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised`
+问题：需要确认外部可灵账号状态是否已经能继续生成第一批真实视频。
+参考片段：`npm run kling:auth-check` 返回 `ok: true`；`npm run kling:preflight -- --batch 1 --write docs/kling-preflight-first.md` 显示“可以开始生成”；`npm run kling:generate-batch -- --batch 1` 返回 `HTTP 429 / Account balance not enough`。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变序列帧播放。
+水印处理：未生成视频，尚未进入水印检查或去水印。
+重建方法：直接使用本地 `.env.local` 中的可灵 key 重新跑鉴权、preflight、第一批生成和批次状态刷新；真实密钥仍未写入仓库。
+运行时输出：不涉及桌面截图。
+验证命令：`npm run kling:auth-check`、`npm run kling:preflight -- --batch 1 --write docs/kling-preflight-first.md`、`npm run kling:generate-batch -- --batch 1`、`npm run kling:batch-status -- --batch 1 --write docs/kling-batch-status-first.md --last-error "<最近一次错误>"`
+桌面验收：第一批真实视频仍未生成，不能进入抽帧、manifest 接入或桌面动作验收。
+已知问题：可灵账号余额仍不足，第一批 4 个视频仍缺失。
+决定：继续保留运行时桥接和文档门禁；余额补足后再次执行第一批生成命令，并先列素材检查清单给用户确认。
