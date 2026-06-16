@@ -991,3 +991,21 @@ FPS：尚未进入抽帧阶段，runtime FPS 不变。
 桌面验收：尚未进行；需用户确认清单和人工素材检查后，才能进入去水印、抽帧、manifest 接入和桌面验收。
 已知问题：4 个视频已经生成，但未检查水印和画面质量，不能直接接入桌宠。
 决定：暂停在素材处理前确认点；等待用户确认 `docs/kling-batch-intake-first.md` 后，再处理水印、抽帧并接入 runtime。
+
+## 2026-06-16 可灵第二批睡眠作息视频生成完成
+
+日期：2026-06-16
+源文件：`assets/origin/generated/kling/sleepy.mp4`、`assets/origin/generated/kling/sleep.mp4`、`assets/origin/generated/kling/sleeping.mp4`、`assets/origin/generated/kling/waking.mp4`、`docs/kling-batch-status-sleep-routine.md`、`docs/kling-batch-intake-sleep-routine.md`
+目标动作：第二批 `sleepy`、`sleep`、`sleeping`、`waking`
+问题：需要补齐变困、入睡、睡着、唤醒链路，让桌宠不再只有短促待机和简单互动。
+参考片段：`npm run kling:preflight -- --batch sleep-routine --write docs/kling-preflight-sleep-routine.md` 显示“可以开始生成”；`npm run kling:generate-batch -- --batch sleep-routine` 依次生成并下载 4 个视频。
+帧数：尚未抽帧。
+FPS：尚未进入抽帧阶段，runtime FPS 不变。
+循环方式：不改变序列帧播放；本次只生成原始可灵视频素材。
+水印处理：尚未处理；生成后必须先人工检查无水印、无文字、无 logo、全身入镜和绿幕稳定。
+重建方法：使用本地 `.env.local` 中的可灵 key 执行 `npm run kling:generate-batch -- --batch sleep-routine`；随后刷新 `docs/kling-batch-status-sleep-routine.md` 和 `docs/kling-batch-intake-sleep-routine.md`。
+运行时输出：不涉及桌面截图；视频尚未接入 runtime manifest。
+验证命令：`npm run kling:preflight -- --batch sleep-routine --write docs/kling-preflight-sleep-routine.md`、`npm run kling:generate-batch -- --batch sleep-routine`、`npm run kling:batch-status -- --batch sleep-routine --write docs/kling-batch-status-sleep-routine.md`、`npm run kling:batch-intake-checklist -- --batch sleep-routine --write docs/kling-batch-intake-sleep-routine.md`
+桌面验收：尚未进行；需用户确认清单和人工素材检查后，才能进入去水印、抽帧、manifest 接入和桌面验收。
+已知问题：4 个睡眠作息视频已经生成，但未检查水印和画面质量，不能直接接入桌宠。
+决定：暂停在素材处理前确认点；等待用户确认 `docs/kling-batch-intake-sleep-routine.md` 后，再处理水印、抽帧并接入 runtime。
