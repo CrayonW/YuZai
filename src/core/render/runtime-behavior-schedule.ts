@@ -37,6 +37,12 @@ export function buildRuntimeDailyRotatorOptions(
       return Math.round((item?.durationSeconds ?? 3) * 1000);
     })
   );
+  const variationDurationByActionMs = Object.fromEntries(
+    variations.map((action) => {
+      const item = schedule.dailyPool?.find((candidate) => candidate.action === action);
+      return [action, Math.max(1000, Math.round((item?.durationSeconds ?? 3) * 1000))];
+    })
+  ) as Partial<Record<RuntimeAnimationAction, number>>;
   const variationCooldownMs = Object.fromEntries(
     variations.map((action) => {
       const item = schedule.dailyPool?.find((candidate) => candidate.action === action);
@@ -50,6 +56,7 @@ export function buildRuntimeDailyRotatorOptions(
     variations,
     firstDelayMs: Math.max(1500, Math.round(gapMs / 10)),
     variationDurationMs,
+    variationDurationByActionMs,
     variationCooldownMs,
     gapMs
   };

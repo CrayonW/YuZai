@@ -595,3 +595,21 @@ FPS：不变。
 桌面验收：真实生活化动作补齐后，需做长时间桌面观察，确认同一动作不会过密重复。
 已知问题：当前 runtime manifest 仍缺少第一批可灵生活化动作，所以该规则暂时主要作用于已有日常动作和未来素材。
 决定：接受动作级冷却作为日常变化池默认策略，减少重复感和视觉疲劳。
+
+## 2026-06-16 日常动作级播放时长
+
+日期：2026-06-16
+源文件：`src/core/render/daily-animation-rotator.ts`、`src/core/render/runtime-behavior-schedule.ts`、`scripts/validate-daily-animation-rotator.mjs`、`scripts/validate-runtime-behavior-schedule.mjs`
+目标动作：所有日常变化池动作，尤其是未来不同长度的生活化日常动作
+问题：日常变化此前只有一个全局播放时长。等 6 秒嗅闻、6 秒伸懒腰、8 秒洗脸等动作同时接入后，如果全部按最长时长播放，短动作会停留过久，影响自然感。
+参考片段：行为计划和可灵动作计划里的 `durationSeconds`。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：`DailyAnimationRotator` 现在优先使用 `variationDurationByActionMs[action]` 作为该动作的播放时长；没有配置时才回退到全局 `variationDurationMs`。
+水印处理：不涉及视频处理。
+重建方法：为 `DailyAnimationRotatorOptions` 增加 `variationDurationByActionMs`；`buildRuntimeDailyRotatorOptions` 从 `dailyPool.durationSeconds` 派生动作级播放时长。
+运行时输出：本次用自动验证覆盖。
+验证命令：`npm run validate:daily-animation-rotator`、`npm run validate:runtime-behavior-schedule`、`npm run validate:release`。
+桌面验收：真实生活化动作补齐后，需做长时间桌面观察，确认短动作不会被额外拖长。
+已知问题：当前 runtime manifest 尚未包含第一批生活化动作，实际可见效果等待素材补齐。
+决定：接受动作级播放时长作为日常变化池默认策略，让未来素材按自身视频长度自然播放。

@@ -65,6 +65,29 @@ checks.push(
   ["cooldown skips recently used tail_wag", cooldownRotator.resolve("idle_primary", true, 4000), "idle_secondary"]
 );
 
+const durationRotator = new DailyAnimationRotator(
+  {
+    defaultAction: "idle_primary",
+    variations: ["tail_wag", "idle_secondary"],
+    firstDelayMs: 0,
+    variationDurationMs: 3000,
+    variationDurationByActionMs: {
+      tail_wag: 1000,
+      idle_secondary: 3000
+    },
+    gapMs: 1000
+  },
+  0
+);
+
+checks.push(
+  ["per-action duration starts first variation", durationRotator.resolve("idle_primary", true, 0), "tail_wag"],
+  ["per-action duration returns after action-specific duration", durationRotator.resolve("idle_primary", true, 1000), "idle_primary"],
+  ["per-action duration waits through gap", durationRotator.resolve("idle_primary", true, 1999), "idle_primary"],
+  ["per-action duration starts second variation after gap", durationRotator.resolve("idle_primary", true, 2000), "idle_secondary"],
+  ["per-action duration keeps longer second variation active", durationRotator.resolve("idle_primary", true, 4000), "idle_secondary"]
+);
+
 const failures = checks
   .filter(([, actual, expected]) => actual !== expected)
   .map(([name, actual, expected]) => ({ name, actual, expected }));

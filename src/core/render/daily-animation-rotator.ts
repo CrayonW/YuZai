@@ -5,6 +5,7 @@ export interface DailyAnimationRotatorOptions {
   variations: RuntimeAnimationAction[];
   firstDelayMs?: number;
   variationDurationMs?: number;
+  variationDurationByActionMs?: Partial<Record<RuntimeAnimationAction, number>>;
   gapMs?: number;
   variationCooldownMs?: Partial<Record<RuntimeAnimationAction, number>>;
 }
@@ -47,7 +48,7 @@ export class DailyAnimationRotator {
       }
       this.activeVariation = {
         action,
-        endsAt: now + this.variationDurationMs
+        endsAt: now + this.durationFor(action)
       };
       this.lastStartedAt.set(action, now);
       return this.activeVariation.action;
@@ -58,6 +59,10 @@ export class DailyAnimationRotator {
 
   private scheduleNext(now: number): void {
     this.nextVariationAt = now + this.gapMs;
+  }
+
+  private durationFor(action: RuntimeAnimationAction): number {
+    return this.options.variationDurationByActionMs?.[action] ?? this.variationDurationMs;
   }
 
   private nextAvailableVariation(now: number): RuntimeAnimationAction | null {
