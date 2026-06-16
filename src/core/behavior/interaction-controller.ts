@@ -13,6 +13,7 @@ interface DragSession {
 export interface InteractionControllerEvents {
   onMouseNearAccepted?: () => void;
   onClickAccepted?: (kind: "single" | "repeated" | "wake") => void;
+  onDragAccepted?: () => void;
 }
 
 export class InteractionController {
@@ -105,6 +106,7 @@ export class InteractionController {
       if (!this.interactionCooldowns.tryUse("drag", now)) return;
       this.drag.active = true;
       this.fsm.request({ state: this.runtimeInteractions.dragState, mood: "surprised", view: "front", direction: 0, cacheCurrent: true, force: true });
+      this.events.onDragAccepted?.();
       this.notifyStateChanged();
     }, 160);
   }

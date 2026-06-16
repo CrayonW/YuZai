@@ -13,6 +13,7 @@ const steps = [
   ["validate:reminder-action-bridge", ["npm", "run", "validate:reminder-action-bridge"]],
   ["validate:proximity-action-bridge", ["npm", "run", "validate:proximity-action-bridge"]],
   ["validate:click-action-bridge", ["npm", "run", "validate:click-action-bridge"]],
+  ["validate:drag-action-bridge", ["npm", "run", "validate:drag-action-bridge"]],
   ["validate:manifest-contract", ["npm", "run", "validate:manifest-contract"]],
   ["validate:manifest-contract:current", ["npm", "run", "validate:manifest-contract:current"]],
   ["validate:animation-asset-contract", ["npm", "run", "validate:animation-asset-contract"]],

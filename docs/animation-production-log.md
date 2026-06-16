@@ -901,3 +901,21 @@ FPS：不变。
 桌面验收：后续接入 `click_surprised` 后，普通点击应播放惊讶反馈；接入 `poke_annoyed/shy` 后，多次点击应出现情绪变化；接入 `waking` 后，睡眠叫醒应有独立过渡。
 已知问题：第一批可灵视频仍因账号余额不足未生成，真实点击视频动作尚不可播放。
 决定：接受点击动作桥接作为用户主动互动入口；后续无需再改点击分支即可接入可灵互动素材。
+
+## 2026-06-16 拖拽动作桥接
+
+日期：2026-06-16
+源文件：`src/core/behavior/drag-action-bridge.ts`、`src/core/behavior/interaction-controller.ts`、`src/renderer/main.ts`、`scripts/validate-drag-action-bridge.mjs`
+目标动作：`dragging`、`paw_raise`
+问题：用户移动桌宠时，应有独立的被抱起/拖动动作；当前拖拽只改变状态和窗口位置，后续 `dragging` 视频接入后仍缺少动作候选入口。
+参考片段：动作计划中 `dragging` 是交互动作，用于拖拽专用循环，让移动宠物时仍有生命感。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变序列帧播放；拖拽真正启动且冷却器接受后，只请求一个可播放候选动作。
+水印处理：不涉及视频处理。
+重建方法：新增 `resolveDragAnimationAction`，拖拽开始优先选择 `dragging`，不可用时退到 `paw_raise`；拖拽结束不请求新动作，仍由原有状态恢复逻辑回到 idle。
+运行时输出：当前 `dragging` 尚未生成和接入，因此拖拽开始仍可退到已有 `paw_raise`；后续素材进入 manifest 后会自动优先播放拖拽专用动作。
+验证命令：`npm run validate:drag-action-bridge`、`npm run validate:runtime-interaction-schedule`、`npm run typecheck`
+桌面验收：后续接入 `dragging` 后，长按拖动桌宠时应播放拖拽专用动作，松开后回到日常状态。
+已知问题：可灵 `dragging` 视频仍未生成，真实拖拽视频动作尚不可播放。
+决定：接受拖拽动作桥接作为移动桌宠的互动入口；后续无需再改拖拽分支即可接入 `dragging`。

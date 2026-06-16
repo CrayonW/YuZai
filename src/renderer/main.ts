@@ -1,6 +1,7 @@
 import { AutonomousBehavior } from "../core/behavior/autonomous-behavior";
 import { clampWindowToBounds } from "../core/behavior/bounds-controller";
 import { resolveClickAnimationAction } from "../core/behavior/click-action-bridge";
+import { resolveDragAnimationAction } from "../core/behavior/drag-action-bridge";
 import { InteractionController } from "../core/behavior/interaction-controller";
 import { resolveProximityAnimationAction } from "../core/behavior/proximity-action-bridge";
 import { resolveReminderAnimationAction } from "../core/behavior/reminder-action-bridge";
@@ -43,6 +44,12 @@ const interaction = new InteractionController(canvas, fsm, () => autonomous.noti
   },
   onClickAccepted(kind) {
     const action = resolveClickAnimationAction({ kind }, isRenderableRuntimeAnimationAction);
+    if (action && isRenderableRuntimeAnimationAction(action)) {
+      animationDirector.request(action, performance.now());
+    }
+  },
+  onDragAccepted() {
+    const action = resolveDragAnimationAction({ phase: "start" }, isRenderableRuntimeAnimationAction);
     if (action && isRenderableRuntimeAnimationAction(action)) {
       animationDirector.request(action, performance.now());
     }
