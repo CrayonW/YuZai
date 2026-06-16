@@ -1099,3 +1099,21 @@ FPS：runtime FPS 不变。
 桌面验收：尚未进行；需用户确认第一波清单后，才能进入去水印、抽帧、manifest 接入和桌面验收。
 已知问题：第一波清单仍是确认文档，不代表素材已经进入桌宠。
 决定：暂停在 runtime 接入前确认点；等待用户确认 `docs/runtime-intake-wave1-checklist.md`。
+
+## 2026-06-17 第一波 P1 候选时间轴抽样审查
+
+日期：2026-06-17
+源文件：`assets/origin/generated/kling/click_surprised.mp4`、`assets/origin/generated/kling/poke_annoyed.mp4`、`assets/origin/generated/kling/call_response.mp4`、`assets/origin/generated/kling/stretch_yawn.mp4`、`assets/reviews/kling-generated/*_sweep.png`、`docs/runtime-intake-wave1-sweep-review.md`
+目标动作：`click_surprised`、`poke_annoyed`、`call_response`、`stretch_yawn`
+问题：第一波 P1 候选只有单张抽样证据，不足以判断动作全程是否有外物、水印或明显裁切风险。
+参考片段：使用 `ffmpeg -vf "fps=3,scale=150:-1,tile=5x3"` 为四个动作生成 15 帧时间轴抽样图。
+帧数：尚未抽帧为 runtime 序列帧；本次只抽取 review 证据图。
+FPS：runtime FPS 不变。
+循环方式：未修改；仍等待用户确认第一波清单。
+水印处理：未执行去水印；时间轴抽样未发现明显文字、水印、logo 或额外物体。
+重建方法：对每个源视频运行 ffmpeg 时间轴抽样命令，输出到 `assets/reviews/kling-generated/<action>_sweep.png`。
+运行时输出：不涉及桌面截图；尚未接入 runtime manifest。
+验证命令：`npm run validate:release`
+桌面验收：尚未进行；需用户确认第一波清单并完成全程人工播放检查后，才能进入去水印、抽帧、manifest 接入和桌面验收。
+已知问题：`poke_annoyed` 部分帧尾巴和身体接近边缘，后续抽帧裁切要重点检查；`stretch_yawn` 更像打哈欠/抬前爪，不应预期为完整伸懒腰。
+决定：补充 P1 时间轴抽样证据，但继续暂停在 runtime 接入前确认点。

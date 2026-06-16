@@ -19,9 +19,9 @@
 | P0 | `look_around` | `assets/origin/generated/kling/look_around.mp4` | daily | 无交互时环境观察，降低固定站桩感 | 新增 manifest action；加入日常轮换 |
 | P0 | `cursor_watch` | `assets/origin/generated/kling/cursor_watch_clean_candidate_v3.mp4` | interactive | 鼠标靠近时低强度关注反应 | 用 v3 候选作为正式 `cursor_watch` 来源；接入 `proximity.mouse_near` |
 | P1 | `click_surprised` | `assets/origin/generated/kling/click_surprised.mp4` | interactive | 单次点击反馈 | 新增 manifest action；接入 `click.single` |
-| P1 | `poke_annoyed` | `assets/origin/generated/kling/poke_annoyed.mp4` | interactive | 多次点击后的情绪变化 | 新增 manifest action；接入 `click.repeated` |
+| P1 | `poke_annoyed` | `assets/origin/generated/kling/poke_annoyed.mp4` | interactive | 多次点击后的情绪变化；抽帧时重点检查尾巴/身体边缘裁切 | 新增 manifest action；接入 `click.repeated` |
 | P1 | `call_response` | `assets/origin/generated/kling/call_response.mp4` | interactive | 喝水/休息气泡或用户召唤回应 | 新增 manifest action；接入 `reminder.water` |
-| P1 | `stretch_yawn` | `assets/origin/generated/kling/stretch_yawn.mp4` | daily | 休息提醒或作息变化 | 新增 manifest action；接入 `reminder.rest` 和日常低频轮换 |
+| P1 | `stretch_yawn` | `assets/origin/generated/kling/stretch_yawn.mp4` | daily | 休息提醒或作息变化；抽样更像打哈欠/抬前爪，不应预期为完整伸懒腰 | 新增 manifest action；接入 `reminder.rest` 和日常低频轮换 |
 
 ## 第一波暂缓接入
 
@@ -61,6 +61,15 @@
    - 鼠标靠近触发 `cursor_watch` 或回退到 `paw_raise`。
    - 点击触发 `click_surprised` / `poke_annoyed`。
    - 气泡提醒可触发 `call_response` 或 `stretch_yawn`。
+
+## 补充抽样证据
+
+- 第一波 P1 时间轴抽样记录：`docs/runtime-intake-wave1-sweep-review.md`
+- 抽样图：
+  - `assets/reviews/kling-generated/click_surprised_sweep.png`
+  - `assets/reviews/kling-generated/poke_annoyed_sweep.png`
+  - `assets/reviews/kling-generated/call_response_sweep.png`
+  - `assets/reviews/kling-generated/stretch_yawn_sweep.png`
 
 ## 确认前仍然禁止
 

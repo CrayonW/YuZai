@@ -66,6 +66,17 @@
   - 时间轴抽样未发现文字、水印、logo、道具或额外物体。
   - 当前建议：作为低频环境观察动作候选。
 
+### 第一波 P1 候选时间轴抽样
+
+- `click_surprised`：`assets/reviews/kling-generated/click_surprised_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；适合单次点击反馈候选。
+- `poke_annoyed`：`assets/reviews/kling-generated/poke_annoyed_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；部分帧尾巴和身体接近边缘，抽帧裁切要重点检查。
+- `call_response`：`assets/reviews/kling-generated/call_response_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；适合气泡提醒或召唤回应候选。
+- `stretch_yawn`：`assets/reviews/kling-generated/stretch_yawn_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；更像打哈欠/抬前爪，适合休息提醒候选。
+
 ## 后续接入门禁
 
 1. 用户确认本轮素材处理清单。
