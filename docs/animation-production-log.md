@@ -1009,3 +1009,21 @@ FPS：尚未进入抽帧阶段，runtime FPS 不变。
 桌面验收：尚未进行；需用户确认清单和人工素材检查后，才能进入去水印、抽帧、manifest 接入和桌面验收。
 已知问题：4 个睡眠作息视频已经生成，但未检查水印和画面质量，不能直接接入桌宠。
 决定：暂停在素材处理前确认点；等待用户确认 `docs/kling-batch-intake-sleep-routine.md` 后，再处理水印、抽帧并接入 runtime。
+
+## 2026-06-16 可灵第三批剩余状态与生活化变化视频生成完成
+
+日期：2026-06-16
+源文件：`assets/origin/generated/kling/desk_sniff.mp4`、`assets/origin/generated/kling/stretch_yawn.mp4`、`assets/origin/generated/kling/poke_annoyed.mp4`、`assets/origin/generated/kling/shy.mp4`、`assets/origin/generated/kling/dragging.mp4`、`assets/origin/generated/kling/call_response.mp4`、`docs/kling-batch-status-remaining-state-and-variety.md`、`docs/kling-batch-intake-remaining-state-and-variety.md`
+目标动作：第三批 `desk_sniff`、`stretch_yawn`、`poke_annoyed`、`shy`、`dragging`、`call_response`
+问题：需要补齐剩余 fallback 状态和生活化变化，让桌宠有好奇、伸懒腰、被戳烦、害羞、拖拽、呼唤回应等更真实的日常与交互表现。
+参考片段：`npm run kling:preflight -- --batch remaining-state-and-variety --write docs/kling-preflight-remaining-state-and-variety.md` 显示“可以开始生成”；`npm run kling:generate-batch -- --batch remaining-state-and-variety` 依次生成并下载 6 个视频。
+帧数：尚未抽帧。
+FPS：尚未进入抽帧阶段，runtime FPS 不变。
+循环方式：不改变序列帧播放；本次只生成原始可灵视频素材。
+水印处理：尚未处理；生成后必须先人工检查无水印、无文字、无 logo、全身入镜和绿幕稳定。
+重建方法：使用本地 `.env.local` 中的可灵 key 执行 `npm run kling:generate-batch -- --batch remaining-state-and-variety`；随后刷新 `docs/kling-batch-status-remaining-state-and-variety.md` 和 `docs/kling-batch-intake-remaining-state-and-variety.md`。
+运行时输出：不涉及桌面截图；视频尚未接入 runtime manifest。
+验证命令：`npm run kling:preflight -- --batch remaining-state-and-variety --write docs/kling-preflight-remaining-state-and-variety.md`、`npm run kling:generate-batch -- --batch remaining-state-and-variety`、`npm run kling:batch-status -- --batch remaining-state-and-variety --write docs/kling-batch-status-remaining-state-and-variety.md`、`npm run kling:batch-intake-checklist -- --batch remaining-state-and-variety --write docs/kling-batch-intake-remaining-state-and-variety.md`
+桌面验收：尚未进行；需用户确认清单和人工素材检查后，才能进入去水印、抽帧、manifest 接入和桌面验收。
+已知问题：6 个剩余状态与生活化变化视频已经生成，但未检查水印和画面质量，不能直接接入桌宠。
+决定：暂停在素材处理前确认点；等待用户确认 `docs/kling-batch-intake-remaining-state-and-variety.md` 后，再处理水印、抽帧并接入 runtime。
