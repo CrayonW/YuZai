@@ -46,6 +46,7 @@ export class AnimationDirector {
   private actionFrameOffset = 0;
   private pending: PendingRequest | null = null;
   private suspendedDaily: SuspendedDailyPlayback | null = null;
+  private transitionTarget: RuntimeAnimationAction | null = null;
 
   constructor(private readonly options: AnimationDirectorOptions) {
     this.currentAction = options.defaultAction;
@@ -60,7 +61,7 @@ export class AnimationDirector {
 
     const currentConfig = this.configFor(this.currentAction);
     if (currentConfig.interruptPolicy === "immediate") {
-      this.switchTo(action, now);
+      this.switchToRequestedAction(action, now);
       return;
     }
 
@@ -73,8 +74,17 @@ export class AnimationDirector {
 
     if (this.shouldReturnToDaily(selection)) {
       const currentConfig = this.configFor(this.currentAction);
+      const returnTo = this.transitionTarget ?? currentConfig.returnTo ?? this.options.defaultAction;
       this.pending = null;
-      this.switchTo(currentConfig.returnTo ?? this.options.defaultAction, now);
+
+      if (!this.transitionTarget && currentConfig.transitionOut) {
+        this.transitionTarget = returnTo;
+        this.switchTo(currentConfig.transitionOut, now);
+        return this.selectionFor(this.currentAction, now);
+      }
+
+      this.transitionTarget = null;
+      this.switchTo(returnTo, now);
       selection = this.selectionFor(this.currentAction, now);
     }
 
@@ -98,7 +108,19 @@ export class AnimationDirector {
 
     const nextAction = this.pending.action;
     this.pending = null;
-    this.switchTo(nextAction, now);
+    this.switchToRequestedAction(nextAction, now);
+  }
+
+  private switchToRequestedAction(action: RuntimeAnimationAction, now: number): void {
+    const config = this.configFor(action);
+    if (config.transitionIn && config.transitionIn !== this.currentAction && config.transitionIn !== action) {
+      this.transitionTarget = action;
+      this.switchTo(config.transitionIn, now);
+      return;
+    }
+
+    this.transitionTarget = null;
+    this.switchTo(action, now);
   }
 
   private switchTo(action: RuntimeAnimationAction, now: number): void {

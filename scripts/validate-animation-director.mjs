@@ -13,7 +13,9 @@ const testSource = `
 
   const sequences = {
     idle_primary: sequence("idle_primary", 24, true, 72),
-    paw_raise: sequence("paw_raise", 24, false, 72)
+    paw_raise: sequence("paw_raise", 24, false, 72),
+    idle_to_paw_raise: sequence("idle_to_paw_raise", 24, false, 12),
+    paw_raise_to_idle: sequence("paw_raise_to_idle", 24, false, 12)
   };
 
   const configs = {
@@ -28,6 +30,20 @@ const testSource = `
       category: "interactive",
       entryFrames: [1],
       exitFrames: [72],
+      interruptPolicy: "locked",
+      returnTo: "idle_primary"
+    },
+    idle_to_paw_raise: {
+      category: "transition",
+      entryFrames: [1],
+      exitFrames: [12],
+      interruptPolicy: "locked",
+      returnTo: "paw_raise"
+    },
+    paw_raise_to_idle: {
+      category: "transition",
+      entryFrames: [1],
+      exitFrames: [12],
       interruptPolicy: "locked",
       returnTo: "idle_primary"
     }
@@ -53,6 +69,36 @@ const testSource = `
   assertEqual(director.update(5000).action, "idle_primary", "returns to daily action after interaction ends");
   assertEqual(director.update(5000).frameIndex, 48, "returns to the suspended daily frame instead of restarting");
   assertEqual(director.update(6000).frameIndex, 0, "daily timeline continues from the restored frame after return");
+
+  const transitionDirector = new AnimationDirector({
+    defaultAction: "idle_primary",
+    resolveSequence: (action) => sequences[action],
+    resolveConfig: (action) => ({
+      ...configs[action],
+      ...(action === "paw_raise" ? { transitionIn: "idle_to_paw_raise" } : {})
+    }),
+    maxSafeFrameWaitMs: 0
+  });
+
+  transitionDirector.request("paw_raise", 0);
+  assertEqual(transitionDirector.update(0).action, "idle_to_paw_raise", "plays transitionIn before interaction");
+  assertEqual(transitionDirector.update(410).action, "idle_to_paw_raise", "keeps transition before its final frame");
+  assertEqual(transitionDirector.update(500).action, "paw_raise", "enters requested interaction after transitionIn ends");
+
+  const transitionOutDirector = new AnimationDirector({
+    defaultAction: "idle_primary",
+    resolveSequence: (action) => sequences[action],
+    resolveConfig: (action) => ({
+      ...configs[action],
+      ...(action === "paw_raise" ? { transitionOut: "paw_raise_to_idle" } : {})
+    }),
+    maxSafeFrameWaitMs: 0
+  });
+
+  transitionOutDirector.request("paw_raise", 0);
+  assertEqual(transitionOutDirector.update(0).action, "paw_raise", "starts interaction without transitionIn");
+  assertEqual(transitionOutDirector.update(3000).action, "paw_raise_to_idle", "plays transitionOut before returning to daily");
+  assertEqual(transitionOutDirector.update(3500).action, "idle_primary", "returns to daily after transitionOut ends");
 
   function sequence(action, fps, loop, frameCount) {
     return {

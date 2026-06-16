@@ -541,3 +541,21 @@ FPS：不变。
 桌面验收：真实视频补齐后仍需通过多帧截图检查交互插入和回流是否肉眼顺滑。
 已知问题：当前真实动作数量仍受 manifest 限制；该改动改善切换时间线，不替代后续可灵视频生成和素材接入。
 决定：接受“交互结束恢复日常帧进度”作为序列帧播放器默认规则，减少交互插入带来的重启感。
+
+## 2026-06-16 过渡动作插入调度
+
+日期：2026-06-16
+源文件：`src/core/render/animation-director.ts`、`scripts/validate-animation-director.mjs`、`docs/animation-adapter.md`
+目标动作：后续可灵生成的 `idle_to_paw_raise`、`paw_raise_to_idle`、`idle_to_cursor_watch` 等 `transition` 动作
+问题：manifest 已支持 `transitionIn` 和 `transitionOut` 字段，但播放器此前没有真正插入过渡动作。等可灵生成过渡视频后，如果运行时仍忽略这些字段，日常动作和交互动作之间还是会直接切换，无法充分利用衔接素材。
+参考片段：动作计划中的 `idle_to_paw_raise`、`paw_raise_to_idle`、`idle_to_cursor_watch`。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：过渡动作应为非循环 `transition`；`transitionIn` 播放到尾帧后进入目标交互动作，`transitionOut` 播放到尾帧后回到 `returnTo` 日常动作。
+水印处理：不涉及视频处理；未来过渡视频仍必须按接入前清单确认无水印、无 logo、无文字。
+重建方法：更新 `AnimationDirector`，当目标动作配置 `transitionIn` 时先插入过渡；当交互动作配置 `transitionOut` 时先插入回切过渡，再返回日常动作。
+运行时输出：本次用自动验证覆盖，未新增桌面截图。
+验证命令：`npm run validate:animation-director`、`npm run validate:release`。
+桌面验收：真实过渡视频生成并接入 manifest 后，需要重新做桌面多帧截图，确认过渡动作确实可见且没有闪断。
+已知问题：当前 runtime manifest 尚无启用的过渡动作，所以本次改动是先打通调度能力，等待真实素材补齐。
+决定：接受 `transitionIn`/`transitionOut` 作为日常动作和交互动作之间的标准衔接机制。
