@@ -12,6 +12,7 @@ interface BehaviorSchedule {
     action: string;
     durationSeconds?: number;
     loop?: boolean;
+    minCooldownSeconds?: number;
   }>;
 }
 
@@ -36,6 +37,12 @@ export function buildRuntimeDailyRotatorOptions(
       return Math.round((item?.durationSeconds ?? 3) * 1000);
     })
   );
+  const variationCooldownMs = Object.fromEntries(
+    variations.map((action) => {
+      const item = schedule.dailyPool?.find((candidate) => candidate.action === action);
+      return [action, Math.max(0, Math.round((item?.minCooldownSeconds ?? 0) * 1000))];
+    })
+  ) as Partial<Record<RuntimeAnimationAction, number>>;
   const gapMs = Math.round((schedule.rules?.minDailyGapSeconds ?? 45) * 1000);
 
   return {
@@ -43,6 +50,7 @@ export function buildRuntimeDailyRotatorOptions(
     variations,
     firstDelayMs: Math.max(1500, Math.round(gapMs / 10)),
     variationDurationMs,
+    variationCooldownMs,
     gapMs
   };
 }

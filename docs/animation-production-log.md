@@ -577,3 +577,21 @@ FPS：不变。
 桌面验收：等 `groom_face_wash` 等视频生成并接入 manifest 后，需要做长时间桌面观察和多帧截图，确认生活化动作能自然插入并回到日常。
 已知问题：当前 runtime manifest 仍只有 6 个动作；非循环生活化动作只有在真实素材接入后才会实际播放。
 决定：接受非循环生活化 daily 进入日常变化池，作为降低视觉疲劳的默认调度规则。
+
+## 2026-06-16 日常动作级冷却调度
+
+日期：2026-06-16
+源文件：`src/core/render/daily-animation-rotator.ts`、`src/core/render/runtime-behavior-schedule.ts`、`scripts/validate-daily-animation-rotator.mjs`、`scripts/validate-runtime-behavior-schedule.mjs`
+目标动作：所有日常变化池动作，尤其是 `groom_face_wash`、`stretch_yawn`、`desk_sniff` 等生活化动作
+问题：日常变化此前只有全局 gap 和固定轮播顺序。等生活化动作接入后，同一个动作仍可能在较短观察窗口里按顺序反复出现，降低“真实小猫在电脑里生活”的感觉。
+参考片段：可灵动作计划和行为计划里的 `minCooldownSeconds`。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：`DailyAnimationRotator` 选择动作时会跳过仍在冷却期内的 variation；如果一圈动作都在冷却，则保持默认 idle，并在下一次 gap 后重试。
+水印处理：不涉及视频处理。
+重建方法：为 `DailyAnimationRotatorOptions` 增加 `variationCooldownMs`；`buildRuntimeDailyRotatorOptions` 从 `dailyPool.minCooldownSeconds` 派生动作级冷却毫秒表。
+运行时输出：本次用自动验证覆盖。
+验证命令：`npm run validate:daily-animation-rotator`、`npm run validate:runtime-behavior-schedule`、`npm run validate:release`。
+桌面验收：真实生活化动作补齐后，需做长时间桌面观察，确认同一动作不会过密重复。
+已知问题：当前 runtime manifest 仍缺少第一批可灵生活化动作，所以该规则暂时主要作用于已有日常动作和未来素材。
+决定：接受动作级冷却作为日常变化池默认策略，减少重复感和视觉疲劳。

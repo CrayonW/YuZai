@@ -56,6 +56,8 @@ const checks = [
   ["uses schedule daily gap for anti-fatigue", options.gapMs, 45000],
   ["uses longest available daily duration", options.variationDurationMs, 8000],
   ["keeps first variation delayed enough to avoid instant loop", options.firstDelayMs, 4500],
+  ["uses action cooldown for tail_wag", options.variationCooldownMs.tail_wag, 360000],
+  ["uses action cooldown for groom_face_wash", options.variationCooldownMs.groom_face_wash, 900000],
   ["current project filters to enabled behavior variations", currentOptions.variations.join(","), "tail_wag,idle_secondary"]
 ];
 

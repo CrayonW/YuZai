@@ -6,6 +6,7 @@ export interface DailyAnimationRotatorOptions {
   firstDelayMs?: number;
   variationDurationMs?: number;
   gapMs?: number;
+  variationCooldownMs?: Partial<Record<RuntimeAnimationAction, number>>;
 }
 
 export class DailyAnimationRotator {
@@ -14,6 +15,7 @@ export class DailyAnimationRotator {
   private readonly gapMs: number;
   private nextVariationAt: number;
   private activeVariation: { action: RuntimeAnimationAction; endsAt: number } | null = null;
+  private lastStartedAt = new Map<RuntimeAnimationAction, number>();
   private variationIndex = 0;
 
   constructor(private readonly options: DailyAnimationRotatorOptions, startedAt = performance.now()) {
@@ -38,11 +40,16 @@ export class DailyAnimationRotator {
     }
 
     if (now >= this.nextVariationAt) {
+      const action = this.nextAvailableVariation(now);
+      if (!action) {
+        this.scheduleNext(now);
+        return this.options.defaultAction;
+      }
       this.activeVariation = {
-        action: this.options.variations[this.variationIndex % this.options.variations.length],
+        action,
         endsAt: now + this.variationDurationMs
       };
-      this.variationIndex += 1;
+      this.lastStartedAt.set(action, now);
       return this.activeVariation.action;
     }
 
@@ -51,5 +58,22 @@ export class DailyAnimationRotator {
 
   private scheduleNext(now: number): void {
     this.nextVariationAt = now + this.gapMs;
+  }
+
+  private nextAvailableVariation(now: number): RuntimeAnimationAction | null {
+    for (let attempt = 0; attempt < this.options.variations.length; attempt += 1) {
+      const action = this.options.variations[this.variationIndex % this.options.variations.length];
+      this.variationIndex += 1;
+      if (this.isCoolingDown(action, now)) continue;
+      return action;
+    }
+    return null;
+  }
+
+  private isCoolingDown(action: RuntimeAnimationAction, now: number): boolean {
+    const cooldownMs = this.options.variationCooldownMs?.[action] ?? 0;
+    if (cooldownMs <= 0) return false;
+    const lastStartedAt = this.lastStartedAt.get(action);
+    return lastStartedAt !== undefined && now - lastStartedAt < cooldownMs;
   }
 }
