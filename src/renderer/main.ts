@@ -1,6 +1,7 @@
 import { AutonomousBehavior } from "../core/behavior/autonomous-behavior";
 import { clampWindowToBounds } from "../core/behavior/bounds-controller";
 import { InteractionController } from "../core/behavior/interaction-controller";
+import { resolveProximityAnimationAction } from "../core/behavior/proximity-action-bridge";
 import { resolveReminderAnimationAction } from "../core/behavior/reminder-action-bridge";
 import { ReminderBubbleController } from "../core/behavior/reminder-bubble-controller";
 import { DEFAULT_CONFIG } from "../core/config/load-config";
@@ -32,7 +33,14 @@ const animationDirector = new AnimationDirector({
   resolveConfig: configForAction
 });
 const autonomous = new AutonomousBehavior(fsm);
-const interaction = new InteractionController(canvas, fsm, () => autonomous.notifyStateChanged());
+const interaction = new InteractionController(canvas, fsm, () => autonomous.notifyStateChanged(), undefined, {
+  onMouseNearAccepted() {
+    const action = resolveProximityAnimationAction({ near: true }, isRenderableRuntimeAnimationAction);
+    if (action && isRenderableRuntimeAnimationAction(action)) {
+      animationDirector.request(action, performance.now());
+    }
+  }
+});
 const reminders = new ReminderBubbleController(reminderBubble, {
   onShow(event) {
     const action = resolveReminderAnimationAction(event, isRenderableRuntimeAnimationAction);

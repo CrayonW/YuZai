@@ -10,6 +10,10 @@ interface DragSession {
   active: boolean;
 }
 
+export interface InteractionControllerEvents {
+  onMouseNearAccepted?: () => void;
+}
+
 export class InteractionController {
   private lastClickAt = 0;
   private clickCount = 0;
@@ -24,7 +28,8 @@ export class InteractionController {
     private readonly canvas: HTMLCanvasElement,
     private readonly fsm: PetStateMachine,
     private readonly notifyStateChanged: () => void,
-    runtimeInteractions = buildRuntimeInteractionSchedule()
+    runtimeInteractions = buildRuntimeInteractionSchedule(),
+    private readonly events: InteractionControllerEvents = {}
   ) {
     this.runtimeInteractions = runtimeInteractions;
     this.interactionCooldowns = new InteractionCooldowns({
@@ -125,6 +130,7 @@ export class InteractionController {
       const now = performance.now();
       if (!this.interactionCooldowns.tryUse("mouse_near", now)) return;
       this.fsm.request({ state: this.runtimeInteractions.mouseNearState, mood: "happy", view: "front", direction: 0, cacheCurrent: true, force: true });
+      this.events.onMouseNearAccepted?.();
       this.notifyStateChanged();
       return;
     }

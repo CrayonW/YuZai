@@ -865,3 +865,21 @@ FPS：不变。
 桌面验收：后续接入 `stretch_yawn` 或 `call_response` 等动作后，再观察气泡出现时是否能插入对应互动序列，并在动作结束后回到日常动作。
 已知问题：第一批可灵视频仍因账号余额不足未生成，桥接链路目前只能验证解析与安全跳过。
 决定：接受提醒动作桥接作为作息互动入口；后续素材接入时不再需要改提醒控制器，只需补齐 manifest 动作。
+
+## 2026-06-16 鼠标靠近动作桥接
+
+日期：2026-06-16
+源文件：`src/core/behavior/proximity-action-bridge.ts`、`src/core/behavior/interaction-controller.ts`、`src/renderer/main.ts`、`scripts/validate-proximity-action-bridge.mjs`
+目标动作：`cursor_watch`、`paw_raise`
+问题：MVP 要求鼠标靠近有反应；当前状态机能触发靠近状态，但后续 `cursor_watch` 视频接入后，仍缺少独立的“靠近 -> 看向鼠标”动作候选入口。
+参考片段：`cursor_watch` 是第一批可灵交互动作，定位为鼠标靠近时的低强度关注反应；`paw_raise` 是当前已接入的可播放互动动作。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变序列帧播放；鼠标靠近被冷却器接受后，只请求一个可播放候选动作，具体切换仍交给 `AnimationDirector`。
+水印处理：不涉及视频处理。
+重建方法：新增 `resolveProximityAnimationAction`，靠近时优先选择 `cursor_watch`，不可用时退到 `paw_raise`；`InteractionController` 增加 `onMouseNearAccepted` 回调，只在靠近交互真正被接受时通知 renderer。
+运行时输出：当前 `cursor_watch` 尚未生成和接入，因此鼠标靠近仍可退到已有 `paw_raise`；未来 `cursor_watch` 进入 manifest 后会自动优先播放。
+验证命令：`npm run validate:proximity-action-bridge`、`npm run validate:runtime-interaction-schedule`、`npm run typecheck`
+桌面验收：后续接入 `cursor_watch` 后，靠近桌宠时应观察到低强度注视/关注动作，并在动作结束后回到日常动作。
+已知问题：第一批可灵视频仍因账号余额不足未生成，`cursor_watch` 尚不可播放。
+决定：接受鼠标靠近动作桥接作为交互素材接入入口；后续无需再改交互控制器即可接入 `cursor_watch`。
