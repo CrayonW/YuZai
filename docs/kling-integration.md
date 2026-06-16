@@ -148,3 +148,18 @@ assets/origin/generated/kling/<action>.mp4
 - 未把真实 key 写入仓库文件。
 
 当前结论不变：项目侧可灵 CLI 已接入，当前不能真实生成视频的原因仍是这组 key 没有通过可灵开放 API 鉴权。下一次换 key 或开放平台权限调整后，先运行 `npm run kling:auth-check`；通过后再执行 `npm run kling:generate-batch -- --batch 1`，生成第一批视频，并按 `docs/kling-batch-intake-first.md` 先给用户确认清单后再处理素材。
+
+## 2026-06-16 鉴权诊断增强记录
+
+再次执行 `npm run kling:auth-check`，结果仍为 `401 / Auth failed`。本次 `auth-check` 已增强为结构化诊断输出，仍不输出真实 key 内容。
+
+本次诊断字段：
+
+- Access Key：已配置，只输出长度。
+- Secret Key：已配置，只输出长度。
+- API 探测地址：输出 baseUrl、probePath 和 probeUrl。
+- JWT：输出算法、有效期、nbf 偏移、签发时间、可用起始时间和过期时间。
+- 服务端时间差：输出 `serverClockSkewSeconds`，本次为 0 秒。
+- 建议：检查 Access Key/Secret Key 是否同组、Secret Key 是否完整、该 Key 是否开通开放平台 API 权限，以及 API base/path 是否仍符合当前可灵开放平台文档。
+
+当前判断：JWT 时间窗和本机时间不是主要问题；更可能是 key/权限/API 入口配置问题。真实视频生成仍不能继续，第一批动作仍需等 `npm run kling:auth-check` 返回 `ok: true` 后再执行。

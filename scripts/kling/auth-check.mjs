@@ -2,6 +2,7 @@ import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createKlingJwt } from "./jwt.mjs";
 import { loadDotEnv, requireEnv } from "./env.mjs";
+import { buildKlingAuthDiagnostics } from "./auth-diagnostics.mjs";
 
 const root = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
 
@@ -13,6 +14,7 @@ const baseUrl = (process.env.KLING_API_BASE_URL || "https://api.klingai.com").re
 const queryPath = process.env.KLING_IMAGE_TO_VIDEO_QUERY_PATH || "/v1/videos/image2video/{task_id}";
 const probePath = queryPath.replace("{task_id}", "nonexistent-auth-probe");
 const token = createKlingJwt(accessKey, secretKey);
+const startedAtMs = Date.now();
 
 try {
   const response = await fetch(`${baseUrl}${probePath}`, {
@@ -30,7 +32,18 @@ try {
       status: response.status,
       kind: "auth_failed",
       message,
-      serverDate: response.headers.get("date")
+      serverDate: response.headers.get("date"),
+      diagnostics: buildKlingAuthDiagnostics({
+        accessKey,
+        secretKey,
+        baseUrl,
+        probePath,
+        status: response.status,
+        kind: "auth_failed",
+        message,
+        serverDate: response.headers.get("date"),
+        nowMs: startedAtMs
+      })
     }, null, 2));
     process.exitCode = 1;
   } else {
@@ -39,14 +52,36 @@ try {
       status: response.status,
       kind: "auth_accepted",
       message,
-      serverDate: response.headers.get("date")
+      serverDate: response.headers.get("date"),
+      diagnostics: buildKlingAuthDiagnostics({
+        accessKey,
+        secretKey,
+        baseUrl,
+        probePath,
+        status: response.status,
+        kind: "auth_accepted",
+        message,
+        serverDate: response.headers.get("date"),
+        nowMs: startedAtMs
+      })
     }, null, 2));
   }
 } catch (error) {
   console.log(JSON.stringify({
     ok: false,
     kind: "network_error",
-    message: error instanceof Error ? error.message : String(error)
+    message: error instanceof Error ? error.message : String(error),
+    diagnostics: buildKlingAuthDiagnostics({
+      accessKey,
+      secretKey,
+      baseUrl,
+      probePath,
+      status: null,
+      kind: "network_error",
+      message: error instanceof Error ? error.message : String(error),
+      serverDate: null,
+      nowMs: startedAtMs
+    })
   }, null, 2));
   process.exitCode = 1;
 }

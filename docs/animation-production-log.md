@@ -703,3 +703,21 @@ FPS：不变。
 桌面验收：第一批视频真正生成并确认后，再按清单执行抽帧、manifest 更新和桌面多帧截图。
 已知问题：该清单仍是接入前执行文档，未生成可灵视频，也未改变 runtime 可见动作。
 决定：接受第一批执行清单作为后续生成和接入 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised` 的单页入口。
+
+## 2026-06-16 可灵鉴权诊断增强
+
+日期：2026-06-16
+源文件：`scripts/kling/auth-check.mjs`、`scripts/kling/auth-diagnostics.mjs`、`scripts/validate-kling-auth-diagnostics.mjs`、`docs/kling-integration.md`
+目标动作：第一批可灵生成动作，尤其是 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised`
+问题：`npm run kling:auth-check` 持续返回 `401 auth_failed`，但旧输出只能说明鉴权失败，不能快速判断是否为本机时间/JWT 时间窗/API 地址问题。
+参考片段：可灵 auth-check 响应中的 HTTP status、message、server Date；本地 JWT 生成规则中的 `exp` 和 `nbf`。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变运行时播放逻辑。
+水印处理：不涉及视频处理。
+重建方法：新增 `buildKlingAuthDiagnostics`，让 `kling:auth-check` 输出 key 是否配置、key 长度、probe URL、JWT 时间窗、服务端时间差和排查建议；验证脚本确认诊断不泄露真实 key。
+运行时输出：不涉及桌面截图。
+验证命令：`npm run validate:kling-auth-diagnostics`、`npm run kling:auth-check`、`npm run validate:release`。
+桌面验收：鉴权通过并生成第一批视频后再进行桌面验收。
+已知问题：当前 `npm run kling:auth-check` 仍返回 `401 / Auth failed`；本次诊断显示服务端时间差为 0 秒，JWT 时间窗正常，真实视频仍未生成。
+决定：接受增强诊断作为可灵接入的下一步排查入口；在 key/权限/API 入口问题解决前，不继续调用真实生成命令。
