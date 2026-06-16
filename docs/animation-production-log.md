@@ -883,3 +883,21 @@ FPS：不变。
 桌面验收：后续接入 `cursor_watch` 后，靠近桌宠时应观察到低强度注视/关注动作，并在动作结束后回到日常动作。
 已知问题：第一批可灵视频仍因账号余额不足未生成，`cursor_watch` 尚不可播放。
 决定：接受鼠标靠近动作桥接作为交互素材接入入口；后续无需再改交互控制器即可接入 `cursor_watch`。
+
+## 2026-06-16 点击动作桥接
+
+日期：2026-06-16
+源文件：`src/core/behavior/click-action-bridge.ts`、`src/core/behavior/interaction-controller.ts`、`src/renderer/main.ts`、`scripts/validate-click-action-bridge.mjs`
+目标动作：`click_surprised`、`poke_annoyed`、`shy`、`waking`、`paw_raise`
+问题：用户日常和小猫互动时，普通点击、多次点击和叫醒应有不同反应；当前状态机已区分这些交互，但后续视频接入后仍缺少动作候选入口。
+参考片段：第一批可灵动作包含 `click_surprised`；后续动作计划包含 `poke_annoyed`、`shy`、`waking` 等互动素材。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变序列帧播放；点击交互被冷却器接受后，只请求一个可播放候选动作，动作切换和结束回日常仍由 `AnimationDirector` 处理。
+水印处理：不涉及视频处理。
+重建方法：新增 `resolveClickAnimationAction`，普通点击优先 `click_surprised`，多次点击优先 `poke_annoyed` 再 `shy`，睡眠唤醒优先 `waking`；候选缺失时退到已接入的 `paw_raise` 或静默跳过。
+运行时输出：当前 `click_surprised`、`poke_annoyed`、`shy`、`waking` 尚未生成和接入，因此点击仍可退到已有 `paw_raise`；后续素材进入 manifest 后会自动优先播放更贴合语义的动作。
+验证命令：`npm run validate:click-action-bridge`、`npm run validate:runtime-interaction-schedule`、`npm run typecheck`
+桌面验收：后续接入 `click_surprised` 后，普通点击应播放惊讶反馈；接入 `poke_annoyed/shy` 后，多次点击应出现情绪变化；接入 `waking` 后，睡眠叫醒应有独立过渡。
+已知问题：第一批可灵视频仍因账号余额不足未生成，真实点击视频动作尚不可播放。
+决定：接受点击动作桥接作为用户主动互动入口；后续无需再改点击分支即可接入可灵互动素材。

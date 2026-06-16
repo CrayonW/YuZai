@@ -33,6 +33,7 @@
     "validate:reminder-bubble-controller": "node scripts/validate-reminder-bubble-controller.mjs",
     "validate:reminder-action-bridge": "node scripts/validate-reminder-action-bridge.mjs",
     "validate:proximity-action-bridge": "node scripts/validate-proximity-action-bridge.mjs",
+    "validate:click-action-bridge": "node scripts/validate-click-action-bridge.mjs",
     "validate:manifest-contract": "node scripts/validate-manifest-contract.mjs",
     "validate:manifest-contract:current": "node scripts/manifest-contract.mjs",
     "validate:animation-asset-contract": "node scripts/validate-animation-asset-contract.mjs",

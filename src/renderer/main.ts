@@ -1,5 +1,6 @@
 import { AutonomousBehavior } from "../core/behavior/autonomous-behavior";
 import { clampWindowToBounds } from "../core/behavior/bounds-controller";
+import { resolveClickAnimationAction } from "../core/behavior/click-action-bridge";
 import { InteractionController } from "../core/behavior/interaction-controller";
 import { resolveProximityAnimationAction } from "../core/behavior/proximity-action-bridge";
 import { resolveReminderAnimationAction } from "../core/behavior/reminder-action-bridge";
@@ -36,6 +37,12 @@ const autonomous = new AutonomousBehavior(fsm);
 const interaction = new InteractionController(canvas, fsm, () => autonomous.notifyStateChanged(), undefined, {
   onMouseNearAccepted() {
     const action = resolveProximityAnimationAction({ near: true }, isRenderableRuntimeAnimationAction);
+    if (action && isRenderableRuntimeAnimationAction(action)) {
+      animationDirector.request(action, performance.now());
+    }
+  },
+  onClickAccepted(kind) {
+    const action = resolveClickAnimationAction({ kind }, isRenderableRuntimeAnimationAction);
     if (action && isRenderableRuntimeAnimationAction(action)) {
       animationDirector.request(action, performance.now());
     }

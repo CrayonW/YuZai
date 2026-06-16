@@ -12,6 +12,7 @@ interface DragSession {
 
 export interface InteractionControllerEvents {
   onMouseNearAccepted?: () => void;
+  onClickAccepted?: (kind: "single" | "repeated" | "wake") => void;
 }
 
 export class InteractionController {
@@ -152,6 +153,7 @@ export class InteractionController {
     if (this.fsm.state === "sleeping") {
       if (!this.interactionCooldowns.tryUse("wake", now)) return;
       this.fsm.request({ state: this.runtimeInteractions.wakeState, mood: "sleepy", view: "front", direction: 0, cacheCurrent: true, force: true }, now);
+      this.events.onClickAccepted?.("wake");
       this.fsm.lockFor(700, now);
       window.setTimeout(() => {
         this.fsm.request({ state: this.runtimeInteractions.clickState, mood: "surprised", view: "front", direction: 0, force: true });
@@ -168,15 +170,18 @@ export class InteractionController {
         return;
       }
       this.fsm.request({ state: this.runtimeInteractions.repeatedClickState, mood: "shy", view: "front", direction: 0, cacheCurrent: true, force: true }, now);
+      this.events.onClickAccepted?.("repeated");
       this.fsm.lockFor(1600, now);
       this.clickCount = 0;
     } else if (longGap) {
       if (!this.interactionCooldowns.tryUse("click", now)) return;
       this.fsm.request({ state: this.runtimeInteractions.clickState, mood: "happy", view: "front", direction: 0, cacheCurrent: true, force: true }, now);
+      this.events.onClickAccepted?.("single");
       this.fsm.lockFor(DEFAULT_CONFIG.timing.interactionMs, now);
     } else {
       if (!this.interactionCooldowns.tryUse("click", now)) return;
       this.fsm.request({ state: this.runtimeInteractions.clickState, mood: "surprised", view: "front", direction: 0, cacheCurrent: true, force: true }, now);
+      this.events.onClickAccepted?.("single");
       this.fsm.lockFor(DEFAULT_CONFIG.timing.interactionMs, now);
     }
 
