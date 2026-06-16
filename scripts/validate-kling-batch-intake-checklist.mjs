@@ -19,7 +19,12 @@ const testSource = `
   };
   const batches = {
     batches: [
-      { id: "first", name: "第一批", actions: [{ action: "groom_face_wash" }, { action: "click_surprised" }] }
+      {
+        id: "first",
+        name: "第一批：降低疲劳与关键交互",
+        reason: "优先补真实小猫生活动作和点击反馈。",
+        actions: [{ action: "groom_face_wash" }, { action: "click_surprised" }]
+      }
     ]
   };
   const manifest = {
@@ -39,6 +44,9 @@ const testSource = `
   assertEqual(checklist.items.length, 2, "lists every batch action");
   assertEqual(checklist.items[0].sourceVideo, "assets/origin/generated/kling/groom_face_wash.mp4", "uses generated video as source");
   assertEqual(checklist.items[0].targetAction, "groom_face_wash", "uses action name");
+  assertEqual(checklist.batchName, "第一批：降低疲劳与关键交互", "keeps batch name");
+  assertEqual(checklist.batchReason, "优先补真实小猫生活动作和点击反馈。", "keeps batch reason");
+  assertEqual(checklist.items[0].generationCommand, "npm run kling:generate -- --action groom_face_wash", "renders generation command data");
   assertEqual(checklist.items[0].manifestStatus, "待新增", "new action requires manifest add");
   assertEqual(checklist.items[0].overwritePath, "assets/runtime/animations/groom_face_wash/frames", "suggests runtime frame path");
   assertEqual(checklist.items[1].manifestStatus, "已存在", "existing action is detected");
@@ -47,6 +55,10 @@ const testSource = `
   const text = renderKlingBatchIntakeChecklist(checklist);
   assertIncludes(text, "可灵批次素材接入前确认清单", "renders Chinese title");
   assertIncludes(text, "必须先给用户确认", "renders user confirmation rule");
+  assertIncludes(text, "批次名称：第一批：降低疲劳与关键交互", "renders batch name");
+  assertIncludes(text, "优先补真实小猫生活动作和点击反馈。", "renders batch reason");
+  assertIncludes(text, "生成命令：npm run kling:generate -- --action groom_face_wash", "renders per-action generation command");
+  assertIncludes(text, "npm run animations:asset-contract -- --write docs/animation-asset-contract.md", "renders asset contract refresh command");
   assertIncludes(text, "assets/origin/generated/kling/groom_face_wash.mp4", "renders source video");
   assertIncludes(text, "目标 action：groom_face_wash", "renders target action");
   assertIncludes(text, "npm run animations:audit-origin", "renders validation command");

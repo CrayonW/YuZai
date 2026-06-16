@@ -3,6 +3,8 @@
 执行原则：生成视频后、抽帧或覆盖 manifest 前，必须先给用户确认这份清单；确认后才允许处理帧、去水印、覆盖 runtime 路径或修改 manifest。
 
 批次：1
+批次名称：第一批：降低疲劳与关键交互
+优先原因：优先补最像真实小猫生活的长日常动作，并让鼠标/点击拥有专属反馈。
 
 ### 本批次动作
 
@@ -11,6 +13,7 @@
   - 分类：daily
   - 循环：否
   - 时长：8s
+  - 生成命令：npm run kling:generate -- --action groom_face_wash
   - manifest 状态：待新增
   - 会覆盖路径：assets/runtime/animations/groom_face_wash/frames
   - 状态映射建议：待确认
@@ -21,6 +24,7 @@
   - 分类：daily
   - 循环：是
   - 时长：8s
+  - 生成命令：npm run kling:generate -- --action loaf_breathing
   - manifest 状态：待新增
   - 会覆盖路径：assets/runtime/animations/loaf_breathing/frames
   - 状态映射建议：待确认
@@ -31,6 +35,7 @@
   - 分类：interactive
   - 循环：否
   - 时长：4s
+  - 生成命令：npm run kling:generate -- --action cursor_watch
   - manifest 状态：待新增
   - 会覆盖路径：assets/runtime/animations/cursor_watch/frames
   - 状态映射建议：待确认
@@ -41,6 +46,7 @@
   - 分类：interactive
   - 循环：否
   - 时长：4s
+  - 生成命令：npm run kling:generate -- --action click_surprised
   - manifest 状态：待新增
   - 会覆盖路径：assets/runtime/animations/click_surprised/frames
   - 状态映射建议：待确认
@@ -54,6 +60,7 @@
 - `npm run animations:build-from-origin`
 - `npm run validate:runtime-animations`
 - `npm run validate:manifest-contract:current`
+- `npm run animations:asset-contract -- --write docs/animation-asset-contract.md`
 - `npm run validate:release`
 
 ### 桌面验收方式

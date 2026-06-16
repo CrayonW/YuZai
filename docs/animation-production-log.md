@@ -685,3 +685,21 @@ FPS：不变。
 桌面验收：第一批动作真正接入后，需要重点观察待机重复度、鼠标靠近反馈和点击反馈是否明显改善。
 已知问题：优先批次只是素材补齐顺序，真实视频仍未生成，runtime 可播放覆盖率仍为 21%。
 决定：接受“第一批先补强生活化日常 + 关键互动”的策略，让后续可灵生成和人工素材补充更直接服务于流畅与真实感。
+
+## 2026-06-16 第一批可灵动作执行清单增强
+
+日期：2026-06-16
+源文件：`scripts/kling-batch-intake-checklist.mjs`、`scripts/validate-kling-batch-intake-checklist.mjs`、`docs/kling-batch-intake-first.md`
+目标动作：第一批 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised`
+问题：第一批接入清单原本列出了源视频和目标路径，但没有把批次优先原因、单动作可灵生成命令和资产契约刷新命令放到同一张执行清单里。后续真正生成/接入时容易在多个文档之间来回找。
+参考片段：`docs/kling-generation-batches.json` 的第一批 `name`、`reason` 和 action 列表；`docs/animation-asset-contract.md` 的优先补齐批次。
+帧数：未生成新帧。
+FPS：不变。
+循环方式：不改变运行时播放逻辑。
+水印处理：不涉及视频处理；清单仍强调生成后、抽帧或覆盖 manifest 前必须先确认，后续仍需检查并去除水印。
+重建方法：`buildKlingBatchIntakeChecklist` 现在保留批次名称和优先原因；每个 action 增加 `npm run kling:generate -- --action <action>`；必跑验证增加资产契约报告刷新命令。
+运行时输出：不涉及桌面截图。
+验证命令：`npm run validate:kling-batch-intake-checklist`、`npm run kling:batch-intake-checklist -- --batch 1 --write docs/kling-batch-intake-first.md`、`npm run validate:release`。
+桌面验收：第一批视频真正生成并确认后，再按清单执行抽帧、manifest 更新和桌面多帧截图。
+已知问题：该清单仍是接入前执行文档，未生成可灵视频，也未改变 runtime 可见动作。
+决定：接受第一批执行清单作为后续生成和接入 `groom_face_wash`、`loaf_breathing`、`cursor_watch`、`click_surprised` 的单页入口。

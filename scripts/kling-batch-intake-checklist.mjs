@@ -4,9 +4,12 @@ import { selectBatchActions } from "./kling/batch-plan.mjs";
 
 export function buildKlingBatchIntakeChecklist({ plan, batches, manifest, batch }) {
   const actions = selectBatchActions(plan, batches, { batch });
+  const batchInfo = findBatchInfo(batches, batch);
   const stateHints = buildStateHints(manifest);
   return {
     batch,
+    batchName: batchInfo.name ?? batchInfo.id ?? batch,
+    batchReason: batchInfo.reason ?? "待确认",
     generatedAt: new Date().toISOString(),
     items: actions.map((action) => {
       const manifestAction = manifest.actions?.[action.action];
@@ -16,6 +19,7 @@ export function buildKlingBatchIntakeChecklist({ plan, batches, manifest, batch 
         category: action.category,
         loop: action.loop,
         durationSeconds: action.durationSeconds,
+        generationCommand: `npm run kling:generate -- --action ${action.action}`,
         manifestStatus: manifestAction ? "已存在" : "待新增",
         overwritePath: manifestAction?.frameRoot ? runtimePathToDisplay(manifestAction.frameRoot) : `assets/runtime/animations/${action.action}/frames`,
         stateHint: stateHints.get(action.action) || "待确认",
@@ -29,6 +33,7 @@ export function buildKlingBatchIntakeChecklist({ plan, batches, manifest, batch 
       "npm run animations:build-from-origin",
       "npm run validate:runtime-animations",
       "npm run validate:manifest-contract:current",
+      "npm run animations:asset-contract -- --write docs/animation-asset-contract.md",
       "npm run validate:release"
     ],
     desktopAcceptance: [
@@ -45,6 +50,8 @@ export function renderKlingBatchIntakeChecklist(checklist) {
     "执行原则：生成视频后、抽帧或覆盖 manifest 前，必须先给用户确认这份清单；确认后才允许处理帧、去水印、覆盖 runtime 路径或修改 manifest。",
     "",
     `批次：${checklist.batch}`,
+    `批次名称：${checklist.batchName}`,
+    `优先原因：${checklist.batchReason}`,
     "",
     "### 本批次动作",
     ""
@@ -56,6 +63,7 @@ export function renderKlingBatchIntakeChecklist(checklist) {
     lines.push(`  - 分类：${item.category}`);
     lines.push(`  - 循环：${item.loop ? "是" : "否"}`);
     lines.push(`  - 时长：${item.durationSeconds}s`);
+    lines.push(`  - 生成命令：${item.generationCommand}`);
     lines.push(`  - manifest 状态：${item.manifestStatus}`);
     lines.push(`  - 会覆盖路径：${item.overwritePath}`);
     lines.push(`  - 状态映射建议：${item.stateHint}`);
@@ -130,6 +138,15 @@ function buildStateHints(manifest) {
     }
   }
   return hints;
+}
+
+function findBatchInfo(batches, batchSelector) {
+  if (!Array.isArray(batches?.batches)) return {};
+  const numericIndex = Number(batchSelector);
+  if (Number.isInteger(numericIndex) && numericIndex >= 1 && batches.batches[numericIndex - 1]) {
+    return batches.batches[numericIndex - 1];
+  }
+  return batches.batches.find((candidate) => candidate.id === batchSelector || candidate.name === batchSelector) || {};
 }
 
 function appendHint(hints, action, state) {
