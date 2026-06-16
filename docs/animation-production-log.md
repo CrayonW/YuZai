@@ -1027,3 +1027,21 @@ FPS：尚未进入抽帧阶段，runtime FPS 不变。
 桌面验收：尚未进行；需用户确认清单和人工素材检查后，才能进入去水印、抽帧、manifest 接入和桌面验收。
 已知问题：6 个剩余状态与生活化变化视频已经生成，但未检查水印和画面质量，不能直接接入桌宠。
 决定：暂停在素材处理前确认点；等待用户确认 `docs/kling-batch-intake-remaining-state-and-variety.md` 后，再处理水印、抽帧并接入 runtime。
+
+## 2026-06-16 可灵生成视频素材审查与视觉初筛
+
+日期：2026-06-16
+源文件：`scripts/kling-generated-video-audit.mjs`、`scripts/validate-kling-generated-video-audit.mjs`、`docs/kling-generated-video-audit.md`、`docs/kling-generated-video-visual-review.md`、`assets/reviews/kling-generated/*.png`
+目标动作：全部 14 个可灵生成动作视频
+问题：生成视频虽然已经存在，但进入 runtime 前仍需要可复现的基础审查、抽样证据和人工水印/画面检查入口。
+参考片段：`npm run kling:generated-video-audit -- --batch all --extract-previews --write docs/kling-generated-video-audit.md` 读取 `docs/kling-generation-batches.json` 和本地 mp4，生成元数据审查报告与抽样图。
+帧数：尚未抽帧为 runtime 序列帧；本次只抽取 review 证据图。
+FPS：runtime FPS 不变。
+循环方式：不改变序列帧播放；本次只建立素材审查流程。
+水印处理：未执行去水印；抽样总览暂未发现明显文字、水印或 logo，但仍需逐视频人工确认。
+重建方法：运行 `npm run kling:generated-video-audit -- --batch all --extract-previews --write docs/kling-generated-video-audit.md`。
+运行时输出：不涉及桌面截图；视频尚未接入 runtime manifest。
+验证命令：`node scripts/validate-kling-generated-video-audit.mjs`、`npm run kling:generated-video-audit -- --batch all --extract-previews --write docs/kling-generated-video-audit.md`
+桌面验收：尚未进行；需用户确认清单和人工素材检查后，才能进入去水印、抽帧、manifest 接入和桌面验收。
+已知问题：`cursor_watch` 抽样图中出现额外实体物体，外形像小鼠/道具，不适合作为鼠标靠近交互；已记录在 `docs/kling-generated-video-visual-review.md`，建议重生成或暂缓接入。
+决定：先提交审查工具和证据文档；runtime 接入继续等待清单确认与逐视频人工检查。
