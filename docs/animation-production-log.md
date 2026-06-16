@@ -1117,3 +1117,21 @@ FPS：runtime FPS 不变。
 桌面验收：尚未进行；需用户确认第一波清单并完成全程人工播放检查后，才能进入去水印、抽帧、manifest 接入和桌面验收。
 已知问题：`poke_annoyed` 部分帧尾巴和身体接近边缘，后续抽帧裁切要重点检查；`stretch_yawn` 更像打哈欠/抬前爪，不应预期为完整伸懒腰。
 决定：补充 P1 时间轴抽样证据，但继续暂停在 runtime 接入前确认点。
+
+## 2026-06-17 第二波/暂缓动作时间轴抽样审查
+
+日期：2026-06-17
+源文件：`assets/origin/generated/kling/groom_face_wash.mp4`、`assets/origin/generated/kling/loaf_breathing.mp4`、`assets/origin/generated/kling/desk_sniff.mp4`、`assets/origin/generated/kling/sleepy.mp4`、`assets/origin/generated/kling/sleep.mp4`、`assets/origin/generated/kling/sleeping.mp4`、`assets/origin/generated/kling/waking.mp4`、`assets/origin/generated/kling/shy.mp4`、`assets/origin/generated/kling/dragging.mp4`、`assets/reviews/kling-generated/*_sweep.png`、`docs/runtime-intake-wave2-sweep-review.md`
+目标动作：`groom_face_wash`、`loaf_breathing`、`desk_sniff`、`sleepy`、`sleep`、`sleeping`、`waking`、`shy`、`dragging`
+问题：第一波暂缓动作只有单张抽样或批次记录，不足以决定第二波接入顺序和睡眠链路分组。
+参考片段：使用 `ffmpeg -vf "fps=3,scale=150:-1,tile=5x3"` 为九个动作生成 15 帧时间轴抽样图。
+帧数：尚未抽帧为 runtime 序列帧；本次只抽取 review 证据图。
+FPS：runtime FPS 不变。
+循环方式：未修改；仍等待用户确认任何正式 runtime 接入清单。
+水印处理：未执行去水印；时间轴抽样未发现明显文字、水印、logo 或额外物体。
+重建方法：对每个源视频运行 ffmpeg 时间轴抽样命令，输出到 `assets/reviews/kling-generated/<action>_sweep.png`。
+运行时输出：不涉及桌面截图；尚未接入 runtime manifest。
+验证命令：`npm run validate:release`
+桌面验收：尚未进行；需用户确认第二波接入清单并完成全程人工播放检查后，才能进入去水印、抽帧、manifest 接入和桌面验收。
+已知问题：`loaf_breathing` 更像正坐轻呼吸，不是明确香箱趴；`sleeping` 抽样更像正坐轻闭眼，不建议单独作为真正睡眠循环；`dragging` 动作幅度较小，建议留到拖拽专项。
+决定：补充第二波/暂缓动作时间轴抽样证据；正式 runtime 接入仍暂停在用户确认清单前。

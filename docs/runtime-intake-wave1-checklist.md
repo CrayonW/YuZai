@@ -29,12 +29,12 @@
 
 | action | 暂缓原因 | 后续波次 |
 | --- | --- | --- |
-| `groom_face_wash` | 动作幅度较大，适合第二波单独检查起止姿势和回切自然度。 | 第二波日常生活动作 |
-| `loaf_breathing` | 姿态从坐姿变成香箱趴，需要设计坐姿到趴姿/趴姿到坐姿衔接。 | 第二波长陪伴状态 |
-| `desk_sniff` | 适合日常变化，但需要确认身体前探时抠绿和底部裁切。 | 第二波日常探索 |
-| `sleepy`、`sleep`、`sleeping`、`waking` | 属于睡眠链路，需要成组接入并设计状态持续时间。 | 睡眠作息波次 |
-| `shy` | 可作为点击/停留反馈，但第一波已有 `click_surprised` 和 `poke_annoyed`。 | 第二波互动变化 |
-| `dragging` | 拖拽状态会和窗口移动交互绑定，需要单独桌面验收。 | 拖拽专项波次 |
+| `groom_face_wash` | 时间轴抽样干净，洗脸/舔爪语义清楚；第一波先控制接入范围，暂缓到第二波做日常生活动作。 | 第二波日常生活动作 |
+| `loaf_breathing` | 时间轴抽样干净，但更像正坐轻呼吸，不是明确香箱趴；适合后续作为低疲劳待机补充。 | 第二波长陪伴状态 |
+| `desk_sniff` | 时间轴抽样干净，适合好奇探索；需要和 `cursor_watch` 的鼠标靠近语义区分。 | 第二波日常探索 |
+| `sleepy`、`sleep`、`sleeping`、`waking` | 时间轴抽样干净，但属于睡眠链路，需要成组接入并设计状态持续时间、锁定播放和回到日常的衔接。 | 睡眠作息波次 |
+| `shy` | 时间轴抽样干净，可作为互动结束后的轻反应；第一波已有点击反馈动作，暂缓到第二波互动变化。 | 第二波互动变化 |
+| `dragging` | 时间轴抽样干净但动作幅度较小，拖拽状态会和窗口移动交互绑定，需要单独桌面验收。 | 拖拽专项波次 |
 
 ## 不建议接入
 
@@ -65,6 +65,7 @@
 ## 补充抽样证据
 
 - 第一波 P1 时间轴抽样记录：`docs/runtime-intake-wave1-sweep-review.md`
+- 第二波/暂缓动作时间轴抽样记录：`docs/runtime-intake-wave2-sweep-review.md`
 - 抽样图：
   - `assets/reviews/kling-generated/click_surprised_sweep.png`
   - `assets/reviews/kling-generated/poke_annoyed_sweep.png`

@@ -77,6 +77,28 @@
 - `stretch_yawn`：`assets/reviews/kling-generated/stretch_yawn_sweep.png`
   - 未发现文字、水印、logo 或额外物体；更像打哈欠/抬前爪，适合休息提醒候选。
 
+### 第二波/暂缓动作时间轴抽样
+
+- 详细记录：`docs/runtime-intake-wave2-sweep-review.md`
+- `groom_face_wash`：`assets/reviews/kling-generated/groom_face_wash_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；洗脸/舔爪动作语义清楚，适合作为第二波日常生活动作。
+- `loaf_breathing`：`assets/reviews/kling-generated/loaf_breathing_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；动作更像正坐轻呼吸，暂不作为明确香箱趴状态。
+- `desk_sniff`：`assets/reviews/kling-generated/desk_sniff_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；适合作为好奇探索或鼠标靠近后的低强度反馈候选。
+- `sleepy`：`assets/reviews/kling-generated/sleepy_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；适合作为变困短过渡。
+- `sleep`：`assets/reviews/kling-generated/sleep_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；从坐姿进入蜷伏睡姿，适合作为入睡过渡。
+- `sleeping`：`assets/reviews/kling-generated/sleeping_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；抽样更像正坐轻闭眼，不建议单独作为真正睡眠循环。
+- `waking`：`assets/reviews/kling-generated/waking_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；适合作为醒来后回到日常动作的过渡。
+- `shy`：`assets/reviews/kling-generated/shy_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；适合作为互动结束后的短反应。
+- `dragging`：`assets/reviews/kling-generated/dragging_sweep.png`
+  - 未发现文字、水印、logo 或额外物体；动作幅度较小，建议留到拖拽专项验收。
+
 ## 后续接入门禁
 
 1. 用户确认本轮素材处理清单。
