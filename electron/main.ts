@@ -216,6 +216,20 @@ function createPetWindow(): void {
       }, testMouseProximityMs);
     }
 
+    const testDragMs = envNumber("YUZAI_TEST_DRAG_MS", 0);
+    if (testDragMs > 0) {
+      setTimeout(() => {
+        if (!petWindow || petWindow.isDestroyed()) return;
+        const payload = {
+          x: envNumber("YUZAI_TEST_DRAG_X", 80),
+          y: envNumber("YUZAI_TEST_DRAG_Y", 60),
+          holdMs: envNumber("YUZAI_TEST_DRAG_HOLD_MS", 900)
+        };
+        petWindow.webContents.send("test:drag", payload);
+        console.log(`[test] drag ${Math.round(payload.x)},${Math.round(payload.y)} hold=${Math.round(payload.holdMs)}`);
+      }, testDragMs);
+    }
+
     if (!capturePlan.enabled) return;
 
     void captureFrames(capturePlan.frames, capturePlan.quitAfterCapture);

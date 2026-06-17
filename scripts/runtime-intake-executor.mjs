@@ -237,6 +237,11 @@ export function renderRuntimeIntakeExecutionPlan(executionPlan) {
     "```bash",
     "npm run validate:runtime-intake-executor",
     "npm run validate:runtime-intake-waves",
+    ...(executionPlan.wave.id === "dragging-special" ? [
+      "npm run validate:interaction-controller",
+      "YUZAI_TEST_DRAG_MS=700 YUZAI_TEST_DRAG_X=100 YUZAI_TEST_DRAG_Y=70 YUZAI_TEST_DRAG_HOLD_MS=1200 YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-dragging.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=900 npm run dev",
+      "npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-dragging.png --count 8 --min-changed-frames 4 --min-width 200 --min-height 200"
+    ] : []),
     "npm run validate:release",
     "```",
     ""

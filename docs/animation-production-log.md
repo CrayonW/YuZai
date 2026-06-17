@@ -1423,3 +1423,39 @@ FPS：不变。
 桌面验收：尚未执行；模板不代表接入完成。
 已知问题：模板只能减少填写错误，不替代用户确认、逐视频人工播放检查和桌面拖拽验收。
 决定：接受拖拽专项批准模板进入仓库，但未收到用户确认前仍不得创建 `dragging-special.approved.json`。
+
+## 2026-06-18 拖拽桌面验收测试钩子
+
+日期：2026-06-18
+源文件：`electron/main.ts`、`electron/preload.ts`、`src/renderer/main.ts`、`src/renderer/global.d.ts`、`src/core/behavior/interaction-controller.ts`、`scripts/validate-interaction-controller.mjs`、`docs/runtime-intake-dragging-special-dry-run.md`、`docs/runtime-intake-dragging-special-execution-checklist.md`
+目标动作：`dragging`
+问题：现有 `YUZAI_TEST_MOVE_*` 只能直接移动窗口，不能触发 renderer 中的拖拽状态、拖拽动作桥接和释放后回 idle；正式接入 `dragging` 后仍缺少自动桌面验收路径。
+参考片段：新增 `YUZAI_TEST_DRAG_MS`、`YUZAI_TEST_DRAG_X`、`YUZAI_TEST_DRAG_Y`、`YUZAI_TEST_DRAG_HOLD_MS` 测试钩子，由主进程发送 `test:drag`，renderer 调用 `InteractionController.simulateDragForTest`。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：测试钩子会请求当前 runtime drag 状态，触发 `resolveDragAnimationAction`；当前正式素材未接入时仍回退到已有可见动作，接入后会播放 `dragging`。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：正式接入后执行 `YUZAI_TEST_DRAG_MS=700 YUZAI_TEST_DRAG_X=100 YUZAI_TEST_DRAG_Y=70 YUZAI_TEST_DRAG_HOLD_MS=1200 YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-dragging.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=900 npm run dev`，再执行 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-dragging.png --count 8 --min-changed-frames 4 --min-width 200 --min-height 200`。
+运行时输出：本次仅新增测试钩子；未修改 `assets/runtime/animations/manifest.json`，未接入 `dragging` 帧。
+验证命令：`npm run validate:interaction-controller`、`npm run validate:all`
+桌面验收：尚未执行；需要 `dragging` 正式接入后使用上述命令捕获 8 帧并检查拖拽期间有动作变化、释放后自然回到日常。
+已知问题：该钩子模拟拖拽路径，不替代真实鼠标手感检查；真实体验仍需在桌面上手动拖动确认。
+决定：接受自动拖拽验收钩子进入发布门禁，作为 `dragging-special` 正式接入后的必跑证据之一。
+
+## 2026-06-18 动作视频候选选择规则
+
+日期：2026-06-18
+源文件：`docs/animation-adapter.md`、`docs/runtime-intake-dragging-special-execution-checklist.md`
+目标动作：后续所有新增动作视频波次
+问题：用户明确要求“以后动作视频都选多的”，需要把该偏好写入项目文档，避免后续同一动作存在多个视频候选时只凭临时判断选择较少素材。
+参考片段：在动画资源接入规范中新增候选选择规则；在拖拽专项清单中补充拖拽动作候选选择说明。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：后续新增动作视频前，先列清单；同一动作或同一波次存在多个候选时，默认选择素材数量更多、动作覆盖更完整的方案，除非清单标明质量风险或用户明确要求改选较少集合。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`。
+验证命令：`npm run validate:all`、`npm run validate:release`
+桌面验收：不涉及桌面运行；这是后续素材 intake 的选择规则。
+已知问题：该规则不替代逐视频检查，数量更多的视频仍必须通过无水印、无文字、无额外物体、动作自然和桌面手感验收。
+决定：接受“动作视频都选多的”作为后续 runtime intake 默认规则。

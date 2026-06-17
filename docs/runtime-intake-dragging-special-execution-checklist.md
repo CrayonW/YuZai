@@ -25,6 +25,7 @@
 - 当前状态：deferred
 - 确认状态：needs-user-confirmation
 - 来源视频：assets/origin/generated/kling/dragging.mp4
+- 候选选择规则：后续如果同一拖拽动作补充了多个视频，默认选择视频数量更多、覆盖更完整的候选组，再按质量和桌面手感验收剔除不合格素材。
 - 审查证据：assets/reviews/kling-generated/dragging_sweep.png
 - 运行帧输出：assets/runtime/animations/dragging/frames
 - 桥接入口：drag.active
@@ -39,6 +40,7 @@
 2. 对确认通过的视频执行去水印、抠绿、序列帧生成。
 3. 更新 `assets/runtime/animations/manifest.json` 和对应行为桥接。
 4. 执行桌面可视化验收：桌面可见、始终置顶、鼠标靠近/点击/提醒触发正确、姿势回切自然。
+5. 执行拖拽专项自动验收：`YUZAI_TEST_DRAG_MS=700 YUZAI_TEST_DRAG_X=100 YUZAI_TEST_DRAG_Y=70 YUZAI_TEST_DRAG_HOLD_MS=1200 YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-dragging.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=900 npm run dev`，再运行 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-dragging.png --count 8 --min-changed-frames 4 --min-width 200 --min-height 200`。
 
 ## 确认前禁止
 

@@ -81,6 +81,9 @@ window.yuzai.onSizeChange((size) => {
 window.yuzai.onMouseProximityChange((near) => {
   interaction.setGlobalProximity(near);
 });
+window.yuzai.onTestDrag((payload) => {
+  void interaction.simulateDragForTest({ x: payload.x, y: payload.y }, payload.holdMs);
+});
 
 async function tick(now: number): Promise<void> {
   const deltaSeconds = Math.min(0.08, (now - lastFrameAt) / 1000);

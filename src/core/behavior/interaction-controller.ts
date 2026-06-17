@@ -56,6 +56,25 @@ export class InteractionController {
     this.handleHoverChange(near);
   }
 
+  async simulateDragForTest(offset: { x: number; y: number }, holdMs: number): Promise<void> {
+    if (this.drag?.active) return;
+    const [x, y] = await window.yuzai.getPosition();
+    const now = performance.now();
+    if (!this.interactionCooldowns.tryUse("drag", now)) return;
+
+    this.drag = {
+      startPointer: { x: 0, y: 0 },
+      startWindow: { x, y },
+      active: true
+    };
+    this.dragOffset = { x: offset.x, y: offset.y };
+    this.fsm.request({ state: this.runtimeInteractions.dragState, mood: "surprised", view: "front", direction: 0, cacheCurrent: true, force: true });
+    this.events.onDragAccepted?.();
+    window.yuzai.moveTo({ x: x + offset.x, y: y + offset.y });
+    this.notifyStateChanged();
+    window.setTimeout(() => this.handleMouseUp(), Math.max(0, holdMs));
+  }
+
   private bind(): void {
     window.addEventListener("mousemove", (event) => this.handleMouseMove(event));
     window.addEventListener("mousedown", (event) => void this.handleMouseDown(event));
