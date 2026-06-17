@@ -1387,3 +1387,21 @@ FPS：不变。
 桌面验收：不涉及桌面运行；这是正式素材处理前的安全门禁。
 已知问题：该门禁验证批准文件内容，不替代用户确认清单和逐视频人工播放检查。
 决定：接受“批准文件存在且内容匹配”作为 runtime intake 正式执行的最低门槛；未收到用户确认前仍不得创建 `dragging-special` 批准文件。
+
+## 2026-06-17 runtime 已批准波次 current 校验
+
+日期：2026-06-17
+源文件：`scripts/validate-runtime-intake-approvals-current.mjs`、`scripts/validate-all.mjs`、`package.json`、`docs/runtime-intake-approvals/*.approved.json`
+目标动作：已存在批准文件的 runtime intake 波次，当前为 `wave1`、`wave2`、`sleep-routine`
+问题：正式执行器已经校验批准文件内容，但发布门禁还没有主动检查仓库里的批准文件是否和 `docs/runtime-intake-waves.json` 同步。
+参考片段：先把 `validate:runtime-intake-approvals-current` 挂到 `package.json` 和 `validate:all`，红灯显示脚本缺失；实现后校验现有 3 个批准文件的 `waveId`、文件名和动作集合。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：新增或修改 `docs/runtime-intake-approvals/*.approved.json` 后，执行 `npm run validate:runtime-intake-approvals-current`；校验只检查已存在批准文件，不要求未确认的 `dragging-special` 批准文件存在。
+运行时输出：当前校验输出 `approvalCount=3`，已批准波次为 `sleep-routine`、`wave1`、`wave2`；`dragging-special` 仍未批准。
+验证命令：`npm run validate:runtime-intake-approvals-current`
+桌面验收：不涉及桌面运行；这是发布门禁增强。
+已知问题：该校验不替代正式执行时的逐视频人工播放检查，也不代表未批准波次可接入。
+决定：接受批准文件 current 校验进入 `validate:all`，后续每个已批准波次都必须和机器可读分波计划保持一致。
