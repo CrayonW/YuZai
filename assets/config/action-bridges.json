@@ -19,6 +19,12 @@
   "interaction": {
     "gentle": ["shy"]
   },
+  "sleep": {
+    "entering": ["sleepy"],
+    "transition": ["sleep"],
+    "loop": ["sleeping"],
+    "exit": ["waking"]
+  },
   "drag": {
     "start": ["dragging", "paw_raise"]
   }

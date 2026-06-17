@@ -27,6 +27,7 @@ const validReport = buildActionBridgeContractReport({
     dailyRotation: { lowFatigue: ["slow_blink", "look_around"] },
     reminder: { water: ["call_response"], rest: ["stretch_yawn"] },
     proximity: { mouse_near: ["cursor_watch", "paw_raise"] },
+    sleep: { entering: ["sleepy"], transition: ["sleep"], loop: ["sleeping"], exit: ["waking"] },
     click: { single: ["click_surprised"], repeated: ["poke_annoyed"], wake: ["waking"] },
     drag: { start: ["dragging"] }
   },
@@ -38,6 +39,9 @@ const validReport = buildActionBridgeContractReport({
     { action: "cursor_watch" },
     { action: "click_surprised" },
     { action: "poke_annoyed" },
+    { action: "sleepy" },
+    { action: "sleep" },
+    { action: "sleeping" },
     { action: "waking" },
     { action: "dragging" }
   ] },
@@ -49,6 +53,7 @@ const invalidReport = buildActionBridgeContractReport({
     dailyRotation: { lowFatigue: ["not_in_plan"] },
     reminder: { water: ["not_in_plan"], rest: [] },
     proximity: { mouse_near: [] },
+    sleep: { entering: [], transition: [], loop: [], exit: [] },
     click: { single: [], repeated: [], wake: [] },
     drag: { start: [] }
   },
@@ -58,7 +63,7 @@ const invalidReport = buildActionBridgeContractReport({
 
 const checks = [
   ["valid fixture is ok", validReport.ok, true],
-  ["valid fixture lists unique candidates", validReport.candidateCount, 10],
+  ["valid fixture lists unique candidates", validReport.candidateCount, 13],
   ["invalid fixture is not ok", invalidReport.ok, false],
   ["invalid fixture reports unknown action", invalidReport.failures[0]?.action, "not_in_plan"],
   ["current project report is ok", buildActionBridgeContractReport().ok, true]

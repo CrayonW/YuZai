@@ -14,7 +14,7 @@
       "interruptible": true,
       "fallback": "idle_primary",
       "enabled": true,
-      "category": "daily",
+      "category": "transition",
       "entryFrames": [
         1,
         24,
@@ -381,6 +381,90 @@
       ],
       "interruptPolicy": "locked",
       "returnTo": "idle_primary"
+    },
+    "sleepy": {
+      "source": "assets/origin/generated/kling/sleepy.mp4",
+      "frameRoot": "../assets/runtime/animations/sleepy/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "sleep",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "sleep"
+    },
+    "sleep": {
+      "source": "assets/origin/generated/kling/sleep.mp4",
+      "frameRoot": "../assets/runtime/animations/sleep/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "sleeping",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "sleeping"
+    },
+    "sleeping": {
+      "source": "assets/origin/generated/kling/sleeping.mp4",
+      "frameRoot": "../assets/runtime/animations/sleeping/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "waking",
+      "enabled": true,
+      "category": "daily",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "waking"
+    },
+    "waking": {
+      "source": "assets/origin/generated/kling/waking.mp4",
+      "frameRoot": "../assets/runtime/animations/waking/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
     }
   },
   "stateMap": {
@@ -392,10 +476,10 @@
       "right": "walk",
       "neutral": "walk"
     },
-    "sleep": "idle_primary",
-    "sleepy": "idle_primary",
-    "sleeping": "idle_primary",
-    "waking": "idle_primary",
+    "sleep": "sleep",
+    "sleepy": "sleepy",
+    "sleeping": "sleeping",
+    "waking": "waking",
     "surprised": "click_surprised",
     "shy": "shy",
     "dragging": "idle_primary",

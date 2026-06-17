@@ -242,7 +242,8 @@
             "assets/reviews/kling-generated/sleeping_sweep.png"
           ],
           "runtimeFrameRoot": "assets/runtime/animations/sleeping/frames",
-          "interruptPolicy": "never",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
           "returnTo": "waking",
           "bridge": "sleep.loop",
           "transitionPlan": "当前素材更像正坐轻闭眼；可短期作为低能量循环，真实睡眠循环建议重新生成更明确蜷伏睡姿。",

@@ -1315,3 +1315,21 @@ FPS：24fps。
 桌面验收：通过；执行 `YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-wave2.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=1000 npm run dev`，再执行 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-wave2.png --count 8 --min-changed-frames 4 --min-width 200 --min-height 200`，8 张截图均为 440x440 PNG 且 8 张哈希不同；验收拼图保存到 `assets/reviews/runtime/wave2-desktop-capture.png`。
 已知问题：睡眠链路和拖拽专项尚未正式接入，`sleepy`、`sleep`、`waking`、`dragging` 仍在桥接报告中显示缺失；`loaf_breathing` 当前素材按用户确认进入运行时，但文档保留“更像正坐轻呼吸，不是真正香箱趴”的判断，后续如需更准确香箱趴可重新生成素材。
 决定：接受第二波四个动作作为生活感和温柔互动补充；下一步进入睡眠链路或拖拽专项前，仍必须先列清单并得到用户确认。
+
+## 2026-06-17 睡眠作息链路 runtime 动作正式接入
+
+日期：2026-06-17
+源文件：`docs/runtime-intake-approvals/sleep-routine.approved.json`、`docs/runtime-intake-sleep-routine-dry-run.md`、`docs/runtime-intake-sleep-routine-execution-checklist.md`、`docs/runtime-intake-sleep-routine-preflight.md`、`assets/config/action-bridges.json`、`assets/runtime/animations/manifest.json`、`assets/runtime/animations/sleepy/frames`、`assets/runtime/animations/sleep/frames`、`assets/runtime/animations/sleeping/frames`、`assets/runtime/animations/waking/frames`、`assets/reviews/runtime/sleep-routine-contact-sheet.png`、`assets/reviews/runtime/sleep-routine-desktop-capture.png`
+目标动作：`sleepy`、`sleep`、`sleeping`、`waking`
+问题：休息提醒和睡眠叫醒已经有桥接候选，但 `sleepy`、`sleep`、`waking` 仍缺失，`sleeping` 也没有真实 runtime 循环帧；睡眠状态此前会回退到 `idle_primary`，无法形成完整作息链路。
+参考片段：用户说明以后动作视频都选多的，本次按四动作方案接入；执行 `npm run runtime:intake-executor -- --wave sleep-routine --execute`，从可灵视频抽取 5 秒 24fps 序列帧并写入 runtime manifest。
+帧数：每个新动作 120 帧；睡眠链路合计新增 480 张 runtime PNG。
+FPS：24fps。
+循环方式：`sleepy` 和 `sleep` 被写为 `transition`，分别自动进入 `sleep` 和 `sleeping`；`sleeping` 是 `daily` 循环动作，`loop=true`，可在安全帧被唤醒切出；`waking` 是 `transition`，播放后回到 `idle_primary`。
+水印处理：执行绿幕抠像、固定水印区域透明化和绿色残留透明边缘清理；本次没有把 mp4 源视频加入 Git。
+重建方法：`docs/runtime-intake-sleep-routine-dry-run.md` 显示四个动作均为新增帧目录且桥接已引用；`scripts/runtime-intake-executor.mjs` 对 sleep-routine 做 runtime category 映射，避免非循环睡眠过渡段卡住。
+运行时输出：`docs/runtime-action-bridge-report.md` 显示可播放动作从 17 个增加到 21 个；睡眠进入、入睡过渡、睡眠循环、睡眠退出和睡眠叫醒均为 `ready`；`docs/state-coverage.md` 显示 13 个状态中 12 个已有独立动作，剩余 `dragging` 仍为 fallback。
+验证命令：`npm run validate:runtime-intake-executor`、`npm run validate:runtime-animations`、`npm run validate:runtime-alpha-quality`、`npm run validate:runtime-behavior-schedule`、`npm run validate:runtime-interaction-schedule`、`npm run validate:runtime-action-bridge-report`、`npm run validate:release`
+桌面验收：通过；沙盒内首次启动 Electron 出现 `SIGABRT`，按 GUI 权限问题用提升权限重跑 `YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-sleep.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=1000 npm run dev` 成功生成 8 张截图；`capture:inspect` 显示 8 张均为 440x440 PNG 且 8 张哈希不同；验收拼图保存到 `assets/reviews/runtime/sleep-routine-desktop-capture.png`。
+已知问题：`sleeping` 当前素材仍偏正坐轻闭眼，不是最终理想蜷伏睡姿；拖拽专项 `dragging` 尚未正式接入，是当前唯一剩余 fallback 状态。
+决定：接受睡眠四动作作为完整作息链路的 runtime 接入结果；后续动作选择默认采用用户指令“选多的”，进入拖拽专项前仍需要先列清单。

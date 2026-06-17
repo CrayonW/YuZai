@@ -42,6 +42,10 @@ const dailyExplore = report.triggers.find((trigger) => trigger.id === "daily_exp
 const mouseNear = report.triggers.find((trigger) => trigger.id === "mouse_near");
 const singleClick = report.triggers.find((trigger) => trigger.id === "click_single");
 const gentleInteraction = report.triggers.find((trigger) => trigger.id === "interaction_gentle");
+const sleepEntering = report.triggers.find((trigger) => trigger.id === "sleep_entering");
+const sleepTransition = report.triggers.find((trigger) => trigger.id === "sleep_transition");
+const sleepLoop = report.triggers.find((trigger) => trigger.id === "sleep_loop");
+const sleepExit = report.triggers.find((trigger) => trigger.id === "sleep_exit");
 const dragStart = report.triggers.find((trigger) => trigger.id === "drag_start");
 
 const checks = [
@@ -54,6 +58,10 @@ const checks = [
   ["has single click trigger", triggerIds.includes("click_single"), true],
   ["has repeated click trigger", triggerIds.includes("click_repeated"), true],
   ["has gentle interaction trigger", triggerIds.includes("interaction_gentle"), true],
+  ["has sleep entering trigger", triggerIds.includes("sleep_entering"), true],
+  ["has sleep transition trigger", triggerIds.includes("sleep_transition"), true],
+  ["has sleep loop trigger", triggerIds.includes("sleep_loop"), true],
+  ["has sleep exit trigger", triggerIds.includes("sleep_exit"), true],
   ["has wake click trigger", triggerIds.includes("click_wake"), true],
   ["has drag start trigger", triggerIds.includes("drag_start"), true],
   ["low fatigue tracks slow_blink", lowFatigue?.candidates[0]?.action, "slow_blink"],
@@ -64,6 +72,10 @@ const checks = [
   ["mouse near marks paw_raise ready", mouseNear?.candidates.find((item) => item.action === "paw_raise")?.status, "ready"],
   ["single click tracks click_surprised", singleClick?.candidates[0]?.action, "click_surprised"],
   ["gentle interaction tracks shy", gentleInteraction?.candidates[0]?.action, "shy"],
+  ["sleep entering tracks sleepy", sleepEntering?.candidates[0]?.action, "sleepy"],
+  ["sleep transition tracks sleep", sleepTransition?.candidates[0]?.action, "sleep"],
+  ["sleep loop tracks sleeping", sleepLoop?.candidates[0]?.action, "sleeping"],
+  ["sleep exit tracks waking", sleepExit?.candidates[0]?.action, "waking"],
   ["drag start tracks dragging", dragStart?.candidates[0]?.action, "dragging"],
   ["markdown is Chinese", markdown.includes("# 运行时动作桥接矩阵"), true],
   ["markdown renders ready status", markdown.includes("| paw_raise | ready |"), true],

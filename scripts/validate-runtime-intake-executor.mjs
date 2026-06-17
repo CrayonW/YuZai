@@ -103,6 +103,65 @@ const testSource = `
             watermarkGate: "人工检查。"
           }
         ]
+      },
+      {
+        id: "sleep-routine",
+        name: "第三波",
+        actions: [
+          {
+            action: "sleepy",
+            category: "sleep-routine",
+            confirmation: "needs-user-confirmation",
+            sourceVideo: "assets/origin/generated/kling/sleepy.mp4",
+            runtimeFrameRoot: "assets/runtime/animations/sleepy/frames",
+            bridge: "sleep.entering",
+            interruptPolicy: "locked",
+            returnTo: "sleep",
+            reviewEvidence: ["assets/reviews/kling-generated/sleepy_sweep.png"],
+            transitionPlan: "变困后进入 sleep。",
+            watermarkGate: "人工检查。"
+          },
+          {
+            action: "sleep",
+            category: "sleep-routine",
+            confirmation: "needs-user-confirmation",
+            sourceVideo: "assets/origin/generated/kling/sleep.mp4",
+            runtimeFrameRoot: "assets/runtime/animations/sleep/frames",
+            bridge: "sleep.transition",
+            interruptPolicy: "locked",
+            returnTo: "sleeping",
+            reviewEvidence: ["assets/reviews/kling-generated/sleep_sweep.png"],
+            transitionPlan: "入睡后进入 sleeping。",
+            watermarkGate: "人工检查。"
+          },
+          {
+            action: "sleeping",
+            category: "sleep-routine",
+            confirmation: "needs-user-confirmation",
+            sourceVideo: "assets/origin/generated/kling/sleeping.mp4",
+            runtimeFrameRoot: "assets/runtime/animations/sleeping/frames",
+            loop: true,
+            bridge: "sleep.loop",
+            interruptPolicy: "locked",
+            returnTo: "waking",
+            reviewEvidence: ["assets/reviews/kling-generated/sleeping_sweep.png"],
+            transitionPlan: "睡眠循环等待唤醒。",
+            watermarkGate: "人工检查。"
+          },
+          {
+            action: "waking",
+            category: "sleep-routine",
+            confirmation: "needs-user-confirmation",
+            sourceVideo: "assets/origin/generated/kling/waking.mp4",
+            runtimeFrameRoot: "assets/runtime/animations/waking/frames",
+            bridge: "sleep.exit",
+            interruptPolicy: "locked",
+            returnTo: "idle_primary",
+            reviewEvidence: ["assets/reviews/kling-generated/waking_sweep.png"],
+            transitionPlan: "醒来后回待机。",
+            watermarkGate: "人工检查。"
+          }
+        ]
       }
     ]
   };
@@ -119,6 +178,12 @@ const testSource = `
     },
     interaction: {
       gentle: ["shy"]
+    },
+    sleep: {
+      entering: ["sleepy"],
+      transition: ["sleep"],
+      loop: ["sleeping"],
+      exit: ["waking"]
     },
     click: {
       single: ["click_surprised", "paw_raise"]
@@ -140,6 +205,12 @@ const testSource = `
     wave2ExecutionPlan.actions.map((action) => action.bridgeOperation).join(","),
     "already-referenced,already-referenced,already-referenced,already-referenced",
     "wave2 life, explore, low-fatigue, and gentle bridges are detected"
+  );
+  const sleepExecutionPlan = buildRuntimeIntakeExecutionPlan({ plan, waveId: "sleep-routine", manifest, bridges });
+  assertEqual(
+    sleepExecutionPlan.actions.map((action) => action.bridgeOperation).join(","),
+    "already-referenced,already-referenced,already-referenced,already-referenced",
+    "sleep routine entering, transition, loop, and exit bridges are detected"
   );
 
   const patchedManifest = buildRuntimeIntakeManifestPatch({
@@ -172,6 +243,22 @@ const testSource = `
   });
   assertEqual(wave2Manifest.actions.loaf_breathing.loop, true, "keeps explicit loop actions looping");
   assertEqual(wave2Manifest.actions.groom_face_wash.loop, false, "keeps default daily insert actions one-shot");
+  const sleepManifest = buildRuntimeIntakeManifestPatch({
+    manifest,
+    executionPlan: sleepExecutionPlan,
+    frameCounts: {
+      sleepy: 120,
+      sleep: 120,
+      sleeping: 120,
+      waking: 120
+    }
+  });
+  assertEqual(sleepManifest.actions.sleeping.loop, true, "keeps sleeping loop action looping");
+  assertEqual(sleepManifest.actions.sleepy.loop, false, "keeps sleep entry one-shot");
+  assertEqual(sleepManifest.actions.sleepy.category, "transition", "sleepy is a transition into sleep");
+  assertEqual(sleepManifest.actions.sleep.category, "transition", "sleep is a transition into sleeping");
+  assertEqual(sleepManifest.actions.sleeping.category, "daily", "sleeping remains a loopable daily state");
+  assertEqual(sleepManifest.actions.waking.category, "transition", "waking is a transition back to idle");
 
   const text = renderRuntimeIntakeExecutionPlan(executionPlan);
   assertIncludes(text, "# runtime 接入执行 dry-run：第一波", "renders title");

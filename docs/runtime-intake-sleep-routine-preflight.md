@@ -59,7 +59,7 @@
 审查证据：assets/reviews/kling-generated/sleeping_sweep.png
 运行帧输出：assets/runtime/animations/sleeping/frames
 桥接入口：sleep.loop
-中断策略：never
+中断策略：at-safe-frame
 结束返回：waking
 衔接策略：当前素材更像正坐轻闭眼；可短期作为低能量循环，真实睡眠循环建议重新生成更明确蜷伏睡姿。
 水印门禁：正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。

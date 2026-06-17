@@ -17,6 +17,10 @@ const TRIGGER_LABELS = {
   click_single: "普通点击",
   click_repeated: "多次点击",
   interaction_gentle: "温柔互动",
+  sleep_entering: "睡眠进入",
+  sleep_transition: "入睡过渡",
+  sleep_loop: "睡眠循环",
+  sleep_exit: "睡眠退出",
   click_wake: "睡眠叫醒",
   drag_start: "拖拽开始"
 };
@@ -32,6 +36,10 @@ export function buildRuntimeActionBridgeReport({ manifest = manifestJson } = {})
     { id: "click_single", candidates: actionBridges.click.single },
     { id: "click_repeated", candidates: actionBridges.click.repeated },
     { id: "interaction_gentle", candidates: actionBridges.interaction?.gentle ?? [] },
+    { id: "sleep_entering", candidates: actionBridges.sleep?.entering ?? [] },
+    { id: "sleep_transition", candidates: actionBridges.sleep?.transition ?? [] },
+    { id: "sleep_loop", candidates: actionBridges.sleep?.loop ?? [] },
+    { id: "sleep_exit", candidates: actionBridges.sleep?.exit ?? [] },
     { id: "click_wake", candidates: actionBridges.click.wake },
     { id: "drag_start", candidates: actionBridges.drag.start }
   ];
@@ -104,6 +112,10 @@ function summarizeManifest(manifest) {
     ...actionBridges.click.single,
     ...actionBridges.click.repeated,
     ...(actionBridges.interaction?.gentle ?? []),
+    ...(actionBridges.sleep?.entering ?? []),
+    ...(actionBridges.sleep?.transition ?? []),
+    ...(actionBridges.sleep?.loop ?? []),
+    ...(actionBridges.sleep?.exit ?? []),
     ...actionBridges.click.wake,
     ...actionBridges.drag.start
   ];

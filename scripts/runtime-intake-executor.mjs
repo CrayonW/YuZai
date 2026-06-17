@@ -88,7 +88,7 @@ export function buildRuntimeIntakeManifestPatch({ manifest, executionPlan, frame
       interruptible: action.interruptPolicy !== "locked",
       fallback: action.returnTo,
       enabled: true,
-      category: action.category === "interactive" ? "interactive" : "daily",
+      category: runtimeCategoryForAction(action),
       entryFrames: [1],
       exitFrames: [frameCount],
       interruptPolicy: action.interruptPolicy,
@@ -234,6 +234,15 @@ function bridgeOperationForAction(bridges, action) {
     return "already-referenced";
   }
   return "manual";
+}
+
+function runtimeCategoryForAction(action) {
+  if (action.category === "interactive") return "interactive";
+  if (action.category === "transition") return "transition";
+  if (action.category === "sleep-routine" && ["sleepy", "sleep", "waking"].includes(action.action)) {
+    return "transition";
+  }
+  return "daily";
 }
 
 function valueAtBridgePath(bridges, bridgePath) {

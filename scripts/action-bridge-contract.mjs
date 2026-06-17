@@ -36,6 +36,10 @@ function collectBridgeCandidates(bridges) {
     ...collectGroup("proximity.mouse_near", bridges.proximity?.mouse_near),
     ...collectGroup("click.single", bridges.click?.single),
     ...collectGroup("click.repeated", bridges.click?.repeated),
+    ...collectGroup("sleep.entering", bridges.sleep?.entering),
+    ...collectGroup("sleep.transition", bridges.sleep?.transition),
+    ...collectGroup("sleep.loop", bridges.sleep?.loop),
+    ...collectGroup("sleep.exit", bridges.sleep?.exit),
     ...collectGroup("click.wake", bridges.click?.wake),
     ...collectGroup("drag.start", bridges.drag?.start)
   ];

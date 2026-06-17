@@ -1,0 +1,16 @@
+{
+  "waveId": "sleep-routine",
+  "approvedAt": "2026-06-17",
+  "approvalSource": "user said future action video choices should choose the larger set",
+  "defaultSelectionRule": "When choosing between fewer or more action videos for a runtime intake wave, prefer the larger action set unless the user explicitly overrides it.",
+  "approvedActions": [
+    "sleepy",
+    "sleep",
+    "sleeping",
+    "waking"
+  ],
+  "notes": [
+    "User instruction is interpreted as confirming the sleep-routine four-action option.",
+    "Proceed with source video review, watermark removal, chromakey extraction, green-spill cleanup, runtime manifest update, desktop verification, Chinese process documentation, and GitHub push."
+  ]
+}
