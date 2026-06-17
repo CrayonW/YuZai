@@ -1333,3 +1333,21 @@ FPS：24fps。
 桌面验收：通过；沙盒内首次启动 Electron 出现 `SIGABRT`，按 GUI 权限问题用提升权限重跑 `YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-sleep.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=1000 npm run dev` 成功生成 8 张截图；`capture:inspect` 显示 8 张均为 440x440 PNG 且 8 张哈希不同；验收拼图保存到 `assets/reviews/runtime/sleep-routine-desktop-capture.png`。
 已知问题：`sleeping` 当前素材仍偏正坐轻闭眼，不是最终理想蜷伏睡姿；拖拽专项 `dragging` 尚未正式接入，是当前唯一剩余 fallback 状态。
 决定：接受睡眠四动作作为完整作息链路的 runtime 接入结果；后续动作选择默认采用用户指令“选多的”，进入拖拽专项前仍需要先列清单。
+
+## 2026-06-17 拖拽专项 runtime 接入前准备
+
+日期：2026-06-17
+源文件：`docs/runtime-intake-dragging-special-execution-checklist.md`、`docs/runtime-intake-dragging-special-preflight.md`、`docs/runtime-intake-dragging-special-dry-run.md`、`scripts/validate-runtime-intake-executor.mjs`、`assets/origin/generated/kling/dragging.mp4`、`assets/reviews/kling-generated/dragging_sweep.png`
+目标动作：`dragging`
+问题：`dragging` 是当前唯一剩余 fallback 状态，但用户要求每次处理新动作前必须先列清单，因此不能直接抽帧、去水印或修改 manifest。
+参考片段：执行 `npm run runtime:intake-executor -- --wave dragging-special --dry-run --write docs/runtime-intake-dragging-special-dry-run.md`，只生成写入计划，不执行素材处理。
+帧数：未生成 runtime 帧；dry-run 预计批准后新增 1 个动作、创建 1 个帧目录。
+FPS：预计沿用 runtime 标准 24fps。
+循环方式：计划按 `interactive` 动作接入，`interruptPolicy=locked`，拖拽期间播放 `dragging`，释放后回到 `idle_primary`。
+水印处理：未执行；正式接入前仍需逐视频人工播放检查无文字、水印、logo、额外物体和明显变形。
+重建方法：先重新生成拖拽专项 dry-run，再创建 `docs/runtime-intake-approvals/dragging-special.approved.json`，最后执行 `npm run runtime:intake-executor -- --wave dragging-special --execute`。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，当前 manifest 仍无 `dragging` action，`stateMap.dragging` 仍回退到 `idle_primary`。
+验证命令：`npm run validate:runtime-intake-executor`、`npm run validate:runtime-intake-waves`、`npm run validate:runtime-intake-checklist`、`npm run validate:runtime-intake-preflight`
+桌面验收：尚未执行；正式接入后必须验证桌面可见、始终置顶、拖拽窗口移动手感、鼠标释放后自然回到日常动作。
+已知问题：`dragging` 源视频预检通过元数据检查，但既有审查意见认为动作幅度较小，真实体验必须结合窗口拖拽手感验收。
+决定：保留拖拽专项门禁；未收到用户明确确认前，禁止抽帧、去水印/抠绿、修改 runtime manifest 或覆盖 runtime 动作目录。

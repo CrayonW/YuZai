@@ -162,6 +162,25 @@ const testSource = `
             watermarkGate: "人工检查。"
           }
         ]
+      },
+      {
+        id: "dragging-special",
+        name: "拖拽专项",
+        actions: [
+          {
+            action: "dragging",
+            category: "interactive",
+            confirmation: "needs-user-confirmation",
+            sourceVideo: "assets/origin/generated/kling/dragging.mp4",
+            runtimeFrameRoot: "assets/runtime/animations/dragging/frames",
+            bridge: "drag.active",
+            interruptPolicy: "locked",
+            returnTo: "idle_primary",
+            reviewEvidence: ["assets/reviews/kling-generated/dragging_sweep.png"],
+            transitionPlan: "拖拽时播放，松开后回到待机。",
+            watermarkGate: "人工检查。"
+          }
+        ]
       }
     ]
   };
@@ -187,6 +206,9 @@ const testSource = `
     },
     click: {
       single: ["click_surprised", "paw_raise"]
+    },
+    drag: {
+      start: ["dragging", "paw_raise"]
     }
   };
 
@@ -212,6 +234,11 @@ const testSource = `
     "already-referenced,already-referenced,already-referenced,already-referenced",
     "sleep routine entering, transition, loop, and exit bridges are detected"
   );
+  const draggingExecutionPlan = buildRuntimeIntakeExecutionPlan({ plan, waveId: "dragging-special", manifest, bridges });
+  assertEqual(draggingExecutionPlan.actions[0].action, "dragging", "dragging special plans dragging action");
+  assertEqual(draggingExecutionPlan.actions[0].bridgeOperation, "already-referenced", "drag active bridge is detected");
+  assertEqual(draggingExecutionPlan.summary.actionsToAdd, 1, "dragging special adds one action");
+  assertEqual(draggingExecutionPlan.summary.framesToCreate, 1, "dragging special creates one frame directory");
 
   const patchedManifest = buildRuntimeIntakeManifestPatch({
     manifest,
@@ -259,6 +286,16 @@ const testSource = `
   assertEqual(sleepManifest.actions.sleep.category, "transition", "sleep is a transition into sleeping");
   assertEqual(sleepManifest.actions.sleeping.category, "daily", "sleeping remains a loopable daily state");
   assertEqual(sleepManifest.actions.waking.category, "transition", "waking is a transition back to idle");
+  const draggingManifest = buildRuntimeIntakeManifestPatch({
+    manifest,
+    executionPlan: draggingExecutionPlan,
+    frameCounts: {
+      dragging: 120
+    }
+  });
+  assertEqual(draggingManifest.actions.dragging.category, "interactive", "dragging remains an interaction action");
+  assertEqual(draggingManifest.actions.dragging.interruptible, false, "dragging is locked while dragging");
+  assertEqual(draggingManifest.actions.dragging.returnTo, "idle_primary", "dragging returns to idle after release");
 
   const text = renderRuntimeIntakeExecutionPlan(executionPlan);
   assertIncludes(text, "# runtime 接入执行 dry-run：第一波", "renders title");

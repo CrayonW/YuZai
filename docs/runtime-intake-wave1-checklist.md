@@ -81,6 +81,7 @@
 - 睡眠链路接入前预检报告：`docs/runtime-intake-sleep-routine-preflight.md`
 - 拖拽专项执行前用户确认清单：`docs/runtime-intake-dragging-special-execution-checklist.md`
 - 拖拽专项接入前预检报告：`docs/runtime-intake-dragging-special-preflight.md`
+- 拖拽专项执行 dry-run 报告：`docs/runtime-intake-dragging-special-dry-run.md`
 - 抽样图：
   - `assets/reviews/kling-generated/click_surprised_sweep.png`
   - `assets/reviews/kling-generated/poke_annoyed_sweep.png`
