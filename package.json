@@ -65,6 +65,7 @@
     "validate:runtime-intake-preflights-current": "node scripts/validate-runtime-intake-preflights-current.mjs",
     "validate:runtime-intake-dry-runs-current": "node scripts/validate-runtime-intake-dry-runs-current.mjs",
     "validate:runtime-intake-approvals-current": "node scripts/validate-runtime-intake-approvals-current.mjs",
+    "validate:runtime-intake-approval-examples": "node scripts/validate-runtime-intake-approval-examples.mjs",
     "validate:runtime-intake-executor": "node scripts/validate-runtime-intake-executor.mjs",
     "validate:kling-preflight": "node scripts/validate-kling-preflight.mjs",
     "validate:kling-auth-diagnostics": "node scripts/validate-kling-auth-diagnostics.mjs",

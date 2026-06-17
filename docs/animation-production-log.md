@@ -1405,3 +1405,21 @@ FPS：不变。
 桌面验收：不涉及桌面运行；这是发布门禁增强。
 已知问题：该校验不替代正式执行时的逐视频人工播放检查，也不代表未批准波次可接入。
 决定：接受批准文件 current 校验进入 `validate:all`，后续每个已批准波次都必须和机器可读分波计划保持一致。
+
+## 2026-06-17 拖拽专项批准模板
+
+日期：2026-06-17
+源文件：`docs/runtime-intake-approvals/dragging-special.example.json`、`scripts/validate-runtime-intake-approval-examples.mjs`、`scripts/validate-all.mjs`、`package.json`
+目标动作：`dragging`
+问题：`dragging-special` 尚未获用户确认，但后续一旦确认，需要快速生成内容匹配的批准文件；如果手工从零写批准文件，容易漏掉动作集合、清单路径或门禁说明。
+参考片段：新增 `dragging-special.example.json`，使用 `.example.json` 后缀和 `exampleOnly=true` 标识模板；执行器只接受 `.approved.json`，因此该模板不会触发正式接入。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：用户明确确认拖拽专项清单后，基于 `dragging-special.example.json` 生成 `dragging-special.approved.json`，把 `approvedAt` 改为实际日期，并保留 `approvedActions=["dragging"]`。
+运行时输出：`validate:runtime-intake-approval-examples` 输出 `exampleCount=1`，模板波次为 `dragging-special`；`validate:runtime-intake-approvals-current` 仍只显示 3 个正式批准波次，不包含拖拽。
+验证命令：`npm run validate:runtime-intake-approval-examples`、`npm run validate:runtime-intake-approvals-current`
+桌面验收：尚未执行；模板不代表接入完成。
+已知问题：模板只能减少填写错误，不替代用户确认、逐视频人工播放检查和桌面拖拽验收。
+决定：接受拖拽专项批准模板进入仓库，但未收到用户确认前仍不得创建 `dragging-special.approved.json`。
