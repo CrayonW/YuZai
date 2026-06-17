@@ -154,6 +154,7 @@
             "assets/reviews/kling-generated/loaf_breathing_sweep.png"
           ],
           "runtimeFrameRoot": "assets/runtime/animations/loaf_breathing/frames",
+          "loop": true,
           "interruptPolicy": "at-safe-frame",
           "returnTo": "idle_primary",
           "bridge": "daily-rotation.low-fatigue",

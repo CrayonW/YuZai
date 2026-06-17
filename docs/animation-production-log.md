@@ -1297,3 +1297,21 @@ FPS：不变。
 桌面验收：通过；验收拼图保存到 `assets/reviews/runtime/wave1-alpha-clean-desktop-capture.png`。
 已知问题：边缘仍可能存在极细的自然抠像痕迹；后续如果要进一步拟真，可设计羽化/去色而不是单纯透明化。
 决定：接受当前透明边缘修复作为第一波动作进入桌面可视化验收后的质量补丁，并把 alpha 质量验证纳入全量发布校验。
+
+## 2026-06-17 第二波 runtime 动作正式接入
+
+日期：2026-06-17
+源文件：`docs/runtime-intake-approvals/wave2.approved.json`、`docs/runtime-intake-wave2-dry-run.md`、`assets/config/action-bridges.json`、`assets/runtime/animations/manifest.json`、`assets/runtime/animations/groom_face_wash/frames`、`assets/runtime/animations/loaf_breathing/frames`、`assets/runtime/animations/desk_sniff/frames`、`assets/runtime/animations/shy/frames`、`assets/reviews/runtime/wave2-runtime-contact-sheet.png`、`assets/reviews/runtime/wave2-desktop-capture.png`
+目标动作：`groom_face_wash`、`loaf_breathing`、`desk_sniff`、`shy`
+问题：第一波已经让鼠标、点击和提醒有真实动作，但日常生活感仍不足，连续点击的 `shy` 候选也因为缺少 runtime 帧和 stateMap 映射仍会回退到已有动作。
+参考片段：用户回复选项 `2`，确认 wave2 四个动作全部接入；执行 `npm run runtime:intake-executor -- --wave wave2 --execute`，由可灵视频抽取序列帧，并更新 runtime manifest。
+帧数：每个新动作 120 帧；第二波合计新增 480 张 runtime PNG。
+FPS：24fps。
+循环方式：`groom_face_wash` 和 `desk_sniff` 作为日常插入动作，播放后回到 `idle_primary`；`loaf_breathing` 按用户确认纳入低疲劳日常轮换，并通过 `loop=true` 保持轻呼吸循环；`shy` 作为连续点击和温柔互动候选，锁定播放后回到待机。
+水印处理：执行绿幕抠像、固定水印区域透明化和绿色残留透明边缘清理；本次没有把 mp4 源视频加入 Git。
+重建方法：`docs/runtime-intake-wave2-dry-run.md` 显示四个动作均为新增帧目录且桥接已引用；`scripts/runtime-intake-executor.mjs` 支持 `loop` 字段，后续重新处理同类素材可复用。
+运行时输出：`docs/runtime-action-bridge-report.md` 显示可播放动作从 13 个增加到 17 个；`groom_face_wash` 在生活日常轮换 ready，`desk_sniff` 在探索日常轮换 ready，`loaf_breathing` 在低疲劳日常轮换 ready，`shy` 在多次点击和温柔互动 ready。
+验证命令：`npm run validate:runtime-intake-executor`、`npm run validate:runtime-animations`、`npm run validate:runtime-alpha-quality`、`npm run validate:runtime-behavior-schedule`、`npm run validate:runtime-interaction-schedule`、`npm run validate:runtime-action-bridge-report`、`npm run validate:release`
+桌面验收：通过；执行 `YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-wave2.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=1000 npm run dev`，再执行 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-wave2.png --count 8 --min-changed-frames 4 --min-width 200 --min-height 200`，8 张截图均为 440x440 PNG 且 8 张哈希不同；验收拼图保存到 `assets/reviews/runtime/wave2-desktop-capture.png`。
+已知问题：睡眠链路和拖拽专项尚未正式接入，`sleepy`、`sleep`、`waking`、`dragging` 仍在桥接报告中显示缺失；`loaf_breathing` 当前素材按用户确认进入运行时，但文档保留“更像正坐轻呼吸，不是真正香箱趴”的判断，后续如需更准确香箱趴可重新生成素材。
+决定：接受第二波四个动作作为生活感和温柔互动补充；下一步进入睡眠链路或拖拽专项前，仍必须先列清单并得到用户确认。

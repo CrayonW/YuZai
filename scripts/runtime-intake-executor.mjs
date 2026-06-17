@@ -24,6 +24,7 @@ export function buildRuntimeIntakeExecutionPlan({ plan, waveId, manifest, bridge
       confirmation: action.confirmation,
       sourceVideo: action.sourceVideo,
       runtimeFrameRoot: action.runtimeFrameRoot,
+      loop: action.loop === true,
       bridge: action.bridge,
       interruptPolicy: action.interruptPolicy,
       returnTo: action.returnTo,
@@ -83,7 +84,7 @@ export function buildRuntimeIntakeManifestPatch({ manifest, executionPlan, frame
       firstFrame: 1,
       frameCount,
       fps: runtimeFps,
-      loop: false,
+      loop: action.loop === true,
       interruptible: action.interruptPolicy !== "locked",
       fallback: action.returnTo,
       enabled: true,
@@ -189,6 +190,7 @@ export function renderRuntimeIntakeExecutionPlan(executionPlan) {
       `- runtimeFrameRoot=${action.runtimeFrameRoot}`,
       `- manifest=${action.manifestOperation}`,
       `- frames=${action.frameOperation}`,
+      `- loop=${action.loop}`,
       `- bridge=${action.bridgeOperation}`,
       `- bridgeKey=${action.bridge}`,
       `- interruptPolicy=${action.interruptPolicy}`,
@@ -237,6 +239,8 @@ function bridgeOperationForAction(bridges, action) {
 function valueAtBridgePath(bridges, bridgePath) {
   const aliases = {
     "daily-rotation.low-fatigue": "dailyRotation.lowFatigue",
+    "daily-rotation.life": "dailyRotation.life",
+    "daily-rotation.explore": "dailyRotation.explore",
     "proximity.mouse_near": "proximity.mouse_near",
     "reminder.water": "reminder.water",
     "reminder.rest": "reminder.rest",

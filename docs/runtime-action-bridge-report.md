@@ -4,9 +4,9 @@
 
 ## 汇总
 
-- 当前 manifest 可播放动作：idle_primary、idle_secondary、tail_wag、walk、walk_left、paw_raise、slow_blink、look_around、cursor_watch、click_surprised、poke_annoyed、call_response、stretch_yawn
-- 可播放动作数量：13
-- 候选缺失数量：5
+- 当前 manifest 可播放动作：idle_primary、idle_secondary、tail_wag、walk、walk_left、paw_raise、slow_blink、look_around、cursor_watch、click_surprised、poke_annoyed、call_response、stretch_yawn、groom_face_wash、loaf_breathing、desk_sniff、shy
+- 可播放动作数量：17
+- 候选缺失数量：4
 
 ## 矩阵
 
@@ -14,6 +14,9 @@
 | --- | ---: | --- | --- | ---: |
 | 低疲劳日常轮换 | 1 | slow_blink | ready | 120 |
 | 低疲劳日常轮换 | 2 | look_around | ready | 120 |
+| 低疲劳日常轮换 | 3 | loaf_breathing | ready | 120 |
+| 生活日常轮换 | 1 | groom_face_wash | ready | 120 |
+| 探索日常轮换 | 1 | desk_sniff | ready | 120 |
 | 喝水提醒 | 1 | call_response | ready | 120 |
 | 喝水提醒 | 2 | cursor_watch | ready | 120 |
 | 休息提醒 | 1 | stretch_yawn | ready | 120 |
@@ -24,8 +27,9 @@
 | 普通点击 | 1 | click_surprised | ready | 120 |
 | 普通点击 | 2 | paw_raise | ready | 72 |
 | 多次点击 | 1 | poke_annoyed | ready | 120 |
-| 多次点击 | 2 | shy | missing | 0 |
+| 多次点击 | 2 | shy | ready | 120 |
 | 多次点击 | 3 | paw_raise | ready | 72 |
+| 温柔互动 | 1 | shy | ready | 120 |
 | 睡眠叫醒 | 1 | waking | missing | 0 |
 | 睡眠叫醒 | 2 | click_surprised | ready | 120 |
 | 睡眠叫醒 | 3 | paw_raise | ready | 72 |

@@ -9,11 +9,14 @@ const actionBridges = JSON.parse(readFileSync(join(root, "assets/config/action-b
 
 const TRIGGER_LABELS = {
   daily_low_fatigue: "低疲劳日常轮换",
+  daily_life: "生活日常轮换",
+  daily_explore: "探索日常轮换",
   reminder_water: "喝水提醒",
   reminder_rest: "休息提醒",
   mouse_near: "鼠标靠近",
   click_single: "普通点击",
   click_repeated: "多次点击",
+  interaction_gentle: "温柔互动",
   click_wake: "睡眠叫醒",
   drag_start: "拖拽开始"
 };
@@ -21,11 +24,14 @@ const TRIGGER_LABELS = {
 export function buildRuntimeActionBridgeReport({ manifest = manifestJson } = {}) {
   const triggerSpecs = [
     { id: "daily_low_fatigue", candidates: actionBridges.dailyRotation?.lowFatigue ?? [] },
+    { id: "daily_life", candidates: actionBridges.dailyRotation?.life ?? [] },
+    { id: "daily_explore", candidates: actionBridges.dailyRotation?.explore ?? [] },
     { id: "reminder_water", candidates: actionBridges.reminder.water },
     { id: "reminder_rest", candidates: actionBridges.reminder.rest },
     { id: "mouse_near", candidates: actionBridges.proximity.mouse_near },
     { id: "click_single", candidates: actionBridges.click.single },
     { id: "click_repeated", candidates: actionBridges.click.repeated },
+    { id: "interaction_gentle", candidates: actionBridges.interaction?.gentle ?? [] },
     { id: "click_wake", candidates: actionBridges.click.wake },
     { id: "drag_start", candidates: actionBridges.drag.start }
   ];
@@ -90,11 +96,14 @@ function summarizeManifest(manifest) {
     .map(([action]) => action);
   const triggerCandidates = [
     ...(actionBridges.dailyRotation?.lowFatigue ?? []),
+    ...(actionBridges.dailyRotation?.life ?? []),
+    ...(actionBridges.dailyRotation?.explore ?? []),
     ...actionBridges.reminder.water,
     ...actionBridges.reminder.rest,
     ...actionBridges.proximity.mouse_near,
     ...actionBridges.click.single,
     ...actionBridges.click.repeated,
+    ...(actionBridges.interaction?.gentle ?? []),
     ...actionBridges.click.wake,
     ...actionBridges.drag.start
   ];

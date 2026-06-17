@@ -44,6 +44,65 @@ const testSource = `
             watermarkGate: "人工检查。"
           }
         ]
+      },
+      {
+        id: "wave2",
+        name: "第二波",
+        actions: [
+          {
+            action: "groom_face_wash",
+            category: "daily",
+            confirmation: "needs-user-confirmation",
+            sourceVideo: "assets/origin/generated/kling/groom_face_wash.mp4",
+            runtimeFrameRoot: "assets/runtime/animations/groom_face_wash/frames",
+            bridge: "daily-rotation.life",
+            interruptPolicy: "at-safe-frame",
+            returnTo: "idle_primary",
+            reviewEvidence: ["assets/reviews/kling-generated/groom_face_wash_sweep.png"],
+            transitionPlan: "洗脸后回待机。",
+            watermarkGate: "人工检查。"
+          },
+          {
+            action: "desk_sniff",
+            category: "daily",
+            confirmation: "needs-user-confirmation",
+            sourceVideo: "assets/origin/generated/kling/desk_sniff.mp4",
+            runtimeFrameRoot: "assets/runtime/animations/desk_sniff/frames",
+            bridge: "daily-rotation.explore",
+            interruptPolicy: "at-safe-frame",
+            returnTo: "idle_primary",
+            reviewEvidence: ["assets/reviews/kling-generated/desk_sniff_sweep.png"],
+            transitionPlan: "探索后回待机。",
+            watermarkGate: "人工检查。"
+          },
+          {
+            action: "loaf_breathing",
+            category: "daily",
+            confirmation: "needs-user-confirmation",
+            sourceVideo: "assets/origin/generated/kling/loaf_breathing.mp4",
+            runtimeFrameRoot: "assets/runtime/animations/loaf_breathing/frames",
+            loop: true,
+            bridge: "daily-rotation.low-fatigue",
+            interruptPolicy: "at-safe-frame",
+            returnTo: "idle_primary",
+            reviewEvidence: ["assets/reviews/kling-generated/loaf_breathing_sweep.png"],
+            transitionPlan: "轻呼吸循环后回待机。",
+            watermarkGate: "人工检查。"
+          },
+          {
+            action: "shy",
+            category: "interactive",
+            confirmation: "needs-user-confirmation",
+            sourceVideo: "assets/origin/generated/kling/shy.mp4",
+            runtimeFrameRoot: "assets/runtime/animations/shy/frames",
+            bridge: "interaction.gentle",
+            interruptPolicy: "locked",
+            returnTo: "idle_primary",
+            reviewEvidence: ["assets/reviews/kling-generated/shy_sweep.png"],
+            transitionPlan: "温柔回应后回待机。",
+            watermarkGate: "人工检查。"
+          }
+        ]
       }
     ]
   };
@@ -54,7 +113,12 @@ const testSource = `
   };
   const bridges = {
     dailyRotation: {
-      lowFatigue: ["slow_blink"]
+      lowFatigue: ["slow_blink", "loaf_breathing"],
+      life: ["groom_face_wash"],
+      explore: ["desk_sniff"]
+    },
+    interaction: {
+      gentle: ["shy"]
     },
     click: {
       single: ["click_surprised", "paw_raise"]
@@ -70,6 +134,13 @@ const testSource = `
   assertEqual(executionPlan.actions[1].bridgeOperation, "already-referenced", "existing bridge reference is detected");
   assertEqual(executionPlan.summary.actionsToAdd, 2, "counts manifest additions");
   assertEqual(executionPlan.summary.framesToCreate, 2, "counts frame directories");
+
+  const wave2ExecutionPlan = buildRuntimeIntakeExecutionPlan({ plan, waveId: "wave2", manifest, bridges });
+  assertEqual(
+    wave2ExecutionPlan.actions.map((action) => action.bridgeOperation).join(","),
+    "already-referenced,already-referenced,already-referenced,already-referenced",
+    "wave2 life, explore, low-fatigue, and gentle bridges are detected"
+  );
 
   const patchedManifest = buildRuntimeIntakeManifestPatch({
     manifest,
@@ -88,6 +159,19 @@ const testSource = `
   assertEqual(patchedManifest.actions.click_surprised.interruptible, false, "locked interaction is not interruptible");
   assertEqual(patchedManifest.actions.click_surprised.loop, false, "interactive action is one-shot");
   assertEqual(manifest.actions.slow_blink, undefined, "does not mutate source manifest");
+
+  const wave2Manifest = buildRuntimeIntakeManifestPatch({
+    manifest,
+    executionPlan: wave2ExecutionPlan,
+    frameCounts: {
+      groom_face_wash: 120,
+      desk_sniff: 120,
+      loaf_breathing: 120,
+      shy: 120
+    }
+  });
+  assertEqual(wave2Manifest.actions.loaf_breathing.loop, true, "keeps explicit loop actions looping");
+  assertEqual(wave2Manifest.actions.groom_face_wash.loop, false, "keeps default daily insert actions one-shot");
 
   const text = renderRuntimeIntakeExecutionPlan(executionPlan);
   assertIncludes(text, "# runtime 接入执行 dry-run：第一波", "renders title");

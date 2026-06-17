@@ -64,8 +64,9 @@ const checks = [
   ["click uses schedule cooldown", interactions.clickCooldownMs, 8000],
   ["repeated click uses schedule cooldown", interactions.repeatedClickCooldownMs, 20000],
   ["wake uses schedule cooldown", interactions.wakeCooldownMs, 60000],
-  ["current project click is visible", currentInteractions.clickState, "waving"],
-  ["current project repeated click is visible", currentInteractions.repeatedClickState, "waving"]
+  ["current project mouse near uses cursor-watch state", currentInteractions.mouseNearState, "teaser"],
+  ["current project click uses surprised state", currentInteractions.clickState, "surprised"],
+  ["current project repeated click uses shy state", currentInteractions.repeatedClickState, "shy"]
 ];
 
 const failures = checks

@@ -64,7 +64,7 @@ const checks = [
   [
     "current project filters to enabled behavior variations",
     currentOptions.variations.join(","),
-    "tail_wag,idle_secondary,slow_blink,look_around,stretch_yawn"
+    "tail_wag,idle_secondary,slow_blink,look_around,groom_face_wash,loaf_breathing,desk_sniff,stretch_yawn"
   ]
 ];
 

@@ -297,6 +297,90 @@
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
+    },
+    "groom_face_wash": {
+      "source": "assets/origin/generated/kling/groom_face_wash.mp4",
+      "frameRoot": "../assets/runtime/animations/groom_face_wash/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "daily",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "loaf_breathing": {
+      "source": "assets/origin/generated/kling/loaf_breathing.mp4",
+      "frameRoot": "../assets/runtime/animations/loaf_breathing/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "daily",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "desk_sniff": {
+      "source": "assets/origin/generated/kling/desk_sniff.mp4",
+      "frameRoot": "../assets/runtime/animations/desk_sniff/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "daily",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "shy": {
+      "source": "assets/origin/generated/kling/shy.mp4",
+      "frameRoot": "../assets/runtime/animations/shy/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
     }
   },
   "stateMap": {
@@ -312,10 +396,10 @@
     "sleepy": "idle_primary",
     "sleeping": "idle_primary",
     "waking": "idle_primary",
-    "surprised": "idle_primary",
-    "shy": "idle_primary",
+    "surprised": "click_surprised",
+    "shy": "shy",
     "dragging": "idle_primary",
     "waving": "paw_raise",
-    "teaser": "paw_raise"
+    "teaser": "cursor_watch"
   }
 }
