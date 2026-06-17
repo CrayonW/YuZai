@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 
 const steps = [
   ["validate:runtime-animations", ["npm", "run", "validate:runtime-animations"]],
+  ["validate:runtime-alpha-quality", ["npm", "run", "validate:runtime-alpha-quality"]],
   ["validate:animation-smoothness", ["npm", "run", "validate:animation-smoothness"]],
   ["validate:animation-director", ["npm", "run", "validate:animation-director"]],
   ["validate:daily-animation-rotator", ["npm", "run", "validate:daily-animation-rotator"]],

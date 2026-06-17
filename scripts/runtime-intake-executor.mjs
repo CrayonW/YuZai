@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { cleanupGreenSpillInFrameRoot } from "./runtime-alpha-cleanup.mjs";
 
 const runtimeFrameSeconds = 5;
 const runtimeFps = 24;
@@ -130,6 +131,7 @@ export function executeRuntimeIntakePlan({
     mkdirSync(tempFrameRoot, { recursive: true });
     extractRuntimeFrames({ sourcePath, outputRoot: tempFrameRoot, root, stdio });
     removeWatermarkAlpha({ frameRoot: tempFrameRoot, root, stdio });
+    cleanupGreenSpillInFrameRoot(tempFrameRoot, { root, stdio });
 
     const frames = pngFrames(tempFrameRoot);
     if (frames.length <= 0) {

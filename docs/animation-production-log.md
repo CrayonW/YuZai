@@ -1279,3 +1279,21 @@ FPS：24fps。
 桌面验收：待执行；下一步需要启动桌宠截图/序列帧检查，确认透明帧、日常轮换、鼠标靠近、点击、提醒动作在桌面最上层实际可见。
 已知问题：睡眠链路、拖拽专项和第二波生活动作尚未进入 runtime；`shy`、`waking`、`dragging`、`sleepy`、`sleep` 仍在桥接报告中显示缺失。
 决定：接受第一波 7 个动作作为首批真实可灵素材 runtime 接入结果，后续先做桌面验收，再进入第二波清单确认与接入。
+
+## 2026-06-17 runtime 透明边缘质量修复与桌面验收
+
+日期：2026-06-17
+源文件：`scripts/runtime-alpha-cleanup.mjs`、`scripts/validate-runtime-alpha-quality.mjs`、`scripts/runtime-intake-executor.mjs`、`scripts/build-runtime-animations-from-origin.mjs`、`assets/runtime/animations/*/frames`、`assets/reviews/runtime/wave1-alpha-clean-desktop-capture.png`
+目标动作：全部已启用 runtime 动作，重点覆盖第一波 7 个可灵动作和原有 `idle_primary`、`idle_secondary`、`tail_wag`、`walk`、`walk_left`、`paw_raise`
+问题：第一波桌面截图已经证明桌宠可见并会动，但黑底下能看到绿幕边缘和底部暗绿色阴影，影响桌宠像真实小猫在电脑里的感觉。
+参考片段：新增 `npm run validate:runtime-alpha-quality`，检测可见像素中的高绿色/暗绿色残留；新增 `npm run runtime:alpha-cleanup`，对全部 runtime PNG 执行绿色优势像素 alpha 清理。
+帧数：当前 runtime 共 1272 张 PNG，全部执行边缘清理。
+FPS：不变。
+循环方式：不变；本次只处理透明边缘质量，不改变动作调度。
+水印处理：保留既有水印区域透明化；新增绿幕残留清理，后续 `runtime:intake-executor` 和 `animations:build-from-origin` 都会自动复用。
+重建方法：先执行 `npm run runtime:alpha-cleanup`，再执行 `npm run validate:runtime-alpha-quality`；正式抽帧脚本已内置同样清理步骤。
+运行时输出：`YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-alpha-clean.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=1000 npm run dev` 生成 8 张桌面截图，`capture:inspect` 显示 8 张均为 440x440 PNG 且 8 张哈希不同。
+验证命令：`npm run validate:runtime-alpha-quality`、`npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-alpha-clean.png --count 8 --min-changed-frames 4 --min-width 200 --min-height 200`
+桌面验收：通过；验收拼图保存到 `assets/reviews/runtime/wave1-alpha-clean-desktop-capture.png`。
+已知问题：边缘仍可能存在极细的自然抠像痕迹；后续如果要进一步拟真，可设计羽化/去色而不是单纯透明化。
+决定：接受当前透明边缘修复作为第一波动作进入桌面可视化验收后的质量补丁，并把 alpha 质量验证纳入全量发布校验。

@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { cleanupGreenSpillInFrameRoot } from "./runtime-alpha-cleanup.mjs";
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const originRoot = join(root, "assets", "origin");
@@ -47,6 +48,7 @@ for (const action of actions) {
 
   extractFrames(sourcePath, frameRoot);
   removeWatermark(frameRoot);
+  cleanupGreenSpillInFrameRoot(frameRoot, { root });
   console.log(`${action.name}: 已生成 ${frameCount} 帧`);
 }
 
