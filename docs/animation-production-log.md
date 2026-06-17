@@ -1459,3 +1459,21 @@ FPS：不变。
 桌面验收：不涉及桌面运行；这是后续素材 intake 的选择规则。
 已知问题：该规则不替代逐视频检查，数量更多的视频仍必须通过无水印、无文字、无额外物体、动作自然和桌面手感验收。
 决定：接受“动作视频都选多的”作为后续 runtime intake 默认规则。
+
+## 2026-06-18 候选选择规则进入 runtime 分波门禁
+
+日期：2026-06-18
+源文件：`docs/runtime-intake-waves.json`、`scripts/validate-runtime-intake-waves.mjs`、`scripts/runtime-intake-executor.mjs`、`docs/runtime-intake-wave1-dry-run.md`、`docs/runtime-intake-wave2-dry-run.md`、`docs/runtime-intake-sleep-routine-dry-run.md`、`docs/runtime-intake-dragging-special-dry-run.md`
+目标动作：后续所有 runtime intake 波次
+问题：上一条规则已经写入文字规范，但如果后续只看机器分波计划或 dry-run 报告，仍可能漏掉“同一动作或同一波次多候选时默认选多的”。
+参考片段：先让 `npm run validate:runtime-intake-waves` 因缺少 `candidateSelection` 失败，再补充 `candidateSelection.defaultPolicy=prefer-more-complete-video-set`、中文规则和质量风险改选条件；dry-run 报告新增“候选选择规则”章节。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：修改 `docs/runtime-intake-waves.json` 后，重新生成四份 dry-run：`wave1`、`wave2`、`sleep-routine`、`dragging-special`；再运行 `npm run validate:runtime-intake-waves` 和 `npm run validate:runtime-intake-dry-runs-current`。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖任何 runtime 帧目录。
+验证命令：`npm run validate:runtime-intake-waves`、`npm run validate:runtime-intake-dry-runs-current`
+桌面验收：不涉及桌面运行；这是后续素材选择和执行报告门禁。
+已知问题：该门禁只保证默认选择策略存在，不自动判断视频质量；多候选视频仍要逐个播放检查水印、文字、logo、额外物体、动作变形和桌面衔接手感。
+决定：接受 `candidateSelection` 进入 runtime 分波计划和 dry-run 报告，后续动作视频候选默认选素材更多、覆盖更完整的一组。

@@ -23,6 +23,16 @@ if (!Array.isArray(plan.waves) || plan.waves.length < 2) {
   failures.push("waves must contain at least two runtime intake waves");
 }
 
+if (plan.candidateSelection?.defaultPolicy !== "prefer-more-complete-video-set") {
+  failures.push("candidateSelection.defaultPolicy must be prefer-more-complete-video-set");
+}
+if (typeof plan.candidateSelection?.rule !== "string" || !plan.candidateSelection.rule.includes("数量更多")) {
+  failures.push("candidateSelection.rule must document preferring the larger video candidate set");
+}
+if (typeof plan.candidateSelection?.overrideRule !== "string" || !plan.candidateSelection.overrideRule.includes("质量风险")) {
+  failures.push("candidateSelection.overrideRule must document quality-risk override conditions");
+}
+
 const actionNames = new Set();
 const requiredWaveIds = ["wave1", "wave2", "sleep-routine", "dragging-special"];
 for (const waveId of requiredWaveIds) {

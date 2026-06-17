@@ -63,6 +63,7 @@ export function buildRuntimeIntakeExecutionPlan({ plan, waveId, manifest, bridge
       bridgeAlreadyReferenced: actions.filter((action) => action.bridgeOperation === "already-referenced").length,
       bridgeManual: actions.filter((action) => action.bridgeOperation === "manual").length
     },
+    candidateSelection: plan.candidateSelection ?? null,
     actions
   };
 }
@@ -184,6 +185,15 @@ export function renderRuntimeIntakeExecutionPlan(executionPlan) {
     `波次 ID：${executionPlan.wave.id}`,
     `目的：${executionPlan.wave.intent}`,
     `需要用户批准文件：${executionPlan.approvalPath}`,
+    "",
+    "## 候选选择规则",
+    "",
+    executionPlan.candidateSelection
+      ? `- 默认策略：${executionPlan.candidateSelection.rule}`
+      : "- 默认策略：未在 docs/runtime-intake-waves.json 中声明。",
+    executionPlan.candidateSelection
+      ? `- 改选条件：${executionPlan.candidateSelection.overrideRule}`
+      : "- 改选条件：未在 docs/runtime-intake-waves.json 中声明。",
     "",
     "## 汇总",
     "",
