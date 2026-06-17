@@ -1369,3 +1369,21 @@ FPS：不变。
 桌面验收：不涉及桌面运行；这是文档门禁和发布校验增强。
 已知问题：该校验只证明 dry-run 文档与当前计划和 manifest 同步，不代表 `dragging-special` 已获批准或已经接入。
 决定：接受 dry-run current 校验进入 `validate:all`，后续任何 runtime intake 波次变更都必须同步中文 dry-run 文档。
+
+## 2026-06-17 runtime 批准文件内容门禁
+
+日期：2026-06-17
+源文件：`scripts/runtime-intake-executor.mjs`、`scripts/validate-runtime-intake-executor.mjs`、`docs/runtime-intake-wave1-dry-run.md`、`docs/runtime-intake-wave2-dry-run.md`、`docs/runtime-intake-sleep-routine-dry-run.md`、`docs/runtime-intake-dragging-special-dry-run.md`
+目标动作：全部 runtime intake 波次，重点保护 `dragging-special`
+问题：执行器此前只检查批准文件是否存在；如果误放了错误波次或动作集合不完整的批准文件，仍可能进入正式执行路径。
+参考片段：先新增失败测试，证明错误 `waveId` 的批准对象不会被拦截；随后让 `assertRuntimeIntakeApproval` 校验 `waveId` 和 `approvedActions`/`allowedActions` 是否与当前执行计划完全一致。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：正式执行前必须存在 `docs/runtime-intake-approvals/<wave-id>.approved.json`，且其中 `waveId` 等于当前波次，`approvedActions` 或 `allowedActions` 的动作集合等于 dry-run 里的动作集合。
+运行时输出：`dragging-special --execute` 在缺少 `docs/runtime-intake-approvals/dragging-special.approved.json` 时会以中文错误中止；dry-run 仍允许查看计划。
+验证命令：`npm run validate:runtime-intake-executor`
+桌面验收：不涉及桌面运行；这是正式素材处理前的安全门禁。
+已知问题：该门禁验证批准文件内容，不替代用户确认清单和逐视频人工播放检查。
+决定：接受“批准文件存在且内容匹配”作为 runtime intake 正式执行的最低门槛；未收到用户确认前仍不得创建 `dragging-special` 批准文件。

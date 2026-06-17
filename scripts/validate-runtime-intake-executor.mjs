@@ -315,6 +315,42 @@ const testSource = `
   assertEqual(blocked, true, "non dry-run requires approval");
   assertRuntimeIntakeApproval({ dryRun: true, approvalExists: false, waveId: "wave1" });
 
+  let wrongWaveBlocked = false;
+  try {
+    assertRuntimeIntakeApproval({
+      dryRun: false,
+      approvalExists: true,
+      waveId: "wave1",
+      approval: { waveId: "wave2", approvedActions: ["slow_blink", "click_surprised"] },
+      expectedActions: ["slow_blink", "click_surprised"]
+    });
+  } catch (error) {
+    wrongWaveBlocked = String(error.message).includes("批准文件 waveId 不匹配");
+  }
+  assertEqual(wrongWaveBlocked, true, "approval must match wave id");
+
+  let missingActionBlocked = false;
+  try {
+    assertRuntimeIntakeApproval({
+      dryRun: false,
+      approvalExists: true,
+      waveId: "wave1",
+      approval: { waveId: "wave1", approvedActions: ["slow_blink"] },
+      expectedActions: ["slow_blink", "click_surprised"]
+    });
+  } catch (error) {
+    missingActionBlocked = String(error.message).includes("批准动作不匹配");
+  }
+  assertEqual(missingActionBlocked, true, "approval must include the current action set");
+
+  assertRuntimeIntakeApproval({
+    dryRun: false,
+    approvalExists: true,
+    waveId: "wave1",
+    approval: { waveId: "wave1", allowedActions: ["click_surprised", "slow_blink"] },
+    expectedActions: ["slow_blink", "click_surprised"]
+  });
+
   function assertEqual(actual, expected, label) {
     if (actual !== expected) throw new Error(label + ": expected " + expected + ", got " + actual);
   }

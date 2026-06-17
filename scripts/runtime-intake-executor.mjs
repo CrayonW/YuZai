@@ -99,10 +99,27 @@ export function buildRuntimeIntakeManifestPatch({ manifest, executionPlan, frame
   return nextManifest;
 }
 
-export function assertRuntimeIntakeApproval({ dryRun, approvalExists, waveId }) {
+export function assertRuntimeIntakeApproval({ dryRun, approvalExists, waveId, approval = null, expectedActions = [] }) {
   if (dryRun) return;
   if (!approvalExists) {
     throw new Error(`缺少 runtime 接入批准文件：docs/runtime-intake-approvals/${waveId}.approved.json`);
+  }
+  if (!approval || typeof approval !== "object") {
+    throw new Error(`runtime 接入批准文件无效：docs/runtime-intake-approvals/${waveId}.approved.json`);
+  }
+  if (approval.waveId !== waveId) {
+    throw new Error(`runtime 接入批准文件 waveId 不匹配：expected ${waveId}, got ${approval.waveId ?? "missing"}`);
+  }
+
+  const approvedActions = Array.isArray(approval.approvedActions)
+    ? approval.approvedActions
+    : Array.isArray(approval.allowedActions)
+      ? approval.allowedActions
+      : [];
+  const expected = [...expectedActions].sort();
+  const actual = [...approvedActions].sort();
+  if (expected.join("\n") !== actual.join("\n")) {
+    throw new Error(`runtime 接入批准动作不匹配：expected ${expected.join(", ")}, got ${actual.join(", ") || "missing"}`);
   }
 }
 
@@ -209,7 +226,7 @@ export function renderRuntimeIntakeExecutionPlan(executionPlan) {
     "非 dry-run 执行必须同时满足：",
     "",
     `1. 用户明确确认对应执行清单。`,
-    `2. 存在批准文件：${executionPlan.approvalPath}`,
+    `2. 存在且内容匹配的批准文件：${executionPlan.approvalPath}`,
     "3. 逐视频人工播放检查已完成。",
     "4. 本报告重新生成后仍无意外覆盖风险。",
     "",
@@ -371,10 +388,13 @@ function runCli() {
     bridges: readJson(options.bridgesPath)
   });
 
+  const approvalExists = existsSync(join(process.cwd(), executionPlan.approvalPath));
   assertRuntimeIntakeApproval({
     dryRun: options.dryRun,
-    approvalExists: existsSync(join(process.cwd(), executionPlan.approvalPath)),
-    waveId: options.waveId
+    approvalExists,
+    waveId: options.waveId,
+    approval: options.dryRun || !approvalExists ? null : readJson(executionPlan.approvalPath),
+    expectedActions: executionPlan.actions.map((action) => action.action)
   });
 
   const text = renderRuntimeIntakeExecutionPlan(executionPlan);

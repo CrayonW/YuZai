@@ -87,7 +87,7 @@
 非 dry-run 执行必须同时满足：
 
 1. 用户明确确认对应执行清单。
-2. 存在批准文件：docs/runtime-intake-approvals/sleep-routine.approved.json
+2. 存在且内容匹配的批准文件：docs/runtime-intake-approvals/sleep-routine.approved.json
 3. 逐视频人工播放检查已完成。
 4. 本报告重新生成后仍无意外覆盖风险。
 
