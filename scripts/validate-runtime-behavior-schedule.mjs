@@ -61,7 +61,11 @@ const checks = [
   ["keeps first variation delayed enough to avoid instant loop", options.firstDelayMs, 4500],
   ["uses action cooldown for tail_wag", options.variationCooldownMs.tail_wag, 360000],
   ["uses action cooldown for groom_face_wash", options.variationCooldownMs.groom_face_wash, 900000],
-  ["current project filters to enabled behavior variations", currentOptions.variations.join(","), "tail_wag,idle_secondary"]
+  [
+    "current project filters to enabled behavior variations",
+    currentOptions.variations.join(","),
+    "tail_wag,idle_secondary,slow_blink,look_around,stretch_yawn"
+  ]
 ];
 
 const failures = checks

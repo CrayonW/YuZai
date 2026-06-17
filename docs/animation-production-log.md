@@ -1261,3 +1261,21 @@ FPS：runtime FPS 不变。
 桌面验收：尚未进行；本次只是桥接准备，不代表 `slow_blink` 或 `look_around` 已进入桌宠。
 已知问题：`slow_blink`、`look_around` 当前在桥接矩阵中仍显示 `missing`，需要用户确认后抽帧并接入 manifest 才会变成 `ready`。
 决定：接受 `dailyRotation.lowFatigue` 作为第一波低疲劳日常动作的运行时入口。
+
+## 2026-06-17 第一波 runtime 动作正式接入
+
+日期：2026-06-17
+源文件：`docs/runtime-intake-approvals/wave1.approved.json`、`scripts/runtime-intake-executor.mjs`、`assets/runtime/animations/manifest.json`、`assets/runtime/animations/slow_blink/frames`、`assets/runtime/animations/look_around/frames`、`assets/runtime/animations/cursor_watch/frames`、`assets/runtime/animations/click_surprised/frames`、`assets/runtime/animations/poke_annoyed/frames`、`assets/runtime/animations/call_response/frames`、`assets/runtime/animations/stretch_yawn/frames`
+目标动作：`slow_blink`、`look_around`、`cursor_watch`、`click_surprised`、`poke_annoyed`、`call_response`、`stretch_yawn`
+问题：桌宠之前只有少量原始动作，日常重复度高，鼠标靠近、点击和提醒仍大量回退到 `paw_raise` 或 `idle_primary`，无法形成真实小猫在电脑里生活的感觉。
+参考片段：执行 `npm run runtime:intake-executor -- --wave wave1 --execute`，在批准文件存在时从可灵视频抽取 5 秒 24fps 序列帧，并把 7 个新动作写入 runtime manifest。
+帧数：每个新动作 120 帧；第一波合计新增 840 张 runtime PNG。
+FPS：24fps。
+循环方式：`slow_blink`、`look_around`、`stretch_yawn` 作为日常插入动作进入 `DailyAnimationRotator` 可用池；`cursor_watch`、`click_surprised`、`poke_annoyed`、`call_response` 作为交互动作由桥接入口触发，播放结束后回到 `idle_primary`。
+水印处理：抽帧时执行绿幕抠像，并对既定水印区域做透明化处理；本次没有把 mp4 源视频加入 Git。
+重建方法：保留受控执行器，只允许新增帧目录；若再次 dry-run，报告会显示 7 个动作变为 `manifest=update`、`frames=replace`，提醒禁止误覆盖。
+运行时输出：`docs/runtime-action-bridge-report.md` 显示当前可播放动作从 6 个增加到 13 个，第一波桥接动作均为 `ready`。
+验证命令：`npm run validate:runtime-intake-executor`、`npm run validate:runtime-animations`、`npm run validate:runtime-behavior-schedule`、`npm run validate:runtime-action-bridge-report`、`npm run validate:release`
+桌面验收：待执行；下一步需要启动桌宠截图/序列帧检查，确认透明帧、日常轮换、鼠标靠近、点击、提醒动作在桌面最上层实际可见。
+已知问题：睡眠链路、拖拽专项和第二波生活动作尚未进入 runtime；`shy`、`waking`、`dragging`、`sleepy`、`sleep` 仍在桥接报告中显示缺失。
+决定：接受第一波 7 个动作作为首批真实可灵素材 runtime 接入结果，后续先做桌面验收，再进入第二波清单确认与接入。

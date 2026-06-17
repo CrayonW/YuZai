@@ -150,6 +150,153 @@
       ],
       "interruptPolicy": "locked",
       "returnTo": "idle_primary"
+    },
+    "slow_blink": {
+      "source": "assets/origin/generated/kling/slow_blink.mp4",
+      "frameRoot": "../assets/runtime/animations/slow_blink/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "daily",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_around": {
+      "source": "assets/origin/generated/kling/look_around.mp4",
+      "frameRoot": "../assets/runtime/animations/look_around/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "daily",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "cursor_watch": {
+      "source": "assets/origin/generated/kling/cursor_watch_clean_candidate_v3.mp4",
+      "frameRoot": "../assets/runtime/animations/cursor_watch/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
+    },
+    "click_surprised": {
+      "source": "assets/origin/generated/kling/click_surprised.mp4",
+      "frameRoot": "../assets/runtime/animations/click_surprised/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
+    },
+    "poke_annoyed": {
+      "source": "assets/origin/generated/kling/poke_annoyed.mp4",
+      "frameRoot": "../assets/runtime/animations/poke_annoyed/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
+    },
+    "call_response": {
+      "source": "assets/origin/generated/kling/call_response.mp4",
+      "frameRoot": "../assets/runtime/animations/call_response/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
+    },
+    "stretch_yawn": {
+      "source": "assets/origin/generated/kling/stretch_yawn.mp4",
+      "frameRoot": "../assets/runtime/animations/stretch_yawn/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "daily",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
     }
   },
   "stateMap": {

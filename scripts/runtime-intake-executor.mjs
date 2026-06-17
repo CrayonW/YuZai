@@ -1,6 +1,12 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+
+const runtimeFrameSeconds = 5;
+const runtimeFps = 24;
+const runtimeFrameSize = 512;
+const watermarkRegion = "122x67+390+445";
 
 export function buildRuntimeIntakeExecutionPlan({ plan, waveId, manifest, bridges }) {
   const wave = plan.waves?.find((item) => item.id === waveId);
@@ -31,9 +37,9 @@ export function buildRuntimeIntakeExecutionPlan({ plan, waveId, manifest, bridge
         "-i",
         action.sourceVideo,
         "-t",
-        "3",
+        String(runtimeFrameSeconds),
         "-vf",
-        "fps=24,chromakey=0x00ff00:0.28:0.10,format=rgba,scale=512:512:force_original_aspect_ratio=decrease,pad=512:512:(ow-iw)/2:(oh-ih)/2:color=0x00000000,format=rgba",
+        `fps=${runtimeFps},chromakey=0x00ff00:0.28:0.10,format=rgba,scale=${runtimeFrameSize}:${runtimeFrameSize}:force_original_aspect_ratio=decrease,pad=${runtimeFrameSize}:${runtimeFrameSize}:(ow-iw)/2:(oh-ih)/2:color=0x00000000,format=rgba`,
         `${action.runtimeFrameRoot}/frame_%06d.png`
       ].join(" ")
     };
@@ -59,11 +65,94 @@ export function buildRuntimeIntakeExecutionPlan({ plan, waveId, manifest, bridge
   };
 }
 
+export function buildRuntimeIntakeManifestPatch({ manifest, executionPlan, frameCounts }) {
+  const nextManifest = structuredClone(manifest);
+  nextManifest.actions = { ...nextManifest.actions };
+
+  for (const action of executionPlan.actions) {
+    const frameCount = frameCounts[action.action];
+    if (!Number.isInteger(frameCount) || frameCount <= 0) {
+      throw new Error(`${action.action}: 缺少有效抽帧数量`);
+    }
+
+    nextManifest.actions[action.action] = {
+      source: action.sourceVideo,
+      frameRoot: `../${dirname(action.runtimeFrameRoot)}/frames`,
+      filePattern: "frame_{index}.png",
+      firstFrame: 1,
+      frameCount,
+      fps: runtimeFps,
+      loop: false,
+      interruptible: action.interruptPolicy !== "locked",
+      fallback: action.returnTo,
+      enabled: true,
+      category: action.category === "interactive" ? "interactive" : "daily",
+      entryFrames: [1],
+      exitFrames: [frameCount],
+      interruptPolicy: action.interruptPolicy,
+      returnTo: action.returnTo
+    };
+  }
+
+  return nextManifest;
+}
+
 export function assertRuntimeIntakeApproval({ dryRun, approvalExists, waveId }) {
   if (dryRun) return;
   if (!approvalExists) {
     throw new Error(`缺少 runtime 接入批准文件：docs/runtime-intake-approvals/${waveId}.approved.json`);
   }
+}
+
+export function executeRuntimeIntakePlan({
+  executionPlan,
+  manifest,
+  manifestPath,
+  root = process.cwd(),
+  stdio = "inherit"
+}) {
+  const frameCounts = {};
+  assertCreateOnly(executionPlan);
+
+  for (const action of executionPlan.actions) {
+    const sourcePath = join(root, action.sourceVideo);
+    const targetFrameRoot = join(root, action.runtimeFrameRoot);
+    const tempFrameRoot = join(root, ".tmp", "runtime-intake", executionPlan.wave.id, action.action, "frames");
+
+    if (!existsSync(sourcePath)) {
+      throw new Error(`${action.action}: 缺少来源视频 ${action.sourceVideo}`);
+    }
+    if (pngFrames(targetFrameRoot).length > 0) {
+      throw new Error(`${action.action}: 目标帧目录已有帧，当前执行器禁止覆盖 ${action.runtimeFrameRoot}`);
+    }
+
+    rmSync(tempFrameRoot, { recursive: true, force: true });
+    mkdirSync(tempFrameRoot, { recursive: true });
+    extractRuntimeFrames({ sourcePath, outputRoot: tempFrameRoot, root, stdio });
+    removeWatermarkAlpha({ frameRoot: tempFrameRoot, root, stdio });
+
+    const frames = pngFrames(tempFrameRoot);
+    if (frames.length <= 0) {
+      throw new Error(`${action.action}: 抽帧后没有生成 PNG 帧`);
+    }
+
+    mkdirSync(dirname(targetFrameRoot), { recursive: true });
+    cpSync(tempFrameRoot, targetFrameRoot, { recursive: true });
+    frameCounts[action.action] = frames.length;
+  }
+
+  const nextManifest = buildRuntimeIntakeManifestPatch({ manifest, executionPlan, frameCounts });
+  writeFileSync(join(root, manifestPath), `${JSON.stringify(nextManifest, null, 2)}\n`);
+
+  return {
+    wave: executionPlan.wave.id,
+    actions: executionPlan.actions.map((action) => ({
+      action: action.action,
+      frames: frameCounts[action.action],
+      runtimeFrameRoot: action.runtimeFrameRoot
+    })),
+    manifestPath
+  };
 }
 
 export function renderRuntimeIntakeExecutionPlan(executionPlan) {
@@ -158,6 +247,70 @@ function valueAtBridgePath(bridges, bridgePath) {
   return normalizedPath.split(".").reduce((node, part) => node?.[part], bridges);
 }
 
+function assertCreateOnly(executionPlan) {
+  const replacing = executionPlan.actions.filter((action) => action.frameOperation !== "create");
+  if (replacing.length > 0) {
+    throw new Error(`当前 runtime intake 执行器只允许新增帧目录，禁止覆盖：${replacing.map((action) => action.action).join(", ")}`);
+  }
+}
+
+function extractRuntimeFrames({ sourcePath, outputRoot, root, stdio }) {
+  execFileSync(
+    "ffmpeg",
+    [
+      "-y",
+      "-v",
+      "error",
+      "-i",
+      sourcePath,
+      "-t",
+      String(runtimeFrameSeconds),
+      "-vf",
+      [
+        `fps=${runtimeFps}`,
+        "chromakey=0x00ff00:0.28:0.10",
+        "format=rgba",
+        `scale=${runtimeFrameSize}:${runtimeFrameSize}:force_original_aspect_ratio=decrease`,
+        `pad=${runtimeFrameSize}:${runtimeFrameSize}:(ow-iw)/2:(oh-ih)/2:color=0x00000000`,
+        "format=rgba"
+      ].join(","),
+      join(outputRoot, "frame_%06d.png")
+    ],
+    { cwd: root, stdio }
+  );
+}
+
+function removeWatermarkAlpha({ frameRoot, root, stdio }) {
+  for (const file of pngFrames(frameRoot)) {
+    const framePath = join(frameRoot, file);
+    execFileSync(
+      "magick",
+      [
+        framePath,
+        "-alpha",
+        "set",
+        "-region",
+        watermarkRegion,
+        "-channel",
+        "A",
+        "-evaluate",
+        "set",
+        "0",
+        "+channel",
+        framePath
+      ],
+      { cwd: root, stdio }
+    );
+  }
+}
+
+function pngFrames(frameRoot) {
+  if (!existsSync(frameRoot)) return [];
+  return readdirSync(frameRoot)
+    .filter((file) => /^frame_\d{6}\.png$/.test(file))
+    .sort();
+}
+
 function parseArgs(argv) {
   const options = {
     waveId: "wave1",
@@ -209,11 +362,17 @@ function runCli() {
     waveId: options.waveId
   });
 
+  const text = renderRuntimeIntakeExecutionPlan(executionPlan);
   if (!options.dryRun) {
-    throw new Error("runtime intake execute mode is intentionally not implemented yet; use dry-run reports until user approval and implementation checkpoint.");
+    const result = executeRuntimeIntakePlan({
+      executionPlan,
+      manifest: readJson(options.manifestPath),
+      manifestPath: options.manifestPath
+    });
+    process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+    return;
   }
 
-  const text = renderRuntimeIntakeExecutionPlan(executionPlan);
   if (options.writePath) {
     const target = join(process.cwd(), options.writePath);
     mkdirSync(dirname(target), { recursive: true });

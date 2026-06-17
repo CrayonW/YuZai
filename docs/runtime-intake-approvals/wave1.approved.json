@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "waveId": "wave1",
+  "approvedAt": "2026-06-17",
+  "approvedScope": "第一波：低疲劳日常与关键交互的 7 个新增 runtime 动作接入。",
+  "sourceChecklist": "docs/runtime-intake-wave1-execution-checklist.md",
+  "sourcePreflight": "docs/runtime-intake-wave1-preflight.md",
+  "allowedActions": [
+    "slow_blink",
+    "look_around",
+    "cursor_watch",
+    "click_surprised",
+    "poke_annoyed",
+    "call_response",
+    "stretch_yawn"
+  ],
+  "allowedOperations": [
+    "新增 runtime 帧目录",
+    "从已生成可灵视频抽取 5 秒 24fps 序列帧",
+    "执行绿幕抠像和水印区域透明化处理",
+    "把新增动作写入 assets/runtime/animations/manifest.json"
+  ],
+  "blockedOperations": [
+    "覆盖已有 runtime 动作目录",
+    "强制提交 mp4 源视频",
+    "接入 wave2、sleep-routine 或 dragging-special",
+    "把 deferred 动作当作推荐动作接入"
+  ],
+  "notes": [
+    "用户要求继续完成项目，并已要求每次新增 MVP 功能后记录上传 GitHub。",
+    "本批准只作为受控执行器门禁文件；执行后仍需要桌面可视化验收。"
+  ]
+}

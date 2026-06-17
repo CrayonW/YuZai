@@ -4,30 +4,30 @@
 
 ## 汇总
 
-- 当前 manifest 可播放动作：idle_primary、idle_secondary、tail_wag、walk、walk_left、paw_raise
-- 可播放动作数量：6
-- 候选缺失数量：14
+- 当前 manifest 可播放动作：idle_primary、idle_secondary、tail_wag、walk、walk_left、paw_raise、slow_blink、look_around、cursor_watch、click_surprised、poke_annoyed、call_response、stretch_yawn
+- 可播放动作数量：13
+- 候选缺失数量：5
 
 ## 矩阵
 
 | 触发入口 | 优先级 | action | 状态 | 帧数 |
 | --- | ---: | --- | --- | ---: |
-| 低疲劳日常轮换 | 1 | slow_blink | missing | 0 |
-| 低疲劳日常轮换 | 2 | look_around | missing | 0 |
-| 喝水提醒 | 1 | call_response | missing | 0 |
-| 喝水提醒 | 2 | cursor_watch | missing | 0 |
-| 休息提醒 | 1 | stretch_yawn | missing | 0 |
+| 低疲劳日常轮换 | 1 | slow_blink | ready | 120 |
+| 低疲劳日常轮换 | 2 | look_around | ready | 120 |
+| 喝水提醒 | 1 | call_response | ready | 120 |
+| 喝水提醒 | 2 | cursor_watch | ready | 120 |
+| 休息提醒 | 1 | stretch_yawn | ready | 120 |
 | 休息提醒 | 2 | sleepy | missing | 0 |
 | 休息提醒 | 3 | sleep | missing | 0 |
-| 鼠标靠近 | 1 | cursor_watch | missing | 0 |
+| 鼠标靠近 | 1 | cursor_watch | ready | 120 |
 | 鼠标靠近 | 2 | paw_raise | ready | 72 |
-| 普通点击 | 1 | click_surprised | missing | 0 |
+| 普通点击 | 1 | click_surprised | ready | 120 |
 | 普通点击 | 2 | paw_raise | ready | 72 |
-| 多次点击 | 1 | poke_annoyed | missing | 0 |
+| 多次点击 | 1 | poke_annoyed | ready | 120 |
 | 多次点击 | 2 | shy | missing | 0 |
 | 多次点击 | 3 | paw_raise | ready | 72 |
 | 睡眠叫醒 | 1 | waking | missing | 0 |
-| 睡眠叫醒 | 2 | click_surprised | missing | 0 |
+| 睡眠叫醒 | 2 | click_surprised | ready | 120 |
 | 睡眠叫醒 | 3 | paw_raise | ready | 72 |
 | 拖拽开始 | 1 | dragging | missing | 0 |
 | 拖拽开始 | 2 | paw_raise | ready | 72 |
