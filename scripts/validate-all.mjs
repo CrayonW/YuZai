@@ -36,6 +36,7 @@ const steps = [
   ["validate:runtime-intake-checklists-current", ["npm", "run", "validate:runtime-intake-checklists-current"]],
   ["validate:runtime-intake-preflight", ["npm", "run", "validate:runtime-intake-preflight"]],
   ["validate:runtime-intake-preflights-current", ["npm", "run", "validate:runtime-intake-preflights-current"]],
+  ["validate:runtime-intake-dry-runs-current", ["npm", "run", "validate:runtime-intake-dry-runs-current"]],
   ["validate:runtime-intake-executor", ["npm", "run", "validate:runtime-intake-executor"]],
   ["validate:kling-preflight", ["npm", "run", "validate:kling-preflight"]],
   ["validate:kling-auth-diagnostics", ["npm", "run", "validate:kling-auth-diagnostics"]],

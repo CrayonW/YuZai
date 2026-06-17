@@ -24,6 +24,7 @@
 - runtimeFrameRoot=assets/runtime/animations/slow_blink/frames
 - manifest=update
 - frames=replace
+- loop=false
 - bridge=already-referenced
 - bridgeKey=daily-rotation.low-fatigue
 - interruptPolicy=at-safe-frame
@@ -39,6 +40,7 @@
 - runtimeFrameRoot=assets/runtime/animations/look_around/frames
 - manifest=update
 - frames=replace
+- loop=false
 - bridge=already-referenced
 - bridgeKey=daily-rotation.low-fatigue
 - interruptPolicy=at-safe-frame
@@ -54,6 +56,7 @@
 - runtimeFrameRoot=assets/runtime/animations/cursor_watch/frames
 - manifest=update
 - frames=replace
+- loop=false
 - bridge=already-referenced
 - bridgeKey=proximity.mouse_near
 - interruptPolicy=locked
@@ -69,6 +72,7 @@
 - runtimeFrameRoot=assets/runtime/animations/click_surprised/frames
 - manifest=update
 - frames=replace
+- loop=false
 - bridge=already-referenced
 - bridgeKey=click.single
 - interruptPolicy=locked
@@ -84,6 +88,7 @@
 - runtimeFrameRoot=assets/runtime/animations/poke_annoyed/frames
 - manifest=update
 - frames=replace
+- loop=false
 - bridge=already-referenced
 - bridgeKey=click.repeated
 - interruptPolicy=locked
@@ -99,6 +104,7 @@
 - runtimeFrameRoot=assets/runtime/animations/call_response/frames
 - manifest=update
 - frames=replace
+- loop=false
 - bridge=already-referenced
 - bridgeKey=reminder.water
 - interruptPolicy=locked
@@ -114,6 +120,7 @@
 - runtimeFrameRoot=assets/runtime/animations/stretch_yawn/frames
 - manifest=update
 - frames=replace
+- loop=false
 - bridge=already-referenced
 - bridgeKey=reminder.rest
 - interruptPolicy=at-safe-frame

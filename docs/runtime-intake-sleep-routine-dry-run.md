@@ -9,10 +9,10 @@
 ## 汇总
 
 - 动作数量：4
-- manifest 新增：4
-- manifest 更新：0
-- 新建帧目录：4
-- 覆盖帧目录：0
+- manifest 新增：0
+- manifest 更新：4
+- 新建帧目录：0
+- 覆盖帧目录：4
 - 桥接已引用：4
 - 桥接需人工设计：0
 
@@ -22,8 +22,8 @@
 
 - sourceVideo=assets/origin/generated/kling/sleepy.mp4
 - runtimeFrameRoot=assets/runtime/animations/sleepy/frames
-- manifest=add
-- frames=create
+- manifest=update
+- frames=replace
 - loop=false
 - bridge=already-referenced
 - bridgeKey=sleep.entering
@@ -38,8 +38,8 @@
 
 - sourceVideo=assets/origin/generated/kling/sleep.mp4
 - runtimeFrameRoot=assets/runtime/animations/sleep/frames
-- manifest=add
-- frames=create
+- manifest=update
+- frames=replace
 - loop=false
 - bridge=already-referenced
 - bridgeKey=sleep.transition
@@ -54,8 +54,8 @@
 
 - sourceVideo=assets/origin/generated/kling/sleeping.mp4
 - runtimeFrameRoot=assets/runtime/animations/sleeping/frames
-- manifest=add
-- frames=create
+- manifest=update
+- frames=replace
 - loop=true
 - bridge=already-referenced
 - bridgeKey=sleep.loop
@@ -70,8 +70,8 @@
 
 - sourceVideo=assets/origin/generated/kling/waking.mp4
 - runtimeFrameRoot=assets/runtime/animations/waking/frames
-- manifest=add
-- frames=create
+- manifest=update
+- frames=replace
 - loop=false
 - bridge=already-referenced
 - bridgeKey=sleep.exit

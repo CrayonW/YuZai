@@ -1351,3 +1351,21 @@ FPS：预计沿用 runtime 标准 24fps。
 桌面验收：尚未执行；正式接入后必须验证桌面可见、始终置顶、拖拽窗口移动手感、鼠标释放后自然回到日常动作。
 已知问题：`dragging` 源视频预检通过元数据检查，但既有审查意见认为动作幅度较小，真实体验必须结合窗口拖拽手感验收。
 决定：保留拖拽专项门禁；未收到用户明确确认前，禁止抽帧、去水印/抠绿、修改 runtime manifest 或覆盖 runtime 动作目录。
+
+## 2026-06-17 runtime dry-run 文档同步门禁
+
+日期：2026-06-17
+源文件：`scripts/validate-runtime-intake-dry-runs-current.mjs`、`scripts/validate-all.mjs`、`package.json`、`docs/runtime-intake-wave1-dry-run.md`、`docs/runtime-intake-sleep-routine-dry-run.md`
+目标动作：全部 runtime intake 波次，重点覆盖 `wave1`、`wave2`、`sleep-routine`、`dragging-special`
+问题：拖拽专项已经补了 dry-run，但发布门禁只校验 checklist 和 preflight；如果某个波次正式接入后 dry-run 仍显示 `manifest=add` 或 `frames=create`，后续查看文档会误判执行风险。
+参考片段：先把 `validate:runtime-intake-dry-runs-current` 挂到 `package.json` 和 `validate:all`，红灯显示脚本缺失；实现后发现 `wave1` 和 `sleep-routine` dry-run 与当前 manifest 不一致。
+帧数：未生成新 runtime 帧；本次只同步 dry-run 文档。
+FPS：不变。
+循环方式：不变；本次只校验并同步报告中的 `loop`、`manifest`、`frames`、`bridge` 等字段。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：使用 `npm run runtime:intake-executor -- --wave <wave-id> --dry-run --write docs/runtime-intake-<wave-id>-dry-run.md` 重新生成过期报告，再执行 `npm run validate:runtime-intake-dry-runs-current`。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`；`sleep-routine` dry-run 已从新增帧目录更新为覆盖风险提示，`wave1` dry-run 补齐 `loop=false` 字段。
+验证命令：`npm run validate:runtime-intake-dry-runs-current`
+桌面验收：不涉及桌面运行；这是文档门禁和发布校验增强。
+已知问题：该校验只证明 dry-run 文档与当前计划和 manifest 同步，不代表 `dragging-special` 已获批准或已经接入。
+决定：接受 dry-run current 校验进入 `validate:all`，后续任何 runtime intake 波次变更都必须同步中文 dry-run 文档。
