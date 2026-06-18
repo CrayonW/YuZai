@@ -43,6 +43,8 @@
 
 ## 2026-06-14 第一版验收记录
 
+当前 MVP 验收证据已同步到 `docs/mvp-evidence.json`，并通过 `npm run validate:mvp-evidence` 和 `npm run validate:all` 校验。后续修改桌宠显示、提醒、交互、位置尺寸或素材接入流程时，必须同步更新该证据清单。
+
 - 源视频序列帧：已通过 `npm run validate:runtime-animations`、`npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-source-mvp.png`。
 - 定时气泡：已通过 `npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-bubble-mvp.png`，启动后可见“喝口水吧”提醒。
 - 角色大小/位置：已通过 `npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-size-mvp.png`；位置支持拖拽和右键重置，角色大小支持小、标准、大三档。

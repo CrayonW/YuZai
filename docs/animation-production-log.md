@@ -1477,3 +1477,21 @@ FPS：不变。
 桌面验收：不涉及桌面运行；这是后续素材选择和执行报告门禁。
 已知问题：该门禁只保证默认选择策略存在，不自动判断视频质量；多候选视频仍要逐个播放检查水印、文字、logo、额外物体、动作变形和桌面衔接手感。
 决定：接受 `candidateSelection` 进入 runtime 分波计划和 dry-run 报告，后续动作视频候选默认选素材更多、覆盖更完整的一组。
+
+## 2026-06-18 MVP 验收证据清单门禁
+
+日期：2026-06-18
+源文件：`docs/mvp-evidence.json`、`scripts/validate-mvp-evidence.mjs`、`scripts/validate-all.mjs`、`package.json`、`docs/requirements-mvp.md`
+目标动作：MVP 必须项验收证据
+问题：`docs/requirements-mvp.md` 记录了第一版验收过程，但证据分散在日志、截图、脚本和临时路径里；后续修改桌宠显示、提醒、交互、尺寸位置或素材接入流程时，容易忘记同步 MVP 证据。
+参考片段：先新增 `npm run validate:mvp-evidence`，让它因缺少 `docs/mvp-evidence.json` 失败；随后补充 7 个 MVP 必须项的机器可读证据清单，并接入 `validate:all`。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：更新 MVP 行为或验收证据后，同步修改 `docs/mvp-evidence.json`；执行 `npm run validate:mvp-evidence`，再执行 `npm run validate:all` 和 `npm run validate:release`。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖任何 runtime 帧目录。
+验证命令：`npm run validate:mvp-evidence`
+桌面验收：本次不重新捕获桌面；证据清单引用仓库内已有桌面验收拼图、manifest、动作桥接报告和对应验证命令。
+已知问题：该门禁证明 MVP 证据链完整，不替代未来每次视觉或交互改动后的真实桌面截图/序列帧复查。
+决定：接受 MVP 证据清单进入发布门禁，后续 MVP 相关改动必须同步维护 `docs/mvp-evidence.json`。

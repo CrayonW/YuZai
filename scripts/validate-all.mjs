@@ -46,6 +46,7 @@ const steps = [
   ["validate:cat-behavior-schedule", ["npm", "run", "validate:cat-behavior-schedule"]],
   ["validate:capture-plan", ["npm", "run", "validate:capture-plan"]],
   ["validate:capture-sequence-inspector", ["npm", "run", "validate:capture-sequence-inspector"]],
+  ["validate:mvp-evidence", ["npm", "run", "validate:mvp-evidence"]],
   ["typecheck", ["npm", "run", "typecheck"]],
   ["build", ["npm", "run", "build"]]
 ];
