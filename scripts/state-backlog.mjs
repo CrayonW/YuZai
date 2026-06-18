@@ -1,10 +1,10 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { extractPetStateNames } from "./manifest-contract.mjs";
 import { buildStateCoverageReport } from "./state-coverage-report.mjs";
 
-export function buildStateBacklog({ coverage, plan }) {
+export function buildStateBacklog({ coverage, plan, root = process.cwd() }) {
   const actionsByName = new Map((plan.actions || []).map((action) => [action.action, action]));
   const items = coverage.states
     .filter((state) => state.status === "fallback" || state.status === "missing")
@@ -17,7 +17,7 @@ export function buildStateBacklog({ coverage, plan }) {
         suggestedAction: state.promptAction || "待补提示词",
         category: planned?.category || "待确认",
         output: planned?.output || "待确认",
-        nextStep: planned ? "生成源视频并接入 manifest" : "先补动作提示词和目标 action"
+        nextStep: planned ? nextStepForPlannedAction(planned, root) : "先补动作提示词和目标 action"
       };
     });
 
@@ -27,13 +27,20 @@ export function buildStateBacklog({ coverage, plan }) {
   };
 }
 
+function nextStepForPlannedAction(planned, root) {
+  if (planned.output && existsSync(join(root, planned.output))) {
+    return "源视频已存在，等待用户确认清单后接入 manifest";
+  }
+  return "生成/补充源视频，再等待用户确认清单后接入 manifest";
+}
+
 export function renderStateBacklog(backlog) {
   const lines = [
     "## 13 状态动作补齐待办",
     "",
     `待补状态数：${backlog.total}`,
     "",
-    "先生成/补充源视频，再运行素材处理前确认清单，确认后才允许抽帧、覆盖 runtime 路径或修改 manifest。",
+    "源视频缺失时先生成/补充源视频；源视频已存在时先等待用户确认清单。确认前禁止抽帧、覆盖 runtime 路径或修改 manifest。",
     "",
     "| state | suggested action | category | planned output | current action | next step |",
     "| --- | --- | --- | --- | --- | --- |"

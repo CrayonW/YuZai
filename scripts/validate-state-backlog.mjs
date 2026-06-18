@@ -18,29 +18,33 @@ const testSource = `
       { state: "idle", status: "independent", actions: ["idle_primary"], promptAction: null },
       { state: "waking", status: "fallback", actions: ["idle_primary"], promptAction: "waking" },
       { state: "surprised", status: "fallback", actions: ["idle_primary"], promptAction: "click_surprised" },
-      { state: "sleep", status: "fallback", actions: ["idle_primary"], promptAction: "sleep" }
+      { state: "sleep", status: "fallback", actions: ["idle_primary"], promptAction: "sleep" },
+      { state: "dragging", status: "fallback", actions: ["idle_primary"], promptAction: "dragging" }
     ]
   };
   const plan = {
     actions: [
       { action: "sleep", category: "daily", output: "assets/origin/generated/kling/sleep.mp4" },
       { action: "waking", category: "interactive", output: "assets/origin/generated/kling/waking.mp4" },
-      { action: "click_surprised", category: "interactive", output: "assets/origin/generated/kling/click_surprised.mp4" }
+      { action: "click_surprised", category: "interactive", output: "assets/origin/generated/kling/click_surprised.mp4" },
+      { action: "dragging", category: "interactive", output: "assets/origin/generated/kling/dragging.mp4" }
     ]
   };
-
   const backlog = buildStateBacklog({ coverage, plan });
-  assertEqual(backlog.items.length, 3, "only fallback states become backlog items");
+  assertEqual(backlog.items.length, 4, "only fallback states become backlog items");
   assertEqual(backlog.items[0].state, "waking", "keeps fallback state order");
   assertEqual(backlog.items[0].suggestedAction, "waking", "uses prompt action when available");
   assertEqual(backlog.items[0].output, "assets/origin/generated/kling/waking.mp4", "uses plan output");
   assertEqual(backlog.items[2].suggestedAction, "sleep", "sleep fallback maps to sleep prompt");
+  assertEqual(backlog.items[3].nextStep, "源视频已存在，等待用户确认清单后接入 manifest", "existing source video skips generation wording");
 
   const text = renderStateBacklog(backlog);
   assertIncludes(text, "## 13 状态动作补齐待办", "renders Chinese title");
   assertIncludes(text, "| waking | waking | interactive | assets/origin/generated/kling/waking.mp4 |", "renders waking row");
   assertIncludes(text, "| sleep | sleep | daily | assets/origin/generated/kling/sleep.mp4 |", "renders sleep row");
-  assertIncludes(text, "先生成/补充源视频，再运行素材处理前确认清单", "renders process note");
+  assertIncludes(text, "| dragging | dragging | interactive | assets/origin/generated/kling/dragging.mp4 | idle_primary | 源视频已存在，等待用户确认清单后接入 manifest |", "renders dragging as ready for confirmed intake");
+  assertIncludes(text, "源视频缺失时先生成/补充源视频", "renders missing-source process note");
+  assertIncludes(text, "源视频已存在时先等待用户确认清单", "renders existing-source process note");
 
   const outputPath = join(${JSON.stringify(tempRoot)}, "state-backlog.md");
   const written = writeStateBacklog(backlog, outputPath);

@@ -1495,3 +1495,21 @@ FPS：不变。
 桌面验收：本次不重新捕获桌面；证据清单引用仓库内已有桌面验收拼图、manifest、动作桥接报告和对应验证命令。
 已知问题：该门禁证明 MVP 证据链完整，不替代未来每次视觉或交互改动后的真实桌面截图/序列帧复查。
 决定：接受 MVP 证据清单进入发布门禁，后续 MVP 相关改动必须同步维护 `docs/mvp-evidence.json`。
+
+## 2026-06-18 13 状态待办源视频状态修正
+
+日期：2026-06-18
+源文件：`scripts/state-backlog.mjs`、`scripts/validate-state-backlog.mjs`、`docs/state-backlog.md`
+目标动作：`dragging`
+问题：`docs/state-backlog.md` 仍把剩余 `dragging` 缺口写成“生成源视频并接入 manifest”，但当前 `assets/origin/generated/kling/dragging.mp4` 已存在；真实下一步应是等待用户确认拖拽专项清单后，才能去水印、抽帧、写 manifest 和桌面验收。
+参考片段：先让 `npm run validate:state-backlog` 在“源视频已存在但仍提示生成源视频”的断言上失败；随后让 `buildStateBacklog` 根据 planned output 文件是否存在生成不同 next step，并更新总说明。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：执行 `npm run animations:state-backlog -- --write docs/state-backlog.md`，再执行 `npm run validate:state-backlog`。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖任何 runtime 帧目录。
+验证命令：`npm run validate:state-backlog`
+桌面验收：不涉及桌面运行；这是状态缺口文档的当前性修正。
+已知问题：`dragging` 仍未接入 runtime；必须等用户明确确认 `docs/runtime-intake-dragging-special-execution-checklist.md` 后才能创建正式批准文件并执行接入。
+决定：接受 `dragging` 待办从“生成源视频”改为“源视频已存在，等待用户确认清单后接入 manifest”。
