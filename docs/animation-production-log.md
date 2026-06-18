@@ -1677,3 +1677,21 @@ FPS：不变。
 桌面验收：逐个执行 16 个 action 的桌面预览截图，输出到 `assets/reviews/runtime/generated-action-preview/`。完整性检查显示 16 张截图全部为 440x440 PNG，且 16 张哈希互不重复。
 已知问题：本轮为单帧预览，不能完全评估动作全过程是否自然；如要评估流畅性，需要后续按 action 生成多帧序列或短视频 contact sheet。
 决定：接受 `YUZAI_PREVIEW_ACTION` 作为生成动作提前看效果的程序入口，后续新增动作写入程序后必须用该入口生成预览证据。
+
+## 2026-06-18 动作衔接淡入淡出优化
+
+日期：2026-06-18
+源文件：`src/core/render/canvas-renderer.ts`、`scripts/validate-canvas-transition-smoothing.mjs`、`docs/action-transition-smoothing.md`、`assets/reviews/runtime/action-transition-smoothing/*.png`
+目标动作：所有 action 之间的切换，重点是 daily 到 interactive / transition 的切入和回切。
+问题：用户反馈猫咪动作衔接太生硬。排查后确认 `AnimationDirector` 已经负责安全帧和 returnTo，但 Canvas 层跨 action 时仍直接从上一动作帧跳到下一动作帧，视觉上形成硬切。
+参考片段：先新增 `npm run validate:canvas-transition-smoothing`，红灯显示缺少跨 action 淡入淡出参数和 alpha 计算。随后在 `CanvasRenderer` 记录上一 action 与上一帧，action 变化时用 `180ms` 淡出上一帧、淡入当前帧。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变；仅改变绘制层跨 action 切换瞬间的混合方式。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：动作切换时自动触发，无需修改 manifest。可通过 `YUZAI_PREVIEW_ACTION=<action>` 触发指定动作并连续截图检查。
+运行时输出：动作切换瞬间不再直接硬切，上一动作最后一帧会短暂淡出，当前动作淡入。
+验证命令：`npm run validate:canvas-transition-smoothing`、`npm run validate:drag-visual-feedback`、`npm run typecheck`
+桌面验收：执行 `YUZAI_PREVIEW_ACTION=click_surprised YUZAI_PREVIEW_ACTION_MS=500 YUZAI_CAPTURE_DELAY_MS=420 YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-crossfade.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=80 npm run dev`，再执行 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-crossfade.png --count 8 --min-changed-frames 5 --min-width 200 --min-height 200`，结果 `changedFrames=7`；截图保存到 `assets/reviews/runtime/action-transition-smoothing/`。
+已知问题：如果某些素材本身首尾姿态差异过大，淡入淡出只能缓解切换瞬间，不能替代专门的过渡视频。
+决定：接受 Canvas 层跨 action 淡入淡出作为默认衔接优化；后续对仍突兀的单个动作再补 `transitionIn` / `transitionOut` 素材。

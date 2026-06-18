@@ -17,6 +17,7 @@ const steps = [
   ["validate:click-action-bridge", ["npm", "run", "validate:click-action-bridge"]],
   ["validate:drag-action-bridge", ["npm", "run", "validate:drag-action-bridge"]],
   ["validate:drag-visual-feedback", ["npm", "run", "validate:drag-visual-feedback"]],
+  ["validate:canvas-transition-smoothing", ["npm", "run", "validate:canvas-transition-smoothing"]],
   ["validate:runtime-action-bridge-report", ["npm", "run", "validate:runtime-action-bridge-report"]],
   ["validate:action-bridge-contract", ["npm", "run", "validate:action-bridge-contract"]],
   ["validate:manifest-contract", ["npm", "run", "validate:manifest-contract"]],

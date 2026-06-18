@@ -5,10 +5,16 @@ import type { StateSnapshot } from "../fsm/state-types";
 
 export { DEFAULT_DRAG_VISUAL_FEEDBACK_CONFIG };
 
+export const ACTION_CROSSFADE_MS = 180;
+
 export class CanvasRenderer {
   private readonly ctx: CanvasRenderingContext2D;
   private readonly pixelRatio = Math.max(1, window.devicePixelRatio || 1);
   private lastDrawableFrame: HTMLImageElement | null = null;
+  private lastRenderedAction: string | null = null;
+  private lastRenderedFrame: HTMLImageElement | null = null;
+  private crossfadePreviousFrame: HTMLImageElement | null = null;
+  private crossfadeStartedAt = 0;
   private size = 280;
 
   constructor(
@@ -45,6 +51,9 @@ export class CanvasRenderer {
     if (!sequence || sequence.frames.length === 0) {
       this.ctx.clearRect(0, 0, width, height);
       this.lastDrawableFrame = null;
+      this.lastRenderedAction = null;
+      this.lastRenderedFrame = null;
+      this.crossfadePreviousFrame = null;
       drawPlaceholderYuzai(this.ctx, snapshot, {
         width,
         height,
@@ -60,19 +69,22 @@ export class CanvasRenderer {
     this.ctx.clearRect(0, 0, width, height);
 
     if (frame) {
-      const dragFeedback = dragVisualFeedbackForOffset(dragOffset, this.dragVisualFeedbackConfig);
-      this.ctx.save();
-      this.ctx.translate(width / 2 + dragFeedback.translateX, height / 2 + dragFeedback.translateY + dragFeedback.liftY);
-      this.ctx.rotate(dragFeedback.rotation);
-      this.ctx.scale(dragFeedback.scale, dragFeedback.scale);
-      this.ctx.imageSmoothingEnabled = true;
-      this.ctx.imageSmoothingQuality = "high";
-      this.ctx.drawImage(frame, -width / 2, -height / 2, width, height);
-      if (nextFrame && nextFrame !== frame && selection.blend > 0.18 && selection.blend < 0.82) {
-        this.ctx.globalAlpha = Math.min(0.24, (1 - Math.abs(0.5 - selection.blend) * 2) * 0.24);
-        this.ctx.drawImage(nextFrame, -width / 2, -height / 2, width, height);
+      if (this.lastRenderedAction && selection.action !== this.lastRenderedAction && this.lastRenderedFrame) {
+        this.crossfadePreviousFrame = this.lastRenderedFrame;
+        this.crossfadeStartedAt = now;
       }
-      this.ctx.restore();
+
+      const crossfade = actionCrossfadeAlphaForElapsed(now - this.crossfadeStartedAt);
+      const dragFeedback = dragVisualFeedbackForOffset(dragOffset, this.dragVisualFeedbackConfig);
+      if (this.crossfadePreviousFrame && crossfade.previousAlpha > 0 && this.crossfadePreviousFrame !== frame) {
+        this.drawFrameLayer(this.crossfadePreviousFrame, null, selection.blend, width, height, dragFeedback, crossfade.previousAlpha);
+      } else {
+        this.crossfadePreviousFrame = null;
+      }
+
+      this.drawFrameLayer(frame, nextFrame, selection.blend, width, height, dragFeedback, crossfade.currentAlpha);
+      this.lastRenderedAction = selection.action;
+      this.lastRenderedFrame = frame;
       return;
     }
 
@@ -82,6 +94,31 @@ export class CanvasRenderer {
       now,
       dragOffset
     });
+  }
+
+  private drawFrameLayer(
+    frame: HTMLImageElement,
+    nextFrame: HTMLImageElement | null,
+    blend: number,
+    width: number,
+    height: number,
+    dragFeedback: DragVisualFeedback,
+    alpha: number
+  ): void {
+    this.ctx.save();
+    this.ctx.translate(width / 2 + dragFeedback.translateX, height / 2 + dragFeedback.translateY + dragFeedback.liftY);
+    this.ctx.rotate(dragFeedback.rotation);
+    this.ctx.scale(dragFeedback.scale, dragFeedback.scale);
+    this.ctx.imageSmoothingEnabled = true;
+    this.ctx.imageSmoothingQuality = "high";
+    this.ctx.globalAlpha = alpha;
+    this.ctx.drawImage(frame, -width / 2, -height / 2, width, height);
+    if (nextFrame && nextFrame !== frame && blend > 0.18 && blend < 0.82) {
+      const blendAlpha = Math.min(0.24, (1 - Math.abs(0.5 - blend) * 2) * 0.24);
+      this.ctx.globalAlpha = alpha * blendAlpha;
+      this.ctx.drawImage(nextFrame, -width / 2, -height / 2, width, height);
+    }
+    this.ctx.restore();
   }
 
   private drawableFrame(frame: HTMLImageElement, remember = true): HTMLImageElement | null {
@@ -99,6 +136,19 @@ export interface DragVisualFeedback {
   liftY: number;
   rotation: number;
   scale: number;
+}
+
+export interface ActionCrossfadeAlpha {
+  previousAlpha: number;
+  currentAlpha: number;
+}
+
+export function actionCrossfadeAlphaForElapsed(elapsedMs: number): ActionCrossfadeAlpha {
+  const progress = clamp(elapsedMs / ACTION_CROSSFADE_MS, 0, 1);
+  return {
+    previousAlpha: 1 - progress,
+    currentAlpha: 0.25 + 0.75 * progress
+  };
 }
 
 export function dragVisualFeedbackForOffset(
