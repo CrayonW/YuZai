@@ -7,3 +7,4 @@ npm-debug.log*
 .env.local
 assets/origin/generated/kling/*.mp4
 assets/origin/generated/kling/*.json
+assets/origin/_frames/
