@@ -26,6 +26,7 @@ const steps = [
   ["animations:audit-origin", ["npm", "run", "animations:audit-origin"]],
   ["validate:state-coverage-report", ["npm", "run", "validate:state-coverage-report"]],
   ["validate:state-backlog", ["npm", "run", "validate:state-backlog"]],
+  ["validate:state-backlog-current", ["npm", "run", "validate:state-backlog-current"]],
   ["validate:kling-plan-quality", ["npm", "run", "validate:kling-plan-quality"]],
   ["validate:kling-generation-batches", ["npm", "run", "validate:kling-generation-batches"]],
   ["validate:kling-batch-plan", ["npm", "run", "validate:kling-batch-plan"]],

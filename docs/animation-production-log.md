@@ -1513,3 +1513,21 @@ FPS：不变。
 桌面验收：不涉及桌面运行；这是状态缺口文档的当前性修正。
 已知问题：`dragging` 仍未接入 runtime；必须等用户明确确认 `docs/runtime-intake-dragging-special-execution-checklist.md` 后才能创建正式批准文件并执行接入。
 决定：接受 `dragging` 待办从“生成源视频”改为“源视频已存在，等待用户确认清单后接入 manifest”。
+
+## 2026-06-18 13 状态待办 current 校验
+
+日期：2026-06-18
+源文件：`scripts/validate-state-backlog-current.mjs`、`scripts/validate-all.mjs`、`package.json`、`docs/state-backlog.md`
+目标动作：13 状态补齐待办文档
+问题：`npm run validate:state-backlog` 只验证生成器逻辑，不会检查 `docs/state-backlog.md` 是否仍由当前 manifest、状态类型和可灵动作计划生成；文档可能在 manifest 或计划变化后过期。
+参考片段：先把 `validate:state-backlog-current` 挂到 `package.json` 和 `validate:all`，红灯显示脚本缺失；随后新增脚本，按当前项目状态重新渲染 state backlog，并与 `docs/state-backlog.md` 做字节级比对。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：如果 current 校验失败，执行 `npm run animations:state-backlog -- --write docs/state-backlog.md`，再执行 `npm run validate:state-backlog-current`。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖任何 runtime 帧目录。
+验证命令：`npm run validate:state-backlog-current`
+桌面验收：不涉及桌面运行；这是状态待办文档 current 门禁。
+已知问题：该校验只保证待办文档同步，不代表 `dragging` 已接入 runtime。
+决定：接受 `validate:state-backlog-current` 进入 `validate:all`，后续状态待办必须和当前项目状态保持一致。
