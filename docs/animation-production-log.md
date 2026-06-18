@@ -1659,3 +1659,21 @@ FPS：不变。
 桌面验收：本次为配置化改造，视觉默认值保持上一版表现；桌面验收可复用 `/private/tmp/yuzai-window-dragging-boosted-*.png` 的方案，或按 `docs/drag-visual-feedback.md` 重新生成 `dragging-tuned` 截图序列。
 已知问题：配置仍为源码默认值，尚未做用户界面上的实时调参面板。
 决定：接受拖拽手感参数化，后续现场微调优先改配置，不直接改渲染公式。
+
+## 2026-06-18 生成动作程序预览入口
+
+日期：2026-06-18
+源文件：`electron/main.ts`、`electron/preload.ts`、`src/renderer/main.ts`、`src/renderer/global.d.ts`、`scripts/validate-action-preview-capture.mjs`、`docs/generated-action-preview.md`、`assets/reviews/runtime/generated-action-preview/*.png`
+目标动作：`slow_blink`、`look_around`、`cursor_watch`、`click_surprised`、`poke_annoyed`、`call_response`、`stretch_yawn`、`groom_face_wash`、`loaf_breathing`、`desk_sniff`、`shy`、`sleepy`、`sleep`、`sleeping`、`waking`、`dragging`
+问题：用户要求把猫咪生成的所有动作都处理写入程序并提前看效果。当前 16 个可灵生成动作已写入程序，但缺少一个可按 action 强制预览的桌面验收入口，逐个看效果不方便。
+参考片段：先新增 `npm run validate:action-preview-capture`，红灯显示缺少 `YUZAI_PREVIEW_ACTION`、`test:preview-action` 和 renderer 订阅。随后在主进程读取 `YUZAI_PREVIEW_ACTION`，通过 preload 暴露 `onTestPreviewAction`，renderer 校验 action 可播放后请求 `AnimationDirector`。第一次截图发现部分动作哈希重复，根因是预览 action 被下一帧日常轮换覆盖；修正为预览 action 保持 2400ms 后重新截图。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变；仅新增测试预览入口。
+水印处理：未执行；本轮没有抽帧、去水印或抠绿。
+重建方法：对每个动作执行 `YUZAI_PREVIEW_ACTION=<action> YUZAI_PREVIEW_ACTION_MS=500 YUZAI_CAPTURE_DELAY_MS=1400 YUZAI_CAPTURE_PATH=assets/reviews/runtime/generated-action-preview/<action>.png npm run dev`。
+运行时输出：16 个已接入可灵生成动作均可被程序强制播放并截图；报告位于 `docs/generated-action-preview.md`。
+验证命令：`npm run validate:action-preview-capture`、`npm run typecheck`
+桌面验收：逐个执行 16 个 action 的桌面预览截图，输出到 `assets/reviews/runtime/generated-action-preview/`。完整性检查显示 16 张截图全部为 440x440 PNG，且 16 张哈希互不重复。
+已知问题：本轮为单帧预览，不能完全评估动作全过程是否自然；如要评估流畅性，需要后续按 action 生成多帧序列或短视频 contact sheet。
+决定：接受 `YUZAI_PREVIEW_ACTION` 作为生成动作提前看效果的程序入口，后续新增动作写入程序后必须用该入口生成预览证据。

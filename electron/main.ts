@@ -230,6 +230,15 @@ function createPetWindow(): void {
       }, testDragMs);
     }
 
+    const previewAction = process.env.YUZAI_PREVIEW_ACTION || "";
+    if (previewAction) {
+      setTimeout(() => {
+        if (!petWindow || petWindow.isDestroyed()) return;
+        petWindow.webContents.send("test:preview-action", previewAction);
+        console.log(`[test] preview action ${previewAction}`);
+      }, envNumber("YUZAI_PREVIEW_ACTION_MS", 500));
+    }
+
     if (!capturePlan.enabled) return;
 
     void captureFrames(capturePlan.frames, capturePlan.quitAfterCapture);

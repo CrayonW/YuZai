@@ -68,6 +68,8 @@ let lastFrameAt = performance.now();
 let screenBounds: { x: number; y: number; width: number; height: number } | null = null;
 let petSize = 280;
 let lastRequestedAnimationAction: RuntimeAnimationAction | null = null;
+let previewAction: RuntimeAnimationAction | null = null;
+let previewActionUntil = 0;
 const dailyRotator = new DailyAnimationRotator(buildRuntimeDailyRotatorOptions());
 
 window.yuzai.getScreenBounds().then((bounds) => {
@@ -83,6 +85,17 @@ window.yuzai.onMouseProximityChange((near) => {
 });
 window.yuzai.onTestDrag((payload) => {
   void interaction.simulateDragForTest({ x: payload.x, y: payload.y }, payload.holdMs);
+});
+window.yuzai.onTestPreviewAction((action) => {
+  if (isRenderableRuntimeAnimationAction(action)) {
+    const now = performance.now();
+    previewAction = action;
+    previewActionUntil = now + 2400;
+    animationDirector.request(action, now);
+    lastRequestedAnimationAction = action;
+  } else {
+    console.warn(`[preview] ignored unavailable action: ${action}`);
+  }
 });
 
 async function tick(now: number): Promise<void> {
@@ -104,6 +117,8 @@ async function tick(now: number): Promise<void> {
 }
 
 function resolveAnimationAction(now: number): RuntimeAnimationAction {
+  if (previewAction && now < previewActionUntil) return previewAction;
+  previewAction = null;
   const baseAction = actionForPose(fsm.snapshot.pose.state, fsm.snapshot.pose.direction);
   return dailyRotator.resolve(baseAction, fsm.snapshot.pose.state === "idle", now);
 }

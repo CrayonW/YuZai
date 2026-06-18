@@ -30,5 +30,10 @@ contextBridge.exposeInMainWorld("yuzai", {
     const listener = (_event: Electron.IpcRendererEvent, payload: { x: number; y: number; holdMs: number }) => callback(payload);
     ipcRenderer.on("test:drag", listener);
     return () => ipcRenderer.removeListener("test:drag", listener);
+  },
+  onTestPreviewAction: (callback: (action: string) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, action: string) => callback(action);
+    ipcRenderer.on("test:preview-action", listener);
+    return () => ipcRenderer.removeListener("test:preview-action", listener);
   }
 });

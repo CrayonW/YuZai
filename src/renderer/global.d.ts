@@ -13,6 +13,7 @@ declare global {
       onSizeChange(callback: (size: PetSize) => void): () => void;
       onMouseProximityChange(callback: (near: boolean) => void): () => void;
       onTestDrag(callback: (payload: { x: number; y: number; holdMs: number }) => void): () => void;
+      onTestPreviewAction(callback: (action: string) => void): () => void;
     };
   }
 }

@@ -76,6 +76,7 @@
     "validate:cat-behavior-schedule": "node scripts/validate-cat-behavior-schedule.mjs",
     "validate:capture-plan": "node scripts/validate-capture-plan.mjs",
     "validate:capture-sequence-inspector": "node scripts/validate-capture-sequence-inspector.mjs",
+    "validate:action-preview-capture": "node scripts/validate-action-preview-capture.mjs",
     "validate:mvp-evidence": "node scripts/validate-mvp-evidence.mjs",
     "project:status": "node scripts/project-status.mjs",
     "validate:project-status-current": "node scripts/validate-project-status-current.mjs",
