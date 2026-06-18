@@ -187,6 +187,15 @@ const testSource = `
   const manifest = {
     actions: {
       idle_primary: { category: "daily", frameCount: 72 }
+    },
+    stateMap: {
+      idle: "idle_primary",
+      dragging: "idle_primary",
+      shy: "idle_primary",
+      sleep: "idle_primary",
+      sleepy: "idle_primary",
+      sleeping: "idle_primary",
+      waking: "idle_primary"
     }
   };
   const bridges = {
@@ -296,6 +305,7 @@ const testSource = `
   assertEqual(draggingManifest.actions.dragging.category, "interactive", "dragging remains an interaction action");
   assertEqual(draggingManifest.actions.dragging.interruptible, false, "dragging is locked while dragging");
   assertEqual(draggingManifest.actions.dragging.returnTo, "idle_primary", "dragging returns to idle after release");
+  assertEqual(draggingManifest.stateMap.dragging, "dragging", "dragging state maps to dragging action after intake");
 
   const text = renderRuntimeIntakeExecutionPlan(executionPlan);
   assertIncludes(text, "# runtime 接入执行 dry-run：第一波", "renders title");

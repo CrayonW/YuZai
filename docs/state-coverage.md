@@ -1,8 +1,8 @@
 ## 桌宠状态动作覆盖报告
 
 状态总数：13
-运行时 action 数：21
-覆盖摘要：independent 12 / mixed 0 / fallback 1 / missing 0
+运行时 action 数：22
+覆盖摘要：independent 13 / mixed 0 / fallback 0 / missing 0
 
 | state | status | runtime actions | source | prompt hint |
 | --- | --- | --- | --- | --- |
@@ -16,6 +16,6 @@
 | waking | independent | waking | assets/origin/generated/kling/waking.mp4 | prompt: waking |
 | surprised | independent | click_surprised | assets/origin/generated/kling/click_surprised.mp4 | prompt: click_surprised |
 | shy | independent | shy | assets/origin/generated/kling/shy.mp4 | prompt: shy |
-| dragging | fallback | idle_primary | assets/origin/鱼仔待机动作1.mp4 | prompt: dragging |
+| dragging | independent | dragging | assets/origin/generated/kling/dragging.mp4 | prompt: dragging |
 | waving | independent | paw_raise | assets/origin/鱼仔前肢抬起视频.mp4 | prompt: paw_raise |
 | teaser | independent | cursor_watch | assets/origin/generated/kling/cursor_watch_clean_candidate_v3.mp4 | prompt: paw_raise |

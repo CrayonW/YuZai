@@ -16,7 +16,7 @@ export function buildProjectStatus(rootDir = root) {
   const mvpTotal = (mvpEvidence.items || []).length;
   const coverageSummary = extractRequired(coverageText, /覆盖摘要：(.+)/, "state coverage summary");
   const backlogCount = extractRequired(backlogText, /待补状态数：(\d+)/, "state backlog count");
-  const draggingRow = extractRequired(backlogText, /\| dragging \| ([^\n]+)/, "dragging backlog row");
+  const draggingRow = backlogCount === "0" ? "" : extractRequired(backlogText, /\| dragging \| ([^\n]+)/, "dragging backlog row");
   const startupEvidence = productionLog.includes("猫咪头顶区域无“喝口水吧”或其他气泡文字");
   const approvals = collectRuntimeApprovals(rootDir, runtimeWaves.waves || []);
 
@@ -53,13 +53,19 @@ export function renderProjectStatus(status) {
     `- MVP 证据：${status.mvpVerified} / ${status.mvpTotal} 项 verified`,
     `- 13 状态覆盖：${status.coverageSummary}`,
     `- 待补状态：${status.backlogCount} 个`,
-    "- 当前不得越界：`dragging-special` 未正式批准前，禁止抽帧、去水印/抠绿、修改 runtime manifest 或声称拖拽动作已进入桌宠。",
+    status.backlogCount === "0"
+      ? "- runtime 接入边界：当前 4 个波次均已有正式批准文件；后续新增动作仍必须先列清单确认。"
+      : "- 当前不得越界：`dragging-special` 未正式批准前，禁止抽帧、去水印/抠绿、修改 runtime manifest 或声称拖拽动作已进入桌宠。",
     "",
-    "## 当前唯一状态缺口",
+    status.backlogCount === "0" ? "## 当前状态缺口" : "## 当前唯一状态缺口",
     "",
-    "| state | suggested action | category | planned output | current action | next step |",
-    "| --- | --- | --- | --- | --- | --- |",
-    `| dragging | ${status.draggingRow}`,
+    status.backlogCount === "0"
+      ? "当前 13 个状态均已拥有 independent runtime 动作，没有剩余 fallback 或 missing 状态。"
+      : "| state | suggested action | category | planned output | current action | next step |",
+    ...(status.backlogCount === "0" ? [] : [
+      "| --- | --- | --- | --- | --- | --- |",
+      `| dragging | ${status.draggingRow}`
+    ]),
     "",
     "## runtime 接入批准状态",
     "",
@@ -69,10 +75,16 @@ export function renderProjectStatus(status) {
     "",
     "## 下一步执行清单",
     "",
-    "1. 如要继续接入拖拽动作，先让用户确认 `docs/runtime-intake-dragging-special-execution-checklist.md`。",
-    "2. 确认后再创建正式批准文件 `docs/runtime-intake-approvals/dragging-special.approved.json`，不能把 example 文件当作批准。",
-    "3. 批准后按清单执行逐视频检查、去水印/抠绿、序列帧生成、manifest 更新和拖拽专项桌面验收。",
-    "4. 任一 MVP、状态覆盖或素材接入规则变化后，重新运行 `npm run project:status -- --write docs/project-status.md` 和 `npm run validate:all`。",
+    ...(status.backlogCount === "0" ? [
+      "1. 保持当前 MVP 和 13 状态覆盖稳定，后续新增动作视频先列清单确认。",
+      "2. 如果继续优化动作自然度，优先做长时间桌面观察和候选视频质量筛选，而不是直接覆盖 runtime。",
+      "3. 任一 MVP、状态覆盖或素材接入规则变化后，重新运行 `npm run project:status -- --write docs/project-status.md` 和 `npm run validate:all`。"
+    ] : [
+      "1. 如要继续接入拖拽动作，先让用户确认 `docs/runtime-intake-dragging-special-execution-checklist.md`。",
+      "2. 确认后再创建正式批准文件 `docs/runtime-intake-approvals/dragging-special.approved.json`，不能把 example 文件当作批准。",
+      "3. 批准后按清单执行逐视频检查、去水印/抠绿、序列帧生成、manifest 更新和拖拽专项桌面验收。",
+      "4. 任一 MVP、状态覆盖或素材接入规则变化后，重新运行 `npm run project:status -- --write docs/project-status.md` 和 `npm run validate:all`。"
+    ]),
     "",
     "## 复查命令",
     "",

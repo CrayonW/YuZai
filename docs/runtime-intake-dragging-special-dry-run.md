@@ -14,10 +14,10 @@
 ## 汇总
 
 - 动作数量：1
-- manifest 新增：1
-- manifest 更新：0
-- 新建帧目录：1
-- 覆盖帧目录：0
+- manifest 新增：0
+- manifest 更新：1
+- 新建帧目录：0
+- 覆盖帧目录：1
 - 桥接已引用：1
 - 桥接需人工设计：0
 
@@ -27,8 +27,8 @@
 
 - sourceVideo=assets/origin/generated/kling/dragging.mp4
 - runtimeFrameRoot=assets/runtime/animations/dragging/frames
-- manifest=add
-- frames=create
+- manifest=update
+- frames=replace
 - loop=false
 - bridge=already-referenced
 - bridgeKey=drag.active

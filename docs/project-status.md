@@ -8,15 +8,13 @@
 
 - 启动头顶文字：已清理，并有 1200ms 桌面截图验收记录
 - MVP 证据：7 / 7 项 verified
-- 13 状态覆盖：independent 12 / mixed 0 / fallback 1 / missing 0
-- 待补状态：1 个
-- 当前不得越界：`dragging-special` 未正式批准前，禁止抽帧、去水印/抠绿、修改 runtime manifest 或声称拖拽动作已进入桌宠。
+- 13 状态覆盖：independent 13 / mixed 0 / fallback 0 / missing 0
+- 待补状态：0 个
+- runtime 接入边界：当前 4 个波次均已有正式批准文件；后续新增动作仍必须先列清单确认。
 
-## 当前唯一状态缺口
+## 当前状态缺口
 
-| state | suggested action | category | planned output | current action | next step |
-| --- | --- | --- | --- | --- | --- |
-| dragging | dragging | interactive | assets/origin/generated/kling/dragging.mp4 | idle_primary | 源视频已存在，等待用户确认清单后接入 manifest |
+当前 13 个状态均已拥有 independent runtime 动作，没有剩余 fallback 或 missing 状态。
 
 ## runtime 接入批准状态
 
@@ -25,14 +23,13 @@
 | wave1 | 第一波：低疲劳日常与关键交互 | 已批准 | docs/runtime-intake-approvals/wave1.approved.json |
 | wave2 | 第二波：日常生活和互动变化 | 已批准 | docs/runtime-intake-approvals/wave2.approved.json |
 | sleep-routine | 第三波：睡眠作息链路 | 已批准 | docs/runtime-intake-approvals/sleep-routine.approved.json |
-| dragging-special | 拖拽专项 | 未批准 | docs/runtime-intake-approvals/dragging-special.example.json |
+| dragging-special | 拖拽专项 | 已批准 | docs/runtime-intake-approvals/dragging-special.approved.json |
 
 ## 下一步执行清单
 
-1. 如要继续接入拖拽动作，先让用户确认 `docs/runtime-intake-dragging-special-execution-checklist.md`。
-2. 确认后再创建正式批准文件 `docs/runtime-intake-approvals/dragging-special.approved.json`，不能把 example 文件当作批准。
-3. 批准后按清单执行逐视频检查、去水印/抠绿、序列帧生成、manifest 更新和拖拽专项桌面验收。
-4. 任一 MVP、状态覆盖或素材接入规则变化后，重新运行 `npm run project:status -- --write docs/project-status.md` 和 `npm run validate:all`。
+1. 保持当前 MVP 和 13 状态覆盖稳定，后续新增动作视频先列清单确认。
+2. 如果继续优化动作自然度，优先做长时间桌面观察和候选视频质量筛选，而不是直接覆盖 runtime。
+3. 任一 MVP、状态覆盖或素材接入规则变化后，重新运行 `npm run project:status -- --write docs/project-status.md` 和 `npm run validate:all`。
 
 ## 复查命令
 

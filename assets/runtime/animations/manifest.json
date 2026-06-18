@@ -465,6 +465,27 @@
       ],
       "interruptPolicy": "locked",
       "returnTo": "idle_primary"
+    },
+    "dragging": {
+      "source": "assets/origin/generated/kling/dragging.mp4",
+      "frameRoot": "../assets/runtime/animations/dragging/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
     }
   },
   "stateMap": {
@@ -482,7 +503,7 @@
     "waking": "waking",
     "surprised": "click_surprised",
     "shy": "shy",
-    "dragging": "idle_primary",
+    "dragging": "dragging",
     "waving": "paw_raise",
     "teaser": "cursor_watch"
   }

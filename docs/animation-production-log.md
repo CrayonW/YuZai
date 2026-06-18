@@ -1605,3 +1605,21 @@ FPS：不变。
 桌面验收：不涉及新桌面运行；看板引用上一条启动 1200ms 截图验收结果。
 已知问题：看板只汇总当前状态，不代表 `dragging-special` 已批准或拖拽动作已接入。
 决定：接受 `docs/project-status.md` 作为后续继续项目时的第一查看入口，并将 `validate:project-status-current` 加入全量门禁。
+
+## 2026-06-18 拖拽专项正式接入
+
+日期：2026-06-18
+源文件：`assets/origin/generated/kling/dragging.mp4`、`docs/runtime-intake-approvals/dragging-special.approved.json`、`assets/runtime/animations/manifest.json`、`assets/runtime/animations/dragging/frames`、`scripts/runtime-intake-executor.mjs`、`scripts/validate-runtime-interaction-schedule.mjs`
+目标动作：`dragging`
+问题：`dragging` 是 13 状态中最后一个 fallback 状态。用户确认“可以把已有拖拽视频安全接入桌宠”后，可以创建正式批准文件并执行拖拽专项接入。
+参考片段：先让 `npm run validate:runtime-interaction-schedule` 因当前拖拽仍回退到 `waving` 失败；随后创建 `dragging-special.approved.json`，执行 `npm run runtime:intake-executor -- --wave dragging-special --execute`，并修正执行器在同名状态接入后同步更新 `stateMap.dragging`。
+帧数：120 帧。
+FPS：24。
+循环方式：`dragging` 按 locked interactive 动作接入，拖拽触发时播放，释放后回到 `idle_primary`。
+水印处理：执行 runtime intake 的绿幕抠像、水印区域透明化和绿色残留清理；源视频未提交或覆盖。
+重建方法：从 `assets/origin/generated/kling/dragging.mp4` 抽取 5 秒 24fps 透明序列帧，输出到 `assets/runtime/animations/dragging/frames`，并写入 runtime manifest。
+运行时输出：`assets/runtime/animations/manifest.json` 新增 `dragging` action，`stateMap.dragging` 从 `idle_primary` 更新为 `dragging`；`docs/state-coverage.md` 显示 13 / 13 状态均为 independent，`docs/state-backlog.md` 显示待补状态数为 0。
+验证命令：`npm run validate:runtime-intake-approvals-current`、`npm run validate:runtime-intake-executor`、`npm run validate:runtime-interaction-schedule`、`npm run validate:manifest-contract:current`、`npm run validate:runtime-animations`
+桌面验收：执行 `YUZAI_TEST_DRAG_MS=700 YUZAI_TEST_DRAG_X=100 YUZAI_TEST_DRAG_Y=70 YUZAI_TEST_DRAG_HOLD_MS=1200 YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-dragging.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=900 npm run dev`，生成 8 张 440x440 RGBA 桌面截图；再执行 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-dragging.png --count 8 --min-changed-frames 4 --min-width 200 --min-height 200`，结果 `changedFrames=7`，通过拖拽专项自动验收。
+已知问题：既有审查认为 `dragging` 动作幅度较小，正式体验仍要通过桌面拖拽手感观察确认是否足够明显。
+决定：接受拖拽专项进入 runtime，完成 13 状态独立动作覆盖。

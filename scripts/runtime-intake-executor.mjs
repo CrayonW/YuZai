@@ -95,6 +95,10 @@ export function buildRuntimeIntakeManifestPatch({ manifest, executionPlan, frame
       interruptPolicy: action.interruptPolicy,
       returnTo: action.returnTo
     };
+
+    if (nextManifest.stateMap && Object.hasOwn(nextManifest.stateMap, action.action)) {
+      nextManifest.stateMap[action.action] = action.action;
+    }
   }
 
   return nextManifest;

@@ -4,9 +4,9 @@
 
 ## 汇总
 
-- 当前 manifest 可播放动作：idle_primary、idle_secondary、tail_wag、walk、walk_left、paw_raise、slow_blink、look_around、cursor_watch、click_surprised、poke_annoyed、call_response、stretch_yawn、groom_face_wash、loaf_breathing、desk_sniff、shy、sleepy、sleep、sleeping、waking
-- 可播放动作数量：21
-- 候选缺失数量：1
+- 当前 manifest 可播放动作：idle_primary、idle_secondary、tail_wag、walk、walk_left、paw_raise、slow_blink、look_around、cursor_watch、click_surprised、poke_annoyed、call_response、stretch_yawn、groom_face_wash、loaf_breathing、desk_sniff、shy、sleepy、sleep、sleeping、waking、dragging
+- 可播放动作数量：22
+- 候选缺失数量：0
 
 ## 矩阵
 
@@ -37,7 +37,7 @@
 | 睡眠叫醒 | 1 | waking | ready | 120 |
 | 睡眠叫醒 | 2 | click_surprised | ready | 120 |
 | 睡眠叫醒 | 3 | paw_raise | ready | 72 |
-| 拖拽开始 | 1 | dragging | missing | 0 |
+| 拖拽开始 | 1 | dragging | ready | 120 |
 | 拖拽开始 | 2 | paw_raise | ready | 72 |
 
 ## 接入说明

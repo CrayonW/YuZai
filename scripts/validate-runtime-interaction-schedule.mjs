@@ -67,6 +67,7 @@ const checks = [
   ["current project mouse near uses cursor-watch state", currentInteractions.mouseNearState, "teaser"],
   ["current project click uses surprised state", currentInteractions.clickState, "surprised"],
   ["current project repeated click uses shy state", currentInteractions.repeatedClickState, "shy"],
+  ["current project drag uses dragging state", currentInteractions.dragState, "dragging"],
   ["current project wake uses waking state", currentInteractions.wakeState, "waking"]
 ];
 
