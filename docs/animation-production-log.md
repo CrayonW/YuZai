@@ -1531,3 +1531,21 @@ FPS：不变。
 桌面验收：不涉及桌面运行；这是状态待办文档 current 门禁。
 已知问题：该校验只保证待办文档同步，不代表 `dragging` 已接入 runtime。
 决定：接受 `validate:state-backlog-current` 进入 `validate:all`，后续状态待办必须和当前项目状态保持一致。
+
+## 2026-06-18 状态覆盖报告 current 校验
+
+日期：2026-06-18
+源文件：`scripts/validate-state-coverage-current.mjs`、`scripts/validate-all.mjs`、`package.json`、`docs/state-coverage.md`
+目标动作：13 状态覆盖报告
+问题：`docs/state-coverage.md` 由 manifest、状态类型和可灵动作计划生成，但此前只有生成器 fixture 校验，没有检查仓库中的报告是否仍和当前项目状态一致。
+参考片段：先把 `validate:state-coverage-current` 挂到 `package.json` 和 `validate:all`，红灯显示脚本缺失；随后新增脚本，重新渲染状态覆盖报告并与 `docs/state-coverage.md` 做字节级比对。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：如果 current 校验失败，执行 `npm run animations:state-coverage -- --write docs/state-coverage.md`，再执行 `npm run validate:state-coverage-current`。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖任何 runtime 帧目录。
+验证命令：`npm run validate:state-coverage-current`
+桌面验收：不涉及桌面运行；这是状态覆盖报告 current 门禁。
+已知问题：该校验只保证覆盖报告同步，不代表 `dragging` 已接入 runtime。
+决定：接受 `validate:state-coverage-current` 进入 `validate:all`，后续状态覆盖报告必须和当前项目状态保持一致。

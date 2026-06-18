@@ -25,6 +25,7 @@ const steps = [
   ["validate:origin-video-audit", ["npm", "run", "validate:origin-video-audit"]],
   ["animations:audit-origin", ["npm", "run", "animations:audit-origin"]],
   ["validate:state-coverage-report", ["npm", "run", "validate:state-coverage-report"]],
+  ["validate:state-coverage-current", ["npm", "run", "validate:state-coverage-current"]],
   ["validate:state-backlog", ["npm", "run", "validate:state-backlog"]],
   ["validate:state-backlog-current", ["npm", "run", "validate:state-backlog-current"]],
   ["validate:kling-plan-quality", ["npm", "run", "validate:kling-plan-quality"]],

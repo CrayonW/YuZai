@@ -52,6 +52,7 @@
     "animations:asset-contract": "node scripts/animation-asset-contract.mjs",
     "kling:generation-batches": "node scripts/kling-generation-batches.mjs",
     "validate:state-coverage-report": "node scripts/validate-state-coverage-report.mjs",
+    "validate:state-coverage-current": "node scripts/validate-state-coverage-current.mjs",
     "validate:state-backlog": "node scripts/validate-state-backlog.mjs",
     "validate:state-backlog-current": "node scripts/validate-state-backlog-current.mjs",
     "validate:kling-plan-quality": "node scripts/validate-kling-plan-quality.mjs",
