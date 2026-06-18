@@ -76,6 +76,8 @@
     "validate:capture-plan": "node scripts/validate-capture-plan.mjs",
     "validate:capture-sequence-inspector": "node scripts/validate-capture-sequence-inspector.mjs",
     "validate:mvp-evidence": "node scripts/validate-mvp-evidence.mjs",
+    "project:status": "node scripts/project-status.mjs",
+    "validate:project-status-current": "node scripts/validate-project-status-current.mjs",
     "capture:inspect": "node scripts/capture-sequence-inspector.mjs",
     "validate:package": "node scripts/validate-package.mjs",
     "animations:build-from-origin": "node scripts/build-runtime-animations-from-origin.mjs",

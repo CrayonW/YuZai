@@ -1587,3 +1587,21 @@ FPS：不变。
 桌面验收：不涉及桌面运行；这是素材选择规则补充。
 已知问题：视频数量更多不等于质量一定更好；仍必须逐视频检查无水印、无文字、无 logo、无额外物体、无变形和桌面衔接手感。
 决定：后续动作视频默认选择数量更多的一组，只有清单标明质量风险或用户明确改选时才使用较少集合。
+
+## 2026-06-18 项目当前状态看板
+
+日期：2026-06-18
+源文件：`scripts/project-status.mjs`、`scripts/validate-project-status-current.mjs`、`docs/project-status.md`、`package.json`、`scripts/validate-all.mjs`
+目标动作：项目继续推进状态看板
+问题：启动头顶文字已清理，但“继续完成项目”需要一个集中入口说明当前 MVP、13 状态覆盖、拖拽专项阻塞点、批准边界和下一步命令，避免后续只靠分散日志判断进度。
+参考片段：先将 `validate:project-status-current` 接入 package 和 `validate:all`，确认因缺少校验脚本失败；实现校验脚本后，再确认因缺少 `docs/project-status.md` 失败；最后生成看板并通过 current 校验。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：看板从 `docs/mvp-evidence.json`、`docs/state-coverage.md`、`docs/state-backlog.md`、`docs/runtime-intake-waves.json` 和执行日志派生，执行 `npm run project:status -- --write docs/project-status.md` 可重新生成。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖任何 runtime 帧目录。
+验证命令：`npm run validate:project-status-current`
+桌面验收：不涉及新桌面运行；看板引用上一条启动 1200ms 截图验收结果。
+已知问题：看板只汇总当前状态，不代表 `dragging-special` 已批准或拖拽动作已接入。
+决定：接受 `docs/project-status.md` 作为后续继续项目时的第一查看入口，并将 `validate:project-status-current` 加入全量门禁。

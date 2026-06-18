@@ -49,6 +49,7 @@ const steps = [
   ["validate:capture-plan", ["npm", "run", "validate:capture-plan"]],
   ["validate:capture-sequence-inspector", ["npm", "run", "validate:capture-sequence-inspector"]],
   ["validate:mvp-evidence", ["npm", "run", "validate:mvp-evidence"]],
+  ["validate:project-status-current", ["npm", "run", "validate:project-status-current"]],
   ["typecheck", ["npm", "run", "typecheck"]],
   ["build", ["npm", "run", "build"]]
 ];
