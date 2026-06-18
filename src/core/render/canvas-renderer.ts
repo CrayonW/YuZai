@@ -54,14 +54,17 @@ export class CanvasRenderer {
     this.ctx.clearRect(0, 0, width, height);
 
     if (frame) {
+      const dragFeedback = dragVisualFeedbackForOffset(dragOffset);
       this.ctx.save();
-      this.ctx.translate(dragOffset.x * 0.12, dragOffset.y * 0.12);
+      this.ctx.translate(width / 2 + dragFeedback.translateX, height / 2 + dragFeedback.translateY + dragFeedback.liftY);
+      this.ctx.rotate(dragFeedback.rotation);
+      this.ctx.scale(dragFeedback.scale, dragFeedback.scale);
       this.ctx.imageSmoothingEnabled = true;
       this.ctx.imageSmoothingQuality = "high";
-      this.ctx.drawImage(frame, 0, 0, width, height);
+      this.ctx.drawImage(frame, -width / 2, -height / 2, width, height);
       if (nextFrame && nextFrame !== frame && selection.blend > 0.18 && selection.blend < 0.82) {
         this.ctx.globalAlpha = Math.min(0.24, (1 - Math.abs(0.5 - selection.blend) * 2) * 0.24);
-        this.ctx.drawImage(nextFrame, 0, 0, width, height);
+        this.ctx.drawImage(nextFrame, -width / 2, -height / 2, width, height);
       }
       this.ctx.restore();
       return;
@@ -82,4 +85,38 @@ export class CanvasRenderer {
     }
     return remember ? this.lastDrawableFrame : null;
   }
+}
+
+export interface DragVisualFeedback {
+  translateX: number;
+  translateY: number;
+  liftY: number;
+  rotation: number;
+  scale: number;
+}
+
+export function dragVisualFeedbackForOffset(offset: { x: number; y: number }): DragVisualFeedback {
+  const distance = Math.hypot(offset.x, offset.y);
+  if (distance < 8) {
+    return {
+      translateX: 0,
+      translateY: 0,
+      liftY: 0,
+      rotation: 0,
+      scale: 1
+    };
+  }
+
+  const strength = Math.min(1, distance / 96);
+  return {
+    translateX: clamp(offset.x * 0.2, -28, 28),
+    translateY: clamp(offset.y * 0.08, -10, 16),
+    liftY: -Math.round(14 + 10 * strength),
+    rotation: clamp(offset.x / 520, -0.18, 0.18),
+    scale: 1 + 0.055 * strength
+  };
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value));
 }

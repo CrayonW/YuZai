@@ -1623,3 +1623,21 @@ FPS：24。
 桌面验收：执行 `YUZAI_TEST_DRAG_MS=700 YUZAI_TEST_DRAG_X=100 YUZAI_TEST_DRAG_Y=70 YUZAI_TEST_DRAG_HOLD_MS=1200 YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-dragging.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=900 npm run dev`，生成 8 张 440x440 RGBA 桌面截图；再执行 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-dragging.png --count 8 --min-changed-frames 4 --min-width 200 --min-height 200`，结果 `changedFrames=7`，通过拖拽专项自动验收。
 已知问题：既有审查认为 `dragging` 动作幅度较小，正式体验仍要通过桌面拖拽手感观察确认是否足够明显。
 决定：接受拖拽专项进入 runtime，完成 13 状态独立动作覆盖。
+
+## 2026-06-18 拖拽手感增强
+
+日期：2026-06-18
+源文件：`src/core/render/canvas-renderer.ts`、`scripts/validate-drag-visual-feedback.mjs`、`package.json`、`scripts/validate-all.mjs`
+目标动作：`dragging`
+问题：`dragging` 动作已接入 runtime，但现场体感仍像没有互动；根因是来源视频本身动作幅度偏小，单纯播放序列帧不够明显。
+参考片段：先新增 `npm run validate:drag-visual-feedback`，要求拖拽偏移产生明显上提、缩放和方向倾斜；红灯显示 `dragVisualFeedbackForOffset` 尚不存在。随后在 CanvasRenderer 中对真实序列帧应用中心点变换：拖拽时整体上提、轻微放大，并按横向拖动方向倾斜。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：仍播放现有 `dragging` 序列帧；本次只叠加运行时视觉反馈。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：在渲染阶段根据 `InteractionController.currentDragOffset` 计算反馈强度；小于 8px 的指针噪声保持中性，明显拖拽时最多约 5.5% 放大、上提并倾斜。
+运行时输出：拖拽期间猫咪整体更像被提起和拉动，释放后随 `dragOffset` 归零恢复正常绘制。
+验证命令：`npm run validate:drag-visual-feedback`、`npm run validate:interaction-controller`、`npm run validate:runtime-interaction-schedule`、`npm run typecheck`
+桌面验收：执行 `YUZAI_TEST_DRAG_MS=700 YUZAI_TEST_DRAG_X=100 YUZAI_TEST_DRAG_Y=70 YUZAI_TEST_DRAG_HOLD_MS=1200 YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-dragging-boosted.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=900 npm run dev`，生成 8 张 440x440 RGBA 桌面截图；再执行 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-dragging-boosted.png --count 8 --min-changed-frames 4 --min-width 200 --min-height 200`，结果 `changedFrames=7`。
+已知问题：这是运行时手感增强，不改变原视频动作幅度；如仍觉得不够，可以继续生成更夸张的拖拽候选视频再替换。
+决定：接受运行时拖拽反馈增强作为当前体验修复，后续视频重生成作为优化项。
