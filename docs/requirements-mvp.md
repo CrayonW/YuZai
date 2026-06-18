@@ -8,7 +8,7 @@
 
 - 透明、无边框、置顶 Electron 窗口
 - 基于 `assets/origin` 源视频生成的透明序列帧动画
-- 启动后定时气泡提醒喝水、休息
+- 启动后不立即在猫咪头顶显示文字；进入正常提醒窗口后，定时气泡提醒喝水、休息
 - Canvas 2D 简易绘制鱼仔
 - `front / left / right` 三视角
 - `idle / walking / sleepy / sleeping / waking / surprised / shy / dragging / waving`
@@ -37,7 +37,7 @@
 - 窗口在常用应用上方可见，且不会被普通应用窗口遮挡。
 - 至少一个待机循环和一个姿势变化动作能连续播放，没有明显空白帧、闪烁或水印。
 - 鼠标靠近桌宠时，状态机触发可见反馈。
-- 定时气泡能自动出现，并显示喝水或休息提醒文案。
+- 启动初始画面保持干净，不立即显示头顶文字；进入正常提醒窗口后，定时气泡能自动出现，并显示喝水或休息提醒文案。
 - 用户能调整或重置桌宠位置，并能调整角色大小或使用默认尺寸配置。
 - 验收前必须先列出本次源素材、生成动作、覆盖路径和验证方式清单，得到确认后再执行。
 
@@ -46,7 +46,7 @@
 当前 MVP 验收证据已同步到 `docs/mvp-evidence.json`，并通过 `npm run validate:mvp-evidence` 和 `npm run validate:all` 校验。后续修改桌宠显示、提醒、交互、位置尺寸或素材接入流程时，必须同步更新该证据清单。
 
 - 源视频序列帧：已通过 `npm run validate:runtime-animations`、`npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-source-mvp.png`。
-- 定时气泡：已通过 `npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-bubble-mvp.png`，启动后可见“喝口水吧”提醒。
+- 定时气泡：已通过 `npm run validate:reminder-bubble-controller`、`npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-bubble-mvp.png`；当前规则为启动初始画面不立即显示头顶文字，进入正常提醒窗口后再显示“喝口水吧”或“休息一下眼睛”提醒。
 - 角色大小/位置：已通过 `npm run typecheck`、`npm run build` 和 Electron 截图 `/private/tmp/yuzai-window-size-mvp.png`；位置支持拖拽和右键重置，角色大小支持小、标准、大三档。
 - 设置持久化：已接入本地 JSON 设置文件，保存角色大小、窗口位置和动作频率；已通过临时 `YUZAI_SETTINGS_PATH=/private/tmp/yuzai-settings-test.json` 验证重启加载 340 尺寸，并通过 `YUZAI_TEST_MOVE_MS=500 YUZAI_TEST_MOVE_X=120 YUZAI_TEST_MOVE_Y=140` 验证移动后写回位置。
 - 日常姿势变化：idle 状态已自动插入 `tail_wag` 和 `idle_secondary` 日常动作，已通过 `YUZAI_CAPTURE_DELAY_MS=2600 YUZAI_CAPTURE_PATH=/private/tmp/yuzai-window-daily-variation.png npm run dev` 桌面截图确认可见摇尾姿态。

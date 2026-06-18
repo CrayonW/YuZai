@@ -51,7 +51,7 @@
         "scripts/validate-reminder-action-bridge.mjs",
         "docs/requirements-mvp.md"
       ],
-      "notes": "提醒气泡控制器和提醒动作桥接分别验证文案出现、喝水/休息语义和动作触发入口。"
+      "notes": "提醒气泡控制器验证启动初始画面不立即显示头顶文字，并保留喝水/休息文案；提醒动作桥接验证提醒语义和动作触发入口。"
     },
     {
       "id": "size-and-position-controls",

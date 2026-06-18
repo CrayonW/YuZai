@@ -85,6 +85,37 @@ controller.stop();
 checks.push(["stop clears timers", cleared.length >= 2, true]);
 checks.push(["stop hides bubble", element.classes.has("is-visible"), false]);
 
+const startupScheduled = [];
+let startupTimerId = 100;
+const startupElement = {
+  textContent: "",
+  classes: new Set(),
+  classList: {
+    add(name) {
+      startupElement.classes.add(name);
+    },
+    remove(name) {
+      startupElement.classes.delete(name);
+    }
+  }
+};
+const startupController = new ReminderBubbleController(startupElement, {
+  random: () => 0,
+  setTimeout(callback, delay) {
+    const id = startupTimerId;
+    startupTimerId += 1;
+    startupScheduled.push({ id, callback, delay });
+    return id;
+  },
+  clearTimeout() {}
+});
+
+startupController.start();
+const startupFirstTimer = startupScheduled.shift();
+checks.push(["startup has no immediate head text", startupElement.textContent, ""]);
+checks.push(["startup bubble stays hidden before first timed reminder", startupElement.classes.has("is-visible"), false]);
+checks.push(["default first reminder waits for normal reminder window", startupFirstTimer.delay, 45000]);
+
 const failures = checks
   .filter(([, actual, expected]) => actual !== expected)
   .map(([name, actual, expected]) => ({ name, actual, expected }));

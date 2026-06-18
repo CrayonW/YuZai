@@ -15,9 +15,9 @@ const REMINDER_MESSAGES: ReminderBubbleMessage[] = [
   { kind: "water", text: "喝口水吧" },
   { kind: "rest", text: "休息一下眼睛" }
 ];
-const FIRST_REMINDER_DELAY_MS = 900;
 const MIN_REMINDER_INTERVAL_MS = 45_000;
 const MAX_REMINDER_INTERVAL_MS = 90_000;
+const FIRST_REMINDER_DELAY_MS = MIN_REMINDER_INTERVAL_MS;
 const BUBBLE_VISIBLE_MS = 3_600;
 
 export interface ReminderBubbleControllerOptions {
