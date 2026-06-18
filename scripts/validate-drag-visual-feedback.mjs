@@ -21,12 +21,23 @@ await build({
 
 globalThis.window = { devicePixelRatio: 1 };
 
-const { dragVisualFeedbackForOffset } = await import(pathToFileURL(outfile).href);
+const { DEFAULT_DRAG_VISUAL_FEEDBACK_CONFIG, dragVisualFeedbackForOffset } = await import(pathToFileURL(outfile).href);
 
 const idle = dragVisualFeedbackForOffset({ x: 0, y: 0 });
 const draggedRight = dragVisualFeedbackForOffset({ x: 100, y: 70 });
 const draggedLeft = dragVisualFeedbackForOffset({ x: -100, y: 70 });
 const tiny = dragVisualFeedbackForOffset({ x: 4, y: 3 });
+const tuned = dragVisualFeedbackForOffset(
+  { x: 100, y: 70 },
+  {
+    ...DEFAULT_DRAG_VISUAL_FEEDBACK_CONFIG,
+    maxScaleBoost: 0.12,
+    minLiftPx: 24,
+    maxLiftPx: 42,
+    maxRotationRadians: 0.28,
+    rotationDistancePx: 360
+  }
+);
 
 const checks = [
   ["idle has no lift", idle.liftY, 0],
@@ -36,7 +47,10 @@ const checks = [
   ["drag visibly scales pet", draggedRight.scale >= 1.04, true],
   ["drag tilts with horizontal direction", draggedRight.rotation > 0.08, true],
   ["drag tilt mirrors left direction", draggedLeft.rotation < -0.08, true],
-  ["tiny pointer noise stays visually neutral", tiny.scale, 1]
+  ["tiny pointer noise stays visually neutral", tiny.scale, 1],
+  ["custom config increases drag lift", tuned.liftY < draggedRight.liftY, true],
+  ["custom config increases drag scale", tuned.scale > draggedRight.scale, true],
+  ["custom config increases drag tilt", tuned.rotation > draggedRight.rotation, true]
 ];
 
 const failures = checks

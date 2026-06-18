@@ -1,6 +1,9 @@
 import { drawPlaceholderYuzai } from "./placeholder-yuzai";
 import type { AnimationFrameSelection } from "./animation-director";
+import { DEFAULT_DRAG_VISUAL_FEEDBACK_CONFIG, type DragVisualFeedbackConfig } from "../config/load-config";
 import type { StateSnapshot } from "../fsm/state-types";
+
+export { DEFAULT_DRAG_VISUAL_FEEDBACK_CONFIG };
 
 export class CanvasRenderer {
   private readonly ctx: CanvasRenderingContext2D;
@@ -8,7 +11,10 @@ export class CanvasRenderer {
   private lastDrawableFrame: HTMLImageElement | null = null;
   private size = 280;
 
-  constructor(private readonly canvas: HTMLCanvasElement) {
+  constructor(
+    private readonly canvas: HTMLCanvasElement,
+    private readonly dragVisualFeedbackConfig: DragVisualFeedbackConfig = DEFAULT_DRAG_VISUAL_FEEDBACK_CONFIG
+  ) {
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) throw new Error("Canvas 2D context is unavailable.");
     this.ctx = ctx;
@@ -54,7 +60,7 @@ export class CanvasRenderer {
     this.ctx.clearRect(0, 0, width, height);
 
     if (frame) {
-      const dragFeedback = dragVisualFeedbackForOffset(dragOffset);
+      const dragFeedback = dragVisualFeedbackForOffset(dragOffset, this.dragVisualFeedbackConfig);
       this.ctx.save();
       this.ctx.translate(width / 2 + dragFeedback.translateX, height / 2 + dragFeedback.translateY + dragFeedback.liftY);
       this.ctx.rotate(dragFeedback.rotation);
@@ -95,9 +101,12 @@ export interface DragVisualFeedback {
   scale: number;
 }
 
-export function dragVisualFeedbackForOffset(offset: { x: number; y: number }): DragVisualFeedback {
+export function dragVisualFeedbackForOffset(
+  offset: { x: number; y: number },
+  config: DragVisualFeedbackConfig = DEFAULT_DRAG_VISUAL_FEEDBACK_CONFIG
+): DragVisualFeedback {
   const distance = Math.hypot(offset.x, offset.y);
-  if (distance < 8) {
+  if (distance < config.neutralDistancePx) {
     return {
       translateX: 0,
       translateY: 0,
@@ -107,13 +116,13 @@ export function dragVisualFeedbackForOffset(offset: { x: number; y: number }): D
     };
   }
 
-  const strength = Math.min(1, distance / 96);
+  const strength = Math.min(1, distance / config.fullStrengthDistancePx);
   return {
-    translateX: clamp(offset.x * 0.2, -28, 28),
-    translateY: clamp(offset.y * 0.08, -10, 16),
-    liftY: -Math.round(14 + 10 * strength),
-    rotation: clamp(offset.x / 520, -0.18, 0.18),
-    scale: 1 + 0.055 * strength
+    translateX: clamp(offset.x * config.horizontalFollowRatio, -config.maxTranslateX, config.maxTranslateX),
+    translateY: clamp(offset.y * config.verticalFollowRatio, config.minTranslateY, config.maxTranslateY),
+    liftY: -Math.round(config.minLiftPx + (config.maxLiftPx - config.minLiftPx) * strength),
+    rotation: clamp(offset.x / config.rotationDistancePx, -config.maxRotationRadians, config.maxRotationRadians),
+    scale: 1 + config.maxScaleBoost * strength
   };
 }
 

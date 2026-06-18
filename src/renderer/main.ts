@@ -28,7 +28,7 @@ const reminderBubble = document.querySelector<HTMLElement>("#reminder-bubble");
 if (!reminderBubble) throw new Error("Missing #reminder-bubble");
 
 const fsm = new PetStateMachine();
-const renderer = new CanvasRenderer(canvas);
+const renderer = new CanvasRenderer(canvas, DEFAULT_CONFIG.interaction.dragVisualFeedback);
 const animationDirector = new AnimationDirector({
   defaultAction: runtimeAnimationManifest.defaultAction,
   resolveSequence: sequenceForAction,

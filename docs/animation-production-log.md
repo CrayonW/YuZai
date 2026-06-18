@@ -1641,3 +1641,21 @@ FPS：不变。
 桌面验收：执行 `YUZAI_TEST_DRAG_MS=700 YUZAI_TEST_DRAG_X=100 YUZAI_TEST_DRAG_Y=70 YUZAI_TEST_DRAG_HOLD_MS=1200 YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-dragging-boosted.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=900 npm run dev`，生成 8 张 440x440 RGBA 桌面截图；再执行 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-dragging-boosted.png --count 8 --min-changed-frames 4 --min-width 200 --min-height 200`，结果 `changedFrames=7`。
 已知问题：这是运行时手感增强，不改变原视频动作幅度；如仍觉得不够，可以继续生成更夸张的拖拽候选视频再替换。
 决定：接受运行时拖拽反馈增强作为当前体验修复，后续视频重生成作为优化项。
+
+## 2026-06-18 拖拽手感参数化
+
+日期：2026-06-18
+源文件：`src/core/config/load-config.ts`、`src/core/render/canvas-renderer.ts`、`src/renderer/main.ts`、`scripts/validate-drag-visual-feedback.mjs`、`docs/drag-visual-feedback.md`
+目标动作：`dragging`
+问题：上一版已让拖拽更明显，但力度参数写在渲染函数中，后续现场调手感需要反复改渲染逻辑。
+参考片段：先更新 `npm run validate:drag-visual-feedback`，要求同一拖拽偏移在自定义强力度配置下产生更大的上提、放大和倾斜；红灯显示自定义配置没有生效。随后新增 `DEFAULT_CONFIG.interaction.dragVisualFeedback`，并让 `CanvasRenderer` 从入口接收该配置。
+帧数：未生成新 runtime 帧。
+FPS：不变。
+循环方式：不变；仍播放现有 `dragging` 序列帧。
+水印处理：未执行；没有抽帧、去水印或抠绿。
+重建方法：修改 `src/core/config/load-config.ts` 中的 `DEFAULT_CONFIG.interaction.dragVisualFeedback` 参数，再运行 `npm run validate:drag-visual-feedback` 和桌面截图验收。
+运行时输出：拖拽视觉反馈由配置控制，后续可独立调整上提、跟手、倾斜、放大和噪声阈值。
+验证命令：`npm run validate:drag-visual-feedback`
+桌面验收：本次为配置化改造，视觉默认值保持上一版表现；桌面验收可复用 `/private/tmp/yuzai-window-dragging-boosted-*.png` 的方案，或按 `docs/drag-visual-feedback.md` 重新生成 `dragging-tuned` 截图序列。
+已知问题：配置仍为源码默认值，尚未做用户界面上的实时调参面板。
+决定：接受拖拽手感参数化，后续现场微调优先改配置，不直接改渲染公式。
