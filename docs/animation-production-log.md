@@ -1710,6 +1710,6 @@ FPS：不变，仍按当前 manifest 中每个 action 的 `fps` 和 `frameCount`
 重建方法：新增 `npm run animations:transition-risk -- --write docs/action-transition-risk-report.md`，用 ImageMagick RMSE 对每个非日常动作的进入帧和回切帧做差异计算；新增 `npm run validate:action-transition-risk-report`，并接入 `validate:all`，确保报告和当前 manifest 同步。
 运行时输出：不改变当前桌宠播放行为；本次把“哪里生硬”变成可复查清单，为后续补 `transitionIn` / `transitionOut` 或重新标注安全帧提供依据。
 验证命令：`npm run validate:action-transition-risk-report`、`npm run validate:manifest-contract:current`
-桌面验收：当前报告显示 20 个切换中 high 4 / medium 12 / low 4。优先处理 `sleep -> sleeping`、`waking -> idle_primary`、`poke_annoyed -> idle_primary`、`paw_raise -> idle_primary`。
+桌面验收：当前报告显示 20 个切换中 high 4 / medium 12 / low 4。四个 high 风险均被标记为 `tail-not-recovered`，说明最像回切目标的帧都在动作开头，不能靠简单提前回切解决。优先处理 `sleep -> sleeping`、`waking -> idle_primary`、`poke_annoyed -> idle_primary`、`paw_raise -> idle_primary`，处理方式应是补 transitionOut 或重生成动作尾段。
 已知问题：RMSE 是帧差异指标，不能完全替代肉眼审美；后续仍需要结合桌面多帧截图或录屏确认动作是否自然。
 决定：接受 `docs/action-transition-risk-report.md` 作为衔接优化的固定入口。下一轮如果要继续改善“生硬感”，优先为 high 风险切换生成或接入专用过渡素材。

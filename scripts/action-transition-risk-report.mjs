@@ -75,13 +75,13 @@ export function renderActionTransitionRiskReport(report) {
     "",
     "## 切换明细",
     "",
-    "| risk | direction | from | to | best frame pair | metric | current bridge | recommendation | reason |",
-    "| --- | --- | --- | --- | --- | ---: | --- | --- | --- |"
+    "| risk | direction | from | to | best frame pair | metric | best source frame | tail diagnosis | current bridge | recommendation | reason |",
+    "| --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- |"
   ];
 
   for (const item of report.transitions) {
     lines.push(
-      `| ${item.risk} | ${item.direction} | ${item.fromAction} | ${item.toAction} | ${item.fromFrame} -> ${item.toFrame} | ${item.metric.toFixed(4)} | ${item.currentBridge} | ${item.recommendation} | ${item.reason} |`
+      `| ${item.risk} | ${item.direction} | ${item.fromAction} | ${item.toAction} | ${item.fromFrame} -> ${item.toFrame} | ${item.metric.toFixed(4)} | ${item.bestSourceFrame} (${item.bestSourceMetric.toFixed(4)}) | ${item.tailDiagnosis} | ${item.currentBridge} | ${item.recommendation} | ${item.reason} |`
     );
   }
 
@@ -104,6 +104,7 @@ function buildTransitionRisk({ manifest, fromAction, toAction, direction, reason
   const fromFrames = safeFrames(fromConfig.exitFrames, fromConfig.frameCount);
   const toFrames = safeFrames(toConfig.entryFrames, toConfig.frameCount);
   let best = null;
+  let bestAnySourceFrame = null;
 
   for (const fromFrame of fromFrames) {
     for (const toFrame of toFrames) {
@@ -114,11 +115,26 @@ function buildTransitionRisk({ manifest, fromAction, toAction, direction, reason
     }
   }
 
+  for (let fromFrame = 1; fromFrame <= fromConfig.frameCount; fromFrame += 1) {
+    for (const toFrame of toFrames) {
+      const metric = compareFrameMetric(framePath(fromConfig, fromFrame), framePath(toConfig, toFrame));
+      if (!bestAnySourceFrame || metric < bestAnySourceFrame.metric) {
+        bestAnySourceFrame = { fromFrame, toFrame, metric };
+      }
+    }
+  }
+
   if (!best) return null;
 
   const currentBridge = direction === "进入"
     ? manifest.actions[toAction]?.transitionIn || "Canvas crossfade"
     : manifest.actions[fromAction]?.transitionOut || "Canvas crossfade";
+  const tailDiagnosis = diagnoseTailRecoverability({
+    direction,
+    fromConfig,
+    bestAnySourceFrame,
+    currentMetric: best.metric
+  });
 
   return {
     direction,
@@ -127,9 +143,12 @@ function buildTransitionRisk({ manifest, fromAction, toAction, direction, reason
     fromFrame: best.fromFrame,
     toFrame: best.toFrame,
     metric: best.metric,
+    bestSourceFrame: bestAnySourceFrame?.fromFrame ?? best.fromFrame,
+    bestSourceMetric: bestAnySourceFrame?.metric ?? best.metric,
+    tailDiagnosis,
     risk: riskForMetric(best.metric),
     currentBridge,
-    recommendation: recommendationFor({ direction, fromAction, toAction, metric: best.metric, currentBridge }),
+    recommendation: recommendationFor({ direction, fromAction, toAction, metric: best.metric, currentBridge, tailDiagnosis }),
     reason
   };
 }
@@ -171,15 +190,33 @@ function riskForMetric(metric) {
   return "low";
 }
 
-function recommendationFor({ direction, fromAction, toAction, metric, currentBridge }) {
+function recommendationFor({ direction, fromAction, toAction, metric, currentBridge, tailDiagnosis }) {
   if (currentBridge !== "Canvas crossfade") return `已配置 ${currentBridge}，需桌面录屏确认`;
   if (metric >= RISK_THRESHOLDS.high) {
+    if (tailDiagnosis === "tail-not-recovered") {
+      return direction === "回切"
+        ? `优先补 ${fromAction}_to_${toAction} transitionOut，或重生成 ${fromAction} 尾段回到 ${toAction}`
+        : `优先补 ${fromAction}_to_${toAction} transitionIn，或重生成 ${toAction} 开头更贴近 ${fromAction}`;
+    }
     return direction === "进入"
       ? `优先生成 ${fromAction}_to_${toAction} 或给 ${toAction} 标注更自然 entryFrames`
       : `优先生成 ${fromAction}_to_${toAction} 或给 ${fromAction} 标注更自然 exitFrames`;
   }
   if (metric >= RISK_THRESHOLDS.medium) return "保留 Canvas crossfade，并用多帧截图复查";
   return "当前可接受，低频复查即可";
+}
+
+function diagnoseTailRecoverability({ direction, fromConfig, bestAnySourceFrame, currentMetric }) {
+  if (direction !== "回切") return "not-applicable";
+  if (!bestAnySourceFrame) return "unknown";
+  if (currentMetric < RISK_THRESHOLDS.high) return "acceptable";
+
+  const progress = bestAnySourceFrame.fromFrame / Math.max(1, fromConfig.frameCount);
+  if (progress <= 0.25 && bestAnySourceFrame.metric < currentMetric * 0.6) {
+    return "tail-not-recovered";
+  }
+
+  return "safe-frame-candidate";
 }
 
 function transitionReasonFor(action, config) {
