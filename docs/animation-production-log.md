@@ -1767,3 +1767,21 @@ FPS：24 fps。
 桌面验收：使用 `YUZAI_TEST_MOUSE_FOLLOW_16=500 YUZAI_TEST_MOUSE_FOLLOW_16_INTERVAL_MS=180 YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-mouse-follow-16.png YUZAI_CAPTURE_SEQUENCE_COUNT=16 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=700 npm run dev` 触发 16 方向预览，再用 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-mouse-follow-16.png --count 16 --min-changed-frames 10 --min-width 200 --min-height 200` 检查桌面窗口连续变化；截图证据保存到 `assets/reviews/runtime/mouse-follow-16/`。
 已知问题：可灵 API 本轮实际返回约 5.04 秒视频，低于计划中的 8 秒目标；因此 `docs/animation-asset-contract.md` 会继续把 16 个 `look_*` 标为 runtime 时长不足。当前先接受为第一版真实方向跟随素材，后续如要更长动作，需要改为更长生成策略或分段生成后再合并。
 决定：接受 16 方向真实动作作为鼠标 360 度跟随 MVP 的第一版 runtime 输入；后续如发现某个方向姿态不明显，优先替换对应单个 `look_*` 视频并重跑同一波次接入流程。
+
+## 2026-06-19 桌宠动作自然度长时间观察报告
+
+日期：2026-06-19
+源文件：`scripts/runtime-naturalness-observation.mjs`、`scripts/validate-runtime-naturalness-observation.mjs`、`docs/runtime-naturalness-observation.md`、`assets/reviews/runtime/naturalness-observation/`
+目标动作：当前 runtime 中全部 38 个可播放 action，重点观察日常动作可见性、截图连续变化、high 风险回切和 runtime 时长不足。
+问题：用户确认执行方案 A，需要先做长时间桌面观察与自然度报告，不直接生成新视频、不覆盖 runtime、不修改 manifest，用可复查证据决定下一轮优化优先级。
+参考片段：`docs/action-transition-risk-report.md` 中 high 4 / medium 34 / low 14；`docs/animation-asset-contract.md` 中 runtime 时长不足动作数 30。
+帧数：未新增 runtime 帧；新增桌面观察截图 12 张。
+FPS：运行时 FPS 不变；截图观察间隔为 300ms。
+循环方式：运行时动作调度不变；本轮只观察当前桌宠窗口输出。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：新增 `npm run observe:naturalness -- --write docs/runtime-naturalness-observation.md` 汇总 manifest、衔接风险报告、资产契约和桌面截图证据；新增 `npm run validate:runtime-naturalness-observation` 并接入 `validate:all`，防止报告与证据过期。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`；桌面窗口截图保存到 `assets/reviews/runtime/naturalness-observation/`。
+验证命令：`YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-naturalness.png YUZAI_CAPTURE_SEQUENCE_COUNT=12 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=300 YUZAI_CAPTURE_DELAY_MS=900 npm run dev`，随后执行 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-naturalness.png --count 12 --min-changed-frames 6 --min-width 200 --min-height 200`，结果 `changedFrames=12`、尺寸 `440x440`、无失败项。
+桌面验收：截图序列证明桌面上可见一只会动的猫；本轮观察入口确认当前最需要后续处理的是 `sleep -> sleeping`、`waking -> idle_primary`、`poke_annoyed -> idle_primary`、`paw_raise -> idle_primary` 四个 high 风险回切，以及 30 个 runtime 时长不足动作。
+已知问题：截图序列只能证明当前观察窗口内有连续变化，不能替代长时录屏和人工审美判断；如果继续反馈动作衔接生硬，仍需要先列清单，再生成或接入 transitionOut / 更长 daily 视频。
+决定：接受 `docs/runtime-naturalness-observation.md` 作为方案 A 的可复查观察入口；后续进入视频生成或 runtime 覆盖前，继续执行“先列清单确认”的边界。
