@@ -35,6 +35,7 @@ const steps = [
   ["validate:state-backlog-current", ["npm", "run", "validate:state-backlog-current"]],
   ["validate:kling-plan-quality", ["npm", "run", "validate:kling-plan-quality"]],
   ["validate:kling-generation-batches", ["npm", "run", "validate:kling-generation-batches"]],
+  ["validate:mouse-follow-16-plan", ["npm", "run", "validate:mouse-follow-16-plan"]],
   ["validate:kling-batch-plan", ["npm", "run", "validate:kling-batch-plan"]],
   ["validate:kling-batch-status", ["npm", "run", "validate:kling-batch-status"]],
   ["validate:kling-batch-intake-checklist", ["npm", "run", "validate:kling-batch-intake-checklist"]],

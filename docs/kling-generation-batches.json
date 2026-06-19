@@ -4,8 +4,8 @@
   "sourceBacklog": "docs/state-backlog.md",
   "prerequisite": "先运行 auth-check，确认可灵 API 鉴权通过，再按批次生成。",
   "summary": {
-    "totalBatches": 4,
-    "totalActions": 18
+    "totalBatches": 5,
+    "totalActions": 34
   },
   "batches": [
     {
@@ -194,6 +194,157 @@
           "generationDurationSeconds": 5,
           "output": "assets/origin/generated/kling/paw_raise_to_idle.mp4",
           "antiFatigueRole": "抬爪回待机的衔接，降低回切跳变",
+          "backlogState": null
+        }
+      ]
+    },
+    {
+      "id": "mouse-follow-16-direction",
+      "name": "第五批：16 方向鼠标跟随",
+      "reason": "生成 16 个长循环方向动作，让猫咪头部和眼睛按鼠标相对方向跟随。",
+      "actions": [
+        {
+          "action": "look_e",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_e.mp4",
+          "antiFatigueRole": "鼠标位于正右方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_ene",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_ene.mp4",
+          "antiFatigueRole": "鼠标位于右上偏右方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_ne",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_ne.mp4",
+          "antiFatigueRole": "鼠标位于右上方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_nne",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_nne.mp4",
+          "antiFatigueRole": "鼠标位于上方偏右方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_n",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_n.mp4",
+          "antiFatigueRole": "鼠标位于正上方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_nnw",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_nnw.mp4",
+          "antiFatigueRole": "鼠标位于上方偏左方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_nw",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_nw.mp4",
+          "antiFatigueRole": "鼠标位于左上方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_wnw",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_wnw.mp4",
+          "antiFatigueRole": "鼠标位于左上偏左方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_w",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_w.mp4",
+          "antiFatigueRole": "鼠标位于正左方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_wsw",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_wsw.mp4",
+          "antiFatigueRole": "鼠标位于左下偏左方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_sw",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_sw.mp4",
+          "antiFatigueRole": "鼠标位于左下方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_ssw",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_ssw.mp4",
+          "antiFatigueRole": "鼠标位于下方偏左方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_s",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_s.mp4",
+          "antiFatigueRole": "鼠标位于正下方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_sse",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_sse.mp4",
+          "antiFatigueRole": "鼠标位于下方偏右方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_se",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_se.mp4",
+          "antiFatigueRole": "鼠标位于右下方向时的长循环头眼跟随",
+          "backlogState": null
+        },
+        {
+          "action": "look_ese",
+          "category": "interactive",
+          "durationSeconds": 8,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/look_ese.mp4",
+          "antiFatigueRole": "鼠标位于右下偏右方向时的长循环头眼跟随",
           "backlogState": null
         }
       ]

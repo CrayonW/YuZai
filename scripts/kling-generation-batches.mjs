@@ -25,6 +25,29 @@ const batchDefinitions = [
     name: "第四批：高风险回切过渡",
     reason: "补齐动作衔接风险报告中 tail-not-recovered 的回切过渡，降低尾段回到日常或睡眠循环时的跳变。",
     actions: ["sleep_to_sleeping", "waking_to_idle", "poke_annoyed_to_idle", "paw_raise_to_idle"]
+  },
+  {
+    id: "mouse-follow-16-direction",
+    name: "第五批：16 方向鼠标跟随",
+    reason: "生成 16 个长循环方向动作，让猫咪头部和眼睛按鼠标相对方向跟随。",
+    actions: [
+      "look_e",
+      "look_ene",
+      "look_ne",
+      "look_nne",
+      "look_n",
+      "look_nnw",
+      "look_nw",
+      "look_wnw",
+      "look_w",
+      "look_wsw",
+      "look_sw",
+      "look_ssw",
+      "look_s",
+      "look_sse",
+      "look_se",
+      "look_ese"
+    ]
   }
 ];
 
@@ -79,6 +102,7 @@ export function renderKlingGenerationBatches(report) {
     "npm run kling:generate-batch -- --batch 1 --dry-run",
     "npm run kling:generate-batch -- --batch sleep-routine --dry-run",
     "npm run kling:generate-batch -- --batch transition-out-recovery --dry-run",
+    "npm run kling:generate-batch -- --batch mouse-follow-16-direction --dry-run",
     "```",
     "",
     "鉴权通过且账号余额充足后的批次生成：",
@@ -87,6 +111,7 @@ export function renderKlingGenerationBatches(report) {
     "npm run kling:generate-batch -- --batch 1",
     "npm run kling:generate-batch -- --batch sleep-routine",
     "npm run kling:generate-batch -- --batch transition-out-recovery",
+    "npm run kling:generate-batch -- --batch mouse-follow-16-direction",
     "```",
     ""
   ];

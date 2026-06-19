@@ -12,6 +12,7 @@
 npm run kling:generate-batch -- --batch 1 --dry-run
 npm run kling:generate-batch -- --batch sleep-routine --dry-run
 npm run kling:generate-batch -- --batch transition-out-recovery --dry-run
+npm run kling:generate-batch -- --batch mouse-follow-16-direction --dry-run
 ```
 
 鉴权通过且账号余额充足后的批次生成：
@@ -20,6 +21,7 @@ npm run kling:generate-batch -- --batch transition-out-recovery --dry-run
 npm run kling:generate-batch -- --batch 1
 npm run kling:generate-batch -- --batch sleep-routine
 npm run kling:generate-batch -- --batch transition-out-recovery
+npm run kling:generate-batch -- --batch mouse-follow-16-direction
 ```
 
 ## 第一批：降低疲劳与关键交互
@@ -67,6 +69,29 @@ npm run kling:generate-batch -- --batch transition-out-recovery
 | waking_to_idle | transition | 2s / API 5s | assets/origin/generated/kling/waking_to_idle.mp4 | - | `npm run kling:generate -- --action waking_to_idle` |
 | poke_annoyed_to_idle | transition | 2s / API 5s | assets/origin/generated/kling/poke_annoyed_to_idle.mp4 | - | `npm run kling:generate -- --action poke_annoyed_to_idle` |
 | paw_raise_to_idle | transition | 2s / API 5s | assets/origin/generated/kling/paw_raise_to_idle.mp4 | - | `npm run kling:generate -- --action paw_raise_to_idle` |
+
+## 第五批：16 方向鼠标跟随
+
+生成 16 个长循环方向动作，让猫咪头部和眼睛按鼠标相对方向跟随。
+
+| action | 分类 | 时长 | 输出 | 覆盖状态 | 生成命令 |
+| --- | --- | ---: | --- | --- | --- |
+| look_e | interactive | 8s / API 5s | assets/origin/generated/kling/look_e.mp4 | - | `npm run kling:generate -- --action look_e` |
+| look_ene | interactive | 8s / API 5s | assets/origin/generated/kling/look_ene.mp4 | - | `npm run kling:generate -- --action look_ene` |
+| look_ne | interactive | 8s / API 5s | assets/origin/generated/kling/look_ne.mp4 | - | `npm run kling:generate -- --action look_ne` |
+| look_nne | interactive | 8s / API 5s | assets/origin/generated/kling/look_nne.mp4 | - | `npm run kling:generate -- --action look_nne` |
+| look_n | interactive | 8s / API 5s | assets/origin/generated/kling/look_n.mp4 | - | `npm run kling:generate -- --action look_n` |
+| look_nnw | interactive | 8s / API 5s | assets/origin/generated/kling/look_nnw.mp4 | - | `npm run kling:generate -- --action look_nnw` |
+| look_nw | interactive | 8s / API 5s | assets/origin/generated/kling/look_nw.mp4 | - | `npm run kling:generate -- --action look_nw` |
+| look_wnw | interactive | 8s / API 5s | assets/origin/generated/kling/look_wnw.mp4 | - | `npm run kling:generate -- --action look_wnw` |
+| look_w | interactive | 8s / API 5s | assets/origin/generated/kling/look_w.mp4 | - | `npm run kling:generate -- --action look_w` |
+| look_wsw | interactive | 8s / API 5s | assets/origin/generated/kling/look_wsw.mp4 | - | `npm run kling:generate -- --action look_wsw` |
+| look_sw | interactive | 8s / API 5s | assets/origin/generated/kling/look_sw.mp4 | - | `npm run kling:generate -- --action look_sw` |
+| look_ssw | interactive | 8s / API 5s | assets/origin/generated/kling/look_ssw.mp4 | - | `npm run kling:generate -- --action look_ssw` |
+| look_s | interactive | 8s / API 5s | assets/origin/generated/kling/look_s.mp4 | - | `npm run kling:generate -- --action look_s` |
+| look_sse | interactive | 8s / API 5s | assets/origin/generated/kling/look_sse.mp4 | - | `npm run kling:generate -- --action look_sse` |
+| look_se | interactive | 8s / API 5s | assets/origin/generated/kling/look_se.mp4 | - | `npm run kling:generate -- --action look_se` |
+| look_ese | interactive | 8s / API 5s | assets/origin/generated/kling/look_ese.mp4 | - | `npm run kling:generate -- --action look_ese` |
 
 ## 批次后处理
 

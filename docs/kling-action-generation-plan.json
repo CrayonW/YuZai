@@ -309,6 +309,182 @@
       "prompt": "动作：猫咪从轻微不满或回头看的姿势开始，情绪慢慢缓和，头部和身体转回正面，尾巴放松，最后回到稳定正面待机坐姿。动作很短、自然，不要突然跳回。画面不要出现文字、水印或 logo。",
       "output": "assets/origin/generated/kling/poke_annoyed_to_idle.mp4",
       "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_e",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于正右方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向正右方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_e.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_ene",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于右上偏右方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向右上偏右方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_ene.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_ne",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于右上方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向右上方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_ne.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_nne",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于上方偏右方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向上方偏右方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_nne.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_n",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于正上方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向正上方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_n.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_nnw",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于上方偏左方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向上方偏左方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_nnw.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_nw",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于左上方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向左上方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_nw.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_wnw",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于左上偏左方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向左上偏左方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_wnw.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_w",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于正左方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向正左方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_w.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_wsw",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于左下偏左方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向左下偏左方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_wsw.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_sw",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于左下方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向左下方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_sw.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_ssw",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于下方偏左方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向下方偏左方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_ssw.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_s",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于正下方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向正下方向。注意猫咪不要趴下，不要低头到身体变形，只是头部和眼神自然向下追踪鼠标。动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_s.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_sse",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于下方偏右方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向下方偏右方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_sse.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_se",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于右下方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向右下方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_se.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "look_ese",
+      "category": "interactive",
+      "loop": true,
+      "durationSeconds": 8,
+      "antiFatigueRole": "鼠标位于右下偏右方向时的长循环头眼跟随",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪保持稳定坐姿，身体只有轻微自然呼吸，头部和眼睛持续自然看向右下偏右方向。眼神像正在追踪用户鼠标位置，耳朵轻微朝向目标方向，动作温和、连续、可爱，开始和结束姿势尽量一致，适合无缝循环。画面不要出现文字、水印或 logo。",
+      "output": "assets/origin/generated/kling/look_ese.mp4",
+      "generationDurationSeconds": 5
     }
   ]
 }
