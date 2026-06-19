@@ -1,4 +1,4 @@
-import type { Frequency, PetSize } from "../../electron/preload";
+import type { Frequency, MouseFollowDirectionEvent, PetSize } from "../../electron/preload";
 
 declare global {
   interface Window {
@@ -12,6 +12,7 @@ declare global {
       onFrequencyChange(callback: (frequency: Frequency) => void): () => void;
       onSizeChange(callback: (size: PetSize) => void): () => void;
       onMouseProximityChange(callback: (near: boolean) => void): () => void;
+      onMouseFollowDirectionChange(callback: (payload: MouseFollowDirectionEvent) => void): () => void;
       onTestDrag(callback: (payload: { x: number; y: number; holdMs: number }) => void): () => void;
       onTestPreviewAction(callback: (action: string) => void): () => void;
     };

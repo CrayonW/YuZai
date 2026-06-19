@@ -486,6 +486,342 @@
       ],
       "interruptPolicy": "locked",
       "returnTo": "idle_primary"
+    },
+    "look_e": {
+      "source": "assets/origin/generated/kling/look_e.mp4",
+      "frameRoot": "../assets/runtime/animations/look_e/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_ene": {
+      "source": "assets/origin/generated/kling/look_ene.mp4",
+      "frameRoot": "../assets/runtime/animations/look_ene/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_ne": {
+      "source": "assets/origin/generated/kling/look_ne.mp4",
+      "frameRoot": "../assets/runtime/animations/look_ne/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_nne": {
+      "source": "assets/origin/generated/kling/look_nne.mp4",
+      "frameRoot": "../assets/runtime/animations/look_nne/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_n": {
+      "source": "assets/origin/generated/kling/look_n.mp4",
+      "frameRoot": "../assets/runtime/animations/look_n/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_nnw": {
+      "source": "assets/origin/generated/kling/look_nnw.mp4",
+      "frameRoot": "../assets/runtime/animations/look_nnw/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_nw": {
+      "source": "assets/origin/generated/kling/look_nw.mp4",
+      "frameRoot": "../assets/runtime/animations/look_nw/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_wnw": {
+      "source": "assets/origin/generated/kling/look_wnw.mp4",
+      "frameRoot": "../assets/runtime/animations/look_wnw/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_w": {
+      "source": "assets/origin/generated/kling/look_w.mp4",
+      "frameRoot": "../assets/runtime/animations/look_w/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_wsw": {
+      "source": "assets/origin/generated/kling/look_wsw.mp4",
+      "frameRoot": "../assets/runtime/animations/look_wsw/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_sw": {
+      "source": "assets/origin/generated/kling/look_sw.mp4",
+      "frameRoot": "../assets/runtime/animations/look_sw/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_ssw": {
+      "source": "assets/origin/generated/kling/look_ssw.mp4",
+      "frameRoot": "../assets/runtime/animations/look_ssw/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_s": {
+      "source": "assets/origin/generated/kling/look_s.mp4",
+      "frameRoot": "../assets/runtime/animations/look_s/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_sse": {
+      "source": "assets/origin/generated/kling/look_sse.mp4",
+      "frameRoot": "../assets/runtime/animations/look_sse/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_se": {
+      "source": "assets/origin/generated/kling/look_se.mp4",
+      "frameRoot": "../assets/runtime/animations/look_se/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "look_ese": {
+      "source": "assets/origin/generated/kling/look_ese.mp4",
+      "frameRoot": "../assets/runtime/animations/look_ese/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": true,
+      "interruptible": true,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "interactive",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
     }
   },
   "stateMap": {

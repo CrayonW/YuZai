@@ -294,6 +294,285 @@
           "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo 和额外物体。"
         }
       ]
+    },
+    {
+      "id": "mouse-follow-16-direction",
+      "name": "第五波：16 方向鼠标跟随",
+      "intent": "把 16 个真实视频方向动作接入 runtime，让猫咪头部和眼睛能按鼠标相对方向跟随。",
+      "actions": [
+        {
+          "action": "look_e",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_e.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_e.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_e/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.e",
+          "transitionPlan": "鼠标位于正右方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_ene",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_ene.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_ene.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_ene/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.ene",
+          "transitionPlan": "鼠标位于右上偏右方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_ne",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_ne.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_ne.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_ne/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.ne",
+          "transitionPlan": "鼠标位于右上方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_nne",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_nne.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_nne.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_nne/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.nne",
+          "transitionPlan": "鼠标位于上方偏右方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_n",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_n.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_n.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_n/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.n",
+          "transitionPlan": "鼠标位于正上方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_nnw",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_nnw.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_nnw.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_nnw/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.nnw",
+          "transitionPlan": "鼠标位于上方偏左方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_nw",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_nw.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_nw.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_nw/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.nw",
+          "transitionPlan": "鼠标位于左上方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_wnw",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_wnw.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_wnw.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_wnw/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.wnw",
+          "transitionPlan": "鼠标位于左上偏左方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_w",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_w.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_w.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_w/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.w",
+          "transitionPlan": "鼠标位于正左方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_wsw",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_wsw.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_wsw.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_wsw/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.wsw",
+          "transitionPlan": "鼠标位于左下偏左方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_sw",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_sw.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_sw.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_sw/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.sw",
+          "transitionPlan": "鼠标位于左下方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_ssw",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_ssw.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_ssw.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_ssw/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.ssw",
+          "transitionPlan": "鼠标位于下方偏左方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_s",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_s.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_s.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_s/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.s",
+          "transitionPlan": "鼠标位于正下方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前重点检查猫咪没有趴下或裁切；同时确认无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_sse",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_sse.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_sse.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_sse/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.sse",
+          "transitionPlan": "鼠标位于下方偏右方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_se",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_se.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_se.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_se/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.se",
+          "transitionPlan": "鼠标位于右下方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        },
+        {
+          "action": "look_ese",
+          "category": "interactive",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/look_ese.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/look_ese.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/look_ese/frames",
+          "loop": true,
+          "interruptPolicy": "at-safe-frame",
+          "returnTo": "idle_primary",
+          "bridge": "mouse-follow.direction.ese",
+          "transitionPlan": "鼠标位于右下偏右方向时切入长循环跟随动作；方向变化或离开范围后通过相似帧锚点回到日常动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
+        }
+      ]
     }
   ]
 }

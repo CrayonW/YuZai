@@ -1749,3 +1749,21 @@ FPS：未修改。
 桌面验收：不涉及桌面运行；这是正式素材接入前的边界文档。
 已知问题：真实改善仍需要用户确认后生成视频、人工审查和正式接入。
 决定：接受 `docs/runtime-intake-transition-out-recovery-proposal.md` 作为 4 个高风险过渡动作进入正式 runtime-intake 波次前的等待区。
+
+## 2026-06-19 16 方向鼠标跟随真实动作接入
+
+日期：2026-06-19
+源文件：`assets/origin/generated/kling/look_e.mp4`、`look_ene.mp4`、`look_ne.mp4`、`look_nne.mp4`、`look_n.mp4`、`look_nnw.mp4`、`look_nw.mp4`、`look_wnw.mp4`、`look_w.mp4`、`look_wsw.mp4`、`look_sw.mp4`、`look_ssw.mp4`、`look_s.mp4`、`look_sse.mp4`、`look_se.mp4`、`look_ese.mp4`
+目标动作：`look_e`、`look_ene`、`look_ne`、`look_nne`、`look_n`、`look_nnw`、`look_nw`、`look_wnw`、`look_w`、`look_wsw`、`look_sw`、`look_ssw`、`look_s`、`look_sse`、`look_se`、`look_ese`
+问题：用户要求真实生成 16 个方向动作视频，并合并到桌宠程序中，让猫咪头部/眼睛能按鼠标方向做 360 度跟随反馈。
+参考片段：第五批可灵批次 `mouse-follow-16-direction`，每个动作以 `assets/origin/鱼仔参考图.png` 保持鱼仔身份一致，绿幕背景，禁止文字、水印、logo 和额外物体。
+帧数：每个 action 120 帧；本轮新增 runtime 帧 1920 张。
+FPS：24 fps。
+循环方式：16 个 `look_*` 均为 `interactive`，`loop: true`，由全局鼠标位置按 22.5 度扇区切换；鼠标远离后清空方向动作并回到日常动作。
+水印处理：可灵生成视频先通过 `npm run kling:generated-video-audit -- --batch mouse-follow-16-direction --extract-previews --write docs/kling-generated-video-audit-mouse-follow-16.md` 生成 16 张抽样图和总览图；runtime-intake 执行时继续按绿幕抠像和右下透明清理规则输出透明 PNG 帧。
+重建方法：新增正式波次 `mouse-follow-16-direction`、批准文件 `docs/runtime-intake-approvals/mouse-follow-16-direction.approved.json`，执行 `npm run runtime:intake-executor -- --wave mouse-follow-16-direction --execute` 抽帧入库；新增 `mouse-follow-direction` 角度映射、Electron 全局鼠标方向 IPC、renderer 方向动作覆盖逻辑，以及基于 ImageMagick RMSE 的 `transition-anchors.json` 自动衔接点。
+运行时输出：`assets/runtime/animations/look_*/frames/frame_000001.png` 到 `frame_000120.png`，`assets/runtime/animations/manifest.json` 新增 16 个可播放动作，`assets/runtime/animations/transition-anchors.json` 新增待机到方向、方向回待机、相邻方向之间的 64 条衔接锚点。
+验证命令：`npm run validate:mouse-follow-16-plan`、`npm run validate:mouse-follow-direction`、`npm run validate:transition-anchors`、`npm run validate:runtime-intake-approvals-current`、`npm run validate:manifest-contract:current`、`npm run validate:runtime-animations`、`npm run typecheck`、`npm run build`。
+桌面验收：使用 `YUZAI_TEST_MOUSE_FOLLOW_16=500 YUZAI_TEST_MOUSE_FOLLOW_16_INTERVAL_MS=180 YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-mouse-follow-16.png YUZAI_CAPTURE_SEQUENCE_COUNT=16 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=180 YUZAI_CAPTURE_DELAY_MS=700 npm run dev` 触发 16 方向预览，再用 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-mouse-follow-16.png --count 16 --min-changed-frames 10 --min-width 200 --min-height 200` 检查桌面窗口连续变化；截图证据保存到 `assets/reviews/runtime/mouse-follow-16/`。
+已知问题：可灵 API 本轮实际返回约 5.04 秒视频，低于计划中的 8 秒目标；因此 `docs/animation-asset-contract.md` 会继续把 16 个 `look_*` 标为 runtime 时长不足。当前先接受为第一版真实方向跟随素材，后续如要更长动作，需要改为更长生成策略或分段生成后再合并。
+决定：接受 16 方向真实动作作为鼠标 360 度跟随 MVP 的第一版 runtime 输入；后续如发现某个方向姿态不明显，优先替换对应单个 `look_*` 视频并重跑同一波次接入流程。

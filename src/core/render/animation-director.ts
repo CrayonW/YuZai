@@ -18,6 +18,7 @@ export interface AnimationDirectorOptions {
   defaultAction: RuntimeAnimationAction;
   resolveSequence: (action: RuntimeAnimationAction) => SpriteSequence;
   resolveConfig: (action: RuntimeAnimationAction) => (RuntimeAnimationConfig & AnimationSchedulingConfig) | undefined;
+  resolveEntryFrame?: (fromAction: RuntimeAnimationAction, toAction: RuntimeAnimationAction) => number | undefined;
   maxSafeFrameWaitMs?: number;
 }
 
@@ -125,6 +126,7 @@ export class AnimationDirector {
 
   private switchTo(action: RuntimeAnimationAction, now: number): void {
     const config = this.configFor(action);
+    const previousAction = this.currentAction;
     this.captureSuspendedDaily(action, now);
 
     if (config.category === "daily" && this.suspendedDaily?.action === action) {
@@ -140,7 +142,11 @@ export class AnimationDirector {
     }
 
     const sequence = this.options.resolveSequence(action);
-    const entryFrame = firstValidFrame(config.entryFrames, sequence.frames.length);
+    const anchoredEntryFrame = this.options.resolveEntryFrame?.(previousAction, action);
+    const entryFrame = firstValidFrame(
+      anchoredEntryFrame ? [anchoredEntryFrame, ...config.entryFrames] : config.entryFrames,
+      sequence.frames.length
+    );
     this.currentAction = action;
     this.actionStartedAt = now;
     this.actionFrameOffset = entryFrame - 1;

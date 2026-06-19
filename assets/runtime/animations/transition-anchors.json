@@ -1,0 +1,458 @@
+{
+  "version": 1,
+  "generatedAt": "2026-06-19T08:09:02.306Z",
+  "source": "assets/runtime/animations/manifest.json",
+  "strategy": "sampled-rmse",
+  "sampleWindowFrames": 24,
+  "sampleStrideFrames": 4,
+  "anchors": {
+    "idle_primary->look_e": {
+      "fromAction": "idle_primary",
+      "toAction": "look_e",
+      "fromFrame": 49,
+      "toFrame": 5,
+      "metric": 0.146094
+    },
+    "look_e->idle_primary": {
+      "fromAction": "look_e",
+      "toAction": "idle_primary",
+      "fromFrame": 105,
+      "toFrame": 1,
+      "metric": 0.099743
+    },
+    "idle_primary->look_ene": {
+      "fromAction": "idle_primary",
+      "toAction": "look_ene",
+      "fromFrame": 49,
+      "toFrame": 5,
+      "metric": 0.148102
+    },
+    "look_ene->idle_primary": {
+      "fromAction": "look_ene",
+      "toAction": "idle_primary",
+      "fromFrame": 109,
+      "toFrame": 9,
+      "metric": 0.085497
+    },
+    "idle_primary->look_ne": {
+      "fromAction": "idle_primary",
+      "toAction": "look_ne",
+      "fromFrame": 49,
+      "toFrame": 5,
+      "metric": 0.147666
+    },
+    "look_ne->idle_primary": {
+      "fromAction": "look_ne",
+      "toAction": "idle_primary",
+      "fromFrame": 97,
+      "toFrame": 1,
+      "metric": 0.085526
+    },
+    "idle_primary->look_nne": {
+      "fromAction": "idle_primary",
+      "toAction": "look_nne",
+      "fromFrame": 49,
+      "toFrame": 5,
+      "metric": 0.14649
+    },
+    "look_nne->idle_primary": {
+      "fromAction": "look_nne",
+      "toAction": "idle_primary",
+      "fromFrame": 117,
+      "toFrame": 5,
+      "metric": 0.095146
+    },
+    "idle_primary->look_n": {
+      "fromAction": "idle_primary",
+      "toAction": "look_n",
+      "fromFrame": 49,
+      "toFrame": 9,
+      "metric": 0.14573
+    },
+    "look_n->idle_primary": {
+      "fromAction": "look_n",
+      "toAction": "idle_primary",
+      "fromFrame": 97,
+      "toFrame": 5,
+      "metric": 0.102631
+    },
+    "idle_primary->look_nnw": {
+      "fromAction": "idle_primary",
+      "toAction": "look_nnw",
+      "fromFrame": 49,
+      "toFrame": 9,
+      "metric": 0.147504
+    },
+    "look_nnw->idle_primary": {
+      "fromAction": "look_nnw",
+      "toAction": "idle_primary",
+      "fromFrame": 120,
+      "toFrame": 5,
+      "metric": 0.08849
+    },
+    "idle_primary->look_nw": {
+      "fromAction": "idle_primary",
+      "toAction": "look_nw",
+      "fromFrame": 49,
+      "toFrame": 5,
+      "metric": 0.147255
+    },
+    "look_nw->idle_primary": {
+      "fromAction": "look_nw",
+      "toAction": "idle_primary",
+      "fromFrame": 117,
+      "toFrame": 1,
+      "metric": 0.105036
+    },
+    "idle_primary->look_wnw": {
+      "fromAction": "idle_primary",
+      "toAction": "look_wnw",
+      "fromFrame": 49,
+      "toFrame": 5,
+      "metric": 0.147171
+    },
+    "look_wnw->idle_primary": {
+      "fromAction": "look_wnw",
+      "toAction": "idle_primary",
+      "fromFrame": 97,
+      "toFrame": 1,
+      "metric": 0.09356
+    },
+    "idle_primary->look_w": {
+      "fromAction": "idle_primary",
+      "toAction": "look_w",
+      "fromFrame": 49,
+      "toFrame": 5,
+      "metric": 0.147827
+    },
+    "look_w->idle_primary": {
+      "fromAction": "look_w",
+      "toAction": "idle_primary",
+      "fromFrame": 120,
+      "toFrame": 5,
+      "metric": 0.05371
+    },
+    "idle_primary->look_wsw": {
+      "fromAction": "idle_primary",
+      "toAction": "look_wsw",
+      "fromFrame": 49,
+      "toFrame": 13,
+      "metric": 0.147912
+    },
+    "look_wsw->idle_primary": {
+      "fromAction": "look_wsw",
+      "toAction": "idle_primary",
+      "fromFrame": 97,
+      "toFrame": 1,
+      "metric": 0.097465
+    },
+    "idle_primary->look_sw": {
+      "fromAction": "idle_primary",
+      "toAction": "look_sw",
+      "fromFrame": 49,
+      "toFrame": 5,
+      "metric": 0.1473
+    },
+    "look_sw->idle_primary": {
+      "fromAction": "look_sw",
+      "toAction": "idle_primary",
+      "fromFrame": 120,
+      "toFrame": 1,
+      "metric": 0.096064
+    },
+    "idle_primary->look_ssw": {
+      "fromAction": "idle_primary",
+      "toAction": "look_ssw",
+      "fromFrame": 49,
+      "toFrame": 21,
+      "metric": 0.147545
+    },
+    "look_ssw->idle_primary": {
+      "fromAction": "look_ssw",
+      "toAction": "idle_primary",
+      "fromFrame": 113,
+      "toFrame": 1,
+      "metric": 0.1044
+    },
+    "idle_primary->look_s": {
+      "fromAction": "idle_primary",
+      "toAction": "look_s",
+      "fromFrame": 49,
+      "toFrame": 9,
+      "metric": 0.147329
+    },
+    "look_s->idle_primary": {
+      "fromAction": "look_s",
+      "toAction": "idle_primary",
+      "fromFrame": 101,
+      "toFrame": 1,
+      "metric": 0.088116
+    },
+    "idle_primary->look_sse": {
+      "fromAction": "idle_primary",
+      "toAction": "look_sse",
+      "fromFrame": 49,
+      "toFrame": 9,
+      "metric": 0.148013
+    },
+    "look_sse->idle_primary": {
+      "fromAction": "look_sse",
+      "toAction": "idle_primary",
+      "fromFrame": 97,
+      "toFrame": 1,
+      "metric": 0.120786
+    },
+    "idle_primary->look_se": {
+      "fromAction": "idle_primary",
+      "toAction": "look_se",
+      "fromFrame": 49,
+      "toFrame": 5,
+      "metric": 0.147816
+    },
+    "look_se->idle_primary": {
+      "fromAction": "look_se",
+      "toAction": "idle_primary",
+      "fromFrame": 117,
+      "toFrame": 1,
+      "metric": 0.099226
+    },
+    "idle_primary->look_ese": {
+      "fromAction": "idle_primary",
+      "toAction": "look_ese",
+      "fromFrame": 49,
+      "toFrame": 9,
+      "metric": 0.146479
+    },
+    "look_ese->idle_primary": {
+      "fromAction": "look_ese",
+      "toAction": "idle_primary",
+      "fromFrame": 113,
+      "toFrame": 1,
+      "metric": 0.099564
+    },
+    "look_e->look_ene": {
+      "fromAction": "look_e",
+      "toAction": "look_ene",
+      "fromFrame": 105,
+      "toFrame": 21,
+      "metric": 0.080409
+    },
+    "look_ene->look_e": {
+      "fromAction": "look_ene",
+      "toAction": "look_e",
+      "fromFrame": 101,
+      "toFrame": 1,
+      "metric": 0.080447
+    },
+    "look_ene->look_ne": {
+      "fromAction": "look_ene",
+      "toAction": "look_ne",
+      "fromFrame": 101,
+      "toFrame": 1,
+      "metric": 0.080422
+    },
+    "look_ne->look_ene": {
+      "fromAction": "look_ne",
+      "toAction": "look_ene",
+      "fromFrame": 97,
+      "toFrame": 21,
+      "metric": 0.053631
+    },
+    "look_ne->look_nne": {
+      "fromAction": "look_ne",
+      "toAction": "look_nne",
+      "fromFrame": 97,
+      "toFrame": 13,
+      "metric": 0.075328
+    },
+    "look_nne->look_ne": {
+      "fromAction": "look_nne",
+      "toAction": "look_ne",
+      "fromFrame": 117,
+      "toFrame": 1,
+      "metric": 0.089287
+    },
+    "look_nne->look_n": {
+      "fromAction": "look_nne",
+      "toAction": "look_n",
+      "fromFrame": 117,
+      "toFrame": 1,
+      "metric": 0.089417
+    },
+    "look_n->look_nne": {
+      "fromAction": "look_n",
+      "toAction": "look_nne",
+      "fromFrame": 120,
+      "toFrame": 21,
+      "metric": 0.094563
+    },
+    "look_n->look_nnw": {
+      "fromAction": "look_n",
+      "toAction": "look_nnw",
+      "fromFrame": 97,
+      "toFrame": 1,
+      "metric": 0.098694
+    },
+    "look_nnw->look_n": {
+      "fromAction": "look_nnw",
+      "toAction": "look_n",
+      "fromFrame": 120,
+      "toFrame": 1,
+      "metric": 0.083912
+    },
+    "look_nnw->look_nw": {
+      "fromAction": "look_nnw",
+      "toAction": "look_nw",
+      "fromFrame": 120,
+      "toFrame": 1,
+      "metric": 0.083713
+    },
+    "look_nw->look_nnw": {
+      "fromAction": "look_nw",
+      "toAction": "look_nnw",
+      "fromFrame": 117,
+      "toFrame": 13,
+      "metric": 0.096009
+    },
+    "look_nw->look_wnw": {
+      "fromAction": "look_nw",
+      "toAction": "look_wnw",
+      "fromFrame": 117,
+      "toFrame": 21,
+      "metric": 0.088022
+    },
+    "look_wnw->look_nw": {
+      "fromAction": "look_wnw",
+      "toAction": "look_nw",
+      "fromFrame": 97,
+      "toFrame": 1,
+      "metric": 0.085729
+    },
+    "look_wnw->look_w": {
+      "fromAction": "look_wnw",
+      "toAction": "look_w",
+      "fromFrame": 97,
+      "toFrame": 1,
+      "metric": 0.085826
+    },
+    "look_w->look_wnw": {
+      "fromAction": "look_w",
+      "toAction": "look_wnw",
+      "fromFrame": 120,
+      "toFrame": 1,
+      "metric": 0.045712
+    },
+    "look_w->look_wsw": {
+      "fromAction": "look_w",
+      "toAction": "look_wsw",
+      "fromFrame": 120,
+      "toFrame": 1,
+      "metric": 0.045604
+    },
+    "look_wsw->look_w": {
+      "fromAction": "look_wsw",
+      "toAction": "look_w",
+      "fromFrame": 97,
+      "toFrame": 1,
+      "metric": 0.089647
+    },
+    "look_wsw->look_sw": {
+      "fromAction": "look_wsw",
+      "toAction": "look_sw",
+      "fromFrame": 97,
+      "toFrame": 21,
+      "metric": 0.087724
+    },
+    "look_sw->look_wsw": {
+      "fromAction": "look_sw",
+      "toAction": "look_wsw",
+      "fromFrame": 120,
+      "toFrame": 9,
+      "metric": 0.092022
+    },
+    "look_sw->look_ssw": {
+      "fromAction": "look_sw",
+      "toAction": "look_ssw",
+      "fromFrame": 120,
+      "toFrame": 5,
+      "metric": 0.092359
+    },
+    "look_ssw->look_sw": {
+      "fromAction": "look_ssw",
+      "toAction": "look_sw",
+      "fromFrame": 105,
+      "toFrame": 1,
+      "metric": 0.100182
+    },
+    "look_ssw->look_s": {
+      "fromAction": "look_ssw",
+      "toAction": "look_s",
+      "fromFrame": 105,
+      "toFrame": 1,
+      "metric": 0.100128
+    },
+    "look_s->look_ssw": {
+      "fromAction": "look_s",
+      "toAction": "look_ssw",
+      "fromFrame": 97,
+      "toFrame": 13,
+      "metric": 0.078764
+    },
+    "look_s->look_sse": {
+      "fromAction": "look_s",
+      "toAction": "look_sse",
+      "fromFrame": 97,
+      "toFrame": 21,
+      "metric": 0.076014
+    },
+    "look_sse->look_s": {
+      "fromAction": "look_sse",
+      "toAction": "look_s",
+      "fromFrame": 97,
+      "toFrame": 21,
+      "metric": 0.114443
+    },
+    "look_sse->look_se": {
+      "fromAction": "look_sse",
+      "toAction": "look_se",
+      "fromFrame": 97,
+      "toFrame": 21,
+      "metric": 0.111902
+    },
+    "look_se->look_sse": {
+      "fromAction": "look_se",
+      "toAction": "look_sse",
+      "fromFrame": 117,
+      "toFrame": 1,
+      "metric": 0.092087
+    },
+    "look_se->look_ese": {
+      "fromAction": "look_se",
+      "toAction": "look_ese",
+      "fromFrame": 117,
+      "toFrame": 1,
+      "metric": 0.092011
+    },
+    "look_ese->look_se": {
+      "fromAction": "look_ese",
+      "toAction": "look_se",
+      "fromFrame": 120,
+      "toFrame": 21,
+      "metric": 0.090162
+    },
+    "look_ese->look_e": {
+      "fromAction": "look_ese",
+      "toAction": "look_e",
+      "fromFrame": 120,
+      "toFrame": 21,
+      "metric": 0.092928
+    },
+    "look_e->look_ese": {
+      "fromAction": "look_e",
+      "toAction": "look_ese",
+      "fromFrame": 109,
+      "toFrame": 1,
+      "metric": 0.09574
+    }
+  }
+}

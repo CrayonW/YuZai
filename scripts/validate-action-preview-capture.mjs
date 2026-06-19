@@ -6,7 +6,8 @@ const files = {
   preload: readFileSync("electron/preload.ts", "utf8"),
   global: readFileSync("src/renderer/global.d.ts", "utf8"),
   renderer: readFileSync("src/renderer/main.ts", "utf8"),
-  manifest: JSON.parse(readFileSync("assets/runtime/animations/manifest.json", "utf8"))
+  manifest: JSON.parse(readFileSync("assets/runtime/animations/manifest.json", "utf8")),
+  mouseFollowChecklist: readFileSync("docs/mouse-follow-16-action-checklist.md", "utf8")
 };
 
 const expectedActions = Object.entries(files.manifest.actions)
@@ -16,8 +17,22 @@ const expectedActions = Object.entries(files.manifest.actions)
 
 const failures = [];
 
-if (expectedActions.length !== 16) {
-  failures.push(`expected 16 active generated Kling actions, found ${expectedActions.length}: ${expectedActions.join(", ")}`);
+if (expectedActions.length < 16) {
+  failures.push(`expected at least 16 active generated Kling actions, found ${expectedActions.length}: ${expectedActions.join(", ")}`);
+}
+
+const mouseFollowActions = Array.from(files.mouseFollowChecklist.matchAll(/`(look_[a-z]+)`/g), (match) => match[1])
+  .filter((action, index, actions) => actions.indexOf(action) === index)
+  .sort();
+
+if (mouseFollowActions.length !== 16) {
+  failures.push(`mouse follow checklist must contain 16 look_* actions, found ${mouseFollowActions.length}`);
+}
+
+for (const action of mouseFollowActions) {
+  if (!expectedActions.includes(action)) {
+    failures.push(`${action}: missing from active generated preview actions`);
+  }
 }
 
 if (!files.packageJson.scripts["validate:action-preview-capture"]) {

@@ -2,6 +2,11 @@ import { contextBridge, ipcRenderer } from "electron";
 
 export type Frequency = "low" | "normal" | "high";
 export type PetSize = 220 | 280 | 340;
+export interface MouseFollowDirectionEvent {
+  near: boolean;
+  angleDegrees: number;
+  action: string | null;
+}
 
 contextBridge.exposeInMainWorld("yuzai", {
   setInteractive: (interactive: boolean) => ipcRenderer.send("window:set-interactive", interactive),
@@ -25,6 +30,11 @@ contextBridge.exposeInMainWorld("yuzai", {
     const listener = (_event: Electron.IpcRendererEvent, near: boolean) => callback(near);
     ipcRenderer.on("mouse:proximity", listener);
     return () => ipcRenderer.removeListener("mouse:proximity", listener);
+  },
+  onMouseFollowDirectionChange: (callback: (payload: MouseFollowDirectionEvent) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, payload: MouseFollowDirectionEvent) => callback(payload);
+    ipcRenderer.on("mouse:follow-direction", listener);
+    return () => ipcRenderer.removeListener("mouse:follow-direction", listener);
   },
   onTestDrag: (callback: (payload: { x: number; y: number; holdMs: number }) => void) => {
     const listener = (_event: Electron.IpcRendererEvent, payload: { x: number; y: number; holdMs: number }) => callback(payload);

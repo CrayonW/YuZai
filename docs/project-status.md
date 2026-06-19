@@ -24,6 +24,7 @@
 | wave2 | 第二波：日常生活和互动变化 | 已批准 | docs/runtime-intake-approvals/wave2.approved.json |
 | sleep-routine | 第三波：睡眠作息链路 | 已批准 | docs/runtime-intake-approvals/sleep-routine.approved.json |
 | dragging-special | 拖拽专项 | 已批准 | docs/runtime-intake-approvals/dragging-special.approved.json |
+| mouse-follow-16-direction | 第五波：16 方向鼠标跟随 | 已批准 | docs/runtime-intake-approvals/mouse-follow-16-direction.approved.json |
 
 ## 下一步执行清单
 

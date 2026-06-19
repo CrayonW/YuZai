@@ -1,6 +1,12 @@
 import { app, BrowserWindow, ipcMain, Menu, nativeImage, screen, Tray } from "electron";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import {
+  MOUSE_FOLLOW_DIRECTION_ACTIONS,
+  buildMouseFollowPayload,
+  type MouseFollowAction,
+  type MouseFollowDirectionPayload
+} from "../src/core/behavior/mouse-follow-direction";
 import { buildCapturePlan, type CaptureFramePlan } from "./capture-plan";
 
 type Frequency = "low" | "normal" | "high";
@@ -19,6 +25,7 @@ let petSize: PetSize = 280;
 let mouseProximityTimer: NodeJS.Timeout | null = null;
 let savePositionTimer: NodeJS.Timeout | null = null;
 let lastMouseNear = false;
+let lastMouseFollowAction: MouseFollowAction | null = null;
 let testMouseNearUntil = 0;
 
 const SIZE_OPTIONS: Array<{ label: string; value: PetSize }> = [
@@ -216,6 +223,26 @@ function createPetWindow(): void {
       }, testMouseProximityMs);
     }
 
+    const testMouseFollowMs = envNumber("YUZAI_TEST_MOUSE_FOLLOW_16_MS", envNumber("YUZAI_TEST_MOUSE_FOLLOW_16", 0));
+    if (testMouseFollowMs > 0) {
+      setTimeout(() => {
+        if (!petWindow || petWindow.isDestroyed()) return;
+        petWindow.webContents.send("mouse:proximity", true);
+        MOUSE_FOLLOW_DIRECTION_ACTIONS.forEach((action, index) => {
+          setTimeout(() => {
+            if (!petWindow || petWindow.isDestroyed()) return;
+            const angleDegrees = index * (360 / MOUSE_FOLLOW_DIRECTION_ACTIONS.length);
+            petWindow.webContents.send("mouse:follow-direction", {
+              near: true,
+              angleDegrees,
+              action
+            } satisfies MouseFollowDirectionPayload);
+            console.log(`[test] mouse follow ${action} ${angleDegrees}`);
+          }, index * envNumber("YUZAI_TEST_MOUSE_FOLLOW_16_INTERVAL_MS", 180));
+        });
+      }, testMouseFollowMs);
+    }
+
     const testDragMs = envNumber("YUZAI_TEST_DRAG_MS", 0);
     if (testDragMs > 0) {
       setTimeout(() => {
@@ -300,9 +327,26 @@ function startMouseProximityWatcher(): void {
         cursor.y >= bounds.y - margin &&
         cursor.y <= bounds.y + bounds.height + margin);
 
-    if (near === lastMouseNear) return;
-    lastMouseNear = near;
-    petWindow.webContents.send("mouse:proximity", near);
+    const followPayload = buildMouseFollowPayload({
+      near,
+      cursor,
+      center: {
+        x: bounds.x + bounds.width / 2,
+        y: bounds.y + bounds.height / 2
+      },
+      previousAction: lastMouseFollowAction
+    });
+
+    const nearChanged = near !== lastMouseNear;
+    if (nearChanged) {
+      lastMouseNear = near;
+      petWindow.webContents.send("mouse:proximity", near);
+    }
+
+    if (followPayload.action !== lastMouseFollowAction || nearChanged) {
+      lastMouseFollowAction = followPayload.action;
+      petWindow.webContents.send("mouse:follow-direction", followPayload);
+    }
   }, 120);
 }
 

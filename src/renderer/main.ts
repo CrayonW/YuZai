@@ -20,6 +20,7 @@ import { CanvasRenderer } from "../core/render/canvas-renderer";
 import { DailyAnimationRotator } from "../core/render/daily-animation-rotator";
 import { buildRuntimeDailyRotatorOptions } from "../core/render/runtime-behavior-schedule";
 import { preloadSpriteSequences, sequenceForAction } from "../core/render/sprite-assets";
+import { entryFrameForTransition } from "../core/render/transition-anchors";
 
 const canvas = document.querySelector<HTMLCanvasElement>("#pet-canvas");
 if (!canvas) throw new Error("Missing #pet-canvas");
@@ -32,7 +33,8 @@ const renderer = new CanvasRenderer(canvas, DEFAULT_CONFIG.interaction.dragVisua
 const animationDirector = new AnimationDirector({
   defaultAction: runtimeAnimationManifest.defaultAction,
   resolveSequence: sequenceForAction,
-  resolveConfig: configForAction
+  resolveConfig: configForAction,
+  resolveEntryFrame: entryFrameForTransition
 });
 const autonomous = new AutonomousBehavior(fsm);
 const interaction = new InteractionController(canvas, fsm, () => autonomous.notifyStateChanged(), undefined, {
@@ -70,6 +72,7 @@ let petSize = 280;
 let lastRequestedAnimationAction: RuntimeAnimationAction | null = null;
 let previewAction: RuntimeAnimationAction | null = null;
 let previewActionUntil = 0;
+let mouseFollowAction: RuntimeAnimationAction | null = null;
 const dailyRotator = new DailyAnimationRotator(buildRuntimeDailyRotatorOptions());
 
 window.yuzai.getScreenBounds().then((bounds) => {
@@ -82,6 +85,14 @@ window.yuzai.onSizeChange((size) => {
 });
 window.yuzai.onMouseProximityChange((near) => {
   interaction.setGlobalProximity(near);
+  if (!near) mouseFollowAction = null;
+});
+window.yuzai.onMouseFollowDirectionChange((payload) => {
+  if (!payload.near || !payload.action || !isRenderableRuntimeAnimationAction(payload.action)) {
+    mouseFollowAction = null;
+    return;
+  }
+  mouseFollowAction = payload.action;
 });
 window.yuzai.onTestDrag((payload) => {
   void interaction.simulateDragForTest({ x: payload.x, y: payload.y }, payload.holdMs);
@@ -119,6 +130,9 @@ async function tick(now: number): Promise<void> {
 function resolveAnimationAction(now: number): RuntimeAnimationAction {
   if (previewAction && now < previewActionUntil) return previewAction;
   previewAction = null;
+  if (mouseFollowAction && (fsm.snapshot.pose.state === "idle" || fsm.snapshot.pose.state === "teaser")) {
+    return mouseFollowAction;
+  }
   const baseAction = actionForPose(fsm.snapshot.pose.state, fsm.snapshot.pose.direction);
   return dailyRotator.resolve(baseAction, fsm.snapshot.pose.state === "idle", now);
 }
