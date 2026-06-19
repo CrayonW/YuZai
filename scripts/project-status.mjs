@@ -54,7 +54,7 @@ export function renderProjectStatus(status) {
     `- 13 状态覆盖：${status.coverageSummary}`,
     `- 待补状态：${status.backlogCount} 个`,
     status.backlogCount === "0"
-      ? "- runtime 接入边界：当前 4 个波次均已有正式批准文件；后续新增动作仍必须先列清单确认。"
+      ? `- runtime 接入边界：当前 ${status.approvals.length} 个波次均已有正式批准文件；后续新增动作仍必须先列清单确认。`
       : "- 当前不得越界：`dragging-special` 未正式批准前，禁止抽帧、去水印/抠绿、修改 runtime manifest 或声称拖拽动作已进入桌宠。",
     "",
     status.backlogCount === "0" ? "## 当前状态缺口" : "## 当前唯一状态缺口",

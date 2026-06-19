@@ -14,6 +14,13 @@ if (!existsSync(statusPath)) {
   if (actual !== expected) {
     failures.push("docs/project-status.md is not current; run npm run project:status -- --write docs/project-status.md");
   }
+
+  const runtimeWaves = JSON.parse(readFileSync(join(root, "docs", "runtime-intake-waves.json"), "utf8"));
+  const waveCount = (runtimeWaves.waves || []).length;
+  const expectedBoundaryLine = `runtime 接入边界：当前 ${waveCount} 个波次均已有正式批准文件`;
+  if (!actual.includes(expectedBoundaryLine)) {
+    failures.push(`docs/project-status.md runtime-intake wave count is stale; expected ${waveCount}`);
+  }
 }
 
 if (failures.length > 0) {
