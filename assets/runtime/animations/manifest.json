@@ -14,7 +14,7 @@
       "interruptible": true,
       "fallback": "idle_primary",
       "enabled": true,
-      "category": "transition",
+      "category": "daily",
       "entryFrames": [
         1,
         24,

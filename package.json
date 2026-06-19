@@ -39,6 +39,8 @@
     "validate:drag-action-bridge": "node scripts/validate-drag-action-bridge.mjs",
     "validate:drag-visual-feedback": "node scripts/validate-drag-visual-feedback.mjs",
     "validate:canvas-transition-smoothing": "node scripts/validate-canvas-transition-smoothing.mjs",
+    "animations:transition-risk": "node scripts/action-transition-risk-report.mjs",
+    "validate:action-transition-risk-report": "node scripts/validate-action-transition-risk-report.mjs",
     "runtime:action-bridge-report": "node scripts/runtime-action-bridge-report.mjs",
     "validate:runtime-action-bridge-report": "node scripts/validate-runtime-action-bridge-report.mjs",
     "validate:action-bridge-contract": "node scripts/validate-action-bridge-contract.mjs",

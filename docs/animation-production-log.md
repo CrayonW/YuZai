@@ -1695,3 +1695,21 @@ FPS：不变。
 桌面验收：执行 `YUZAI_PREVIEW_ACTION=click_surprised YUZAI_PREVIEW_ACTION_MS=500 YUZAI_CAPTURE_DELAY_MS=420 YUZAI_CAPTURE_SEQUENCE_PATH=/private/tmp/yuzai-window-crossfade.png YUZAI_CAPTURE_SEQUENCE_COUNT=8 YUZAI_CAPTURE_SEQUENCE_INTERVAL_MS=80 npm run dev`，再执行 `npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-crossfade.png --count 8 --min-changed-frames 5 --min-width 200 --min-height 200`，结果 `changedFrames=7`；截图保存到 `assets/reviews/runtime/action-transition-smoothing/`。
 已知问题：如果某些素材本身首尾姿态差异过大，淡入淡出只能缓解切换瞬间，不能替代专门的过渡视频。
 决定：接受 Canvas 层跨 action 淡入淡出作为默认衔接优化；后续对仍突兀的单个动作再补 `transitionIn` / `transitionOut` 素材。
+
+## 2026-06-19 动作衔接风险报告
+
+日期：2026-06-19
+源文件：`scripts/action-transition-risk-report.mjs`、`scripts/validate-action-transition-risk-report.mjs`、`docs/action-transition-risk-report.md`、`assets/runtime/animations/manifest.json`、`package.json`、`scripts/validate-all.mjs`
+目标动作：`interactive` 和 `transition` 分类动作与 `idle_primary` / `returnTo` 的进入、回切衔接。
+问题：全局 Canvas 淡入淡出已经能缓解动作切换瞬间的硬切，但用户仍反馈动作衔接太生硬。继续只靠主观观看容易不知道先处理哪个动作，也容易把低风险动作误判成最高优先级。
+参考片段：`AnimationDirector` 已支持安全帧和 `transitionIn` / `transitionOut`；当前 manifest 中可灵生成动作多数只有默认 `entryFrames: [1]` 和 `exitFrames: [120]`，尚缺逐动作安全帧标注和专用过渡动作。
+帧数：未生成新 runtime 帧。
+FPS：不变，仍按当前 manifest 中每个 action 的 `fps` 和 `frameCount` 计算。
+循环方式：修正 `idle_primary` 分类为 `daily`，避免默认待机被误判为姿势过渡；其它动作循环策略不变。
+水印处理：本次不处理新视频、不重建帧；只比较现有透明 PNG 序列帧。
+重建方法：新增 `npm run animations:transition-risk -- --write docs/action-transition-risk-report.md`，用 ImageMagick RMSE 对每个非日常动作的进入帧和回切帧做差异计算；新增 `npm run validate:action-transition-risk-report`，并接入 `validate:all`，确保报告和当前 manifest 同步。
+运行时输出：不改变当前桌宠播放行为；本次把“哪里生硬”变成可复查清单，为后续补 `transitionIn` / `transitionOut` 或重新标注安全帧提供依据。
+验证命令：`npm run validate:action-transition-risk-report`、`npm run validate:manifest-contract:current`
+桌面验收：当前报告显示 20 个切换中 high 4 / medium 12 / low 4。优先处理 `sleep -> sleeping`、`waking -> idle_primary`、`poke_annoyed -> idle_primary`、`paw_raise -> idle_primary`。
+已知问题：RMSE 是帧差异指标，不能完全替代肉眼审美；后续仍需要结合桌面多帧截图或录屏确认动作是否自然。
+决定：接受 `docs/action-transition-risk-report.md` 作为衔接优化的固定入口。下一轮如果要继续改善“生硬感”，优先为 high 风险切换生成或接入专用过渡素材。

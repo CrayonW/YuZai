@@ -37,6 +37,7 @@ npm run validate:runtime-behavior-schedule
 npm run validate:runtime-interaction-schedule
 npm run validate:drag-visual-feedback
 npm run validate:canvas-transition-smoothing
+npm run validate:action-transition-risk-report
 npm run validate:action-preview-capture
 npm run validate:manifest-contract
 npm run validate:manifest-contract:current
@@ -113,6 +114,7 @@ npm run capture:inspect -- \
 - manifest 合约验证会检查 13 个状态映射、动作分类、切换安全帧和交互回流配置，避免新增动作时破坏调度。
 - idle 状态会自动插入眨眼、环顾、舔脸、趴卧呼吸、桌面嗅闻、摇尾和备用待机等日常变化，避免长期只播放默认待机。
 - Canvas 渲染器已接入跨动作淡入淡出，降低日常动作与交互动作切换时的生硬闪切。
+- 动作衔接风险报告会对实际 runtime PNG 帧做差异计算，定位最需要补安全帧或专用过渡素材的切换。
 - 定时气泡提醒喝水、休息。
 - 右键菜单支持隐藏、显示、重置位置、角色大小、动作频率和退出。
 - 托盘菜单支持隐藏后恢复显示，并提供退出入口，避免隐藏后找不回桌宠。
@@ -263,6 +265,7 @@ docs/kling-integration.md
 - `docs/state-backlog.md`：当前 13 状态动作补齐待办和建议生成顺序。
 - `docs/generated-action-preview.md`：已生成动作逐个在桌宠窗口预览的截图验收记录。
 - `docs/action-transition-smoothing.md`：动作衔接生硬问题的淡入淡出优化记录和验证证据。
+- `docs/action-transition-risk-report.md`：基于实际序列帧的动作切换风险清单和下一步过渡素材建议。
 
 ## 代码结构
 
