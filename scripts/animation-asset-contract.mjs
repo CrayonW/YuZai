@@ -292,8 +292,8 @@ function buildPriorityBatches(missingActions) {
 
   addBatch(batches, remaining, {
     title: "第四批：动作衔接过渡",
-    reason: "补齐短过渡动作，用于降低待机到交互、交互回待机时的序列帧跳变。",
-    actions: ["idle_to_paw_raise", "paw_raise_to_idle", "idle_to_cursor_watch"]
+    reason: "补齐短过渡动作，用于降低待机到交互、交互回待机、入睡回睡眠循环时的序列帧跳变。",
+    actions: ["idle_to_paw_raise", "paw_raise_to_idle", "idle_to_cursor_watch", "sleep_to_sleeping", "waking_to_idle", "poke_annoyed_to_idle"]
   });
 
   const uncategorized = Array.from(remaining.values());

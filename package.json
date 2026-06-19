@@ -41,6 +41,7 @@
     "validate:canvas-transition-smoothing": "node scripts/validate-canvas-transition-smoothing.mjs",
     "animations:transition-risk": "node scripts/action-transition-risk-report.mjs",
     "validate:action-transition-risk-report": "node scripts/validate-action-transition-risk-report.mjs",
+    "validate:transition-out-checklist": "node scripts/validate-transition-out-checklist.mjs",
     "runtime:action-bridge-report": "node scripts/runtime-action-bridge-report.mjs",
     "validate:runtime-action-bridge-report": "node scripts/validate-runtime-action-bridge-report.mjs",
     "validate:action-bridge-contract": "node scripts/validate-action-bridge-contract.mjs",

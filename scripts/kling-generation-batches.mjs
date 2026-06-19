@@ -19,6 +19,12 @@ const batchDefinitions = [
     name: "第三批：剩余状态与生活化变化",
     reason: "补齐剩余 fallback 状态，并增加好奇、伸懒腰、拖拽等变化。",
     actions: ["desk_sniff", "stretch_yawn", "poke_annoyed", "shy", "dragging", "call_response"]
+  },
+  {
+    id: "transition-out-recovery",
+    name: "第四批：高风险回切过渡",
+    reason: "补齐动作衔接风险报告中 tail-not-recovered 的回切过渡，降低尾段回到日常或睡眠循环时的跳变。",
+    actions: ["sleep_to_sleeping", "waking_to_idle", "poke_annoyed_to_idle", "paw_raise_to_idle"]
   }
 ];
 
@@ -72,6 +78,7 @@ export function renderKlingGenerationBatches(report) {
     "```bash",
     "npm run kling:generate-batch -- --batch 1 --dry-run",
     "npm run kling:generate-batch -- --batch sleep-routine --dry-run",
+    "npm run kling:generate-batch -- --batch transition-out-recovery --dry-run",
     "```",
     "",
     "鉴权通过且账号余额充足后的批次生成：",
@@ -79,6 +86,7 @@ export function renderKlingGenerationBatches(report) {
     "```bash",
     "npm run kling:generate-batch -- --batch 1",
     "npm run kling:generate-batch -- --batch sleep-routine",
+    "npm run kling:generate-batch -- --batch transition-out-recovery",
     "```",
     ""
   ];

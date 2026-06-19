@@ -4,8 +4,8 @@
   "sourceBacklog": "docs/state-backlog.md",
   "prerequisite": "先运行 auth-check，确认可灵 API 鉴权通过，再按批次生成。",
   "summary": {
-    "totalBatches": 3,
-    "totalActions": 14
+    "totalBatches": 4,
+    "totalActions": 18
   },
   "batches": [
     {
@@ -47,7 +47,7 @@
           "generationDurationSeconds": 5,
           "output": "assets/origin/generated/kling/click_surprised.mp4",
           "antiFatigueRole": "点击反馈，给用户明确互动感",
-          "backlogState": "surprised"
+          "backlogState": null
         }
       ]
     },
@@ -63,7 +63,7 @@
           "generationDurationSeconds": 5,
           "output": "assets/origin/generated/kling/sleepy.mp4",
           "antiFatigueRole": "睡眠链路入口，让日常作息更像真实小猫",
-          "backlogState": "sleepy"
+          "backlogState": null
         },
         {
           "action": "sleep",
@@ -72,7 +72,7 @@
           "generationDurationSeconds": 5,
           "output": "assets/origin/generated/kling/sleep.mp4",
           "antiFatigueRole": "入睡过渡，让状态变化有过程",
-          "backlogState": "sleep"
+          "backlogState": null
         },
         {
           "action": "sleeping",
@@ -81,7 +81,7 @@
           "generationDurationSeconds": 5,
           "output": "assets/origin/generated/kling/sleeping.mp4",
           "antiFatigueRole": "睡着循环，提供低打扰长期陪伴",
-          "backlogState": "sleeping"
+          "backlogState": null
         },
         {
           "action": "waking",
@@ -90,7 +90,7 @@
           "generationDurationSeconds": 5,
           "output": "assets/origin/generated/kling/waking.mp4",
           "antiFatigueRole": "从睡眠回到互动的状态恢复",
-          "backlogState": "waking"
+          "backlogState": null
         }
       ]
     },
@@ -133,7 +133,7 @@
           "generationDurationSeconds": 5,
           "output": "assets/origin/generated/kling/shy.mp4",
           "antiFatigueRole": "温柔互动反馈，可用于停留或夸奖触发",
-          "backlogState": "shy"
+          "backlogState": null
         },
         {
           "action": "dragging",
@@ -142,7 +142,7 @@
           "generationDurationSeconds": 5,
           "output": "assets/origin/generated/kling/dragging.mp4",
           "antiFatigueRole": "拖拽专用循环，让移动宠物时仍有生命感",
-          "backlogState": "dragging"
+          "backlogState": null
         },
         {
           "action": "call_response",
@@ -151,6 +151,49 @@
           "generationDurationSeconds": 5,
           "output": "assets/origin/generated/kling/call_response.mp4",
           "antiFatigueRole": "用户召唤或气泡互动时的回应",
+          "backlogState": null
+        }
+      ]
+    },
+    {
+      "id": "transition-out-recovery",
+      "name": "第四批：高风险回切过渡",
+      "reason": "补齐动作衔接风险报告中 tail-not-recovered 的回切过渡，降低尾段回到日常或睡眠循环时的跳变。",
+      "actions": [
+        {
+          "action": "sleep_to_sleeping",
+          "category": "transition",
+          "durationSeconds": 2,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/sleep_to_sleeping.mp4",
+          "antiFatigueRole": "入睡动作尾段到睡眠循环的衔接，修复 sleep 回切 sleeping 的尾段跳变",
+          "backlogState": null
+        },
+        {
+          "action": "waking_to_idle",
+          "category": "transition",
+          "durationSeconds": 2,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/waking_to_idle.mp4",
+          "antiFatigueRole": "唤醒动作尾段回到待机的衔接，修复 waking 回切 idle_primary 的尾段跳变",
+          "backlogState": null
+        },
+        {
+          "action": "poke_annoyed_to_idle",
+          "category": "transition",
+          "durationSeconds": 2,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/poke_annoyed_to_idle.mp4",
+          "antiFatigueRole": "被戳不满动作尾段回到待机的衔接，修复 poke_annoyed 回切 idle_primary 的尾段跳变",
+          "backlogState": null
+        },
+        {
+          "action": "paw_raise_to_idle",
+          "category": "transition",
+          "durationSeconds": 2,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/paw_raise_to_idle.mp4",
+          "antiFatigueRole": "抬爪回待机的衔接，降低回切跳变",
           "backlogState": null
         }
       ]

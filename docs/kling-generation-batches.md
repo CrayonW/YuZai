@@ -11,6 +11,7 @@
 ```bash
 npm run kling:generate-batch -- --batch 1 --dry-run
 npm run kling:generate-batch -- --batch sleep-routine --dry-run
+npm run kling:generate-batch -- --batch transition-out-recovery --dry-run
 ```
 
 鉴权通过且账号余额充足后的批次生成：
@@ -18,6 +19,7 @@ npm run kling:generate-batch -- --batch sleep-routine --dry-run
 ```bash
 npm run kling:generate-batch -- --batch 1
 npm run kling:generate-batch -- --batch sleep-routine
+npm run kling:generate-batch -- --batch transition-out-recovery
 ```
 
 ## 第一批：降低疲劳与关键交互
@@ -29,7 +31,7 @@ npm run kling:generate-batch -- --batch sleep-routine
 | groom_face_wash | daily | 8s / API 5s | assets/origin/generated/kling/groom_face_wash.mp4 | - | `npm run kling:generate -- --action groom_face_wash` |
 | loaf_breathing | daily | 8s / API 5s | assets/origin/generated/kling/loaf_breathing.mp4 | - | `npm run kling:generate -- --action loaf_breathing` |
 | cursor_watch | interactive | 4s / API 5s | assets/origin/generated/kling/cursor_watch.mp4 | - | `npm run kling:generate -- --action cursor_watch` |
-| click_surprised | interactive | 4s / API 5s | assets/origin/generated/kling/click_surprised.mp4 | surprised | `npm run kling:generate -- --action click_surprised` |
+| click_surprised | interactive | 4s / API 5s | assets/origin/generated/kling/click_surprised.mp4 | - | `npm run kling:generate -- --action click_surprised` |
 
 ## 第二批：睡眠作息链路
 
@@ -37,10 +39,10 @@ npm run kling:generate-batch -- --batch sleep-routine
 
 | action | 分类 | 时长 | 输出 | 覆盖状态 | 生成命令 |
 | --- | --- | ---: | --- | --- | --- |
-| sleepy | daily | 6s / API 5s | assets/origin/generated/kling/sleepy.mp4 | sleepy | `npm run kling:generate -- --action sleepy` |
-| sleep | daily | 6s / API 5s | assets/origin/generated/kling/sleep.mp4 | sleep | `npm run kling:generate -- --action sleep` |
-| sleeping | daily | 8s / API 5s | assets/origin/generated/kling/sleeping.mp4 | sleeping | `npm run kling:generate -- --action sleeping` |
-| waking | interactive | 4s / API 5s | assets/origin/generated/kling/waking.mp4 | waking | `npm run kling:generate -- --action waking` |
+| sleepy | daily | 6s / API 5s | assets/origin/generated/kling/sleepy.mp4 | - | `npm run kling:generate -- --action sleepy` |
+| sleep | daily | 6s / API 5s | assets/origin/generated/kling/sleep.mp4 | - | `npm run kling:generate -- --action sleep` |
+| sleeping | daily | 8s / API 5s | assets/origin/generated/kling/sleeping.mp4 | - | `npm run kling:generate -- --action sleeping` |
+| waking | interactive | 4s / API 5s | assets/origin/generated/kling/waking.mp4 | - | `npm run kling:generate -- --action waking` |
 
 ## 第三批：剩余状态与生活化变化
 
@@ -51,9 +53,20 @@ npm run kling:generate-batch -- --batch sleep-routine
 | desk_sniff | daily | 6s / API 5s | assets/origin/generated/kling/desk_sniff.mp4 | - | `npm run kling:generate -- --action desk_sniff` |
 | stretch_yawn | daily | 6s / API 5s | assets/origin/generated/kling/stretch_yawn.mp4 | - | `npm run kling:generate -- --action stretch_yawn` |
 | poke_annoyed | interactive | 4s / API 5s | assets/origin/generated/kling/poke_annoyed.mp4 | - | `npm run kling:generate -- --action poke_annoyed` |
-| shy | interactive | 4s / API 5s | assets/origin/generated/kling/shy.mp4 | shy | `npm run kling:generate -- --action shy` |
-| dragging | interactive | 4s / API 5s | assets/origin/generated/kling/dragging.mp4 | dragging | `npm run kling:generate -- --action dragging` |
+| shy | interactive | 4s / API 5s | assets/origin/generated/kling/shy.mp4 | - | `npm run kling:generate -- --action shy` |
+| dragging | interactive | 4s / API 5s | assets/origin/generated/kling/dragging.mp4 | - | `npm run kling:generate -- --action dragging` |
 | call_response | interactive | 4s / API 5s | assets/origin/generated/kling/call_response.mp4 | - | `npm run kling:generate -- --action call_response` |
+
+## 第四批：高风险回切过渡
+
+补齐动作衔接风险报告中 tail-not-recovered 的回切过渡，降低尾段回到日常或睡眠循环时的跳变。
+
+| action | 分类 | 时长 | 输出 | 覆盖状态 | 生成命令 |
+| --- | --- | ---: | --- | --- | --- |
+| sleep_to_sleeping | transition | 2s / API 5s | assets/origin/generated/kling/sleep_to_sleeping.mp4 | - | `npm run kling:generate -- --action sleep_to_sleeping` |
+| waking_to_idle | transition | 2s / API 5s | assets/origin/generated/kling/waking_to_idle.mp4 | - | `npm run kling:generate -- --action waking_to_idle` |
+| poke_annoyed_to_idle | transition | 2s / API 5s | assets/origin/generated/kling/poke_annoyed_to_idle.mp4 | - | `npm run kling:generate -- --action poke_annoyed_to_idle` |
+| paw_raise_to_idle | transition | 2s / API 5s | assets/origin/generated/kling/paw_raise_to_idle.mp4 | - | `npm run kling:generate -- --action paw_raise_to_idle` |
 
 ## 批次后处理
 

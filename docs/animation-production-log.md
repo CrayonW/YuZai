@@ -1713,3 +1713,21 @@ FPS：不变，仍按当前 manifest 中每个 action 的 `fps` 和 `frameCount`
 桌面验收：当前报告显示 20 个切换中 high 4 / medium 12 / low 4。四个 high 风险均被标记为 `tail-not-recovered`，说明最像回切目标的帧都在动作开头，不能靠简单提前回切解决。优先处理 `sleep -> sleeping`、`waking -> idle_primary`、`poke_annoyed -> idle_primary`、`paw_raise -> idle_primary`，处理方式应是补 transitionOut 或重生成动作尾段。
 已知问题：RMSE 是帧差异指标，不能完全替代肉眼审美；后续仍需要结合桌面多帧截图或录屏确认动作是否自然。
 决定：接受 `docs/action-transition-risk-report.md` 作为衔接优化的固定入口。下一轮如果要继续改善“生硬感”，优先为 high 风险切换生成或接入专用过渡素材。
+
+## 2026-06-19 高风险回切过渡动作清单
+
+日期：2026-06-19
+源文件：`docs/transition-out-action-checklist.md`、`docs/kling-action-generation-plan.json`、`docs/cat-video-prompt-guide.md`、`docs/kling-generation-batches.md`、`docs/animation-asset-contract.md`、`scripts/validate-transition-out-checklist.mjs`
+目标动作：`sleep_to_sleeping`、`waking_to_idle`、`poke_annoyed_to_idle`、`paw_raise_to_idle`
+问题：动作衔接风险报告已经确认 4 个 high 风险回切都属于 `tail-not-recovered`，需要在真正生成或接入素材前先列清单，避免直接处理视频或误改 runtime。
+参考片段：`sleep -> sleeping`、`waking -> idle_primary`、`poke_annoyed -> idle_primary`、`paw_raise -> idle_primary`。
+帧数：未生成新 runtime 帧。
+FPS：未修改；计划过渡动作仍按 24 fps 接入。
+循环方式：新增计划动作均为非循环 `transition`，后续接入时应作为原动作的 `transitionOut`。
+水印处理：未执行；本次只补提示词和处理前确认清单，仍要求后续生成视频无文字、无水印、无 logo。
+重建方法：新增 `docs/transition-out-action-checklist.md`，补充可灵动作计划中的 `sleep_to_sleeping`、`waking_to_idle`、`poke_annoyed_to_idle`，并强化 `paw_raise_to_idle` 提示词；新增 `validate:transition-out-checklist` 并接入 `validate:all`。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:transition-out-checklist`、`npm run validate:kling-generation-batches`、`npm run validate:kling-plan-quality`
+桌面验收：不涉及桌面运行；当前只是生成前清单和提示词准备。
+已知问题：`sleep_to_sleeping`、`waking_to_idle`、`poke_annoyed_to_idle`、`paw_raise_to_idle` 仍缺真实视频和 runtime 序列帧，必须等用户确认后再生成或接入。
+决定：接受高风险回切过渡清单作为下一轮素材处理前置门禁。后续如果要真实生成或接入这 4 个动作，先展示该清单并取得确认。
