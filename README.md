@@ -39,6 +39,7 @@ npm run validate:drag-visual-feedback
 npm run validate:canvas-transition-smoothing
 npm run validate:action-transition-risk-report
 npm run validate:transition-out-checklist
+npm run validate:transition-out-intake-proposal
 npm run validate:action-preview-capture
 npm run validate:manifest-contract
 npm run validate:manifest-contract:current
@@ -268,6 +269,7 @@ docs/kling-integration.md
 - `docs/action-transition-smoothing.md`：动作衔接生硬问题的淡入淡出优化记录和验证证据。
 - `docs/action-transition-risk-report.md`：基于实际序列帧的动作切换风险清单和下一步过渡素材建议。
 - `docs/transition-out-action-checklist.md`：高风险回切过渡动作处理前确认清单。
+- `docs/runtime-intake-transition-out-recovery-proposal.md`：高风险回切过渡动作升级为正式 runtime-intake 波次前的待确认提案。
 
 ## 代码结构
 

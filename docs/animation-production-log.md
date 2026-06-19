@@ -1731,3 +1731,21 @@ FPS：未修改；计划过渡动作仍按 24 fps 接入。
 桌面验收：不涉及桌面运行；当前只是生成前清单和提示词准备。
 已知问题：`sleep_to_sleeping`、`waking_to_idle`、`poke_annoyed_to_idle`、`paw_raise_to_idle` 仍缺真实视频和 runtime 序列帧，必须等用户确认后再生成或接入。
 决定：接受高风险回切过渡清单作为下一轮素材处理前置门禁。后续如果要真实生成或接入这 4 个动作，先展示该清单并取得确认。
+
+## 2026-06-19 高风险回切过渡待确认波次提案
+
+日期：2026-06-19
+源文件：`docs/runtime-intake-transition-out-recovery-proposal.md`、`scripts/validate-transition-out-intake-proposal.mjs`、`package.json`、`scripts/validate-all.mjs`
+目标动作：`sleep_to_sleeping`、`waking_to_idle`、`poke_annoyed_to_idle`、`paw_raise_to_idle`
+问题：如果直接把 4 个还没有源视频和审查证据的过渡动作写入 `docs/runtime-intake-waves.json`，会破坏现有 runtime-intake 门禁，也会越过用户确认边界。
+参考片段：现有 `validate:runtime-intake-waves` 要求正式波次中的 `sourceVideo` 和 `reviewEvidence` 已存在。
+帧数：未生成新 runtime 帧。
+FPS：未修改。
+循环方式：未修改；提案仍要求后续作为非循环 `transitionOut` 接入。
+水印处理：未执行；当前没有生成或处理视频。
+重建方法：新增待确认提案文档，明确 `transition-out-recovery` 不能进入正式 waves、不能创建 approved 文件、不能抽帧、不能修改 manifest；新增 `validate:transition-out-intake-proposal` 并接入 `validate:all`。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增 runtime 帧目录。
+验证命令：`npm run validate:transition-out-intake-proposal`
+桌面验收：不涉及桌面运行；这是正式素材接入前的边界文档。
+已知问题：真实改善仍需要用户确认后生成视频、人工审查和正式接入。
+决定：接受 `docs/runtime-intake-transition-out-recovery-proposal.md` 作为 4 个高风险过渡动作进入正式 runtime-intake 波次前的等待区。
