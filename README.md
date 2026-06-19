@@ -33,6 +33,11 @@ npm run validate:runtime-animations
 npm run validate:animation-smoothness
 npm run validate:animation-director
 npm run validate:daily-animation-rotator
+npm run validate:runtime-behavior-schedule
+npm run validate:runtime-interaction-schedule
+npm run validate:drag-visual-feedback
+npm run validate:canvas-transition-smoothing
+npm run validate:action-preview-capture
 npm run validate:manifest-contract
 npm run validate:manifest-contract:current
 npm run validate:capture-plan
@@ -102,16 +107,19 @@ npm run capture:inspect -- \
 
 - Electron 透明、无边框、置顶桌面宠物窗口。
 - 运行时播放 `assets/runtime/animations` 中的透明 PNG 序列帧。
-- 当前运行帧来自 `assets/origin` 中已有鱼仔源视频，源视频水印区域在运行帧中透明化。
-- 默认待机、备用待机、摇尾、走路、镜像左走、前肢抬起动作已接入 manifest。
+- 当前运行帧来自 `assets/origin` 中已有鱼仔源视频和 `assets/origin/generated/kling` 中已验收的可灵动作视频，源视频水印区域在运行帧中透明化。
+- 当前 manifest 已启用 22 个动作，其中 16 个来自可灵生成动作；13 个桌宠语义状态均已有独立动作映射。
 - `AnimationDirector` 按 `daily / interactive / transition` 分类调度动作，交互动作结束后回到日常动作。
 - manifest 合约验证会检查 13 个状态映射、动作分类、切换安全帧和交互回流配置，避免新增动作时破坏调度。
-- idle 状态会自动插入 `tail_wag` 和 `idle_secondary` 日常变化，避免长期只播放默认待机。
+- idle 状态会自动插入眨眼、环顾、舔脸、趴卧呼吸、桌面嗅闻、摇尾和备用待机等日常变化，避免长期只播放默认待机。
+- Canvas 渲染器已接入跨动作淡入淡出，降低日常动作与交互动作切换时的生硬闪切。
 - 定时气泡提醒喝水、休息。
 - 右键菜单支持隐藏、显示、重置位置、角色大小、动作频率和退出。
 - 托盘菜单支持隐藏后恢复显示，并提供退出入口，避免隐藏后找不回桌宠。
 - 角色大小、窗口位置、动作频率会保存到本地设置文件，重启后自动恢复。
-- 主进程全局鼠标靠近检测通过 `mouse:proximity` 触发渲染进程动作，当前可见反馈为 `paw_raise` 抬爪。
+- 主进程全局鼠标靠近检测通过 `mouse:proximity` 触发渲染进程动作，优先播放 `cursor_watch`，必要时回退到 `paw_raise`。
+- 拖拽时播放 `dragging` 交互动作，并叠加更明显的拖拽手感反馈。
+- 测试模式支持指定任意已启用 action 预览，便于逐个检查生成动作在桌宠窗口里的真实效果。
 - 测试模式支持多帧桌面截图捕获，便于检查序列帧播放过程中的流畅度和姿势切换。
 - 渲染页已配置 Content Security Policy，Electron 启动时不再出现开发安全警告。
 - 已接入 electron-builder 打包配置和临时鱼仔应用图标，可生成本机应用包，并保留 macOS dmg / Windows nsis 安装包脚本入口。
@@ -131,7 +139,7 @@ assets/runtime/animations/manifest.json
 assets/runtime/animations/<action>/frames/frame_000001.png
 ```
 
-当前每个接入动作使用 24 fps、72 帧、512x512 透明 PNG。
+当前运行帧统一为 24 fps、512x512 透明 PNG。原始素材动作通常为 72 帧，可灵生成动作通常为 120 帧；运行时以 manifest 中记录的帧数为准。
 
 | 运行时 action | 分类 | 来源 | 状态 |
 | --- | --- | --- | --- |
@@ -141,8 +149,24 @@ assets/runtime/animations/<action>/frames/frame_000001.png
 | `walk` | `daily` | `assets/origin/鱼仔走路视频.mp4` | 已接入 |
 | `walk_left` | `daily` | 从 `walk` 镜像生成 | 已接入 |
 | `paw_raise` | `interactive` | `assets/origin/鱼仔前肢抬起视频.mp4` | 已接入 |
+| `slow_blink` | `daily` | `assets/origin/generated/kling/slow_blink.mp4` | 已接入 |
+| `look_around` | `daily` | `assets/origin/generated/kling/look_around.mp4` | 已接入 |
+| `cursor_watch` | `interactive` | `assets/origin/generated/kling/cursor_watch_clean_candidate_v3.mp4` | 已接入 |
+| `click_surprised` | `interactive` | `assets/origin/generated/kling/click_surprised.mp4` | 已接入 |
+| `poke_annoyed` | `interactive` | `assets/origin/generated/kling/poke_annoyed.mp4` | 已接入 |
+| `call_response` | `interactive` | `assets/origin/generated/kling/call_response.mp4` | 已接入 |
+| `stretch_yawn` | `daily` | `assets/origin/generated/kling/stretch_yawn.mp4` | 已接入 |
+| `groom_face_wash` | `daily` | `assets/origin/generated/kling/groom_face_wash.mp4` | 已接入 |
+| `loaf_breathing` | `daily` | `assets/origin/generated/kling/loaf_breathing.mp4` | 已接入 |
+| `desk_sniff` | `daily` | `assets/origin/generated/kling/desk_sniff.mp4` | 已接入 |
+| `shy` | `interactive` | `assets/origin/generated/kling/shy.mp4` | 已接入 |
+| `sleepy` | `transition` | `assets/origin/generated/kling/sleepy.mp4` | 已接入 |
+| `sleep` | `transition` | `assets/origin/generated/kling/sleep.mp4` | 已接入 |
+| `sleeping` | `daily` | `assets/origin/generated/kling/sleeping.mp4` | 已接入 |
+| `waking` | `transition` | `assets/origin/generated/kling/waking.mp4` | 已接入 |
+| `dragging` | `interactive` | `assets/origin/generated/kling/dragging.mp4` | 已接入 |
 
-状态机仍保留更多语义状态，例如 `sleepy`、`sleeping`、`waking`、`surprised`、`shy`、`dragging`、`waving`、`teaser`。但完整 13 状态尚未全部拥有独立真实源视频动作，缺失状态当前会映射到已批准动作或待后续补齐。
+当前 13 个桌宠状态覆盖结果为：独立动作 13 个、复用混合 0 个、fallback 0 个、missing 0 个。后续新增动作优先用于提升自然度、衔接和角色一致性，而不是补基础状态缺口。
 
 ## 素材生产流程
 
@@ -225,7 +249,7 @@ npm run kling:generate -- --action idle_primary
 docs/kling-integration.md
 ```
 
-截至 2026-06-15，本地请求能到达可灵 API，但当前密钥返回 `401 / Auth failed`。判断是 Secret Key 不匹配、已失效或没有开放平台 API 权限。密钥问题解决前，不要声称项目已经能真实批量生成可灵视频。
+截至 2026-06-16，项目已切到可灵北京开放平台 API 和 `kling-v2-6` 模型，`kling:auth-check` 返回 `ok:true`，说明本地 JWT 和密钥格式已被 API 接受。真实生成仍依赖账号余额、额度和人工验收清单；生成结果必须先进入 `assets/origin/generated/kling` 待验收，再按素材生产流程接入运行时。
 
 ## 重要文档入口
 
@@ -237,6 +261,8 @@ docs/kling-integration.md
 - `docs/kling-integration.md`：可灵 AI 接入说明和鉴权状态。
 - `docs/state-coverage.md`：当前 13 状态动作覆盖报告和缺口面板。
 - `docs/state-backlog.md`：当前 13 状态动作补齐待办和建议生成顺序。
+- `docs/generated-action-preview.md`：已生成动作逐个在桌宠窗口预览的截图验收记录。
+- `docs/action-transition-smoothing.md`：动作衔接生硬问题的淡入淡出优化记录和验证证据。
 
 ## 代码结构
 
@@ -257,6 +283,7 @@ src/renderer/
 
 assets/
   origin/              用户提供或 AI 生成后待验收的源视频和参考图
+  reviews/runtime/     桌宠窗口截图、动作预览和衔接验证证据
   runtime/animations/  当前 Electron 运行时使用的透明序列帧
 
 scripts/
@@ -269,10 +296,11 @@ scripts/
 
 ## 后续重点
 
-- 补齐 13 状态对应的真实源视频，并统一优化身份、构图、帧率、透明边缘和安全切换帧。
-- 增加多帧截图或录屏验收，继续检查日常动作和交互动作的起止衔接是否足够平滑。
+- 保持 13 状态独立动作覆盖稳定，后续重点转向身份一致性、构图、帧率、透明边缘和动作起止帧自然度。
+- 继续增加多帧截图或录屏验收，重点检查日常动作和交互动作的起止衔接是否足够平滑。
+- 对仍然生硬的动作单独补 `transitionIn` / `transitionOut` 或生成专用过渡动作，而不是直接硬切。
 - 当前 PNG 序列帧体积较大，后续可评估 WebP 或图集方案。
-- 可灵 API 密钥恢复可用后，继续用 CLI 生成新动作视频，但生成结果必须先人工验收再接入运行时。
+- 继续用可灵 CLI 生成新动作视频，但生成结果必须先人工验收再接入运行时。
 - 优化正式图标、签名和公证配置，再输出面向分发的 macOS dmg / Windows exe。
 
 ## 不建议随意改动
