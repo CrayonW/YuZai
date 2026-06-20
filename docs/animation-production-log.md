@@ -1911,3 +1911,21 @@ FPS：未修改。
 桌面验收：本轮不执行 Windows 实机安装，只补远端试用包构建入口。
 已知问题：正式签名、macOS 公证、Windows 实机安装验证仍未完成；4 个 high 风险 transitionOut 和 30 个 runtime 时长不足动作仍待后续处理。
 决定：接受 `.github/workflows/windows-package.yml` 作为 Windows 试用包 artifact 构建入口，后续需在 GitHub Actions 完成运行并按 `docs/windows-release-smoke.md` 验收。
+
+## 2026-06-20 Windows workflow 本地门禁
+
+日期：2026-06-20
+源文件：`scripts/validate-windows-package-workflow.mjs`、`scripts/validate-all.mjs`、`package.json`、`.github/workflows/windows-package.yml`
+目标动作：不涉及动作素材；目标是把 Windows Package workflow 的关键结构纳入本地 `validate:all` 门禁。
+问题：Windows 远端打包入口已存在，但如果后续 workflow 漂移、误删 artifact 上传、误触发 `assets/origin` 或误接入可灵生成，本地 release-readiness 只做文本存在检查，覆盖不够细。
+参考片段：`validate:windows-package-workflow`、`yuzai-windows-package`、`npm run package:win`、`if-no-files-found: error`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先在 `package.json` 和 `validate:all` 中挂上不存在的 `validate:windows-package-workflow`，确认红灯为脚本缺失；随后新增校验脚本，检查 workflow 触发、Windows runner、Node/npm ci、release-readiness、Windows 打包、artifact 上传、禁止可灵密钥和 `assets/origin` 触发路径。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:windows-package-workflow`
+桌面验收：本轮不执行桌面或 Windows 实机安装，只补 CI 配置本地门禁。
+已知问题：GitHub connector 未返回当前 push workflow run；仍需后续在 GitHub Actions 页面或有 `gh` 的环境确认远端运行结果。正式签名、macOS 公证、Windows 实机安装验证仍未完成。
+决定：接受 `validate:windows-package-workflow` 进入 `validate:all`，后续 Windows 试用包 workflow 变更必须通过本地结构校验。

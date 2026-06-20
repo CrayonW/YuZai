@@ -60,6 +60,7 @@ const steps = [
   ["validate:mvp-evidence", ["npm", "run", "validate:mvp-evidence"]],
   ["validate:runtime-naturalness-observation", ["npm", "run", "validate:runtime-naturalness-observation"]],
   ["validate:release-readiness", ["npm", "run", "validate:release-readiness"]],
+  ["validate:windows-package-workflow", ["npm", "run", "validate:windows-package-workflow"]],
   ["validate:project-status-current", ["npm", "run", "validate:project-status-current"]],
   ["typecheck", ["npm", "run", "typecheck"]],
   ["build", ["npm", "run", "build"]]

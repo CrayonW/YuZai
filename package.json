@@ -90,6 +90,7 @@
     "observe:naturalness": "node scripts/runtime-naturalness-observation.mjs",
     "validate:runtime-naturalness-observation": "node scripts/validate-runtime-naturalness-observation.mjs",
     "validate:release-readiness": "node scripts/validate-release-readiness.mjs",
+    "validate:windows-package-workflow": "node scripts/validate-windows-package-workflow.mjs",
     "project:status": "node scripts/project-status.mjs",
     "validate:project-status-current": "node scripts/validate-project-status-current.mjs",
     "capture:inspect": "node scripts/capture-sequence-inspector.mjs",
