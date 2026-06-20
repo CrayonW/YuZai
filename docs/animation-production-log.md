@@ -1929,3 +1929,21 @@ FPS：未修改。
 桌面验收：本轮不执行桌面或 Windows 实机安装，只补 CI 配置本地门禁。
 已知问题：GitHub connector 未返回当前 push workflow run；仍需后续在 GitHub Actions 页面或有 `gh` 的环境确认远端运行结果。正式签名、macOS 公证、Windows 实机安装验证仍未完成。
 决定：接受 `validate:windows-package-workflow` 进入 `validate:all`，后续 Windows 试用包 workflow 变更必须通过本地结构校验。
+
+## 2026-06-20 完成度审计本地门禁
+
+日期：2026-06-20
+源文件：`scripts/validate-project-completion-audit.mjs`、`scripts/validate-all.mjs`、`package.json`、`docs/project-completion-audit.md`
+目标动作：不涉及动作素材；目标是把项目完成度审计入口纳入本地 `validate:all` 门禁。
+问题：`docs/project-completion-audit.md` 已经记录 MVP 完成证据和未完成缺口，但缺少机器校验，后续文档可能误删 Windows 实机验收、签名/公证、4 个 high 风险 transitionOut、30 个时长不足动作或安全边界。
+参考片段：`validate:project-completion-audit`、`docs/project-completion-audit.md`、`sleep_to_sleeping`、`waking_to_idle`、`poke_annoyed_to_idle`、`paw_raise_to_idle`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先在 `package.json` 和 `validate:all` 中挂上不存在的 `validate:project-completion-audit`，确认红灯为脚本缺失；随后新增校验脚本，要求完成度审计同时保留已完成证据、未完成硬缺口和不得越界的操作边界，并禁止文档误称项目已完全完成。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:project-completion-audit`
+桌面验收：本轮不新增桌面截图，只固化完成度审计门禁。
+已知问题：此门禁只防止完成度审计漂移，不解决实际签名、公证、Windows 实机安装、transitionOut 或动作时长问题。
+决定：接受 `validate:project-completion-audit` 进入 `validate:all`，后续若关闭任何完成度缺口，必须同步更新审计文档和校验脚本。

@@ -94,4 +94,6 @@ npm run validate:release
 - 不调用可灵生成视频。
 - 不新增或覆盖 `assets/runtime/animations/*/frames`。
 - 不修改 `assets/runtime/animations/manifest.json`。
-- 不触碰 `assets/references/yuzai-personalized-concept-alpha.png`、`assets/references/yuzai-personalized-concept.png`、`docs/yuzai-personalized-pet-concept.md`。
+- 不触碰 `assets/references/yuzai-personalized-concept-alpha.png`。
+- 不触碰 `assets/references/yuzai-personalized-concept.png`。
+- 不触碰 `docs/yuzai-personalized-pet-concept.md`。
