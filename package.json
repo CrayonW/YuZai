@@ -93,6 +93,8 @@
     "validate:release-blockers": "node scripts/validate-release-blockers.mjs",
     "validate:release-readiness": "node scripts/validate-release-readiness.mjs",
     "validate:windows-package-workflow": "node scripts/validate-windows-package-workflow.mjs",
+    "actions:windows-status": "node scripts/github-actions-status.mjs --workflow windows-package.yml --artifact yuzai-windows-package",
+    "validate:github-actions-status-tool": "node scripts/validate-github-actions-status-tool.mjs",
     "project:status": "node scripts/project-status.mjs",
     "validate:project-status-current": "node scripts/validate-project-status-current.mjs",
     "capture:inspect": "node scripts/capture-sequence-inspector.mjs",

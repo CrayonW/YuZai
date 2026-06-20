@@ -1965,3 +1965,21 @@ FPS：未修改。
 桌面验收：本轮不新增桌面截图，只固化剩余缺口追踪。
 已知问题：此清单不关闭实际 blocker；Windows 实机、签名/公证、transitionOut 和动作时长仍需后续真实处理。
 决定：接受 `docs/release-blockers.json` 作为剩余硬缺口的机器可读入口；任何 blocker 关闭都必须同步 closure evidence、完成度审计和相关验证命令。
+
+## 2026-06-20 Windows Actions 状态查询工具
+
+日期：2026-06-20
+源文件：`scripts/github-actions-status.mjs`、`scripts/validate-github-actions-status-tool.mjs`、`docs/windows-actions-status.md`、`package.json`、`scripts/validate-all.mjs`
+目标动作：不涉及动作素材；目标是补齐远端 Windows Package workflow run 和 artifact 的只读查询工具。
+问题：当前环境没有 `gh` CLI；GitHub connector 对 push workflow run 返回空；匿名 GitHub API 查询遇到 rate limit，导致 Windows 远端构建证据不能稳定复查。
+参考片段：`actions:windows-status`、`GITHUB_TOKEN`、`windows-package.yml`、`yuzai-windows-package`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先在 `package.json` 和 `validate:all` 中挂上不存在的 `validate:github-actions-status-tool`，确认红灯为脚本缺失；随后新增只读 GitHub Actions 查询脚本、静态校验脚本和中文说明。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:github-actions-status-tool`
+桌面验收：本轮不新增桌面截图，不执行 Windows 实机安装。
+已知问题：此工具只查询远端 workflow 和 artifact，不关闭 `windows_real_machine_smoke` blocker；仍需要后续拿到 artifact 并在 Windows 10/11 实机验收。
+决定：接受 `npm run actions:windows-status` 作为后续复查 Windows Package workflow 的项目内入口。

@@ -63,6 +63,7 @@ const steps = [
   ["validate:release-blockers", ["npm", "run", "validate:release-blockers"]],
   ["validate:release-readiness", ["npm", "run", "validate:release-readiness"]],
   ["validate:windows-package-workflow", ["npm", "run", "validate:windows-package-workflow"]],
+  ["validate:github-actions-status-tool", ["npm", "run", "validate:github-actions-status-tool"]],
   ["validate:project-status-current", ["npm", "run", "validate:project-status-current"]],
   ["typecheck", ["npm", "run", "typecheck"]],
   ["build", ["npm", "run", "build"]]
