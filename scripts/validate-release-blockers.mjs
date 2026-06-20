@@ -8,6 +8,19 @@ const auditPath = join(root, "docs/project-completion-audit.md");
 const packagePath = join(root, "package.json");
 const failures = [];
 
+const transitionRecoveryEvidencePaths = [
+  "docs/kling-preflight-transition-out-recovery.md",
+  "docs/kling-batch-status-transition-out-recovery.md",
+  "docs/kling-batch-intake-transition-out-recovery.md"
+];
+
+const transitionRecoveryActions = [
+  "sleep_to_sleeping",
+  "waking_to_idle",
+  "poke_annoyed_to_idle",
+  "paw_raise_to_idle"
+];
+
 const requiredBlockerIds = [
   "transition_out_high_risk",
   "runtime_duration_short",
@@ -63,6 +76,38 @@ if (!existsSync(blockersPath)) {
         failures.push(`docs/release-blockers.json ${blocker.id} closureEvidence must be an array`);
       }
     }
+    const transitionBlocker = byId.get("transition_out_high_risk");
+    if (transitionBlocker) {
+      for (const evidencePath of transitionRecoveryEvidencePaths) {
+        if (!transitionBlocker.evidence?.includes(evidencePath)) {
+          failures.push(`transition_out_high_risk evidence must include ${evidencePath}`);
+        }
+      }
+    }
+  }
+}
+
+for (const evidencePath of transitionRecoveryEvidencePaths) {
+  const absolutePath = join(root, evidencePath);
+  if (!existsSync(absolutePath)) {
+    failures.push(`missing ${evidencePath}`);
+    continue;
+  }
+  const text = readFileSync(absolutePath, "utf8");
+  if (!text.includes("transition-out-recovery")) {
+    failures.push(`${evidencePath} must reference transition-out-recovery`);
+  }
+  for (const action of transitionRecoveryActions) {
+    if (!text.includes(action)) {
+      failures.push(`${evidencePath} missing transition action ${action}`);
+    }
+  }
+}
+
+if (existsSync(join(root, "docs/kling-batch-status-transition-out-recovery.md"))) {
+  const status = readFileSync(join(root, "docs/kling-batch-status-transition-out-recovery.md"), "utf8");
+  if (!status.includes("missing 4")) {
+    failures.push("docs/kling-batch-status-transition-out-recovery.md must record 4 missing videos while transition blocker is open");
   }
 }
 

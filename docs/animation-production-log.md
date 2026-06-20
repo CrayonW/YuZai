@@ -2037,3 +2037,21 @@ FPS：未修改。
 桌面验收：本轮不新增桌面截图；4 个过渡视频尚不存在，不能做桌面衔接验收。
 已知问题：preflight 使用 `--skip-auth`，只说明本地参考图和密钥存在，不代表本轮已向可灵服务端鉴权；4 个视频仍为 missing。
 决定：接受这三个 transition-out-recovery 状态包作为真实生成前入口；下一次真实生成后必须先人工审查无水印、无文字、无 logo 和猫咪身份一致，再进入 runtime-intake。
+
+## 2026-06-20 transition blocker 证据链同步
+
+日期：2026-06-20
+源文件：`docs/release-blockers.json`、`docs/release-blockers.md`、`scripts/validate-release-blockers.mjs`
+目标动作：`sleep_to_sleeping`、`waking_to_idle`、`poke_annoyed_to_idle`、`paw_raise_to_idle`
+问题：`transition-out-recovery` 的三份生成前状态包已经存在，但 `transition_out_high_risk` blocker 的 evidence 还未引用它们，后续复查剩余硬缺口时可能看不到 4 个过渡视频当前仍缺失。
+参考片段：`docs/kling-preflight-transition-out-recovery.md`、`docs/kling-batch-status-transition-out-recovery.md`、`docs/kling-batch-intake-transition-out-recovery.md`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先强化 `validate:release-blockers`，确认因 `transition_out_high_risk` evidence 未引用三份状态包而红灯；随后把三份状态包加入 `docs/release-blockers.json`，并运行 `npm run release:blockers-report -- --write docs/release-blockers.md` 重新生成中文报告。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:release-blockers`
+桌面验收：本轮不新增桌面截图；4 个过渡视频尚未生成，不能关闭动作自然度 blocker。
+已知问题：此同步只强化证据链，不关闭 `transition_out_high_risk`；4 个 transitionOut 视频仍需真实生成、人工审查、抽帧接入和桌面多帧验收。
+决定：接受三份 transition-out-recovery 状态包作为 `transition_out_high_risk` 的当前 evidence，后续关闭 blocker 时必须补 closureEvidence。

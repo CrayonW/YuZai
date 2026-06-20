@@ -17,7 +17,10 @@
       "source": "docs/action-transition-risk-report.md",
       "evidence": [
         "docs/runtime-naturalness-observation.md",
-        "docs/transition-out-action-checklist.md"
+        "docs/transition-out-action-checklist.md",
+        "docs/kling-preflight-transition-out-recovery.md",
+        "docs/kling-batch-status-transition-out-recovery.md",
+        "docs/kling-batch-intake-transition-out-recovery.md"
       ],
       "requiredActions": [
         "生成并接入 sleep_to_sleeping",
