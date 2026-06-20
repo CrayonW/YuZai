@@ -8,6 +8,7 @@
 
 - Windows 安装包入口：`npm run package:win`
 - Windows 远端打包入口：`.github/workflows/windows-package.yml`
+- Windows Actions 状态查询：`docs/windows-actions-status.md`
 - 当前状态：验收清单已补齐，Windows 实机验收尚未执行。
 - 适用环境：Windows 10 或 Windows 11 实机、虚拟机或可信 CI 产物下载后实机安装。
 - 验收边界：本清单只验证已有 runtime 桌宠能力和安装包行为，不调用可灵生成视频，不新增或覆盖 runtime 帧，不修改 `assets/runtime/animations/manifest.json`。
@@ -22,6 +23,7 @@ npm run package:win
 ```
 
 也可以在 GitHub Actions 中手动触发 `.github/workflows/windows-package.yml`，下载 `yuzai-windows-package` artifact 后再按本文档执行 Windows 实机验收。
+远端 run 和 artifact 可先按 `docs/windows-actions-status.md` 使用 `npm run actions:windows-status` 查询；该查询不替代 Windows 实机验收。
 
 预期：
 

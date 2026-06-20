@@ -8,6 +8,8 @@ const tagRecordPath = join(root, "docs/release-tag-record.md");
 const signedSafetyPath = join(root, "docs/signed-release-safety.md");
 const windowsSmokePath = join(root, "docs/windows-release-smoke.md");
 const windowsWorkflowPath = join(root, ".github/workflows/windows-package.yml");
+const releaseBlockersPath = join(root, "docs/release-blockers.json");
+const windowsActionsStatusPath = join(root, "docs/windows-actions-status.md");
 const failures = [];
 
 if (!existsSync(playbookPath)) {
@@ -30,7 +32,11 @@ if (!existsSync(playbookPath)) {
     "docs/release-tag-record.md",
     "docs/signed-release-safety.md",
     "docs/windows-release-smoke.md",
+    "docs/release-blockers.json",
+    "docs/windows-actions-status.md",
     ".github/workflows/windows-package.yml",
+    "actions:windows-status",
+    "项目不得标记为完全完成",
     "transitionOut",
     "不调用可灵生成视频"
   ];
@@ -57,7 +63,10 @@ if (!existsSync(auditPath)) {
     "macOS 公证",
     "docs/windows-release-smoke.md",
     "Windows 实机验收",
-    ".github/workflows/windows-package.yml"
+    ".github/workflows/windows-package.yml",
+    "docs/release-blockers.json",
+    "docs/windows-actions-status.md",
+    "项目不得标记为完全完成"
   ]) {
     if (!audit.includes(snippet)) {
       failures.push(`docs/project-completion-audit.md missing release readiness text: ${snippet}`);
@@ -94,6 +103,7 @@ if (!existsSync(windowsSmokePath)) {
     "npm run package:win",
     "Windows 实机验收",
     ".github/workflows/windows-package.yml",
+    "docs/windows-actions-status.md",
     "安装包",
     "卸载",
     "透明置顶",
@@ -104,6 +114,45 @@ if (!existsSync(windowsSmokePath)) {
   ]) {
     if (!windowsSmoke.includes(snippet)) {
       failures.push(`docs/windows-release-smoke.md missing smoke text: ${snippet}`);
+    }
+  }
+}
+
+if (!existsSync(releaseBlockersPath)) {
+  failures.push("missing docs/release-blockers.json");
+} else {
+  const releaseBlockers = JSON.parse(readFileSync(releaseBlockersPath, "utf8"));
+  const blockers = releaseBlockers.blockers ?? [];
+  for (const id of [
+    "transition_out_high_risk",
+    "runtime_duration_short",
+    "windows_real_machine_smoke",
+    "macos_sign_notarize",
+    "signed_user_safety_recheck"
+  ]) {
+    if (!blockers.some((blocker) => blocker.id === id && blocker.status === "open")) {
+      failures.push(`docs/release-blockers.json missing open blocker: ${id}`);
+    }
+  }
+  if (releaseBlockers.completionPolicy?.projectCanBeMarkedComplete !== false) {
+    failures.push("docs/release-blockers.json must keep projectCanBeMarkedComplete false");
+  }
+}
+
+if (!existsSync(windowsActionsStatusPath)) {
+  failures.push("missing docs/windows-actions-status.md");
+} else {
+  const windowsActionsStatus = readFileSync(windowsActionsStatusPath, "utf8");
+  for (const snippet of [
+    "# Windows Package Actions 状态查询",
+    "npm run actions:windows-status",
+    "GITHUB_TOKEN",
+    "windows-package.yml",
+    "yuzai-windows-package",
+    "不替代 Windows 实机验收"
+  ]) {
+    if (!windowsActionsStatus.includes(snippet)) {
+      failures.push(`docs/windows-actions-status.md missing actions status text: ${snippet}`);
     }
   }
 }

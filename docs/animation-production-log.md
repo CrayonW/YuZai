@@ -1983,3 +1983,21 @@ FPS：未修改。
 桌面验收：本轮不新增桌面截图，不执行 Windows 实机安装。
 已知问题：此工具只查询远端 workflow 和 artifact，不关闭 `windows_real_machine_smoke` blocker；仍需要后续拿到 artifact 并在 Windows 10/11 实机验收。
 决定：接受 `npm run actions:windows-status` 作为后续复查 Windows Package workflow 的项目内入口。
+
+## 2026-06-20 release-readiness 新交付物互链
+
+日期：2026-06-20
+源文件：`scripts/validate-release-readiness.mjs`、`docs/release-playbook.md`、`docs/project-completion-audit.md`、`docs/windows-release-smoke.md`
+目标动作：不涉及动作素材；目标是让 release-readiness 门禁强制覆盖 `docs/release-blockers.json` 和 `docs/windows-actions-status.md`。
+问题：剩余硬缺口清单和 Windows Actions 状态查询工具已经接入 `validate:all`，但 `validate:release-readiness` 尚未强制检查这些发布相关交付物，后续只跑 release-readiness 时可能漏掉。
+参考片段：`docs/release-blockers.json`、`docs/windows-actions-status.md`、`actions:windows-status`、`项目不得标记为完全完成`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先强化 `validate-release-readiness`，确认因发布手册、完成度审计和 Windows 验收清单缺少互链而红灯；随后补齐中文互链和边界说明。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:release-readiness`
+桌面验收：本轮不新增桌面截图，不执行 Windows 实机安装。
+已知问题：此门禁只确保发布相关文档互链完整，不关闭任何 release blocker。
+决定：接受 `docs/release-blockers.json` 和 `docs/windows-actions-status.md` 进入 release-readiness 门禁。
