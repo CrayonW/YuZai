@@ -1893,3 +1893,21 @@ FPS：未修改。
 桌面验收：本轮只补 Windows 实机验收操作票；当前 macOS 环境不替代 Windows 实机测试。
 已知问题：正式签名、macOS 公证、Windows 实机安装验证仍未完成；4 个 high 风险 transitionOut 和 30 个 runtime 时长不足动作仍待后续处理。
 决定：接受 `docs/windows-release-smoke.md` 作为 Windows 安装包实机验收入口，后续在 Windows 10/11 上按清单记录证据。
+
+## 2026-06-20 Windows 远端试用包工作流
+
+日期：2026-06-20
+源文件：`.github/workflows/windows-package.yml`、`docs/windows-release-smoke.md`、`docs/release-playbook.md`、`docs/project-completion-audit.md`、`scripts/validate-release-readiness.mjs`
+目标动作：不涉及动作素材；目标是补齐 GitHub Actions Windows 试用包 artifact 构建入口。
+问题：当前只有本地 `package:win` 命令和 Windows 实机验收清单，缺少远端 Windows runner 构建入口，后续测试者无法稳定从 GitHub 下载试用安装包。
+参考片段：`runs-on: windows-latest`、`npm run package:win`、`actions/upload-artifact`、`yuzai-windows-package`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先强化 `validate:release-readiness`，让其因缺少 `.github/workflows/windows-package.yml` 和文档互链预期失败；随后新增 Windows Package workflow，并更新发布手册、Windows 验收清单和完成度审计。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:release-readiness`
+桌面验收：本轮不执行 Windows 实机安装，只补远端试用包构建入口。
+已知问题：正式签名、macOS 公证、Windows 实机安装验证仍未完成；4 个 high 风险 transitionOut 和 30 个 runtime 时长不足动作仍待后续处理。
+决定：接受 `.github/workflows/windows-package.yml` 作为 Windows 试用包 artifact 构建入口，后续需在 GitHub Actions 完成运行并按 `docs/windows-release-smoke.md` 验收。

@@ -15,6 +15,7 @@
 - 试用标签记录：`docs/release-tag-record.md` 已记录 `yuzai-v0.1.0-test.1` 和回滚 commit。
 - 签名包安全提示：`docs/signed-release-safety.md` 已说明未签名试用包、Gatekeeper 和正式签名与公证边界。
 - Windows 实机验收清单：`docs/windows-release-smoke.md` 已补齐安装包、透明置顶、鼠标靠近、定时气泡和卸载检查项；实际 Windows 实机验收尚未执行。
+- Windows 远端打包入口：`.github/workflows/windows-package.yml` 已补齐 GitHub Actions 试用包 artifact 工作流；仍需远端运行和实机安装验证。
 - 当前剩余产品风险：动作自然度仍有明确缺口，不应把它解释成最终质量已完成。
 
 ## 已满足的第一版能力
@@ -34,6 +35,7 @@
 | 实际试用标签记录 | `docs/release-tag-record.md` | 已记录 `yuzai-v0.1.0-test.1` |
 | 签名包安全提示 | `docs/signed-release-safety.md` | 已补齐试用版说明 |
 | Windows 安装包实机验收清单 | `docs/windows-release-smoke.md` | 已补齐清单，未执行实机验收 |
+| Windows 远端试用包工作流 | `.github/workflows/windows-package.yml` | 已补齐，未完成实机验收 |
 
 ## 发布验证记录
 
@@ -73,11 +75,11 @@ npm run validate:release
 
 ### 分发缺口
 
-当前已通过本地 `package:dir` 打包验证，并已补齐面向最终用户的安装/回滚说明、卸载说明和版本标签规范：`docs/release-playbook.md`。实际试用标签记录在 `docs/release-tag-record.md`，签名包安全提示见 `docs/signed-release-safety.md`，Windows 实机验收清单见 `docs/windows-release-smoke.md`。但正式分发还没有完成：
+当前已通过本地 `package:dir` 打包验证，并已补齐面向最终用户的安装/回滚说明、卸载说明和版本标签规范：`docs/release-playbook.md`。实际试用标签记录在 `docs/release-tag-record.md`，签名包安全提示见 `docs/signed-release-safety.md`，Windows 实机验收清单见 `docs/windows-release-smoke.md`，Windows 远端试用包工作流见 `.github/workflows/windows-package.yml`。但正式分发还没有完成：
 
 - 正式签名。
 - macOS 公证。
-- Windows 安装包实机验收，目前只有清单，尚未在 Windows 10/11 实机完成。
+- Windows 安装包实机验收，目前已有清单和远端打包入口，尚未在 Windows 10/11 实机完成。
 - 签名后普通用户安装安全提示复核。
 
 ## 下一步建议
