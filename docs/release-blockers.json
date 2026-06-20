@@ -1,0 +1,107 @@
+{
+  "updatedAt": "2026-06-20",
+  "purpose": "跟踪鱼仔桌宠距离可交付第一版的剩余硬缺口。所有条目关闭前，项目不得标记为完全完成。",
+  "completionPolicy": {
+    "projectCanBeMarkedComplete": false,
+    "requiresAllBlockersClosed": true,
+    "requiresValidateAll": true,
+    "requiresReleaseValidation": true,
+    "requiresDesktopEvidence": true
+  },
+  "blockers": [
+    {
+      "id": "transition_out_high_risk",
+      "title": "4 个 high 风险 transitionOut 回切动作未接入",
+      "status": "open",
+      "category": "animation-naturalness",
+      "source": "docs/action-transition-risk-report.md",
+      "evidence": [
+        "docs/runtime-naturalness-observation.md",
+        "docs/transition-out-action-checklist.md"
+      ],
+      "requiredActions": [
+        "生成并接入 sleep_to_sleeping",
+        "生成并接入 waking_to_idle",
+        "生成并接入 poke_annoyed_to_idle",
+        "生成并接入 paw_raise_to_idle",
+        "重新运行 npm run validate:all",
+        "重新运行 npm run validate:release",
+        "补充桌面多帧截图验收"
+      ],
+      "closureEvidence": []
+    },
+    {
+      "id": "runtime_duration_short",
+      "title": "30 个 runtime 动作时长不足",
+      "status": "open",
+      "category": "animation-duration",
+      "source": "docs/animation-asset-contract.md",
+      "evidence": [
+        "docs/animation-asset-contract.md",
+        "docs/project-completion-audit.md"
+      ],
+      "requiredActions": [
+        "为 daily 动作补充更长视频或分段素材",
+        "完成抽帧和水印检查",
+        "更新 runtime manifest",
+        "重新运行 npm run validate:all",
+        "重新运行 npm run validate:release"
+      ],
+      "closureEvidence": []
+    },
+    {
+      "id": "windows_real_machine_smoke",
+      "title": "Windows 安装包实机验收未完成",
+      "status": "open",
+      "category": "distribution",
+      "source": "docs/windows-release-smoke.md",
+      "evidence": [
+        ".github/workflows/windows-package.yml",
+        "docs/windows-release-smoke.md"
+      ],
+      "requiredActions": [
+        "在 GitHub Actions 或 Windows 环境生成 Windows 安装包",
+        "在 Windows 10 或 Windows 11 实机安装",
+        "记录透明置顶、鼠标靠近、定时气泡、拖拽、卸载截图",
+        "将验收证据写入 docs/windows-release-smoke.md 或后续验收记录"
+      ],
+      "closureEvidence": []
+    },
+    {
+      "id": "macos_sign_notarize",
+      "title": "macOS 正式签名与公证未完成",
+      "status": "open",
+      "category": "distribution",
+      "source": "docs/signed-release-safety.md",
+      "evidence": [
+        "docs/signed-release-safety.md",
+        "docs/release-playbook.md"
+      ],
+      "requiredActions": [
+        "配置正式 Developer ID 签名身份",
+        "完成 macOS notarization",
+        "验证 Gatekeeper 首次打开体验",
+        "重新运行 npm run validate:release"
+      ],
+      "closureEvidence": []
+    },
+    {
+      "id": "signed_user_safety_recheck",
+      "title": "签名后普通用户安装安全提示复核未完成",
+      "status": "open",
+      "category": "release-safety",
+      "source": "docs/signed-release-safety.md",
+      "evidence": [
+        "docs/signed-release-safety.md",
+        "docs/release-playbook.md"
+      ],
+      "requiredActions": [
+        "在签名/公证包上复核普通用户安装提示",
+        "更新 docs/signed-release-safety.md",
+        "更新 docs/release-playbook.md",
+        "重新运行 npm run validate:release"
+      ],
+      "closureEvidence": []
+    }
+  ]
+}

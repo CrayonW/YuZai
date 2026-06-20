@@ -1947,3 +1947,21 @@ FPS：未修改。
 桌面验收：本轮不新增桌面截图，只固化完成度审计门禁。
 已知问题：此门禁只防止完成度审计漂移，不解决实际签名、公证、Windows 实机安装、transitionOut 或动作时长问题。
 决定：接受 `validate:project-completion-audit` 进入 `validate:all`，后续若关闭任何完成度缺口，必须同步更新审计文档和校验脚本。
+
+## 2026-06-20 剩余硬缺口机器清单
+
+日期：2026-06-20
+源文件：`docs/release-blockers.json`、`scripts/validate-release-blockers.mjs`、`scripts/validate-all.mjs`、`package.json`、`docs/project-completion-audit.md`
+目标动作：不涉及动作素材；目标是把项目剩余硬缺口做成机器可读清单并纳入 `validate:all`。
+问题：完成度审计已经记录未完成项，但还缺少一份可被脚本检查的 blocker 清单，后续关闭缺口时容易只改文字、不补证据。
+参考片段：`transition_out_high_risk`、`runtime_duration_short`、`windows_real_machine_smoke`、`macos_sign_notarize`、`signed_user_safety_recheck`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先在 `package.json` 和 `validate:all` 中挂上不存在的 `validate:release-blockers`，确认红灯为脚本缺失；随后新增 `docs/release-blockers.json` 和校验脚本，要求每个硬缺口保持 open、列出证据和关闭条件，并要求完成度审计引用 blocker id。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:release-blockers`
+桌面验收：本轮不新增桌面截图，只固化剩余缺口追踪。
+已知问题：此清单不关闭实际 blocker；Windows 实机、签名/公证、transitionOut 和动作时长仍需后续真实处理。
+决定：接受 `docs/release-blockers.json` 作为剩余硬缺口的机器可读入口；任何 blocker 关闭都必须同步 closure evidence、完成度审计和相关验证命令。
