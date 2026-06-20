@@ -6,6 +6,7 @@ const playbookPath = join(root, "docs/release-playbook.md");
 const auditPath = join(root, "docs/project-completion-audit.md");
 const tagRecordPath = join(root, "docs/release-tag-record.md");
 const signedSafetyPath = join(root, "docs/signed-release-safety.md");
+const windowsSmokePath = join(root, "docs/windows-release-smoke.md");
 const failures = [];
 
 if (!existsSync(playbookPath)) {
@@ -27,6 +28,7 @@ if (!existsSync(playbookPath)) {
     "git tag -a",
     "docs/release-tag-record.md",
     "docs/signed-release-safety.md",
+    "docs/windows-release-smoke.md",
     "transitionOut",
     "不调用可灵生成视频"
   ];
@@ -50,7 +52,9 @@ if (!existsSync(auditPath)) {
     "卸载说明",
     "版本标签",
     "正式签名",
-    "macOS 公证"
+    "macOS 公证",
+    "docs/windows-release-smoke.md",
+    "Windows 实机验收"
   ]) {
     if (!audit.includes(snippet)) {
       failures.push(`docs/project-completion-audit.md missing release readiness text: ${snippet}`);
@@ -74,6 +78,28 @@ if (!existsSync(signedSafetyPath)) {
   ]) {
     if (!signedSafety.includes(snippet)) {
       failures.push(`docs/signed-release-safety.md missing safety text: ${snippet}`);
+    }
+  }
+}
+
+if (!existsSync(windowsSmokePath)) {
+  failures.push("missing docs/windows-release-smoke.md");
+} else {
+  const windowsSmoke = readFileSync(windowsSmokePath, "utf8");
+  for (const snippet of [
+    "# 鱼仔桌宠 Windows 试用验收清单",
+    "npm run package:win",
+    "Windows 实机验收",
+    "安装包",
+    "卸载",
+    "透明置顶",
+    "鼠标靠近",
+    "定时气泡",
+    "不调用可灵生成视频",
+    "transitionOut"
+  ]) {
+    if (!windowsSmoke.includes(snippet)) {
+      failures.push(`docs/windows-release-smoke.md missing smoke text: ${snippet}`);
     }
   }
 }

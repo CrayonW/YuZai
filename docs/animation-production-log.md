@@ -1875,3 +1875,21 @@ FPS：未修改。
 桌面验收：不涉及新桌面截图；当前仍引用自然度观察和 release 验证记录。
 已知问题：正式签名与公证仍未执行；动作自然度 high 风险回切和时长不足仍未关闭。
 决定：接受 `docs/signed-release-safety.md` 作为未签名试用包和未来签名包之间的安全边界说明。
+
+## 2026-06-20 Windows 试用验收清单
+
+日期：2026-06-20
+源文件：`docs/windows-release-smoke.md`、`docs/release-playbook.md`、`docs/project-completion-audit.md`、`scripts/validate-release-readiness.mjs`
+目标动作：不涉及动作素材；目标是把 Windows 安装包实机验收步骤纳入中文文档和 release-readiness 门禁。
+问题：当前已有 `package:win` 入口，但缺少面向 Windows 10/11 的安装包、透明置顶、鼠标靠近、定时气泡和卸载实机验收清单。
+参考片段：`npm run package:win`、`docs/windows-release-smoke.md`、`docs/release-playbook.md`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先强化 `validate:release-readiness`，让其因缺少 `docs/windows-release-smoke.md` 和互链文字预期失败；随后补齐 Windows 试用验收清单，并在发布手册与完成度审计中互相引用。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:release-readiness`
+桌面验收：本轮只补 Windows 实机验收操作票；当前 macOS 环境不替代 Windows 实机测试。
+已知问题：正式签名、macOS 公证、Windows 实机安装验证仍未完成；4 个 high 风险 transitionOut 和 30 个 runtime 时长不足动作仍待后续处理。
+决定：接受 `docs/windows-release-smoke.md` 作为 Windows 安装包实机验收入口，后续在 Windows 10/11 上按清单记录证据。

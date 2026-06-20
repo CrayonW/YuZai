@@ -104,11 +104,13 @@ git push origin yuzai-v0.1.0-test.1
 
 当前已创建的第一版试用标签记录见 `docs/release-tag-record.md`。
 未签名试用包和未来签名包的安全说明见 `docs/signed-release-safety.md`。
+Windows 安装包实机验收清单见 `docs/windows-release-smoke.md`。
 
 ## 已知限制
 
 - 当前 `release/mac-arm64/鱼仔桌面宠物.app` 是本地验证包，不是已签名、公证的正式发行包。
 - `package:mac` 和 `package:win` 只是安装包入口，仍需要分别做 macOS 公证和 Windows 实机验收。
+- Windows 实机验收必须按 `docs/windows-release-smoke.md` 记录安装包、透明置顶、鼠标靠近、定时气泡和卸载结果。
 - 当前动作自然度仍有 4 个 high 风险回切，后续应生成并接入对应的 transitionOut 动作。
 - 当前 runtime 时长不足动作数仍为 30，长时间陪伴可能出现重复感。
 - 当前应用包不包含 `assets/origin`，因此不能从应用包内反向恢复源视频或重新抽帧。
