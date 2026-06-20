@@ -11,6 +11,7 @@
 - 桌面可见动态：已有 12 张连续桌面截图证据，尺寸 `440x440`，变化帧 `12`。
 - 运行时动作数：`38`。
 - 发布级验证：`npm run validate:release` 已通过。
+- 试用分发说明：`docs/release-playbook.md` 已补齐本地安装、首次打开、回滚步骤和已知限制。
 - 当前剩余产品风险：动作自然度仍有明确缺口，不应把它解释成最终质量已完成。
 
 ## 已满足的第一版能力
@@ -25,6 +26,7 @@
 | 姿势变换 | `docs/project-status.md`、`docs/state-coverage.md` | 已验证 |
 | 13 状态覆盖 | `docs/project-status.md`、`docs/state-coverage.md`、`docs/state-backlog.md` | 已验证 |
 | macOS 本地打包目录 | `npm run validate:release`、`release/mac-arm64/鱼仔桌面宠物.app` | 已验证 |
+| 面向最终用户的安装/回滚说明 | `docs/release-playbook.md` | 已补齐试用版说明 |
 
 ## 发布验证记录
 
@@ -64,18 +66,18 @@ npm run validate:release
 
 ### 分发缺口
 
-当前已通过本地 `package:dir` 打包验证，但还没有完成：
+当前已通过本地 `package:dir` 打包验证，并已补齐面向最终用户的安装/回滚说明：`docs/release-playbook.md`。但正式分发还没有完成：
 
 - 正式签名。
 - macOS 公证。
 - Windows 安装包实机验收。
-- 面向最终用户的安装/回滚说明。
+- 面向普通用户的完整卸载说明和签名包安全提示。
 
 ## 下一步建议
 
 1. 如果目标是继续解决“动作衔接太生硬”，下一步应由用户确认 `docs/transition-out-action-checklist.md`，然后生成 4 个 transitionOut 视频。
 2. 如果目标是提升长时间陪伴自然度，应先为 daily 动作生成更长视频或分段素材清单，再确认后处理。
-3. 如果目标是发布给别人试用，应优先补签名、公证、安装说明和一个可回滚的版本标签。
+3. 如果目标是发布给别人试用，应优先补签名、公证、卸载说明和一个可回滚的版本标签。
 
 ## 当前边界
 

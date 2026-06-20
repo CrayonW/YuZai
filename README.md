@@ -41,6 +41,7 @@ npm run validate:action-transition-risk-report
 npm run validate:transition-out-checklist
 npm run validate:transition-out-intake-proposal
 npm run validate:action-preview-capture
+npm run validate:release-readiness
 npm run validate:manifest-contract
 npm run validate:manifest-contract:current
 npm run validate:capture-plan
@@ -65,6 +66,11 @@ npm run package:win
 
 打包产物输出到 `release/`，该目录不会提交到 Git。当前打包内容只包含运行所需的 `dist/electron`、`dist/renderer` 和 `dist/assets/runtime`，不会把 `assets/origin` 源视频打进应用包。
 `validate:package` 会重新生成本机应用包，并检查 `app.asar` 包含运行入口和 runtime 动画资源、没有打入源视频或可灵生成素材，同时确认应用图标资源存在。
+
+试用分发说明：
+
+- [docs/release-playbook.md](docs/release-playbook.md)：本地试用包构建、安装、首次打开、回滚步骤和已知限制。
+- [docs/project-completion-audit.md](docs/project-completion-audit.md)：当前完成度、发布验证证据和剩余质量缺口。
 
 桌面截图验收示例：
 

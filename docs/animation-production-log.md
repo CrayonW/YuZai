@@ -1803,3 +1803,21 @@ FPS：未修改。
 桌面验收：本轮不新增桌面截图；继续引用 `assets/reviews/runtime/naturalness-observation/` 中 12 张自然度观察截图作为当前桌面动态证据。
 已知问题：本地打包通过不等于签名、公证和最终分发完成；high 风险回切和 30 个时长不足动作仍需要后续视频生成或素材优化。
 决定：接受 `docs/project-completion-audit.md` 作为当前项目完成度审计入口。下一轮如要继续解决自然度，应先让用户确认 `docs/transition-out-action-checklist.md`，再生成 4 个 transitionOut 视频。
+
+## 2026-06-20 试用分发手册与 release-readiness 门禁
+
+日期：2026-06-20
+源文件：`docs/release-playbook.md`、`scripts/validate-release-readiness.mjs`、`docs/project-completion-audit.md`、`README.md`、`package.json`、`scripts/validate-all.mjs`
+目标动作：不涉及单个动作素材；目标是把当前本地可试用应用包的安装、首次打开、回滚和限制说明纳入项目门禁。
+问题：当前已经能通过 `npm run validate:release` 生成本地 macOS 应用目录，但 README 和完成度审计缺少给测试者使用的安装、首次打开、回滚和已知限制入口。
+参考片段：`release/mac-arm64/鱼仔桌面宠物.app`、`app.asar`、`icon.icns`、`docs/project-completion-audit.md`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：新增 `docs/release-playbook.md`，新增 `npm run validate:release-readiness` 并接入 `validate:all`；该门禁检查试用分发手册、完成度审计和关键边界文字。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：先执行 `npm run validate:release-readiness`，在 `docs/release-playbook.md` 缺失时得到预期失败；补齐文档后再次执行并通过。
+桌面验收：不涉及新桌面截图；本轮只补齐试用分发文档和验证门禁。
+已知问题：本地试用手册不等于正式签名、公证或 Windows 实机验收；4 个 high 风险 transitionOut 和 30 个 runtime 时长不足动作仍待后续处理。
+决定：接受 `docs/release-playbook.md` 作为试用分发入口。后续给别人试用前，先运行 `npm run validate:release`，再按手册安装和回滚。
