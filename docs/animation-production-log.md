@@ -1839,3 +1839,21 @@ FPS：未修改。
 桌面验收：不涉及新桌面截图；本轮只补齐分发文档和门禁。
 已知问题：当前仍不是正式签名、公证包；自然度 high 风险回切和时长不足动作仍待后续素材处理。
 决定：接受卸载步骤和版本标签规范作为试用分发的必要条件，并由 `validate:release-readiness` 固化。
+
+## 2026-06-20 第一版试用标签记录
+
+日期：2026-06-20
+源文件：`docs/release-tag-record.md`、`docs/release-playbook.md`、`docs/project-completion-audit.md`、`scripts/validate-release-readiness.mjs`
+目标动作：不涉及动作素材；目标是把已经推送到 GitHub 的第一版试用标签和回滚 commit 写入项目文档。
+问题：`yuzai-v0.1.0-test.1` 已经创建并推送，但如果不写入仓库文档，后续回滚或复查仍需要翻终端历史。
+参考片段：标签 `yuzai-v0.1.0-test.1`；回滚 commit `f3e8da05269f4e95195bc6ca39b12a8bf825372e`；远端引用 `refs/tags/yuzai-v0.1.0-test.1`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：新增 `docs/release-tag-record.md`，并强化 `validate:release-readiness`，要求试用标签记录、release playbook 和完成度审计互相引用。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:release-readiness`；远端复查命令 `git ls-remote --tags origin yuzai-v0.1.0-test.1` 返回 `refs/tags/yuzai-v0.1.0-test.1`。
+桌面验收：不涉及新桌面截图；当前仍引用自然度观察和 release 验证记录。
+已知问题：这只是试用标签，不是正式签名/公证分发；动作自然度 high 风险回切和时长不足仍未关闭。
+决定：接受 `docs/release-tag-record.md` 作为第一版试用包的回滚锚点记录。

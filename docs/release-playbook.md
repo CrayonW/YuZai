@@ -102,6 +102,8 @@ git push origin yuzai-v0.1.0-test.1
 4. 如果测试包需要回滚，用标签或 commit 重新 checkout 到新工作区构建，不在当前工作区执行破坏性 reset。
 5. 如果后续生成 transitionOut 或更长 daily 动作，应使用新的标签，不复用旧标签。
 
+当前已创建的第一版试用标签记录见 `docs/release-tag-record.md`。
+
 ## 已知限制
 
 - 当前 `release/mac-arm64/鱼仔桌面宠物.app` 是本地验证包，不是已签名、公证的正式发行包。

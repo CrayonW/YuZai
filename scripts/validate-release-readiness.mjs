@@ -4,6 +4,7 @@ import { join } from "node:path";
 const root = process.cwd();
 const playbookPath = join(root, "docs/release-playbook.md");
 const auditPath = join(root, "docs/project-completion-audit.md");
+const tagRecordPath = join(root, "docs/release-tag-record.md");
 const failures = [];
 
 if (!existsSync(playbookPath)) {
@@ -23,6 +24,7 @@ if (!existsSync(playbookPath)) {
     "不包含 `assets/origin`",
     "签名与公证",
     "git tag -a",
+    "docs/release-tag-record.md",
     "transitionOut",
     "不调用可灵生成视频"
   ];
@@ -40,6 +42,7 @@ if (!existsSync(auditPath)) {
   const audit = readFileSync(auditPath, "utf8");
   for (const snippet of [
     "docs/release-playbook.md",
+    "docs/release-tag-record.md",
     "面向最终用户的安装/回滚说明",
     "卸载说明",
     "版本标签",
@@ -48,6 +51,24 @@ if (!existsSync(auditPath)) {
   ]) {
     if (!audit.includes(snippet)) {
       failures.push(`docs/project-completion-audit.md missing release readiness text: ${snippet}`);
+    }
+  }
+}
+
+if (!existsSync(tagRecordPath)) {
+  failures.push("missing docs/release-tag-record.md");
+} else {
+  const tagRecord = readFileSync(tagRecordPath, "utf8");
+  for (const snippet of [
+    "# 鱼仔桌宠试用标签记录",
+    "yuzai-v0.1.0-test.1",
+    "f3e8da05269f4e95195bc6ca39b12a8bf825372e",
+    "refs/tags/yuzai-v0.1.0-test.1",
+    "npm run validate:release",
+    "不调用可灵生成视频"
+  ]) {
+    if (!tagRecord.includes(snippet)) {
+      failures.push(`docs/release-tag-record.md missing release tag text: ${snippet}`);
     }
   }
 }

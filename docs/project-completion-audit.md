@@ -12,6 +12,7 @@
 - 运行时动作数：`38`。
 - 发布级验证：`npm run validate:release` 已通过。
 - 试用分发说明：`docs/release-playbook.md` 已补齐本地安装、首次打开、卸载步骤、回滚步骤、版本标签和已知限制。
+- 试用标签记录：`docs/release-tag-record.md` 已记录 `yuzai-v0.1.0-test.1` 和回滚 commit。
 - 当前剩余产品风险：动作自然度仍有明确缺口，不应把它解释成最终质量已完成。
 
 ## 已满足的第一版能力
@@ -28,6 +29,7 @@
 | macOS 本地打包目录 | `npm run validate:release`、`release/mac-arm64/鱼仔桌面宠物.app` | 已验证 |
 | 面向最终用户的安装/卸载/回滚说明 | `docs/release-playbook.md` | 已补齐试用版说明 |
 | 版本标签与回滚 commit 规范 | `docs/release-playbook.md` | 已补齐试用版说明 |
+| 实际试用标签记录 | `docs/release-tag-record.md` | 已记录 `yuzai-v0.1.0-test.1` |
 
 ## 发布验证记录
 
@@ -67,7 +69,7 @@ npm run validate:release
 
 ### 分发缺口
 
-当前已通过本地 `package:dir` 打包验证，并已补齐面向最终用户的安装/回滚说明、卸载说明和版本标签规范：`docs/release-playbook.md`。但正式分发还没有完成：
+当前已通过本地 `package:dir` 打包验证，并已补齐面向最终用户的安装/回滚说明、卸载说明和版本标签规范：`docs/release-playbook.md`。实际试用标签记录在 `docs/release-tag-record.md`。但正式分发还没有完成：
 
 - 正式签名。
 - macOS 公证。
