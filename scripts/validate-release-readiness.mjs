@@ -17,9 +17,12 @@ if (!existsSync(playbookPath)) {
     "首次打开",
     "安装步骤",
     "回滚步骤",
+    "卸载步骤",
+    "版本标签与回滚 commit",
     "已知限制",
     "不包含 `assets/origin`",
     "签名与公证",
+    "git tag -a",
     "transitionOut",
     "不调用可灵生成视频"
   ];
@@ -38,6 +41,8 @@ if (!existsSync(auditPath)) {
   for (const snippet of [
     "docs/release-playbook.md",
     "面向最终用户的安装/回滚说明",
+    "卸载说明",
+    "版本标签",
     "正式签名",
     "macOS 公证"
   ]) {

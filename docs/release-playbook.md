@@ -73,6 +73,35 @@ npm run validate:release
 
 4. 如果需要回到某个已知提交，先让维护者确认目标 commit，再用新工作区或临时分支重建；不要直接在当前工作区执行破坏性 reset。
 
+## 卸载步骤
+
+当前应用没有安装额外系统服务或后台守护进程。卸载以删除应用包和可选清理本地设置为主。
+
+1. 退出 `鱼仔桌面宠物.app`。
+2. 如果应用在 `/Applications`，将 `/Applications/鱼仔桌面宠物.app` 移到废纸篓。
+3. 如果应用只在项目 `release/mac-arm64/` 中试用，删除 `release/mac-arm64/鱼仔桌面宠物.app`，或重新运行 `npm run validate:release` 覆盖本地构建产物。
+4. 如需清理本地设置，先确认当前使用的设置文件路径。开发验证常用 `YUZAI_SETTINGS_PATH=/private/tmp/yuzai-settings-test.json`；正式默认路径以运行时设置模块为准，不要盲删用户目录。
+5. 卸载后重新打开旧版或新构建包，确认桌面上只剩一个鱼仔窗口。
+
+## 版本标签与回滚 commit
+
+给测试者发包前，必须记录一个可回滚的 Git commit。建议在通过 `npm run validate:release` 后创建注释标签：
+
+```bash
+git status --short
+git log --oneline -n 5
+git tag -a yuzai-v0.1.0-test.1 -m "YuZai desktop pet test build 1"
+git push origin yuzai-v0.1.0-test.1
+```
+
+规则：
+
+1. 标签只能指向已经通过 `npm run validate:release` 的提交。
+2. 标签名使用 `yuzai-v版本-test.序号`，例如 `yuzai-v0.1.0-test.1`。
+3. 如果只是本地自测，可以先不打标签，但必须记录 commit hash。
+4. 如果测试包需要回滚，用标签或 commit 重新 checkout 到新工作区构建，不在当前工作区执行破坏性 reset。
+5. 如果后续生成 transitionOut 或更长 daily 动作，应使用新的标签，不复用旧标签。
+
 ## 已知限制
 
 - 当前 `release/mac-arm64/鱼仔桌面宠物.app` 是本地验证包，不是已签名、公证的正式发行包。
@@ -88,7 +117,7 @@ npm run validate:release
 1. 正式应用图标复核。
 2. macOS 签名与公证。
 3. Windows 安装包实机验收。
-4. 用户安装说明和卸载说明。
+4. 普通用户安装、卸载和安全提示复核。
 5. 一个明确的版本标签和回滚 commit。
 6. transitionOut 自然度修复是否纳入本版本的最终决策。
 

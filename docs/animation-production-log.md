@@ -1821,3 +1821,21 @@ FPS：未修改。
 桌面验收：不涉及新桌面截图；本轮只补齐试用分发文档和验证门禁。
 已知问题：本地试用手册不等于正式签名、公证或 Windows 实机验收；4 个 high 风险 transitionOut 和 30 个 runtime 时长不足动作仍待后续处理。
 决定：接受 `docs/release-playbook.md` 作为试用分发入口。后续给别人试用前，先运行 `npm run validate:release`，再按手册安装和回滚。
+
+## 2026-06-20 试用卸载与版本标签规范
+
+日期：2026-06-20
+源文件：`docs/release-playbook.md`、`scripts/validate-release-readiness.mjs`、`docs/project-completion-audit.md`
+目标动作：不涉及动作素材；目标是补齐试用包卸载步骤、版本标签和回滚 commit 规范。
+问题：试用分发手册已有构建、安装、首次打开和回滚说明，但 release-readiness 门禁尚未强制检查卸载步骤与版本标签，测试者拿到包后仍缺少清晰的清理和回滚锚点。
+参考片段：`release/mac-arm64/鱼仔桌面宠物.app`、`npm run validate:release`、`git tag -a yuzai-v0.1.0-test.1`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先提高 `validate:release-readiness` 要求，让其因缺少 `卸载步骤`、`版本标签与回滚 commit` 和 `git tag -a` 预期失败；随后补齐文档并重新验证通过。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:release-readiness`
+桌面验收：不涉及新桌面截图；本轮只补齐分发文档和门禁。
+已知问题：当前仍不是正式签名、公证包；自然度 high 风险回切和时长不足动作仍待后续素材处理。
+决定：接受卸载步骤和版本标签规范作为试用分发的必要条件，并由 `validate:release-readiness` 固化。
