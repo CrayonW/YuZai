@@ -76,7 +76,7 @@ npm run validate:release
 
 ### 动作时长不足
 
-`docs/animation-asset-contract.md` 显示 runtime 时长不足动作数为 `30`。其中 `idle_primary`、`idle_secondary`、`tail_wag` 等日常动作当前约 `3s`，低于计划中的 `8s`。这不阻断第一版可见 MVP，但会影响长时间陪伴时的自然度和重复感。
+`docs/animation-asset-contract.md` 显示 runtime 时长不足动作数为 `30`。其中 `idle_primary`、`idle_secondary`、`tail_wag` 等日常动作当前约 `3s`，低于计划中的 `8s`。补长范围和处理边界已经拆到 `docs/runtime-duration-extension-plan.md`，这不阻断第一版可见 MVP，但会影响长时间陪伴时的自然度和重复感。
 机器可读 blocker：`runtime_duration_short`，记录于 `docs/release-blockers.json`。
 
 ### 分发缺口

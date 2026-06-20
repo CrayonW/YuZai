@@ -2055,3 +2055,21 @@ FPS：未修改。
 桌面验收：本轮不新增桌面截图；4 个过渡视频尚未生成，不能关闭动作自然度 blocker。
 已知问题：此同步只强化证据链，不关闭 `transition_out_high_risk`；4 个 transitionOut 视频仍需真实生成、人工审查、抽帧接入和桌面多帧验收。
 决定：接受三份 transition-out-recovery 状态包作为 `transition_out_high_risk` 的当前 evidence，后续关闭 blocker 时必须补 closureEvidence。
+
+## 2026-06-20 runtime 时长补长清单
+
+日期：2026-06-20
+源文件：`docs/runtime-duration-extension-plan.md`、`scripts/runtime-duration-extension-plan.mjs`、`scripts/validate-runtime-duration-extension-plan-current.mjs`、`docs/release-blockers.json`、`docs/project-completion-audit.md`
+目标动作：`idle_primary`、`idle_secondary`、`tail_wag`、`slow_blink`、`look_around`、`groom_face_wash`、`loaf_breathing`、`desk_sniff`、`stretch_yawn`、`sleepy`、`sleep`、`sleeping`、`walk`、`paw_raise`、16 个 `look_*` 鼠标方向动作
+问题：`runtime_duration_short` 只在资产契约里以 30 个短动作的形式出现，缺少一份专门面向补长执行的清单和 current 校验。
+参考片段：`runtime 时长不足动作数：30`、`不得只修改 manifest 帧数来关闭时长缺口`、`不关闭 runtime_duration_short blocker`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改；清单只记录目标帧数、当前帧数和建议补长策略。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先新增 `validate:runtime-duration-extension-plan-current` 并确认红灯；随后新增清单生成脚本，运行 `npm run animations:duration-extension-plan -- --write docs/runtime-duration-extension-plan.md`，并把清单加入 `runtime_duration_short` blocker evidence。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:runtime-duration-extension-plan-current`
+桌面验收：本轮不新增桌面截图；短动作尚未补长，不能关闭长时间陪伴自然度缺口。
+已知问题：此清单不关闭 `runtime_duration_short`；后续仍需真实补长源视频、去水印、抽帧、manifest 更新、`validate:all`、`validate:release` 和桌面多帧验收。
+决定：接受 `docs/runtime-duration-extension-plan.md` 作为 30 个 runtime 短动作的补长执行入口。
