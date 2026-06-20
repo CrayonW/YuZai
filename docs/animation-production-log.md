@@ -1785,3 +1785,21 @@ FPS：运行时 FPS 不变；截图观察间隔为 300ms。
 桌面验收：截图序列证明桌面上可见一只会动的猫；本轮观察入口确认当前最需要后续处理的是 `sleep -> sleeping`、`waking -> idle_primary`、`poke_annoyed -> idle_primary`、`paw_raise -> idle_primary` 四个 high 风险回切，以及 30 个 runtime 时长不足动作。
 已知问题：截图序列只能证明当前观察窗口内有连续变化，不能替代长时录屏和人工审美判断；如果继续反馈动作衔接生硬，仍需要先列清单，再生成或接入 transitionOut / 更长 daily 视频。
 决定：接受 `docs/runtime-naturalness-observation.md` 作为方案 A 的可复查观察入口；后续进入视频生成或 runtime 覆盖前，继续执行“先列清单确认”的边界。
+
+## 2026-06-20 项目完成度审计与发布级验证
+
+日期：2026-06-20
+源文件：`docs/project-completion-audit.md`、`docs/project-status.md`、`docs/runtime-naturalness-observation.md`、`docs/action-transition-risk-report.md`、`docs/animation-asset-contract.md`
+目标动作：当前 runtime 中全部 38 个可播放 action，以及本地 macOS 打包产物。
+问题：在继续“完成项目”前，需要区分“第一版 MVP/13 状态/本地打包已可验证”和“动作自然度仍未最终完成”，避免把发布验证通过误解为所有质量问题已关闭。
+参考片段：MVP 证据 7 / 7 verified；13 状态覆盖 independent 13 / mixed 0 / fallback 0 / missing 0；自然度观察显示 high 风险回切 4 个、runtime 时长不足 30 个。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：新增 `docs/project-completion-audit.md`，汇总当前可交付证据、发布验证结果、剩余自然度缺口和后续确认边界。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：执行 `npm run validate:release`；其中 `validate:all` 通过，`validate:package` 通过，`package:dir` 生成 `release/mac-arm64/鱼仔桌面宠物.app`，并确认 app.asar 与 icon 存在。
+桌面验收：本轮不新增桌面截图；继续引用 `assets/reviews/runtime/naturalness-observation/` 中 12 张自然度观察截图作为当前桌面动态证据。
+已知问题：本地打包通过不等于签名、公证和最终分发完成；high 风险回切和 30 个时长不足动作仍需要后续视频生成或素材优化。
+决定：接受 `docs/project-completion-audit.md` 作为当前项目完成度审计入口。下一轮如要继续解决自然度，应先让用户确认 `docs/transition-out-action-checklist.md`，再生成 4 个 transitionOut 视频。
