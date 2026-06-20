@@ -103,6 +103,7 @@ git push origin yuzai-v0.1.0-test.1
 5. 如果后续生成 transitionOut 或更长 daily 动作，应使用新的标签，不复用旧标签。
 
 当前已创建的第一版试用标签记录见 `docs/release-tag-record.md`。
+未签名试用包和未来签名包的安全说明见 `docs/signed-release-safety.md`。
 
 ## 已知限制
 

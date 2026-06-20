@@ -1857,3 +1857,21 @@ FPS：未修改。
 桌面验收：不涉及新桌面截图；当前仍引用自然度观察和 release 验证记录。
 已知问题：这只是试用标签，不是正式签名/公证分发；动作自然度 high 风险回切和时长不足仍未关闭。
 决定：接受 `docs/release-tag-record.md` 作为第一版试用包的回滚锚点记录。
+
+## 2026-06-20 签名包安全提示
+
+日期：2026-06-20
+源文件：`docs/signed-release-safety.md`、`docs/release-playbook.md`、`docs/project-completion-audit.md`、`scripts/validate-release-readiness.mjs`
+目标动作：不涉及动作素材；目标是补齐未签名试用包、Gatekeeper、正式签名与公证包的安全提示。
+问题：当前已经有本地试用包和试用标签，但测试者仍需要明确知道 `release/mac-arm64/鱼仔桌面宠物.app` 是未签名试用包，不能当作正式签名与公证发行包。
+参考片段：`yuzai-v0.1.0-test.1`、`release/mac-arm64/鱼仔桌面宠物.app`、`docs/release-tag-record.md`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先强化 `validate:release-readiness`，要求 `docs/signed-release-safety.md` 和关键安全文字；确认预期失败后补齐文档并重新验证通过。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:release-readiness`
+桌面验收：不涉及新桌面截图；当前仍引用自然度观察和 release 验证记录。
+已知问题：正式签名与公证仍未执行；动作自然度 high 风险回切和时长不足仍未关闭。
+决定：接受 `docs/signed-release-safety.md` 作为未签名试用包和未来签名包之间的安全边界说明。

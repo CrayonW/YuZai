@@ -5,6 +5,7 @@ const root = process.cwd();
 const playbookPath = join(root, "docs/release-playbook.md");
 const auditPath = join(root, "docs/project-completion-audit.md");
 const tagRecordPath = join(root, "docs/release-tag-record.md");
+const signedSafetyPath = join(root, "docs/signed-release-safety.md");
 const failures = [];
 
 if (!existsSync(playbookPath)) {
@@ -25,6 +26,7 @@ if (!existsSync(playbookPath)) {
     "签名与公证",
     "git tag -a",
     "docs/release-tag-record.md",
+    "docs/signed-release-safety.md",
     "transitionOut",
     "不调用可灵生成视频"
   ];
@@ -43,6 +45,7 @@ if (!existsSync(auditPath)) {
   for (const snippet of [
     "docs/release-playbook.md",
     "docs/release-tag-record.md",
+    "docs/signed-release-safety.md",
     "面向最终用户的安装/回滚说明",
     "卸载说明",
     "版本标签",
@@ -51,6 +54,26 @@ if (!existsSync(auditPath)) {
   ]) {
     if (!audit.includes(snippet)) {
       failures.push(`docs/project-completion-audit.md missing release readiness text: ${snippet}`);
+    }
+  }
+}
+
+if (!existsSync(signedSafetyPath)) {
+  failures.push("missing docs/signed-release-safety.md");
+} else {
+  const signedSafety = readFileSync(signedSafetyPath, "utf8");
+  for (const snippet of [
+    "# 鱼仔桌宠签名包安全提示",
+    "未签名试用包",
+    "正式签名与公证",
+    "Gatekeeper",
+    "不要绕过未知来源安全提示",
+    "release/mac-arm64/鱼仔桌面宠物.app",
+    "yuzai-v0.1.0-test.1",
+    "不调用可灵生成视频"
+  ]) {
+    if (!signedSafety.includes(snippet)) {
+      failures.push(`docs/signed-release-safety.md missing safety text: ${snippet}`);
     }
   }
 }
