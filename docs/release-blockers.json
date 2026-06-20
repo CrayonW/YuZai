@@ -79,7 +79,8 @@
       "source": "docs/signed-release-safety.md",
       "evidence": [
         "docs/signed-release-safety.md",
-        "docs/release-playbook.md"
+        "docs/release-playbook.md",
+        "docs/macos-signing-notarization-status.md"
       ],
       "requiredActions": [
         "配置正式 Developer ID 签名身份",
@@ -97,7 +98,8 @@
       "source": "docs/signed-release-safety.md",
       "evidence": [
         "docs/signed-release-safety.md",
-        "docs/release-playbook.md"
+        "docs/release-playbook.md",
+        "docs/macos-signing-notarization-status.md"
       ],
       "requiredActions": [
         "在签名/公证包上复核普通用户安装提示",

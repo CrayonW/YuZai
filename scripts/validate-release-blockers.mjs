@@ -21,6 +21,8 @@ const transitionRecoveryActions = [
   "paw_raise_to_idle"
 ];
 
+const macosSigningStatusPath = "docs/macos-signing-notarization-status.md";
+
 const requiredBlockerIds = [
   "transition_out_high_risk",
   "runtime_duration_short",
@@ -84,6 +86,12 @@ if (!existsSync(blockersPath)) {
         }
       }
     }
+    for (const id of ["macos_sign_notarize", "signed_user_safety_recheck"]) {
+      const blocker = byId.get(id);
+      if (blocker && !blocker.evidence?.includes(macosSigningStatusPath)) {
+        failures.push(`${id} evidence must include ${macosSigningStatusPath}`);
+      }
+    }
   }
 }
 
@@ -111,6 +119,22 @@ if (existsSync(join(root, "docs/kling-batch-status-transition-out-recovery.md"))
   }
 }
 
+if (!existsSync(join(root, macosSigningStatusPath))) {
+  failures.push(`missing ${macosSigningStatusPath}`);
+} else {
+  const signingStatus = readFileSync(join(root, macosSigningStatusPath), "utf8");
+  for (const snippet of [
+    "签名 identity：null",
+    "macos_sign_notarize：open",
+    "signed_user_safety_recheck：open",
+    "不执行签名、不调用 notarytool、不上传 Apple 公证"
+  ]) {
+    if (!signingStatus.includes(snippet)) {
+      failures.push(`${macosSigningStatusPath} missing signing blocker text: ${snippet}`);
+    }
+  }
+}
+
 if (!existsSync(blockersReportPath)) {
   failures.push("missing docs/release-blockers.md");
 } else {
@@ -123,6 +147,7 @@ if (!existsSync(blockersReportPath)) {
     "windows_real_machine_smoke",
     "macos_sign_notarize",
     "signed_user_safety_recheck",
+    "docs/macos-signing-notarization-status.md",
     "`docs/release-blockers.json` 和本文档必须保持同步"
   ]) {
     if (!report.includes(snippet)) {

@@ -19,13 +19,13 @@ export function renderReleaseBlockersReport(data) {
     "",
     "## Open Blockers",
     "",
-    "| id | category | status | title | source | required actions | closure evidence |",
-    "| --- | --- | --- | --- | --- | --- | --- |"
+    "| id | category | status | title | source | evidence | required actions | closure evidence |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- |"
   ];
 
   for (const blocker of data.blockers) {
     lines.push(
-      `| ${blocker.id} | ${blocker.category} | ${blocker.status} | ${blocker.title} | ${blocker.source} | ${blocker.requiredActions.join("<br>")} | ${blocker.closureEvidence.length > 0 ? blocker.closureEvidence.join("<br>") : "未补充"} |`
+      `| ${blocker.id} | ${blocker.category} | ${blocker.status} | ${blocker.title} | ${blocker.source} | ${renderList(blocker.evidence)} | ${renderList(blocker.requiredActions)} | ${renderList(blocker.closureEvidence, "未补充")} |`
     );
   }
 
@@ -42,6 +42,10 @@ export function renderReleaseBlockersReport(data) {
   );
 
   return `${lines.join("\n")}\n`;
+}
+
+function renderList(values, fallback = "") {
+  return Array.isArray(values) && values.length > 0 ? values.join("<br>") : fallback;
 }
 
 export function writeReleaseBlockersReport(data, outputPath) {

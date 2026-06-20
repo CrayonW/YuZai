@@ -96,6 +96,8 @@
     "validate:release-blockers": "node scripts/validate-release-blockers.mjs",
     "validate:release-blockers-report-current": "node scripts/validate-release-blockers-report-current.mjs",
     "validate:release-readiness": "node scripts/validate-release-readiness.mjs",
+    "release:macos-signing-status": "node scripts/macos-signing-status.mjs",
+    "validate:macos-signing-status-current": "node scripts/validate-macos-signing-status-current.mjs",
     "validate:windows-package-workflow": "node scripts/validate-windows-package-workflow.mjs",
     "actions:windows-status": "node scripts/github-actions-status.mjs --workflow windows-package.yml --artifact yuzai-windows-package",
     "validate:github-actions-status-tool": "node scripts/validate-github-actions-status-tool.mjs",

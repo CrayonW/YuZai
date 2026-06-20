@@ -6,6 +6,7 @@ const playbookPath = join(root, "docs/release-playbook.md");
 const auditPath = join(root, "docs/project-completion-audit.md");
 const tagRecordPath = join(root, "docs/release-tag-record.md");
 const signedSafetyPath = join(root, "docs/signed-release-safety.md");
+const macosSigningStatusPath = join(root, "docs/macos-signing-notarization-status.md");
 const windowsSmokePath = join(root, "docs/windows-release-smoke.md");
 const windowsWorkflowPath = join(root, ".github/workflows/windows-package.yml");
 const releaseBlockersPath = join(root, "docs/release-blockers.json");
@@ -32,6 +33,7 @@ if (!existsSync(playbookPath)) {
     "git tag -a",
     "docs/release-tag-record.md",
     "docs/signed-release-safety.md",
+    "docs/macos-signing-notarization-status.md",
     "docs/windows-release-smoke.md",
     "docs/release-blockers.json",
     "docs/release-blockers.md",
@@ -58,6 +60,7 @@ if (!existsSync(auditPath)) {
     "docs/release-playbook.md",
     "docs/release-tag-record.md",
     "docs/signed-release-safety.md",
+    "docs/macos-signing-notarization-status.md",
     "面向最终用户的安装/回滚说明",
     "卸载说明",
     "版本标签",
@@ -88,11 +91,29 @@ if (!existsSync(signedSafetyPath)) {
     "Gatekeeper",
     "不要绕过未知来源安全提示",
     "release/mac-arm64/鱼仔桌面宠物.app",
+    "docs/macos-signing-notarization-status.md",
     "yuzai-v0.1.0-test.1",
     "不调用可灵生成视频"
   ]) {
     if (!signedSafety.includes(snippet)) {
       failures.push(`docs/signed-release-safety.md missing safety text: ${snippet}`);
+    }
+  }
+}
+
+if (!existsSync(macosSigningStatusPath)) {
+  failures.push("missing docs/macos-signing-notarization-status.md");
+} else {
+  const macosSigningStatus = readFileSync(macosSigningStatusPath, "utf8");
+  for (const snippet of [
+    "# macOS 签名与公证状态报告",
+    "签名 identity：null",
+    "macos_sign_notarize：open",
+    "signed_user_safety_recheck：open",
+    "不执行签名、不调用 notarytool、不上传 Apple 公证"
+  ]) {
+    if (!macosSigningStatus.includes(snippet)) {
+      failures.push(`docs/macos-signing-notarization-status.md missing signing status text: ${snippet}`);
     }
   }
 }

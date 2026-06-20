@@ -2073,3 +2073,21 @@ FPS：未修改。
 桌面验收：本轮不新增桌面截图；短动作尚未补长，不能关闭长时间陪伴自然度缺口。
 已知问题：此清单不关闭 `runtime_duration_short`；后续仍需真实补长源视频、去水印、抽帧、manifest 更新、`validate:all`、`validate:release` 和桌面多帧验收。
 决定：接受 `docs/runtime-duration-extension-plan.md` 作为 30 个 runtime 短动作的补长执行入口。
+
+## 2026-06-20 macOS 签名公证状态报告
+
+日期：2026-06-20
+源文件：`docs/macos-signing-notarization-status.md`、`scripts/macos-signing-status.mjs`、`scripts/validate-macos-signing-status-current.mjs`、`docs/release-blockers.json`、`docs/release-playbook.md`、`docs/signed-release-safety.md`
+目标动作：不涉及动作素材；目标是把 macOS 签名、公证和签名后普通用户安全提示复核拆成当前状态报告。
+问题：`macos_sign_notarize` 和 `signed_user_safety_recheck` 已经是 release blocker，但缺少一份可 current 校验的状态报告来明确当前仍是 `identity=null` 的未签名本地验证包。
+参考片段：`签名 identity：null`、`macos_sign_notarize：open`、`signed_user_safety_recheck：open`、`不执行签名、不调用 notarytool、不上传 Apple 公证`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先新增 `validate:macos-signing-status-current` 并确认红灯；随后新增状态报告生成脚本，运行 `npm run release:macos-signing-status -- --write docs/macos-signing-notarization-status.md`，并把报告加入两个 macOS release blocker evidence。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:macos-signing-status-current`
+桌面验收：本轮不新增桌面截图；签名、公证和普通用户首次打开体验尚未执行。
+已知问题：此报告不关闭 `macos_sign_notarize` 或 `signed_user_safety_recheck`；后续仍需正式 Developer ID、notarization、Gatekeeper 验收和签名后安装安全提示复核。
+决定：接受 `docs/macos-signing-notarization-status.md` 作为 macOS 发布 blocker 的当前 evidence。

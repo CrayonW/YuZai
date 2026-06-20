@@ -105,6 +105,7 @@ git push origin yuzai-v0.1.0-test.1
 
 当前已创建的第一版试用标签记录见 `docs/release-tag-record.md`。
 未签名试用包和未来签名包的安全说明见 `docs/signed-release-safety.md`。
+macOS 签名、公证和签名后安全复核当前状态见 `docs/macos-signing-notarization-status.md`。
 Windows 安装包实机验收清单见 `docs/windows-release-smoke.md`。
 Windows 远端打包工作流见 `.github/workflows/windows-package.yml`，用于生成试用安装包 artifact，不代表已经完成实机验收。
 Windows Package Actions 状态查询见 `docs/windows-actions-status.md`，可通过 `npm run actions:windows-status` 复查远端 run 和 `yuzai-windows-package` artifact。

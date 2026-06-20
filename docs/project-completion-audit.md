@@ -81,7 +81,7 @@ npm run validate:release
 
 ### 分发缺口
 
-当前已通过本地 `package:dir` 打包验证，并已补齐面向最终用户的安装/回滚说明、卸载说明和版本标签规范：`docs/release-playbook.md`。实际试用标签记录在 `docs/release-tag-record.md`，签名包安全提示见 `docs/signed-release-safety.md`，Windows 实机验收清单见 `docs/windows-release-smoke.md`，Windows 远端试用包工作流见 `.github/workflows/windows-package.yml`，Windows Actions 状态查询见 `docs/windows-actions-status.md`。但正式分发还没有完成：
+当前已通过本地 `package:dir` 打包验证，并已补齐面向最终用户的安装/回滚说明、卸载说明和版本标签规范：`docs/release-playbook.md`。实际试用标签记录在 `docs/release-tag-record.md`，签名包安全提示见 `docs/signed-release-safety.md`，macOS 签名/公证状态见 `docs/macos-signing-notarization-status.md`，Windows 实机验收清单见 `docs/windows-release-smoke.md`，Windows 远端试用包工作流见 `.github/workflows/windows-package.yml`，Windows Actions 状态查询见 `docs/windows-actions-status.md`。但正式分发还没有完成：
 
 - 正式签名。
 - macOS 公证。

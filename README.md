@@ -280,6 +280,7 @@ docs/kling-integration.md
 - `docs/kling-batch-status-transition-out-recovery.md`：高风险回切过渡批次产物状态。
 - `docs/kling-batch-intake-transition-out-recovery.md`：高风险回切过渡视频生成后的 runtime 接入前确认清单。
 - `docs/runtime-duration-extension-plan.md`：runtime 动作时长不足的补长动作清单和处理边界。
+- `docs/macos-signing-notarization-status.md`：macOS 签名、公证和签名后安全复核当前状态。
 
 ## 代码结构
 
