@@ -71,7 +71,7 @@ export function renderKlingPreflightReport(report) {
     "",
     `- Access Key：${renderSecret(report.credentials.accessKey)}`,
     `- Secret Key：${renderSecret(report.credentials.secretKey)}`,
-    `- 鉴权：${report.auth.ok ? "通过" : "鉴权未通过"}`,
+    `- 鉴权：${renderAuthResult(report.auth)}`,
     `- 鉴权状态：${report.auth.status ?? "-"} ${report.auth.kind ?? ""}`.trim(),
     `- 鉴权信息：${report.auth.message || "-"}`,
     ""
@@ -252,6 +252,11 @@ function renderNullableSeconds(value) {
   return typeof value === "number" ? `${value} 秒` : "-";
 }
 
+function renderAuthResult(auth) {
+  if (auth?.kind === "skipped") return "已跳过";
+  return auth?.ok ? "通过" : "鉴权未通过";
+}
+
 function buildNextSteps({ missingCredentials, referenceMissing, auth, batch, missingCount }) {
   if (missingCredentials) {
     return ["在本机 `.env.local` 配置 `KLING_ACCESS_KEY` 和 `KLING_SECRET_KEY`，不要提交真实密钥。"];
@@ -263,9 +268,10 @@ function buildNextSteps({ missingCredentials, referenceMissing, auth, batch, mis
     return ["先运行 `npm run kling:auth-check` 并处理可灵开放 API 鉴权问题。"];
   }
   if (missingCount > 0) {
+    const intakePath = `docs/kling-batch-intake-${String(batch).replace(/[^a-zA-Z0-9_-]/g, "-")}.md`;
     return [
       `运行 \`npm run kling:generate-batch -- --batch ${batch}\` 生成缺失视频。`,
-      `生成后运行 \`npm run kling:batch-intake-checklist -- --batch ${batch} --write docs/kling-batch-intake-first.md\`，先给用户确认清单。`
+      `生成后运行 \`npm run kling:batch-intake-checklist -- --batch ${batch} --write ${intakePath}\`，先给用户确认清单。`
     ];
   }
   return ["进入人工验收、去水印、抽帧和 runtime manifest 接入流程。"];

@@ -1,5 +1,5 @@
 import { build } from "esbuild";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -9,6 +9,7 @@ const bundlePath = join(tempRoot, "validate-kling-batch-intake-checklist.mjs");
 const checklistPath = join(process.cwd(), "scripts", "kling-batch-intake-checklist.mjs");
 
 const testSource = `
+  import { readFileSync } from "node:fs";
   import { buildKlingBatchIntakeChecklist, renderKlingBatchIntakeChecklist } from ${JSON.stringify(checklistPath)};
 
   const plan = {
@@ -62,6 +63,17 @@ const testSource = `
   assertIncludes(text, "assets/origin/generated/kling/groom_face_wash.mp4", "renders source video");
   assertIncludes(text, "目标 action：groom_face_wash", "renders target action");
   assertIncludes(text, "npm run animations:audit-origin", "renders validation command");
+
+  const transitionChecklistPath = ${JSON.stringify(join(process.cwd(), "docs", "kling-batch-intake-transition-out-recovery.md"))};
+  const transitionChecklist = readFileSync(transitionChecklistPath, "utf8");
+  assertIncludes(transitionChecklist, "批次：transition-out-recovery", "transition recovery intake has batch selector");
+  assertIncludes(transitionChecklist, "批次名称：第四批：高风险回切过渡", "transition recovery intake has batch name");
+  assertIncludes(transitionChecklist, "执行原则：生成视频后、抽帧或覆盖 manifest 前，必须先给用户确认这份清单", "transition recovery intake keeps user confirmation gate");
+  assertIncludes(transitionChecklist, "目标 action：sleep_to_sleeping", "transition recovery intake tracks sleep_to_sleeping");
+  assertIncludes(transitionChecklist, "目标 action：waking_to_idle", "transition recovery intake tracks waking_to_idle");
+  assertIncludes(transitionChecklist, "目标 action：poke_annoyed_to_idle", "transition recovery intake tracks poke_annoyed_to_idle");
+  assertIncludes(transitionChecklist, "目标 action：paw_raise_to_idle", "transition recovery intake tracks paw_raise_to_idle");
+  assertIncludes(transitionChecklist, "manifest 状态：待新增", "transition recovery intake records pending manifest additions");
 
   function assertEqual(actual, expected, label) {
     if (actual !== expected) {

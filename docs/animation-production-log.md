@@ -2019,3 +2019,21 @@ FPS：未修改。
 桌面验收：本轮不新增桌面截图，不执行 Windows 实机安装。
 已知问题：此报告不关闭任何 blocker；5 个 blocker 仍保持 open。
 决定：接受 `docs/release-blockers.md` 作为剩余硬缺口的人读入口，后续修改 `docs/release-blockers.json` 必须同步重新生成报告。
+
+## 2026-06-20 transition-out-recovery 生成前状态包
+
+日期：2026-06-20
+源文件：`docs/kling-preflight-transition-out-recovery.md`、`docs/kling-batch-status-transition-out-recovery.md`、`docs/kling-batch-intake-transition-out-recovery.md`、`scripts/kling-preflight.mjs`、`scripts/validate-kling-preflight.mjs`、`scripts/validate-kling-batch-status.mjs`、`scripts/validate-kling-batch-intake-checklist.mjs`
+目标动作：`sleep_to_sleeping`、`waking_to_idle`、`poke_annoyed_to_idle`、`paw_raise_to_idle`
+问题：4 个 high 风险 `transitionOut` 回切动作已有批次和提示词，但缺少一组生成前状态包，后续容易混淆“已准备生成”和“已真实接入 runtime”。
+参考片段：`transition-out-recovery`、`docs/transition-out-action-checklist.md`、`docs/runtime-intake-transition-out-recovery-proposal.md`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改；这 4 个候选动作仍规划为非循环 `transition`。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：运行 `npm run kling:preflight -- --batch transition-out-recovery --write docs/kling-preflight-transition-out-recovery.md --skip-auth`、`npm run kling:batch-status -- --batch transition-out-recovery --write docs/kling-batch-status-transition-out-recovery.md`、`npm run kling:batch-intake-checklist -- --batch transition-out-recovery --write docs/kling-batch-intake-transition-out-recovery.md`，并用 `npm run kling:generate-batch -- --batch transition-out-recovery --dry-run` 复查 4 个动作命令。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:kling-preflight`、`npm run validate:kling-batch-status`、`npm run validate:kling-batch-intake-checklist`、`npm run validate:transition-out-checklist`
+桌面验收：本轮不新增桌面截图；4 个过渡视频尚不存在，不能做桌面衔接验收。
+已知问题：preflight 使用 `--skip-auth`，只说明本地参考图和密钥存在，不代表本轮已向可灵服务端鉴权；4 个视频仍为 missing。
+决定：接受这三个 transition-out-recovery 状态包作为真实生成前入口；下一次真实生成后必须先人工审查无水印、无文字、无 logo 和猫咪身份一致，再进入 runtime-intake。

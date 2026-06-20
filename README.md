@@ -276,6 +276,9 @@ docs/kling-integration.md
 - `docs/action-transition-risk-report.md`：基于实际序列帧的动作切换风险清单和下一步过渡素材建议。
 - `docs/transition-out-action-checklist.md`：高风险回切过渡动作处理前确认清单。
 - `docs/runtime-intake-transition-out-recovery-proposal.md`：高风险回切过渡动作升级为正式 runtime-intake 波次前的待确认提案。
+- `docs/kling-preflight-transition-out-recovery.md`：高风险回切过渡视频生成前置检查，只记录本地条件和缺失视频。
+- `docs/kling-batch-status-transition-out-recovery.md`：高风险回切过渡批次产物状态。
+- `docs/kling-batch-intake-transition-out-recovery.md`：高风险回切过渡视频生成后的 runtime 接入前确认清单。
 
 ## 代码结构
 

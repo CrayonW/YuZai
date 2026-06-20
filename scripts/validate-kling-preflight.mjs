@@ -28,7 +28,8 @@ const testSource = `
   };
   const batches = {
     batches: [
-      { id: "first", name: "第一批", actions: [{ action: "ready" }, { action: "missing" }] }
+      { id: "first", name: "第一批", actions: [{ action: "ready" }, { action: "missing" }] },
+      { id: "transition-out-recovery", name: "第四批", actions: [{ action: "ready" }, { action: "missing" }] }
     ]
   };
 
@@ -77,6 +78,41 @@ const testSource = `
   assertIncludes(markdown, "JWT 过期时间：2026-06-16T06:19:00.000Z", "renders jwt expiration");
   assertIncludes(markdown, "不输出真实密钥", "states secret safety");
 
+  const skippedAuthReport = buildKlingPreflightReport({
+    root,
+    plan,
+    batches,
+    batch: "1",
+    env: { KLING_ACCESS_KEY: "12345678901234567890123456789012", KLING_SECRET_KEY: "abcdefghijklmnopqrstuvwxyz123456" },
+    auth: {
+      ok: true,
+      kind: "skipped",
+      message: "Skipped by --skip-auth"
+    }
+  });
+  const skippedMarkdown = renderKlingPreflightReport(skippedAuthReport);
+  assertIncludes(skippedMarkdown, "鉴权：已跳过", "renders skipped auth explicitly");
+  assertIncludes(skippedMarkdown, "鉴权信息：Skipped by --skip-auth", "keeps skipped auth message");
+  assertNotIncludes(skippedMarkdown, "鉴权：通过", "skip-auth must not be rendered as an auth pass");
+
+  const namedBatchReport = buildKlingPreflightReport({
+    root,
+    plan,
+    batches,
+    batch: "transition-out-recovery",
+    env: { KLING_ACCESS_KEY: "12345678901234567890123456789012", KLING_SECRET_KEY: "abcdefghijklmnopqrstuvwxyz123456" },
+    auth: {
+      ok: true,
+      kind: "skipped",
+      message: "Skipped by --skip-auth"
+    }
+  });
+  assertIncludes(
+    namedBatchReport.nextSteps.join("\\n"),
+    "docs/kling-batch-intake-transition-out-recovery.md",
+    "named batches should write batch-specific intake checklist paths"
+  );
+
   function assertEqual(actual, expected, label) {
     if (actual !== expected) {
       throw new Error(label + ": expected " + expected + ", got " + actual);
@@ -86,6 +122,12 @@ const testSource = `
   function assertIncludes(text, expected, label) {
     if (!String(text).includes(expected)) {
       throw new Error(label + ": expected to include " + expected + ", got " + text);
+    }
+  }
+
+  function assertNotIncludes(text, unexpected, label) {
+    if (String(text).includes(unexpected)) {
+      throw new Error(label + ": expected not to include " + unexpected + ", got " + text);
     }
   }
 `;
