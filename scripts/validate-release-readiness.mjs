@@ -9,6 +9,7 @@ const signedSafetyPath = join(root, "docs/signed-release-safety.md");
 const windowsSmokePath = join(root, "docs/windows-release-smoke.md");
 const windowsWorkflowPath = join(root, ".github/workflows/windows-package.yml");
 const releaseBlockersPath = join(root, "docs/release-blockers.json");
+const releaseBlockersReportPath = join(root, "docs/release-blockers.md");
 const windowsActionsStatusPath = join(root, "docs/windows-actions-status.md");
 const failures = [];
 
@@ -33,6 +34,7 @@ if (!existsSync(playbookPath)) {
     "docs/signed-release-safety.md",
     "docs/windows-release-smoke.md",
     "docs/release-blockers.json",
+    "docs/release-blockers.md",
     "docs/windows-actions-status.md",
     ".github/workflows/windows-package.yml",
     "actions:windows-status",
@@ -65,6 +67,7 @@ if (!existsSync(auditPath)) {
     "Windows 实机验收",
     ".github/workflows/windows-package.yml",
     "docs/release-blockers.json",
+    "docs/release-blockers.md",
     "docs/windows-actions-status.md",
     "项目不得标记为完全完成"
   ]) {
@@ -136,6 +139,23 @@ if (!existsSync(releaseBlockersPath)) {
   }
   if (releaseBlockers.completionPolicy?.projectCanBeMarkedComplete !== false) {
     failures.push("docs/release-blockers.json must keep projectCanBeMarkedComplete false");
+  }
+}
+
+if (!existsSync(releaseBlockersReportPath)) {
+  failures.push("missing docs/release-blockers.md");
+} else {
+  const releaseBlockersReport = readFileSync(releaseBlockersReportPath, "utf8");
+  for (const snippet of [
+    "# 鱼仔桌宠剩余硬缺口报告",
+    "项目可标记完成：否",
+    "Open Blockers",
+    "transition_out_high_risk",
+    "windows_real_machine_smoke"
+  ]) {
+    if (!releaseBlockersReport.includes(snippet)) {
+      failures.push(`docs/release-blockers.md missing release readiness text: ${snippet}`);
+    }
   }
 }
 

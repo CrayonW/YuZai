@@ -2001,3 +2001,21 @@ FPS：未修改。
 桌面验收：本轮不新增桌面截图，不执行 Windows 实机安装。
 已知问题：此门禁只确保发布相关文档互链完整，不关闭任何 release blocker。
 决定：接受 `docs/release-blockers.json` 和 `docs/windows-actions-status.md` 进入 release-readiness 门禁。
+
+## 2026-06-20 release blocker 中文报告
+
+日期：2026-06-20
+源文件：`docs/release-blockers.md`、`scripts/release-blockers-report.mjs`、`scripts/validate-release-blockers-report-current.mjs`、`scripts/validate-release-blockers.mjs`、`scripts/validate-release-readiness.mjs`
+目标动作：不涉及动作素材；目标是把机器可读 `docs/release-blockers.json` 渲染成中文报告，并纳入 current 与 release-readiness 门禁。
+问题：只有 JSON 清单不方便人工复查；如果中文审计、发布手册和 JSON 不同步，后续关闭 blocker 时容易遗漏证据。
+参考片段：`release:blockers-report`、`validate:release-blockers-report-current`、`docs/release-blockers.md`、`项目可标记完成：否`。
+帧数：未新增 runtime 帧。
+FPS：未修改。
+循环方式：未修改。
+水印处理：未执行；本轮不处理源视频、不抽帧、不接入新素材。
+重建方法：先挂上不存在的 `validate:release-blockers-report-current`，确认红灯；随后新增报告渲染脚本、current 校验脚本，生成 `docs/release-blockers.md`，并让 release blockers 与 release-readiness 门禁要求该报告存在。
+运行时输出：未修改 `assets/runtime/animations/manifest.json`，未新增或覆盖 `assets/runtime/animations/*/frames`。
+验证命令：`npm run validate:release-blockers-report-current`
+桌面验收：本轮不新增桌面截图，不执行 Windows 实机安装。
+已知问题：此报告不关闭任何 blocker；5 个 blocker 仍保持 open。
+决定：接受 `docs/release-blockers.md` 作为剩余硬缺口的人读入口，后续修改 `docs/release-blockers.json` 必须同步重新生成报告。

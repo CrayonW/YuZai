@@ -61,6 +61,7 @@ const steps = [
   ["validate:runtime-naturalness-observation", ["npm", "run", "validate:runtime-naturalness-observation"]],
   ["validate:project-completion-audit", ["npm", "run", "validate:project-completion-audit"]],
   ["validate:release-blockers", ["npm", "run", "validate:release-blockers"]],
+  ["validate:release-blockers-report-current", ["npm", "run", "validate:release-blockers-report-current"]],
   ["validate:release-readiness", ["npm", "run", "validate:release-readiness"]],
   ["validate:windows-package-workflow", ["npm", "run", "validate:windows-package-workflow"]],
   ["validate:github-actions-status-tool", ["npm", "run", "validate:github-actions-status-tool"]],

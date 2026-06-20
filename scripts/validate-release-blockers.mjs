@@ -3,6 +3,7 @@ import { join } from "node:path";
 
 const root = process.cwd();
 const blockersPath = join(root, "docs/release-blockers.json");
+const blockersReportPath = join(root, "docs/release-blockers.md");
 const auditPath = join(root, "docs/project-completion-audit.md");
 const packagePath = join(root, "package.json");
 const failures = [];
@@ -61,6 +62,26 @@ if (!existsSync(blockersPath)) {
       if (!Array.isArray(blocker.closureEvidence)) {
         failures.push(`docs/release-blockers.json ${blocker.id} closureEvidence must be an array`);
       }
+    }
+  }
+}
+
+if (!existsSync(blockersReportPath)) {
+  failures.push("missing docs/release-blockers.md");
+} else {
+  const report = readFileSync(blockersReportPath, "utf8");
+  for (const snippet of [
+    "# 鱼仔桌宠剩余硬缺口报告",
+    "项目可标记完成：否",
+    "transition_out_high_risk",
+    "runtime_duration_short",
+    "windows_real_machine_smoke",
+    "macos_sign_notarize",
+    "signed_user_safety_recheck",
+    "`docs/release-blockers.json` 和本文档必须保持同步"
+  ]) {
+    if (!report.includes(snippet)) {
+      failures.push(`docs/release-blockers.md missing release blocker report text: ${snippet}`);
     }
   }
 }

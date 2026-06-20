@@ -17,7 +17,7 @@
 - Windows 实机验收清单：`docs/windows-release-smoke.md` 已补齐安装包、透明置顶、鼠标靠近、定时气泡和卸载检查项；实际 Windows 实机验收尚未执行。
 - Windows 远端打包入口：`.github/workflows/windows-package.yml` 已补齐 GitHub Actions 试用包 artifact 工作流；仍需远端运行和实机安装验证。
 - Windows Actions 状态查询：`docs/windows-actions-status.md` 已补齐 `npm run actions:windows-status` 只读查询入口；当前仍缺少可用 token 或 GitHub 页面证据来确认 artifact。
-- 剩余硬缺口清单：`docs/release-blockers.json` 已记录 `transition_out_high_risk`、`runtime_duration_short`、`windows_real_machine_smoke`、`macos_sign_notarize`、`signed_user_safety_recheck`；这些条目关闭前，项目不得标记为完全完成。
+- 剩余硬缺口清单：`docs/release-blockers.json` 已记录 `transition_out_high_risk`、`runtime_duration_short`、`windows_real_machine_smoke`、`macos_sign_notarize`、`signed_user_safety_recheck`，中文报告见 `docs/release-blockers.md`；这些条目关闭前，项目不得标记为完全完成。
 - 当前剩余产品风险：动作自然度仍有明确缺口，不应把它解释成最终质量已完成。
 
 ## 已满足的第一版能力
@@ -39,7 +39,7 @@
 | Windows 安装包实机验收清单 | `docs/windows-release-smoke.md` | 已补齐清单，未执行实机验收 |
 | Windows 远端试用包工作流 | `.github/workflows/windows-package.yml` | 已补齐，未完成实机验收 |
 | Windows Actions 状态查询入口 | `docs/windows-actions-status.md` | 已补齐，未确认远端 artifact |
-| 剩余硬缺口机器清单 | `docs/release-blockers.json` | 已补齐，仍有 open blocker |
+| 剩余硬缺口机器清单 | `docs/release-blockers.json`、`docs/release-blockers.md` | 已补齐，仍有 open blocker |
 
 ## 发布验证记录
 
