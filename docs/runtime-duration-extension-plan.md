@@ -6,8 +6,8 @@
 
 ## 当前摘要
 
-- runtime 时长不足动作数：30
-- daily：13
+- runtime 时长不足动作数：27
+- daily：10
 - interactive：17
 - transition：0
 
@@ -15,9 +15,6 @@
 
 | action | 分类 | 当前 | 契约目标 | 缺口 | 预期源视频 | 补长策略 |
 | --- | --- | ---: | ---: | ---: | --- | --- |
-| idle_primary | daily | 72 帧 / 3s | 192 帧 / 8s | 120 帧 / 5s | assets/origin/generated/kling/idle_primary.mp4 | 优先补 8 秒日常循环源视频，保持首尾安全帧接近。 |
-| idle_secondary | daily | 72 帧 / 3s | 192 帧 / 8s | 120 帧 / 5s | assets/origin/generated/kling/idle_secondary.mp4 | 优先补 8 秒日常循环源视频，保持首尾安全帧接近。 |
-| tail_wag | daily | 72 帧 / 3s | 192 帧 / 8s | 120 帧 / 5s | assets/origin/generated/kling/tail_wag.mp4 | 优先补 8 秒日常循环源视频，保持首尾安全帧接近。 |
 | slow_blink | daily | 120 帧 / 5s | 144 帧 / 6s | 24 帧 / 1s | assets/origin/generated/kling/slow_blink.mp4 | 补充更长生活化分段素材，接入前复查尾段回到安全姿态。 |
 | look_around | daily | 120 帧 / 5s | 144 帧 / 6s | 24 帧 / 1s | assets/origin/generated/kling/look_around.mp4 | 补充更长生活化分段素材，接入前复查尾段回到安全姿态。 |
 | groom_face_wash | daily | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/groom_face_wash.mp4 | 补充更长生活化分段素材，接入前复查尾段回到安全姿态。 |

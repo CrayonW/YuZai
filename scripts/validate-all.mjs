@@ -29,6 +29,7 @@ const steps = [
   ["validate:manifest-contract:current", ["npm", "run", "validate:manifest-contract:current"]],
   ["validate:animation-asset-contract", ["npm", "run", "validate:animation-asset-contract"]],
   ["validate:runtime-duration-extension-plan-current", ["npm", "run", "validate:runtime-duration-extension-plan-current"]],
+  ["validate:runtime-duration-phase1", ["npm", "run", "validate:runtime-duration-phase1"]],
   ["validate:animation-intake-checklist", ["npm", "run", "validate:animation-intake-checklist"]],
   ["validate:origin-video-audit", ["npm", "run", "validate:origin-video-audit"]],
   ["animations:audit-origin", ["npm", "run", "animations:audit-origin"]],

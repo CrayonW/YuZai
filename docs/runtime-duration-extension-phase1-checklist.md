@@ -128,6 +128,12 @@ npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-duration-ph
 
 - `assets/reviews/runtime/duration-extension-phase1/`
 
+phase1-a 已保存证据：
+
+- `idle_primary`：`assets/reviews/runtime/duration-extension-phase1/idle-primary-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=12`，尺寸 `440x440`。
+- `idle_secondary`：`assets/reviews/runtime/duration-extension-phase1/idle-secondary-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=9`，尺寸 `440x440`。
+- `tail_wag`：`assets/reviews/runtime/duration-extension-phase1/tail-wag-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=8`，尺寸 `440x440`。
+
 ## Git 记录规则
 
 - 每完成一个波次并通过验证后，单独提交。
@@ -143,3 +149,11 @@ npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-duration-ph
 3. `tail_wag`
 
 这 3 个动作是最常见待机动作，收益最高，且当前都有 72 帧真实素材，适合先用安全正放循环补到 192 帧。
+
+## 执行状态
+
+- `phase1-a`：已确认执行，已用现有序列帧补长 `idle_primary`、`idle_secondary`、`tail_wag`。
+- 当前结果：三项均从 72 帧补到 192 帧，仍使用原始 runtime 帧派生，不调用可灵生成新视频。
+- 已新增门禁：`npm run validate:runtime-duration-phase1`。
+- 已补桌面验收：三项均已生成 12 帧桌面截图和 contact sheet，且 `capture:inspect` 均通过。
+- 剩余范围：`phase1-b`、`phase1-c`、`phase1-d` 仍未执行。

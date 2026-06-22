@@ -2109,3 +2109,21 @@ FPS：24。
 桌面验收：已补 4 组桌面多帧截图，分别保存到 `assets/reviews/runtime/transition-out-recovery/sleep-contact-sheet.png`、`assets/reviews/runtime/transition-out-recovery/waking-contact-sheet.png`、`assets/reviews/runtime/transition-out-recovery/poke-annoyed-contact-sheet.png`、`assets/reviews/runtime/transition-out-recovery/paw-raise-contact-sheet.png`；`capture:inspect` 对 4 组序列均通过。
 已知问题：`docs/action-transition-risk-report.md` 仍保留 4 个原动作直接回切 high 记录，但 `current bridge` 已显示为对应 transitionOut；如后续人工观感仍生硬，应重生成尾段更明确回目标姿态的视频。
 决定：接受 transition-out-recovery 作为已生成、已接入 runtime、已桌面截图验收的过渡桥方案，并关闭 `transition_out_high_risk` blocker；项目整体仍因 runtime 时长、Windows 实机、macOS 签名/公证和签名后安全复核未完成而不能标记完成。
+
+## 2026-06-22 runtime 时长补长 phase1-a
+
+日期：2026-06-22
+源文件：`assets/runtime/animations/manifest.json`、`assets/runtime/animations/idle_primary/frames`、`assets/runtime/animations/idle_secondary/frames`、`assets/runtime/animations/tail_wag/frames`、`scripts/extend-runtime-duration-phase1.mjs`、`scripts/validate-runtime-duration-phase1.mjs`、`docs/runtime-duration-extension-phase1-checklist.md`
+目标动作：`idle_primary`、`idle_secondary`、`tail_wag`
+问题：`runtime_duration_short` blocker 中最常见的 3 个待机动作只有 72 帧约 3 秒，低于契约 192 帧约 8 秒，长时间桌面陪伴时重复感明显。
+参考片段：`phase1-a`、`安全正放循环`、`runtime 时长不足动作数：27`。
+帧数：3 个动作均从 72 帧补长到 192 帧。
+FPS：不变，仍为 24 FPS。
+循环方式：使用现有 72 帧真实 runtime 序列按顺序循环派生到 192 帧；未调用可灵生成新视频，未修改源 mp4。
+水印处理：本轮不处理源视频；所有新增帧来自已经进入 runtime 的透明序列帧。
+重建方法：先新增 `validate:runtime-duration-phase1` 并确认红灯；再新增 `runtime:extend-duration-phase1`，复制现有 72 帧序列补齐到 192 帧，同时把 manifest 的 `frameCount` 更新为 192，`entryFrames` 更新为 `[1,48,96,144]`，`exitFrames` 更新为 `[48,96,144,192]`。
+运行时输出：新增 `idle_primary`、`idle_secondary`、`tail_wag` 的 `frame_000073.png` 到 `frame_000192.png`，并更新 manifest 对应动作。
+验证命令：`npm run validate:runtime-duration-phase1`。
+桌面验收：已补 3 组桌面多帧截图，分别保存到 `assets/reviews/runtime/duration-extension-phase1/idle-primary-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/idle-secondary-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/tail-wag-contact-sheet.png`；`capture:inspect` 结果分别为 `changedFrames=12`、`changedFrames=9`、`changedFrames=8`，尺寸均为 `440x440`。
+已知问题：本轮只处理 `phase1-a`，`runtime_duration_short` 仍为 open，剩余短动作数为 27；16 方向 `look_*` 和行走动作仍建议后续单独处理。
+决定：接受 phase1-a 作为先用现有序列帧降低待机重复感的第一步，继续保留后续重新生成更自然长视频的空间。

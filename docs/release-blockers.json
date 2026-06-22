@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-20",
+  "updatedAt": "2026-06-22",
   "purpose": "跟踪鱼仔桌宠距离可交付第一版的剩余硬缺口。所有条目关闭前，项目不得标记为完全完成。",
   "completionPolicy": {
     "projectCanBeMarkedComplete": false,
@@ -48,19 +48,24 @@
     },
     {
       "id": "runtime_duration_short",
-      "title": "30 个 runtime 动作时长不足",
+      "title": "27 个 runtime 动作时长不足",
       "status": "open",
       "category": "animation-duration",
       "source": "docs/animation-asset-contract.md",
       "evidence": [
         "docs/animation-asset-contract.md",
         "docs/project-completion-audit.md",
-        "docs/runtime-duration-extension-plan.md"
+        "docs/runtime-duration-extension-plan.md",
+        "docs/runtime-duration-extension-phase1-checklist.md",
+        "assets/reviews/runtime/duration-extension-phase1/idle-primary-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/idle-secondary-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/tail-wag-contact-sheet.png"
       ],
       "requiredActions": [
-        "为 daily 动作补充更长视频或分段素材",
+        "继续为剩余 daily 动作补充更长视频或分段素材",
         "完成抽帧和水印检查",
         "更新 runtime manifest",
+        "补充剩余动作桌面多帧截图验收",
         "重新运行 npm run validate:all",
         "重新运行 npm run validate:release"
       ],

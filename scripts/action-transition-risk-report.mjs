@@ -10,6 +10,8 @@ const RISK_THRESHOLDS = {
   high: 0.18,
   medium: 0.1
 };
+const featureCache = new Map();
+const featureSize = 32;
 
 export function buildActionTransitionRiskReport(manifest) {
   const actions = manifest.actions || {};
@@ -59,7 +61,7 @@ export function renderActionTransitionRiskReport(report) {
     `检查切换数：${report.transitionCount}`,
     `风险摘要：high ${report.summary.high} / medium ${report.summary.medium} / low ${report.summary.low}`,
     "",
-    "本文档由 `npm run animations:transition-risk -- --write docs/action-transition-risk-report.md` 生成，用于把“动作衔接太生硬”的主观反馈转成可复查的帧差异清单。数值越高，说明切换前后帧差异越大，越需要补安全帧、重生成起止姿态或增加 `transitionIn` / `transitionOut` 专用动作。",
+    "本文档由 `npm run animations:transition-risk -- --write docs/action-transition-risk-report.md` 生成，用于把“动作衔接太生硬”的主观反馈转成可复查的帧差异清单。指标使用 32x32 RGBA 缩略特征计算 RMSE，数值越高，说明切换前后帧差异越大，越需要补安全帧、重生成起止姿态或增加 `transitionIn` / `transitionOut` 专用动作。",
     "",
     "## 当前结论",
     "",
@@ -156,21 +158,32 @@ function buildTransitionRisk({ manifest, fromAction, toAction, direction, reason
 function compareFrameMetric(left, right) {
   if (!existsSync(left) || !existsSync(right)) return 1;
 
-  try {
-    const output = execFileSync("magick", ["compare", "-metric", "RMSE", left, right, "null:"], {
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "pipe"]
-    });
-    return parseRmse(output);
-  } catch (error) {
-    const text = `${error.stdout || ""}\n${error.stderr || ""}`;
-    return parseRmse(text);
+  const leftFeature = frameFeature(left);
+  const rightFeature = frameFeature(right);
+  if (!leftFeature || !rightFeature || leftFeature.length !== rightFeature.length) return 1;
+
+  let sum = 0;
+  for (let index = 0; index < leftFeature.length; index += 1) {
+    const diff = leftFeature[index] - rightFeature[index];
+    sum += diff * diff;
   }
+
+  return Math.sqrt(sum / leftFeature.length) / 255;
 }
 
-function parseRmse(text) {
-  const match = String(text).match(/\((0(?:\.\d+)?|1(?:\.0+)?)\)/);
-  return match ? Number(match[1]) : 1;
+function frameFeature(path) {
+  if (featureCache.has(path)) return featureCache.get(path);
+
+  try {
+    const output = execFileSync("magick", [path, "-alpha", "on", "-resize", `${featureSize}x${featureSize}!`, "-depth", "8", "rgba:-"], {
+      stdio: ["ignore", "pipe", "pipe"]
+    });
+    featureCache.set(path, output);
+    return output;
+  } catch (error) {
+    featureCache.set(path, null);
+    return null;
+  }
 }
 
 function framePath(config, oneBasedFrame) {

@@ -53,6 +53,8 @@
     "validate:manifest-contract:current": "node scripts/manifest-contract.mjs",
     "validate:animation-asset-contract": "node scripts/validate-animation-asset-contract.mjs",
     "validate:runtime-duration-extension-plan-current": "node scripts/validate-runtime-duration-extension-plan-current.mjs",
+    "validate:runtime-duration-phase1": "node scripts/validate-runtime-duration-phase1.mjs",
+    "runtime:extend-duration-phase1": "node scripts/extend-runtime-duration-phase1.mjs",
     "validate:animation-intake-checklist": "node scripts/validate-animation-intake-checklist.mjs",
     "validate:origin-video-audit": "node scripts/validate-origin-video-audit.mjs",
     "animations:audit-origin": "node scripts/origin-video-audit.mjs",

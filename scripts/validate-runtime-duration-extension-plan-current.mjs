@@ -18,10 +18,7 @@ if (!existsSync(planPath)) {
 
   for (const snippet of [
     "# runtime 动作时长补长清单",
-    "runtime 时长不足动作数：30",
-    "idle_primary",
-    "idle_secondary",
-    "tail_wag",
+    "runtime 时长不足动作数：27",
     "look_e",
     "look_ese",
     "不得只修改 manifest 帧数来关闭时长缺口",
@@ -42,6 +39,8 @@ if (!existsSync(blockersPath)) {
     failures.push("docs/release-blockers.json missing runtime_duration_short blocker");
   } else if (!blocker.evidence?.includes("docs/runtime-duration-extension-plan.md")) {
     failures.push("runtime_duration_short evidence must include docs/runtime-duration-extension-plan.md");
+  } else if (!blocker.evidence?.includes("docs/runtime-duration-extension-phase1-checklist.md")) {
+    failures.push("runtime_duration_short evidence must include docs/runtime-duration-extension-phase1-checklist.md");
   }
 }
 

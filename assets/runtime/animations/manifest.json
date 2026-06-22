@@ -8,7 +8,7 @@
       "frameRoot": "../assets/runtime/animations/idle_primary/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 72,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -17,13 +17,15 @@
       "category": "daily",
       "entryFrames": [
         1,
-        24,
-        48
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        24,
         48,
-        72
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -33,7 +35,7 @@
       "frameRoot": "../assets/runtime/animations/idle_secondary/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 72,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -42,13 +44,15 @@
       "category": "daily",
       "entryFrames": [
         1,
-        24,
-        48
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        24,
         48,
-        72
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -58,7 +62,7 @@
       "frameRoot": "../assets/runtime/animations/tail_wag/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 72,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -67,13 +71,15 @@
       "category": "daily",
       "entryFrames": [
         1,
-        24,
-        48
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        24,
         48,
-        72
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
