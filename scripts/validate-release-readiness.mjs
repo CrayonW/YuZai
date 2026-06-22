@@ -147,8 +147,10 @@ if (!existsSync(releaseBlockersPath)) {
 } else {
   const releaseBlockers = JSON.parse(readFileSync(releaseBlockersPath, "utf8"));
   const blockers = releaseBlockers.blockers ?? [];
+  if (!blockers.some((blocker) => blocker.id === "transition_out_high_risk" && blocker.status === "closed")) {
+    failures.push("docs/release-blockers.json must mark transition_out_high_risk closed after transitionOut runtime evidence");
+  }
   for (const id of [
-    "transition_out_high_risk",
     "runtime_duration_short",
     "windows_real_machine_smoke",
     "macos_sign_notarize",

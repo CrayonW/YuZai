@@ -62,4 +62,11 @@ npm run kling:generate-batch -- --batch transition-out-recovery
 
 ## 当前决定
 
-当前只完成处理前清单、提示词和批次计划。尚未生成视频，尚未新增 runtime 帧，尚未修改任何动作的 `transitionOut` 字段。
+4 个 transitionOut 视频已生成并接入 runtime：
+
+- `sleep.transitionOut = "sleep_to_sleeping"`
+- `waking.transitionOut = "waking_to_idle"`
+- `poke_annoyed.transitionOut = "poke_annoyed_to_idle"`
+- `paw_raise.transitionOut = "paw_raise_to_idle"`
+
+桌面多帧截图证据已保存到 `assets/reviews/runtime/transition-out-recovery/`。如果后续人工观感仍生硬，应优先重生成尾段更明确回到目标姿态的视频，而不是继续叠加 transitionOut。

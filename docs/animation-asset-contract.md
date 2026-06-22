@@ -13,9 +13,9 @@
 ## 当前摘要
 
 - 计划动作数：43
-- runtime 可播放动作数：38
-- 可播放覆盖率：86%
-- 缺失动作数：6
+- runtime 可播放动作数：42
+- 可播放覆盖率：95%
+- 缺失动作数：2
 - runtime 时长不足动作数：30
 - manifest 元数据不一致数：4
 
@@ -25,7 +25,7 @@
 | --- | ---: | ---: | ---: |
 | daily | 13 | 13 | 0 |
 | interactive | 24 | 24 | 0 |
-| transition | 6 | 0 | 6 |
+| transition | 6 | 4 | 2 |
 
 ## 优先补齐批次
 
@@ -35,21 +35,13 @@
 | action | 分类 | 时长 | 预期源视频 |
 | --- | --- | ---: | --- |
 | idle_to_paw_raise | transition | 2s | assets/origin/generated/kling/idle_to_paw_raise.mp4 |
-| paw_raise_to_idle | transition | 2s | assets/origin/generated/kling/paw_raise_to_idle.mp4 |
 | idle_to_cursor_watch | transition | 2s | assets/origin/generated/kling/idle_to_cursor_watch.mp4 |
-| sleep_to_sleeping | transition | 2s | assets/origin/generated/kling/sleep_to_sleeping.mp4 |
-| waking_to_idle | transition | 2s | assets/origin/generated/kling/waking_to_idle.mp4 |
-| poke_annoyed_to_idle | transition | 2s | assets/origin/generated/kling/poke_annoyed_to_idle.mp4 |
 
 
 ## 缺失动作
 
 - `idle_to_paw_raise`（transition，2s）：待机到抬爪的衔接，降低序列帧切换突兀感；预期源视频：assets/origin/generated/kling/idle_to_paw_raise.mp4
-- `paw_raise_to_idle`（transition，2s）：抬爪回待机的衔接，降低回切跳变；预期源视频：assets/origin/generated/kling/paw_raise_to_idle.mp4
 - `idle_to_cursor_watch`（transition，2s）：待机到注视鼠标的衔接，支持鼠标靠近更自然；预期源视频：assets/origin/generated/kling/idle_to_cursor_watch.mp4
-- `sleep_to_sleeping`（transition，2s）：入睡动作尾段到睡眠循环的衔接，修复 sleep 回切 sleeping 的尾段跳变；预期源视频：assets/origin/generated/kling/sleep_to_sleeping.mp4
-- `waking_to_idle`（transition，2s）：唤醒动作尾段回到待机的衔接，修复 waking 回切 idle_primary 的尾段跳变；预期源视频：assets/origin/generated/kling/waking_to_idle.mp4
-- `poke_annoyed_to_idle`（transition，2s）：被戳不满动作尾段回到待机的衔接，修复 poke_annoyed 回切 idle_primary 的尾段跳变；预期源视频：assets/origin/generated/kling/poke_annoyed_to_idle.mp4
 
 ## runtime 时长不足
 

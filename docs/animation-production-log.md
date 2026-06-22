@@ -2091,3 +2091,21 @@ FPS：未修改。
 桌面验收：本轮不新增桌面截图；签名、公证和普通用户首次打开体验尚未执行。
 已知问题：此报告不关闭 `macos_sign_notarize` 或 `signed_user_safety_recheck`；后续仍需正式 Developer ID、notarization、Gatekeeper 验收和签名后安装安全提示复核。
 决定：接受 `docs/macos-signing-notarization-status.md` 作为 macOS 发布 blocker 的当前 evidence。
+
+## 2026-06-21 transition-out-recovery 真实生成与 runtime 接入
+
+日期：2026-06-21
+源文件：`assets/origin/generated/kling/sleep_to_sleeping.mp4`、`assets/origin/generated/kling/waking_to_idle.mp4`、`assets/origin/generated/kling/poke_annoyed_to_idle.mp4`、`assets/origin/generated/kling/paw_raise_to_idle.mp4`、`docs/kling-generated-video-audit.md`、`docs/runtime-intake-waves.json`、`docs/runtime-intake-approvals/transition-out-recovery.approved.json`、`assets/runtime/animations/manifest.json`
+目标动作：`sleep_to_sleeping`、`waking_to_idle`、`poke_annoyed_to_idle`、`paw_raise_to_idle`
+问题：4 个 high 风险回切此前只有生成前状态包，没有真实视频、runtime 序列帧和 manifest bridge。
+参考片段：`transition-out-recovery`、`current bridge`、`transitionOut`、`exitFrames`
+帧数：每个新增 transition 动作 120 帧。
+FPS：24。
+循环方式：4 个新增动作均为非循环 `transition`。
+水印处理：runtime 接入执行了绿幕抠像、水印区域透明化和绿色残留清理；审查总览图未见明显水印、文字或 logo。
+重建方法：运行 `npm run kling:generate-batch -- --batch transition-out-recovery` 生成 4 个源视频；运行 `npm run kling:generated-video-audit -- --batch transition-out-recovery --extract-previews --write docs/kling-generated-video-audit.md` 生成审查证据；创建正式 wave 和批准文件后运行 `npm run runtime:intake-executor -- --wave transition-out-recovery --execute`；随后把 `sleep`、`waking`、`poke_annoyed`、`paw_raise` 的 `transitionOut` 指向对应过渡动作。
+运行时输出：新增 `assets/runtime/animations/*_to_*/frames`，并在 manifest 中新增 4 个 transition action。`waking_to_idle`、`poke_annoyed_to_idle`、`paw_raise_to_idle` 的尾段与 idle 差异较大，因此运行时 director 支持 transition 在 `exitFrames` 到达或越过时提前回切，这 3 个动作的 `exitFrames` 标为 `[1]`。
+验证命令：`npm run validate:animation-director`、`npm run validate:transition-out-intake-proposal`、`npm run validate:runtime-animations`、`npm run validate:manifest-contract:current`、`npm run validate:runtime-intake-dry-runs-current`
+桌面验收：已补 4 组桌面多帧截图，分别保存到 `assets/reviews/runtime/transition-out-recovery/sleep-contact-sheet.png`、`assets/reviews/runtime/transition-out-recovery/waking-contact-sheet.png`、`assets/reviews/runtime/transition-out-recovery/poke-annoyed-contact-sheet.png`、`assets/reviews/runtime/transition-out-recovery/paw-raise-contact-sheet.png`；`capture:inspect` 对 4 组序列均通过。
+已知问题：`docs/action-transition-risk-report.md` 仍保留 4 个原动作直接回切 high 记录，但 `current bridge` 已显示为对应 transitionOut；如后续人工观感仍生硬，应重生成尾段更明确回目标姿态的视频。
+决定：接受 transition-out-recovery 作为已生成、已接入 runtime、已桌面截图验收的过渡桥方案，并关闭 `transition_out_high_risk` blocker；项目整体仍因 runtime 时长、Windows 实机、macOS 签名/公证和签名后安全复核未完成而不能标记完成。

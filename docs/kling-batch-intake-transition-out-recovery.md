@@ -14,44 +14,44 @@
   - 循环：否
   - 时长：2s
   - 生成命令：npm run kling:generate -- --action sleep_to_sleeping
-  - manifest 状态：待新增
+  - manifest 状态：已存在
   - 会覆盖路径：assets/runtime/animations/sleep_to_sleeping/frames
   - 状态映射建议：待确认
   - 预期帧率：24 fps
-  - 需要确认：确认新增 manifest action 和状态映射
+  - 需要确认：确认是否覆盖现有帧
 - 源视频：assets/origin/generated/kling/waking_to_idle.mp4
   - 目标 action：waking_to_idle
   - 分类：transition
   - 循环：否
   - 时长：2s
   - 生成命令：npm run kling:generate -- --action waking_to_idle
-  - manifest 状态：待新增
+  - manifest 状态：已存在
   - 会覆盖路径：assets/runtime/animations/waking_to_idle/frames
   - 状态映射建议：待确认
   - 预期帧率：24 fps
-  - 需要确认：确认新增 manifest action 和状态映射
+  - 需要确认：确认是否覆盖现有帧
 - 源视频：assets/origin/generated/kling/poke_annoyed_to_idle.mp4
   - 目标 action：poke_annoyed_to_idle
   - 分类：transition
   - 循环：否
   - 时长：2s
   - 生成命令：npm run kling:generate -- --action poke_annoyed_to_idle
-  - manifest 状态：待新增
+  - manifest 状态：已存在
   - 会覆盖路径：assets/runtime/animations/poke_annoyed_to_idle/frames
   - 状态映射建议：待确认
   - 预期帧率：24 fps
-  - 需要确认：确认新增 manifest action 和状态映射
+  - 需要确认：确认是否覆盖现有帧
 - 源视频：assets/origin/generated/kling/paw_raise_to_idle.mp4
   - 目标 action：paw_raise_to_idle
   - 分类：transition
   - 循环：否
   - 时长：2s
   - 生成命令：npm run kling:generate -- --action paw_raise_to_idle
-  - manifest 状态：待新增
+  - manifest 状态：已存在
   - 会覆盖路径：assets/runtime/animations/paw_raise_to_idle/frames
   - 状态映射建议：待确认
   - 预期帧率：24 fps
-  - 需要确认：确认新增 manifest action 和状态映射
+  - 需要确认：确认是否覆盖现有帧
 
 ### 必跑验证命令
 

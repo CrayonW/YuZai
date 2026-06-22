@@ -173,11 +173,16 @@ export class AnimationDirector {
     const config = this.configFor(selection.action);
     if (config.category !== "interactive" && config.category !== "transition") return false;
     if (selection.sequence.loop) return false;
+    if (config.category === "transition" && this.hasReachedExitFrame(selection.frameIndex, config)) return true;
     return selection.frameIndex >= selection.sequence.frames.length - 1;
   }
 
   private isExitFrame(zeroBasedFrameIndex: number, config: RequiredSchedulingConfig): boolean {
     return config.exitFrames.includes(zeroBasedFrameIndex + 1);
+  }
+
+  private hasReachedExitFrame(zeroBasedFrameIndex: number, config: RequiredSchedulingConfig): boolean {
+    return config.exitFrames.some((frame) => zeroBasedFrameIndex + 1 >= frame);
   }
 
   private captureSuspendedDaily(nextAction: RuntimeAnimationAction, now: number): void {

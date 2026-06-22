@@ -57,11 +57,11 @@ const testSource = `
   const transitionStatusPath = ${JSON.stringify(join(process.cwd(), "docs", "kling-batch-status-transition-out-recovery.md"))};
   const transitionStatus = readFileSync(transitionStatusPath, "utf8");
   assertIncludes(transitionStatus, "批次：第四批：高风险回切过渡 (transition-out-recovery)", "transition recovery status has correct batch title");
-  assertIncludes(transitionStatus, "汇总：ready 0 / empty 0 / missing 4 / total 4", "transition recovery status records four missing videos");
-  assertIncludes(transitionStatus, "| sleep_to_sleeping | missing | 0 | assets/origin/generated/kling/sleep_to_sleeping.mp4 |", "transition recovery status tracks sleep_to_sleeping");
-  assertIncludes(transitionStatus, "| waking_to_idle | missing | 0 | assets/origin/generated/kling/waking_to_idle.mp4 |", "transition recovery status tracks waking_to_idle");
-  assertIncludes(transitionStatus, "| poke_annoyed_to_idle | missing | 0 | assets/origin/generated/kling/poke_annoyed_to_idle.mp4 |", "transition recovery status tracks poke_annoyed_to_idle");
-  assertIncludes(transitionStatus, "| paw_raise_to_idle | missing | 0 | assets/origin/generated/kling/paw_raise_to_idle.mp4 |", "transition recovery status tracks paw_raise_to_idle");
+  assertIncludes(transitionStatus, "汇总：ready 4 / empty 0 / missing 0 / total 4", "transition recovery status records four ready videos");
+  assertIncludes(transitionStatus, "| sleep_to_sleeping | ready |", "transition recovery status tracks sleep_to_sleeping");
+  assertIncludes(transitionStatus, "| waking_to_idle | ready |", "transition recovery status tracks waking_to_idle");
+  assertIncludes(transitionStatus, "| poke_annoyed_to_idle | ready |", "transition recovery status tracks poke_annoyed_to_idle");
+  assertIncludes(transitionStatus, "| paw_raise_to_idle | ready |", "transition recovery status tracks paw_raise_to_idle");
 
   function assertEqual(actual, expected, label) {
     if (actual !== expected) {

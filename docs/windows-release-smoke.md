@@ -114,6 +114,6 @@ npm run package:win
 
 - 当前正式签名尚未完成。
 - macOS 公证不适用于 Windows，但 Windows 安装包仍需要后续签名策略。
-- 当前仍有 4 个 high 风险 `transitionOut` 回切动作未接入。
+- 当前 4 个高风险回切已接入 `transitionOut` bridge，并已补 macOS 桌面多帧截图证据；Windows 实机仍需单独验收同类交互。
 - 当前仍有 30 个 runtime 动作时长不足，长时间陪伴可能出现重复感。
 - 本清单完成前，不能把 Windows 安装包视为已经完成实机验收。

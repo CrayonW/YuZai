@@ -119,7 +119,7 @@ Windows Package Actions 状态查询见 `docs/windows-actions-status.md`，可�
 - `.github/workflows/windows-package.yml` 只生成 Windows 试用包 artifact，不签名、不发布正式版本。
 - `npm run actions:windows-status` 只查询远端 Actions 状态，不替代 Windows 10/11 实机验收。
 - `docs/release-blockers.json` 和 `docs/release-blockers.md` 中仍有 open blocker 时，不得把项目写成最终完成。
-- 当前动作自然度仍有 4 个 high 风险回切，后续应生成并接入对应的 transitionOut 动作。
+- 当前 4 个原动作直接回切 high 风险记录已配置 transitionOut，并已补桌面多帧截图证据；后续自然度主要缺口转为 30 个 runtime 动作时长不足。
 - 当前 runtime 时长不足动作数仍为 30，长时间陪伴可能出现重复感。
 - 当前应用包不包含 `assets/origin`，因此不能从应用包内反向恢复源视频或重新抽帧。
 

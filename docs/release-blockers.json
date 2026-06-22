@@ -11,8 +11,8 @@
   "blockers": [
     {
       "id": "transition_out_high_risk",
-      "title": "4 个 high 风险 transitionOut 回切动作未接入",
-      "status": "open",
+      "title": "4 个 high 风险 transitionOut 已接入并完成桌面验收",
+      "status": "closed",
       "category": "animation-naturalness",
       "source": "docs/action-transition-risk-report.md",
       "evidence": [
@@ -20,18 +20,31 @@
         "docs/transition-out-action-checklist.md",
         "docs/kling-preflight-transition-out-recovery.md",
         "docs/kling-batch-status-transition-out-recovery.md",
-        "docs/kling-batch-intake-transition-out-recovery.md"
+        "docs/kling-batch-intake-transition-out-recovery.md",
+        "docs/kling-generated-video-audit.md",
+        "docs/runtime-intake-transition-out-recovery-dry-run.md",
+        "docs/runtime-intake-transition-out-recovery-proposal.md"
       ],
       "requiredActions": [
-        "生成并接入 sleep_to_sleeping",
-        "生成并接入 waking_to_idle",
-        "生成并接入 poke_annoyed_to_idle",
-        "生成并接入 paw_raise_to_idle",
+        "桌面多帧截图验收 sleep_to_sleeping",
+        "桌面多帧截图验收 waking_to_idle",
+        "桌面多帧截图验收 poke_annoyed_to_idle",
+        "桌面多帧截图验收 paw_raise_to_idle",
+        "确认 docs/action-transition-risk-report.md 中 4 个原 high 切换均显示 current bridge",
         "重新运行 npm run validate:all",
-        "重新运行 npm run validate:release",
-        "补充桌面多帧截图验收"
+        "重新运行 npm run validate:release"
       ],
-      "closureEvidence": []
+      "closureEvidence": [
+        "assets/reviews/runtime/transition-out-recovery/sleep-contact-sheet.png",
+        "assets/reviews/runtime/transition-out-recovery/waking-contact-sheet.png",
+        "assets/reviews/runtime/transition-out-recovery/poke-annoyed-contact-sheet.png",
+        "assets/reviews/runtime/transition-out-recovery/paw-raise-contact-sheet.png",
+        "npm run validate:animation-director",
+        "npm run validate:transition-out-intake-proposal",
+        "npm run validate:runtime-animations",
+        "npm run validate:manifest-contract:current",
+        "npm run validate:release-blockers"
+      ]
     },
     {
       "id": "runtime_duration_short",

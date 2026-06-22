@@ -573,6 +573,77 @@
           "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、鼠标实体和额外物体。"
         }
       ]
+    },
+    {
+      "id": "transition-out-recovery",
+      "name": "第六波：高风险回切过渡",
+      "intent": "补齐动作衔接风险报告中 tail-not-recovered 的 4 个高风险回切过渡，降低动作结束回到日常或睡眠循环时的跳变。",
+      "actions": [
+        {
+          "action": "sleep_to_sleeping",
+          "category": "transition",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/sleep_to_sleeping.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/sleep_to_sleeping.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/sleep_to_sleeping/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "sleeping",
+          "bridge": "transition-out.sleep_to_sleeping",
+          "transitionPlan": "sleep 播放结束后先进入本过渡动作，再回到 sleeping 循环，避免直接从入睡尾帧跳回睡眠首帧。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前总览图未见明显水印。"
+        },
+        {
+          "action": "waking_to_idle",
+          "category": "transition",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/waking_to_idle.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/waking_to_idle.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/waking_to_idle/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "transition-out.waking_to_idle",
+          "transitionPlan": "waking 播放结束后先进入本过渡动作，再回到 idle_primary，降低醒来尾段回待机的姿态跳变。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前总览图未见明显水印。"
+        },
+        {
+          "action": "poke_annoyed_to_idle",
+          "category": "transition",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/poke_annoyed_to_idle.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/poke_annoyed_to_idle.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/poke_annoyed_to_idle/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "transition-out.poke_annoyed_to_idle",
+          "transitionPlan": "poke_annoyed 播放结束后先进入本过渡动作，再回到 idle_primary，降低被戳反应尾段回待机的姿态跳变。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前总览图未见明显水印。"
+        },
+        {
+          "action": "paw_raise_to_idle",
+          "category": "transition",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/paw_raise_to_idle.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/paw_raise_to_idle.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/paw_raise_to_idle/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "transition-out.paw_raise_to_idle",
+          "transitionPlan": "paw_raise 播放结束后先进入本过渡动作，再回到 idle_primary，降低抬爪尾段回待机的姿态跳变。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前总览图未见明显水印。"
+        }
+      ]
     }
   ]
 }

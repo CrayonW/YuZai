@@ -73,7 +73,7 @@ const testSource = `
   assertIncludes(transitionChecklist, "目标 action：waking_to_idle", "transition recovery intake tracks waking_to_idle");
   assertIncludes(transitionChecklist, "目标 action：poke_annoyed_to_idle", "transition recovery intake tracks poke_annoyed_to_idle");
   assertIncludes(transitionChecklist, "目标 action：paw_raise_to_idle", "transition recovery intake tracks paw_raise_to_idle");
-  assertIncludes(transitionChecklist, "manifest 状态：待新增", "transition recovery intake records pending manifest additions");
+  assertIncludes(transitionChecklist, "manifest 状态：已存在", "transition recovery intake records connected manifest actions");
 
   function assertEqual(actual, expected, label) {
     if (actual !== expected) {

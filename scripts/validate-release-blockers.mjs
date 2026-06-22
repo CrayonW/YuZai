@@ -11,7 +11,10 @@ const failures = [];
 const transitionRecoveryEvidencePaths = [
   "docs/kling-preflight-transition-out-recovery.md",
   "docs/kling-batch-status-transition-out-recovery.md",
-  "docs/kling-batch-intake-transition-out-recovery.md"
+  "docs/kling-batch-intake-transition-out-recovery.md",
+  "docs/kling-generated-video-audit.md",
+  "docs/runtime-intake-transition-out-recovery-dry-run.md",
+  "docs/runtime-intake-transition-out-recovery-proposal.md"
 ];
 
 const transitionRecoveryActions = [
@@ -30,6 +33,8 @@ const requiredBlockerIds = [
   "macos_sign_notarize",
   "signed_user_safety_recheck"
 ];
+
+const allowedClosedBlockers = new Set(["transition_out_high_risk"]);
 
 if (!existsSync(blockersPath)) {
   failures.push("missing docs/release-blockers.json");
@@ -60,8 +65,11 @@ if (!existsSync(blockersPath)) {
       if (!blocker.id || !requiredBlockerIds.includes(blocker.id)) {
         failures.push(`docs/release-blockers.json has unknown blocker id: ${blocker.id ?? "<missing>"}`);
       }
-      if (blocker.status !== "open") {
-        failures.push(`docs/release-blockers.json blocker must stay open until closure evidence exists: ${blocker.id}`);
+      if (blocker.status !== "open" && blocker.status !== "closed") {
+        failures.push(`docs/release-blockers.json blocker has invalid status: ${blocker.id}`);
+      }
+      if (blocker.status === "closed" && !allowedClosedBlockers.has(blocker.id)) {
+        failures.push(`docs/release-blockers.json blocker must stay open until its closure flow is implemented: ${blocker.id}`);
       }
       for (const key of ["title", "category", "source"]) {
         if (!blocker[key]) {
@@ -76,6 +84,12 @@ if (!existsSync(blockersPath)) {
       }
       if (!Array.isArray(blocker.closureEvidence)) {
         failures.push(`docs/release-blockers.json ${blocker.id} closureEvidence must be an array`);
+      }
+      if (blocker.status === "closed" && blocker.closureEvidence.length === 0) {
+        failures.push(`docs/release-blockers.json ${blocker.id} closed blocker must list closureEvidence`);
+      }
+      if (blocker.status === "open" && blocker.closureEvidence.length > 0) {
+        failures.push(`docs/release-blockers.json ${blocker.id} open blocker must not list closureEvidence`);
       }
     }
     const transitionBlocker = byId.get("transition_out_high_risk");
@@ -114,8 +128,17 @@ for (const evidencePath of transitionRecoveryEvidencePaths) {
 
 if (existsSync(join(root, "docs/kling-batch-status-transition-out-recovery.md"))) {
   const status = readFileSync(join(root, "docs/kling-batch-status-transition-out-recovery.md"), "utf8");
-  if (!status.includes("missing 4")) {
-    failures.push("docs/kling-batch-status-transition-out-recovery.md must record 4 missing videos while transition blocker is open");
+  if (!status.includes("ready 4") || !status.includes("missing 0")) {
+    failures.push("docs/kling-batch-status-transition-out-recovery.md must record 4 ready transition videos");
+  }
+}
+
+if (existsSync(join(root, "docs/action-transition-risk-report.md"))) {
+  const riskReport = readFileSync(join(root, "docs/action-transition-risk-report.md"), "utf8");
+  for (const bridge of transitionRecoveryActions) {
+    if (!riskReport.includes(`| high | 回切 |`) || !riskReport.includes(`| ${bridge} | 已配置 ${bridge}`)) {
+      failures.push(`docs/action-transition-risk-report.md must show current bridge ${bridge}`);
+    }
   }
 }
 

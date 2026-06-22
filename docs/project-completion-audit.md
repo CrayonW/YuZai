@@ -62,14 +62,14 @@ npm run validate:release
 
 ### high 风险回切
 
-`docs/action-transition-risk-report.md` 和 `docs/runtime-naturalness-observation.md` 均指向 4 个 high 风险回切：
+`docs/action-transition-risk-report.md` 仍保留 4 个原动作直接回切的 high 风险帧差，但这 4 个切换已经配置 `transitionOut` bridge，并已补充桌面多帧截图验收：
 
 | transition | 建议动作 | 当前状态 |
 | --- | --- | --- |
-| `sleep -> sleeping` | 生成并接入 `sleep_to_sleeping` transitionOut | 待用户确认生成 |
-| `waking -> idle_primary` | 生成并接入 `waking_to_idle` transitionOut | 待用户确认生成 |
-| `poke_annoyed -> idle_primary` | 生成并接入 `poke_annoyed_to_idle` transitionOut | 待用户确认生成 |
-| `paw_raise -> idle_primary` | 生成并接入 `paw_raise_to_idle` transitionOut | 待用户确认生成 |
+| `sleep -> sleeping` | 已生成并接入 `sleep_to_sleeping` transitionOut | 已验收：`assets/reviews/runtime/transition-out-recovery/sleep-contact-sheet.png` |
+| `waking -> idle_primary` | 已生成并接入 `waking_to_idle` transitionOut | 已验收：`assets/reviews/runtime/transition-out-recovery/waking-contact-sheet.png` |
+| `poke_annoyed -> idle_primary` | 已生成并接入 `poke_annoyed_to_idle` transitionOut | 已验收：`assets/reviews/runtime/transition-out-recovery/poke-annoyed-contact-sheet.png` |
+| `paw_raise -> idle_primary` | 已生成并接入 `paw_raise_to_idle` transitionOut | 已验收：`assets/reviews/runtime/transition-out-recovery/paw-raise-contact-sheet.png` |
 
 当前已经有处理前清单：`docs/transition-out-action-checklist.md`。在用户确认前，不得执行真实可灵生成、不得抽帧、不得创建正式 approved 文件、不得修改 `assets/runtime/animations/manifest.json`。
 机器可读 blocker：`transition_out_high_risk`，记录于 `docs/release-blockers.json`。
@@ -92,7 +92,7 @@ npm run validate:release
 
 ## 下一步建议
 
-1. 如果目标是继续解决“动作衔接太生硬”，下一步应由用户确认 `docs/transition-out-action-checklist.md`，然后生成 4 个 transitionOut 视频。
+1. 如果目标是继续解决“动作衔接太生硬”，下一步不再是 transitionOut 接入，而是处理 `runtime_duration_short` 中 30 个短动作；如果实际长时间使用仍觉得回切生硬，再重生成尾段更明确回目标姿态的视频。
 2. 如果目标是提升长时间陪伴自然度，应先为 daily 动作生成更长视频或分段素材清单，再确认后处理。
 3. 如果目标是发布给别人试用，应优先补签名、公证和 Windows 实机验收，并按 `docs/release-playbook.md` 创建可回滚版本标签。
 

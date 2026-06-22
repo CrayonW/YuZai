@@ -10,7 +10,7 @@
 - MVP 证据：7 / 7 项 verified
 - 13 状态覆盖：independent 13 / mixed 0 / fallback 0 / missing 0
 - 待补状态：0 个
-- runtime 接入边界：当前 5 个波次均已有正式批准文件；后续新增动作仍必须先列清单确认。
+- runtime 接入边界：当前 6 个波次均已有正式批准文件；后续新增动作仍必须先列清单确认。
 
 ## 当前状态缺口
 
@@ -25,6 +25,7 @@
 | sleep-routine | 第三波：睡眠作息链路 | 已批准 | docs/runtime-intake-approvals/sleep-routine.approved.json |
 | dragging-special | 拖拽专项 | 已批准 | docs/runtime-intake-approvals/dragging-special.approved.json |
 | mouse-follow-16-direction | 第五波：16 方向鼠标跟随 | 已批准 | docs/runtime-intake-approvals/mouse-follow-16-direction.approved.json |
+| transition-out-recovery | 第六波：高风险回切过渡 | 已批准 | docs/runtime-intake-approvals/transition-out-recovery.approved.json |
 
 ## 下一步执行清单
 

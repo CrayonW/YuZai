@@ -1,14 +1,14 @@
 # 可灵批次产物状态
 
 批次：第四批：高风险回切过渡 (transition-out-recovery)
-汇总：ready 0 / empty 0 / missing 4 / total 4
+汇总：ready 4 / empty 0 / missing 0 / total 4
 
 | action | status | size | output |
 | --- | --- | ---: | --- |
-| sleep_to_sleeping | missing | 0 | assets/origin/generated/kling/sleep_to_sleeping.mp4 |
-| waking_to_idle | missing | 0 | assets/origin/generated/kling/waking_to_idle.mp4 |
-| poke_annoyed_to_idle | missing | 0 | assets/origin/generated/kling/poke_annoyed_to_idle.mp4 |
-| paw_raise_to_idle | missing | 0 | assets/origin/generated/kling/paw_raise_to_idle.mp4 |
+| sleep_to_sleeping | ready | 8204002 | assets/origin/generated/kling/sleep_to_sleeping.mp4 |
+| waking_to_idle | ready | 6501686 | assets/origin/generated/kling/waking_to_idle.mp4 |
+| poke_annoyed_to_idle | ready | 6767911 | assets/origin/generated/kling/poke_annoyed_to_idle.mp4 |
+| paw_raise_to_idle | ready | 6749702 | assets/origin/generated/kling/paw_raise_to_idle.mp4 |
 
 ## 下一步
 

@@ -149,7 +149,8 @@
         72
       ],
       "interruptPolicy": "locked",
-      "returnTo": "idle_primary"
+      "returnTo": "idle_primary",
+      "transitionOut": "paw_raise_to_idle"
     },
     "slow_blink": {
       "source": "assets/origin/generated/kling/slow_blink.mp4",
@@ -254,7 +255,8 @@
         120
       ],
       "interruptPolicy": "locked",
-      "returnTo": "idle_primary"
+      "returnTo": "idle_primary",
+      "transitionOut": "poke_annoyed_to_idle"
     },
     "call_response": {
       "source": "assets/origin/generated/kling/call_response.mp4",
@@ -422,7 +424,8 @@
         120
       ],
       "interruptPolicy": "locked",
-      "returnTo": "sleeping"
+      "returnTo": "sleeping",
+      "transitionOut": "sleep_to_sleeping"
     },
     "sleeping": {
       "source": "assets/origin/generated/kling/sleeping.mp4",
@@ -464,7 +467,8 @@
         120
       ],
       "interruptPolicy": "locked",
-      "returnTo": "idle_primary"
+      "returnTo": "idle_primary",
+      "transitionOut": "waking_to_idle"
     },
     "dragging": {
       "source": "assets/origin/generated/kling/dragging.mp4",
@@ -821,6 +825,90 @@
         120
       ],
       "interruptPolicy": "at-safe-frame",
+      "returnTo": "idle_primary"
+    },
+    "sleep_to_sleeping": {
+      "source": "assets/origin/generated/kling/sleep_to_sleeping.mp4",
+      "frameRoot": "../assets/runtime/animations/sleep_to_sleeping/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "sleeping",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "sleeping"
+    },
+    "waking_to_idle": {
+      "source": "assets/origin/generated/kling/waking_to_idle.mp4",
+      "frameRoot": "../assets/runtime/animations/waking_to_idle/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        1
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
+    },
+    "poke_annoyed_to_idle": {
+      "source": "assets/origin/generated/kling/poke_annoyed_to_idle.mp4",
+      "frameRoot": "../assets/runtime/animations/poke_annoyed_to_idle/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        1
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
+    },
+    "paw_raise_to_idle": {
+      "source": "assets/origin/generated/kling/paw_raise_to_idle.mp4",
+      "frameRoot": "../assets/runtime/animations/paw_raise_to_idle/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        1
+      ],
+      "interruptPolicy": "locked",
       "returnTo": "idle_primary"
     }
   },

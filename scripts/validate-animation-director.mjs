@@ -15,7 +15,8 @@ const testSource = `
     idle_primary: sequence("idle_primary", 24, true, 72),
     paw_raise: sequence("paw_raise", 24, false, 72),
     idle_to_paw_raise: sequence("idle_to_paw_raise", 24, false, 12),
-    paw_raise_to_idle: sequence("paw_raise_to_idle", 24, false, 12)
+    paw_raise_to_idle: sequence("paw_raise_to_idle", 24, false, 12),
+    quick_bridge_to_idle: sequence("quick_bridge_to_idle", 24, false, 12)
   };
 
   const configs = {
@@ -44,6 +45,13 @@ const testSource = `
       category: "transition",
       entryFrames: [1],
       exitFrames: [12],
+      interruptPolicy: "locked",
+      returnTo: "idle_primary"
+    },
+    quick_bridge_to_idle: {
+      category: "transition",
+      entryFrames: [1],
+      exitFrames: [1],
       interruptPolicy: "locked",
       returnTo: "idle_primary"
     }
@@ -99,6 +107,21 @@ const testSource = `
   assertEqual(transitionOutDirector.update(0).action, "paw_raise", "starts interaction without transitionIn");
   assertEqual(transitionOutDirector.update(3000).action, "paw_raise_to_idle", "plays transitionOut before returning to daily");
   assertEqual(transitionOutDirector.update(3500).action, "idle_primary", "returns to daily after transitionOut ends");
+
+  const earlyExitDirector = new AnimationDirector({
+    defaultAction: "idle_primary",
+    resolveSequence: (action) => sequences[action],
+    resolveConfig: (action) => ({
+      ...configs[action],
+      ...(action === "paw_raise" ? { transitionOut: "quick_bridge_to_idle" } : {})
+    }),
+    maxSafeFrameWaitMs: 0
+  });
+
+  earlyExitDirector.request("paw_raise", 0);
+  assertEqual(earlyExitDirector.update(0).action, "paw_raise", "starts early-exit interaction");
+  assertEqual(earlyExitDirector.update(3000).action, "quick_bridge_to_idle", "enters early-exit transitionOut");
+  assertEqual(earlyExitDirector.update(3042).action, "idle_primary", "transitionOut can return at configured exit frame");
 
   function sequence(action, fps, loop, frameCount) {
     return {

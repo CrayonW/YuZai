@@ -21,15 +21,14 @@
 
 ### 批次产物
 
-- 已有视频：0
-- 缺失视频：4
+- 已有视频：4
+- 缺失视频：0
 
-- sleep_to_sleeping：missing，assets/origin/generated/kling/sleep_to_sleeping.mp4，0 bytes
-- waking_to_idle：missing，assets/origin/generated/kling/waking_to_idle.mp4，0 bytes
-- poke_annoyed_to_idle：missing，assets/origin/generated/kling/poke_annoyed_to_idle.mp4，0 bytes
-- paw_raise_to_idle：missing，assets/origin/generated/kling/paw_raise_to_idle.mp4，0 bytes
+- sleep_to_sleeping：ready，assets/origin/generated/kling/sleep_to_sleeping.mp4，8204002 bytes
+- waking_to_idle：ready，assets/origin/generated/kling/waking_to_idle.mp4，6501686 bytes
+- poke_annoyed_to_idle：ready，assets/origin/generated/kling/poke_annoyed_to_idle.mp4，6767911 bytes
+- paw_raise_to_idle：ready，assets/origin/generated/kling/paw_raise_to_idle.mp4，6749702 bytes
 
 ### 下一步
 
-- 运行 `npm run kling:generate-batch -- --batch transition-out-recovery` 生成缺失视频。
-- 生成后运行 `npm run kling:batch-intake-checklist -- --batch transition-out-recovery --write docs/kling-batch-intake-transition-out-recovery.md`，先给用户确认清单。
+- 进入人工验收、去水印、抽帧和 runtime manifest 接入流程。

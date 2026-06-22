@@ -41,7 +41,7 @@
 - 标签名：`yuzai-v0.1.0-test.1`
 - 回滚 commit：见 `docs/release-tag-record.md`
 - 安装和回滚说明：见 `docs/release-playbook.md`
-- 已知限制：当前仍有 4 个 high 风险 transitionOut 和 30 个 runtime 时长不足动作。
+- 已知限制：当前 4 个 high 风险回切已接入 transitionOut 并完成桌面截图验收；另有 30 个 runtime 时长不足动作。
 - 安全说明：当前是未签名试用包，不是正式签名与公证发行包。
 
 ## 当前边界
