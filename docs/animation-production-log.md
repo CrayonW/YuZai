@@ -2127,3 +2127,21 @@ FPS：不变，仍为 24 FPS。
 桌面验收：已补 3 组桌面多帧截图，分别保存到 `assets/reviews/runtime/duration-extension-phase1/idle-primary-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/idle-secondary-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/tail-wag-contact-sheet.png`；`capture:inspect` 结果分别为 `changedFrames=12`、`changedFrames=9`、`changedFrames=8`，尺寸均为 `440x440`。
 已知问题：本轮只处理 `phase1-a`，`runtime_duration_short` 仍为 open，剩余短动作数为 27；16 方向 `look_*` 和行走动作仍建议后续单独处理。
 决定：接受 phase1-a 作为先用现有序列帧降低待机重复感的第一步，继续保留后续重新生成更自然长视频的空间。
+
+## 2026-06-22 runtime 时长补长 phase1-b
+
+日期：2026-06-22
+源文件：`assets/runtime/animations/manifest.json`、`assets/runtime/animations/groom_face_wash/frames`、`assets/runtime/animations/loaf_breathing/frames`、`assets/runtime/animations/sleeping/frames`、`scripts/extend-runtime-duration-phase1.mjs`、`scripts/validate-runtime-duration-phase1.mjs`、`docs/runtime-duration-extension-phase1-checklist.md`
+目标动作：`groom_face_wash`、`loaf_breathing`、`sleeping`
+问题：`runtime_duration_short` blocker 中 3 个长陪伴日常动作只有 120 帧约 5 秒，低于契约 192 帧约 8 秒，长时间桌面陪伴时容易产生重复感。
+参考片段：`phase1-b`、`往返循环或尾段缓冲`、`runtime 时长不足动作数：24`。
+帧数：3 个动作均从 120 帧补长到 192 帧。
+FPS：不变，仍为 24 FPS。
+循环方式：`loaf_breathing`、`sleeping` 使用现有 120 帧真实 runtime 序列按顺序循环派生到 192 帧；`groom_face_wash` 使用正放后倒放到安全帧的派生方式，保留原计划中的非循环动作属性。
+水印处理：本轮不处理源视频；所有新增帧来自已经进入 runtime 的透明序列帧。
+重建方法：先扩展 `validate:runtime-duration-phase1` 并确认 `phase1-b` 红灯；再扩展 `runtime:extend-duration-phase1`，复制或往返派生现有 120 帧序列补齐到 192 帧，同时把 manifest 的 `frameCount` 更新为 192，`entryFrames` 更新为 `[1,48,96,144]`，`exitFrames` 更新为 `[48,96,144,192]`。
+运行时输出：新增 `groom_face_wash`、`loaf_breathing`、`sleeping` 的 `frame_000121.png` 到 `frame_000192.png`，并更新 manifest 对应动作。
+验证命令：`npm run validate:runtime-duration-phase1`。
+桌面验收：已补 3 组桌面多帧截图，分别保存到 `assets/reviews/runtime/duration-extension-phase1/groom-face-wash-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/loaf-breathing-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/sleeping-contact-sheet.png`；`capture:inspect` 结果分别为 `changedFrames=12`、`changedFrames=9`、`changedFrames=12`，尺寸均为 `440x440`。
+已知问题：本轮只处理 `phase1-b`，`runtime_duration_short` 仍为 open，剩余短动作数为 24；16 方向 `look_*`、`walk` 和短交互/睡眠链路动作仍建议后续单独处理。
+决定：接受 phase1-b 作为扩大长陪伴日常动作池有效时长的第二步，继续保留后续重新生成更自然长视频的空间。

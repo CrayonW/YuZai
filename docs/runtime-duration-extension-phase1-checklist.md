@@ -134,6 +134,12 @@ phase1-a 已保存证据：
 - `idle_secondary`：`assets/reviews/runtime/duration-extension-phase1/idle-secondary-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=9`，尺寸 `440x440`。
 - `tail_wag`：`assets/reviews/runtime/duration-extension-phase1/tail-wag-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=8`，尺寸 `440x440`。
 
+phase1-b 已保存证据：
+
+- `groom_face_wash`：`assets/reviews/runtime/duration-extension-phase1/groom-face-wash-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=12`，尺寸 `440x440`。
+- `loaf_breathing`：`assets/reviews/runtime/duration-extension-phase1/loaf-breathing-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=9`，尺寸 `440x440`。
+- `sleeping`：`assets/reviews/runtime/duration-extension-phase1/sleeping-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=12`，尺寸 `440x440`。
+
 ## Git 记录规则
 
 - 每完成一个波次并通过验证后，单独提交。
@@ -142,18 +148,23 @@ phase1-a 已保存证据：
 
 ## 推荐下一步
 
-建议先确认并执行 `phase1-a`：
+下一步建议继续执行 `phase1-c`：
 
-1. `idle_primary`
-2. `idle_secondary`
-3. `tail_wag`
+1. `slow_blink`
+2. `look_around`
+3. `desk_sniff`
+4. `stretch_yawn`
+5. `sleepy`
+6. `sleep`
+7. `paw_raise`
 
-这 3 个动作是最常见待机动作，收益最高，且当前都有 72 帧真实素材，适合先用安全正放循环补到 192 帧。
+这些动作缺口多为 24 帧，适合用尾段缓冲或短往返派生先降低短动作重复感；`walk` 和 16 方向 `look_*` 仍建议单独验收。
 
 ## 执行状态
 
 - `phase1-a`：已确认执行，已用现有序列帧补长 `idle_primary`、`idle_secondary`、`tail_wag`。
-- 当前结果：三项均从 72 帧补到 192 帧，仍使用原始 runtime 帧派生，不调用可灵生成新视频。
+- `phase1-b`：已确认执行，已用现有序列帧补长 `groom_face_wash`、`loaf_breathing`、`sleeping`。
+- 当前结果：phase1-a 三项均从 72 帧补到 192 帧；phase1-b 三项均从 120 帧补到 192 帧；仍使用原始 runtime 帧派生，不调用可灵生成新视频。
 - 已新增门禁：`npm run validate:runtime-duration-phase1`。
-- 已补桌面验收：三项均已生成 12 帧桌面截图和 contact sheet，且 `capture:inspect` 均通过。
-- 剩余范围：`phase1-b`、`phase1-c`、`phase1-d` 仍未执行。
+- 已补桌面验收：phase1-a 和 phase1-b 共 6 项均已生成 12 帧桌面截图和 contact sheet，且 `capture:inspect` 均通过。
+- 剩余范围：`phase1-c`、`phase1-d` 仍未执行。

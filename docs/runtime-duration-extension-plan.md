@@ -6,8 +6,8 @@
 
 ## 当前摘要
 
-- runtime 时长不足动作数：27
-- daily：10
+- runtime 时长不足动作数：24
+- daily：7
 - interactive：17
 - transition：0
 
@@ -17,13 +17,10 @@
 | --- | --- | ---: | ---: | ---: | --- | --- |
 | slow_blink | daily | 120 帧 / 5s | 144 帧 / 6s | 24 帧 / 1s | assets/origin/generated/kling/slow_blink.mp4 | 补充更长生活化分段素材，接入前复查尾段回到安全姿态。 |
 | look_around | daily | 120 帧 / 5s | 144 帧 / 6s | 24 帧 / 1s | assets/origin/generated/kling/look_around.mp4 | 补充更长生活化分段素材，接入前复查尾段回到安全姿态。 |
-| groom_face_wash | daily | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/groom_face_wash.mp4 | 补充更长生活化分段素材，接入前复查尾段回到安全姿态。 |
-| loaf_breathing | daily | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/loaf_breathing.mp4 | 补长为可循环源视频，首尾姿态保持一致。 |
 | desk_sniff | daily | 120 帧 / 5s | 144 帧 / 6s | 24 帧 / 1s | assets/origin/generated/kling/desk_sniff.mp4 | 补充更长生活化分段素材，接入前复查尾段回到安全姿态。 |
 | stretch_yawn | daily | 120 帧 / 5s | 144 帧 / 6s | 24 帧 / 1s | assets/origin/generated/kling/stretch_yawn.mp4 | 补充更长生活化分段素材，接入前复查尾段回到安全姿态。 |
 | sleepy | daily | 120 帧 / 5s | 144 帧 / 6s | 24 帧 / 1s | assets/origin/generated/kling/sleepy.mp4 | 补充更长生活化分段素材，接入前复查尾段回到安全姿态。 |
 | sleep | daily | 120 帧 / 5s | 144 帧 / 6s | 24 帧 / 1s | assets/origin/generated/kling/sleep.mp4 | 补充更长生活化分段素材，接入前复查尾段回到安全姿态。 |
-| sleeping | daily | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/sleeping.mp4 | 补长为可循环源视频，首尾姿态保持一致。 |
 | walk | daily | 72 帧 / 3s | 144 帧 / 6s | 72 帧 / 3s | assets/origin/generated/kling/walk.mp4 | 补长为可循环源视频，首尾姿态保持一致。 |
 | paw_raise | interactive | 72 帧 / 3s | 96 帧 / 4s | 24 帧 / 1s | assets/origin/generated/kling/paw_raise.mp4 | 补充更长交互源视频，结束姿态需能自然回到待机或后续 transitionOut。 |
 | look_e | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_e.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |

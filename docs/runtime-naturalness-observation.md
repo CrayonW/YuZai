@@ -6,7 +6,7 @@
 
 - runtime action 数：42
 - 衔接风险：high 4 / medium 48 / low 8
-- runtime 时长不足动作数：27
+- runtime 时长不足动作数：24
 - 桌面观察截图：12 张，440x440，变化帧 12
 - 观察证据状态：通过
 
@@ -27,7 +27,7 @@ npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-naturalness
 
 ## high 风险回切
 
-- sleep -> sleeping（回切，metric 0.3445）：已配置 sleep_to_sleeping，需桌面录屏确认
+- sleep -> sleeping（回切，metric 0.3372）：已配置 sleep_to_sleeping，需桌面录屏确认
 - waking -> idle_primary（回切，metric 0.2512）：已配置 waking_to_idle，需桌面录屏确认
 - poke_annoyed -> idle_primary（回切，metric 0.2248）：已配置 poke_annoyed_to_idle，需桌面录屏确认
 - paw_raise -> idle_primary（回切，metric 0.1993）：已配置 paw_raise_to_idle，需桌面录屏确认
@@ -36,12 +36,12 @@ npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-naturalness
 
 - `slow_blink`：当前 120 帧（约 5s），契约需要 144 帧（6s）。
 - `look_around`：当前 120 帧（约 5s），契约需要 144 帧（6s）。
-- `groom_face_wash`：当前 120 帧（约 5s），契约需要 192 帧（8s）。
-- `loaf_breathing`：当前 120 帧（约 5s），契约需要 192 帧（8s）。
 - `desk_sniff`：当前 120 帧（约 5s），契约需要 144 帧（6s）。
 - `stretch_yawn`：当前 120 帧（约 5s），契约需要 144 帧（6s）。
 - `sleepy`：当前 120 帧（约 5s），契约需要 144 帧（6s）。
 - `sleep`：当前 120 帧（约 5s），契约需要 144 帧（6s）。
+- `walk`：当前 72 帧（约 3s），契约需要 144 帧（6s）。
+- `paw_raise`：当前 72 帧（约 3s），契约需要 96 帧（4s）。
 
 ## 观察边界
 

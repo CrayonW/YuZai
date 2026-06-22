@@ -48,7 +48,7 @@
     },
     {
       "id": "runtime_duration_short",
-      "title": "27 个 runtime 动作时长不足",
+      "title": "24 个 runtime 动作时长不足",
       "status": "open",
       "category": "animation-duration",
       "source": "docs/animation-asset-contract.md",
@@ -59,7 +59,10 @@
         "docs/runtime-duration-extension-phase1-checklist.md",
         "assets/reviews/runtime/duration-extension-phase1/idle-primary-contact-sheet.png",
         "assets/reviews/runtime/duration-extension-phase1/idle-secondary-contact-sheet.png",
-        "assets/reviews/runtime/duration-extension-phase1/tail-wag-contact-sheet.png"
+        "assets/reviews/runtime/duration-extension-phase1/tail-wag-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/groom-face-wash-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/loaf-breathing-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/sleeping-contact-sheet.png"
       ],
       "requiredActions": [
         "继续为剩余 daily 动作补充更长视频或分段素材",

@@ -21,7 +21,7 @@
 
 | risk | direction | from | to | best frame pair | metric | best source frame | tail diagnosis | current bridge | recommendation | reason |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- |
-| high | 回切 | sleep | sleeping | 120 -> 1 | 0.3445 | 1 (0.0300) | tail-not-recovered | sleep_to_sleeping | 已配置 sleep_to_sleeping，需桌面录屏确认 | sleep 播放结束后回到 sleeping |
+| high | 回切 | sleep | sleeping | 120 -> 144 | 0.3372 | 1 (0.0300) | tail-not-recovered | sleep_to_sleeping | 已配置 sleep_to_sleeping，需桌面录屏确认 | sleep 播放结束后回到 sleeping |
 | high | 回切 | waking | idle_primary | 120 -> 1 | 0.2512 | 8 (0.0691) | tail-not-recovered | waking_to_idle | 已配置 waking_to_idle，需桌面录屏确认 | waking 播放结束后回到 idle_primary |
 | high | 回切 | poke_annoyed | idle_primary | 120 -> 1 | 0.2248 | 17 (0.0774) | tail-not-recovered | poke_annoyed_to_idle | 已配置 poke_annoyed_to_idle，需桌面录屏确认 | poke_annoyed 播放结束后回到 idle_primary |
 | high | 回切 | paw_raise | idle_primary | 72 -> 96 | 0.1993 | 1 (0.0535) | tail-not-recovered | paw_raise_to_idle | 已配置 paw_raise_to_idle，需桌面录屏确认 | paw_raise 播放结束后回到 idle_primary |
@@ -75,8 +75,8 @@
 | medium | 回切 | shy | idle_primary | 120 -> 96 | 0.1020 | 12 (0.0789) | acceptable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | shy 播放结束后回到 idle_primary |
 | low | 进入 | idle_primary | paw_raise | 96 -> 1 | 0.0991 | 2 (0.0513) | not-applicable | Canvas crossfade | 当前可接受，低频复查即可 | paw_raise 是可被用户触发的交互动作 |
 | low | 回切 | paw_raise_to_idle | idle_primary | 1 -> 1 | 0.0965 | 14 (0.0692) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | paw_raise_to_idle 播放结束后回到 idle_primary |
-| low | 回切 | sleep_to_sleeping | sleeping | 120 -> 1 | 0.0922 | 1 (0.0512) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | sleep_to_sleeping 播放结束后回到 sleeping |
 | low | 回切 | look_ene | idle_primary | 120 -> 96 | 0.0900 | 3 (0.0806) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_ene 播放结束后回到 idle_primary |
+| low | 回切 | sleep_to_sleeping | sleeping | 120 -> 96 | 0.0892 | 5 (0.0497) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | sleep_to_sleeping 播放结束后回到 sleeping |
 | low | 回切 | look_w | idle_primary | 120 -> 1 | 0.0873 | 6 (0.0771) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_w 播放结束后回到 idle_primary |
 | low | 回切 | poke_annoyed_to_idle | idle_primary | 1 -> 1 | 0.0854 | 3 (0.0739) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | poke_annoyed_to_idle 播放结束后回到 idle_primary |
 | low | 回切 | waking_to_idle | idle_primary | 1 -> 1 | 0.0824 | 12 (0.0764) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | waking_to_idle 播放结束后回到 idle_primary |

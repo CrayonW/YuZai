@@ -311,7 +311,7 @@
       "frameRoot": "../assets/runtime/animations/groom_face_wash/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": false,
       "interruptible": true,
@@ -319,10 +319,16 @@
       "enabled": true,
       "category": "daily",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -332,7 +338,7 @@
       "frameRoot": "../assets/runtime/animations/loaf_breathing/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -340,10 +346,16 @@
       "enabled": true,
       "category": "daily",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -438,7 +450,7 @@
       "frameRoot": "../assets/runtime/animations/sleeping/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -446,10 +458,16 @@
       "enabled": true,
       "category": "daily",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "waking"
