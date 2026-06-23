@@ -129,7 +129,8 @@
       "evidence": [
         ".github/workflows/windows-package.yml",
         "docs/windows-release-smoke.md",
-        "docs/distribution-live-check.md"
+        "docs/distribution-live-check.md",
+        "docs/windows-actions-dispatch.md"
       ],
       "requiredActions": [
         "在 GitHub Actions 或 Windows 环境生成 Windows 安装包",

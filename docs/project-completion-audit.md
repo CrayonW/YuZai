@@ -17,6 +17,7 @@
 - Windows 实机验收清单：`docs/windows-release-smoke.md` 已补齐安装包、透明置顶、鼠标靠近、定时气泡和卸载检查项；实际 Windows 实机验收尚未执行。
 - Windows 远端打包入口：`.github/workflows/windows-package.yml` 已补齐 GitHub Actions 试用包 artifact 工作流；仍需远端运行和实机安装验证。
 - Windows Actions 状态查询：`docs/windows-actions-status.md` 已补齐 `npm run actions:windows-status` 只读查询入口；当前仍缺少可用 token 或 GitHub 页面证据来确认 artifact。
+- Windows Actions 手动触发：`docs/windows-actions-dispatch.md` 已补齐 `npm run actions:windows-dispatch` 入口；当前已验证 dry-run 和无 token 拒绝，真实触发仍需要具备 Actions workflow 权限的 `GITHUB_TOKEN`。
 - 发布阻塞现场检查：`docs/distribution-live-check.md` 已记录本轮 Windows Actions 查询、macOS 签名身份和 `notarytool` 可用性检查；当前仍不能关闭 Windows 实机、macOS 签名/公证或签名后安全复核 blocker。
 - 剩余硬缺口清单：`docs/release-blockers.json` 已记录 `transition_out_high_risk`、`runtime_duration_short`、`windows_real_machine_smoke`、`macos_sign_notarize`、`signed_user_safety_recheck`，中文报告见 `docs/release-blockers.md`；这些条目关闭前，项目不得标记为完全完成。
 - 当前剩余产品风险：动作自然度仍有明确缺口，不应把它解释成最终质量已完成。
@@ -40,6 +41,7 @@
 | Windows 安装包实机验收清单 | `docs/windows-release-smoke.md` | 已补齐清单，未执行实机验收 |
 | Windows 远端试用包工作流 | `.github/workflows/windows-package.yml` | 已补齐，未完成实机验收 |
 | Windows Actions 状态查询入口 | `docs/windows-actions-status.md` | 已补齐，未确认远端 artifact |
+| Windows Actions 手动触发入口 | `docs/windows-actions-dispatch.md` | 已补齐，未真实触发 |
 | 发布阻塞现场检查记录 | `docs/distribution-live-check.md` | 已补齐，本轮仍未满足关闭条件 |
 | 剩余硬缺口机器清单 | `docs/release-blockers.json`、`docs/release-blockers.md` | 已补齐，仍有 open blocker |
 
@@ -84,7 +86,7 @@ npm run validate:release
 
 当前已通过本地 `package:dir` 打包验证，并已补齐面向最终用户的安装/回滚说明、卸载说明和版本标签规范：`docs/release-playbook.md`。实际试用标签记录在 `docs/release-tag-record.md`，签名包安全提示见 `docs/signed-release-safety.md`，macOS 签名/公证状态见 `docs/macos-signing-notarization-status.md`，Windows 实机验收清单见 `docs/windows-release-smoke.md`，Windows 远端试用包工作流见 `.github/workflows/windows-package.yml`，Windows Actions 状态查询见 `docs/windows-actions-status.md`，本轮发布阻塞现场检查见 `docs/distribution-live-check.md`。但正式分发还没有完成：
 
-本轮现场检查结论：匿名 GitHub API 查询仍受 rate limit 限制，当前未确认 Windows artifact；本机 `security find-identity -v -p codesigning` 返回 `0 valid identities found`；`xcrun notarytool --help` 可用，但没有签名身份、签名包和公证凭据时不执行提交。
+本轮现场检查结论：匿名 GitHub API 查询仍受 rate limit 限制，当前未确认 Windows artifact；`npm run actions:windows-dispatch` 已具备 dry-run 和 `--confirm` 触发入口，但真实触发仍需要 `GITHUB_TOKEN`；本机 `security find-identity -v -p codesigning` 返回 `0 valid identities found`；`xcrun notarytool --help` 可用，但没有签名身份、签名包和公证凭据时不执行提交。
 
 - 正式签名。
 - macOS 公证。

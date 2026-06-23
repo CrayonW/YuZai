@@ -68,6 +68,7 @@ const steps = [
   ["validate:macos-signing-status-current", ["npm", "run", "validate:macos-signing-status-current"]],
   ["validate:windows-package-workflow", ["npm", "run", "validate:windows-package-workflow"]],
   ["validate:github-actions-status-tool", ["npm", "run", "validate:github-actions-status-tool"]],
+  ["validate:github-actions-dispatch-tool", ["npm", "run", "validate:github-actions-dispatch-tool"]],
   ["validate:distribution-live-check", ["npm", "run", "validate:distribution-live-check"]],
   ["validate:project-status-current", ["npm", "run", "validate:project-status-current"]],
   ["typecheck", ["npm", "run", "typecheck"]],

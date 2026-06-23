@@ -103,6 +103,8 @@
     "validate:windows-package-workflow": "node scripts/validate-windows-package-workflow.mjs",
     "actions:windows-status": "node scripts/github-actions-status.mjs --workflow windows-package.yml --artifact yuzai-windows-package",
     "validate:github-actions-status-tool": "node scripts/validate-github-actions-status-tool.mjs",
+    "actions:windows-dispatch": "node scripts/github-actions-dispatch.mjs --workflow windows-package.yml --ref main",
+    "validate:github-actions-dispatch-tool": "node scripts/validate-github-actions-dispatch-tool.mjs",
     "validate:distribution-live-check": "node scripts/validate-distribution-live-check.mjs",
     "project:status": "node scripts/project-status.mjs",
     "validate:project-status-current": "node scripts/validate-project-status-current.mjs",

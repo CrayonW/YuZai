@@ -6,6 +6,14 @@
 
 ## 使用命令
 
+如需先触发远端构建，使用：
+
+```bash
+GITHUB_TOKEN=你的 Actions workflow 权限令牌 npm run actions:windows-dispatch -- --confirm
+```
+
+触发说明见 `docs/windows-actions-dispatch.md`。
+
 匿名查询可能遇到 GitHub API rate limit。建议使用只读 `GITHUB_TOKEN`：
 
 ```bash
@@ -46,3 +54,5 @@ npm run actions:windows-status
 2026-06-20：当前环境没有 `gh` CLI；GitHub connector 对 push workflow run 返回空；匿名 GitHub API 查询遇到 GitHub API rate limit。因此本轮只补齐项目内查询工具和操作说明，远端 run 与 artifact 仍需后续用 `GITHUB_TOKEN` 或 GitHub Actions 页面确认。
 
 2026-06-23：再次执行 `npm run actions:windows-status`。沙盒内 DNS 无法解析 `api.github.com`；外部网络只读查询可连接 GitHub API，但匿名请求仍返回 rate limit。当前仍没有确认到 `windows-package.yml` run 或 `yuzai-windows-package` artifact，关闭 `windows_real_machine_smoke` 前必须补充 `GITHUB_TOKEN` 查询结果或 GitHub Actions 页面证据，并继续完成 Windows 10/11 实机安装验收。
+
+2026-06-23：新增 `npm run actions:windows-dispatch`，可在没有 `gh` CLI 的环境中用 `GITHUB_TOKEN` 手动触发 `windows-package.yml` 的 `workflow_dispatch`。当前本机未配置 token，本轮只完成 dry-run 和无 token 拒绝验证；后续仍需使用具备 Actions workflow 权限的 token 真实触发并查询 artifact。

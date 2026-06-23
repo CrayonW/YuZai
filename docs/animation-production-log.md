@@ -2215,3 +2215,14 @@ Windows 状态查询：`npm run actions:windows-status` 在沙盒内 DNS 无法�
 验证命令：`npm run validate:distribution-live-check`。
 已知问题：本轮只补充现场证据和自动校验，不替代 Windows 10/11 实机安装验收，不执行签名，不调用 `notarytool submit`，不上传 Apple 公证。
 决定：接受本轮作为发布阻塞证据链增强；项目整体仍不能标记完成。
+
+## 2026-06-23 Windows Actions 手动触发入口
+
+日期：2026-06-23
+源文件：`scripts/github-actions-dispatch.mjs`、`scripts/validate-github-actions-dispatch-tool.mjs`、`docs/windows-actions-dispatch.md`、`docs/windows-actions-status.md`、`docs/distribution-live-check.md`、`docs/project-completion-audit.md`、`docs/release-blockers.json`、`docs/release-blockers.md`、`package.json`、`scripts/validate-all.mjs`
+问题：当前环境没有 `gh` CLI，匿名 GitHub API 查询又受 rate limit 限制；后续要生成 Windows 安装包 artifact 时，需要一个不依赖 `gh` 的 workflow_dispatch 入口。
+参考片段：`workflow_dispatch`、`windows-package.yml`、`refs/heads/main`、`GITHUB_TOKEN`、`--confirm`。
+处理：新增 `npm run actions:windows-dispatch`，默认 dry-run；只有提供 `--confirm` 且环境变量中存在 `GITHUB_TOKEN` 时才向 GitHub API POST `/dispatches`。新增 `docs/windows-actions-dispatch.md` 说明触发命令、权限边界和后续查询/实机验收步骤，并把该文档加入 `windows_real_machine_smoke` 的 evidence。
+验证命令：`npm run validate:github-actions-dispatch-tool`、`npm run actions:windows-dispatch`、`npm run actions:windows-dispatch -- --confirm`。
+已知问题：本轮没有可用 `GITHUB_TOKEN`，所以只验证 dry-run 和无 token 拒绝；尚未真实触发 Windows workflow，也未生成或安装 Windows artifact。
+决定：接受本轮作为 Windows 包构建闭环的工具补齐；`windows_real_machine_smoke` 仍保持 open，项目整体仍不能标记完成。
