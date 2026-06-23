@@ -26,7 +26,7 @@ export function buildDurationExtensionPlan({
   });
 
   return {
-    updatedAt: "2026-06-20",
+    updatedAt: "2026-06-23",
     purpose: "把 runtime_duration_short blocker 拆成可执行的补长动作清单。本文档不批准生成视频、抽帧、去水印或修改 manifest。",
     summary: {
       shortRuntimeActions: items.length,
@@ -71,6 +71,18 @@ export function renderDurationExtensionPlan(plan) {
     ].join(" | ")} |`);
   }
 
+  const boundaryLines = plan.summary.shortRuntimeActions === 0
+    ? [
+      "- 本清单当前没有剩余补长范围。",
+      "- 本清单可作为 `runtime_duration_short` blocker 的关闭证据之一。",
+      "- 后续如替换更自然源视频，仍需重新生成处理清单并补桌面验收。"
+    ]
+    : [
+      "- 本清单只描述补长范围，不生成视频。",
+      "- 本清单不抽帧、不去水印、不修改 `assets/runtime/animations/manifest.json`。",
+      "- 本清单不关闭 `runtime_duration_short` blocker。"
+    ];
+
   lines.push(
     "",
     "## 处理规则",
@@ -90,9 +102,7 @@ export function renderDurationExtensionPlan(plan) {
     "",
     "## 当前边界",
     "",
-    "- 本清单只描述补长范围，不生成视频。",
-    "- 本清单不抽帧、不去水印、不修改 `assets/runtime/animations/manifest.json`。",
-    "- 本清单不关闭 `runtime_duration_short` blocker。"
+    ...boundaryLines
   );
 
   return `${lines.join("\n")}\n`;

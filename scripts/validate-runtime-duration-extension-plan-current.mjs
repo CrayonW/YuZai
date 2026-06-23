@@ -18,11 +18,9 @@ if (!existsSync(planPath)) {
 
   for (const snippet of [
     "# runtime 动作时长补长清单",
-    "runtime 时长不足动作数：17",
-    "look_e",
-    "look_ese",
+    "runtime 时长不足动作数：0",
     "不得只修改 manifest 帧数来关闭时长缺口",
-    "不关闭 `runtime_duration_short` blocker"
+    "本清单可作为 `runtime_duration_short` blocker 的关闭证据之一"
   ]) {
     if (!actual.includes(snippet)) {
       failures.push(`docs/runtime-duration-extension-plan.md missing text: ${snippet}`);

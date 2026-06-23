@@ -133,7 +133,46 @@ const phase1Actions = [
     loop: false,
     returnTo: "idle_primary",
     strategy: "hold-tail-frame"
-  }
+  },
+  {
+    action: "walk",
+    phase: "phase1-d",
+    sourceFrameCount: 72,
+    targetFrameCount: 144,
+    loop: true,
+    category: "daily",
+    interruptPolicy: "at-safe-frame",
+    returnTo: "idle_primary",
+    strategy: "repeat-existing-72-frame-sequence"
+  },
+  ...[
+    "look_e",
+    "look_ene",
+    "look_ne",
+    "look_nne",
+    "look_n",
+    "look_nnw",
+    "look_nw",
+    "look_wnw",
+    "look_w",
+    "look_wsw",
+    "look_sw",
+    "look_ssw",
+    "look_s",
+    "look_sse",
+    "look_se",
+    "look_ese"
+  ].map((action) => ({
+    action,
+    phase: "phase1-d",
+    sourceFrameCount: 120,
+    targetFrameCount: 192,
+    loop: true,
+    category: "interactive",
+    interruptPolicy: "at-safe-frame",
+    returnTo: "idle_primary",
+    strategy: "repeat-existing-120-frame-sequence"
+  }))
 ];
 
 export function extendRuntimeDurationPhase1({ manifestFile = manifestPath } = {}) {

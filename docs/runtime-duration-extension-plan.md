@@ -1,37 +1,20 @@
 # runtime 动作时长补长清单
 
-更新日期：2026-06-20
+更新日期：2026-06-23
 
 把 runtime_duration_short blocker 拆成可执行的补长动作清单。本文档不批准生成视频、抽帧、去水印或修改 manifest。
 
 ## 当前摘要
 
-- runtime 时长不足动作数：17
-- daily：1
-- interactive：16
+- runtime 时长不足动作数：0
+- daily：0
+- interactive：0
 - transition：0
 
 ## 补长动作清单
 
 | action | 分类 | 当前 | 契约目标 | 缺口 | 预期源视频 | 补长策略 |
 | --- | --- | ---: | ---: | ---: | --- | --- |
-| walk | daily | 72 帧 / 3s | 144 帧 / 6s | 72 帧 / 3s | assets/origin/generated/kling/walk.mp4 | 补长为可循环源视频，首尾姿态保持一致。 |
-| look_e | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_e.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_ene | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_ene.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_ne | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_ne.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_nne | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_nne.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_n | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_n.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_nnw | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_nnw.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_nw | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_nw.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_wnw | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_wnw.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_w | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_w.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_wsw | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_wsw.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_sw | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_sw.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_ssw | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_ssw.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_s | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_s.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_sse | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_sse.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_se | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_se.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
-| look_ese | interactive | 120 帧 / 5s | 192 帧 / 8s | 72 帧 / 3s | assets/origin/generated/kling/look_ese.mp4 | 重新生成更长 16 方向鼠标跟随循环，开始和结束姿势保持一致。 |
 
 ## 处理规则
 
@@ -50,6 +33,6 @@
 
 ## 当前边界
 
-- 本清单只描述补长范围，不生成视频。
-- 本清单不抽帧、不去水印、不修改 `assets/runtime/animations/manifest.json`。
-- 本清单不关闭 `runtime_duration_short` blocker。
+- 本清单当前没有剩余补长范围。
+- 本清单可作为 `runtime_duration_short` blocker 的关闭证据之一。
+- 后续如替换更自然源视频，仍需重新生成处理清单并补桌面验收。

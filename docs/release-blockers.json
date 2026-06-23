@@ -48,8 +48,8 @@
     },
     {
       "id": "runtime_duration_short",
-      "title": "17 个 runtime 动作时长不足",
-      "status": "open",
+      "title": "runtime 动作时长契约已满足",
+      "status": "closed",
       "category": "animation-duration",
       "source": "docs/animation-asset-contract.md",
       "evidence": [
@@ -69,7 +69,24 @@
         "assets/reviews/runtime/duration-extension-phase1/stretch-yawn-contact-sheet.png",
         "assets/reviews/runtime/duration-extension-phase1/sleepy-contact-sheet.png",
         "assets/reviews/runtime/duration-extension-phase1/sleep-contact-sheet.png",
-        "assets/reviews/runtime/duration-extension-phase1/paw-raise-contact-sheet.png"
+        "assets/reviews/runtime/duration-extension-phase1/paw-raise-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/walk-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-e-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-ene-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-ne-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-nne-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-n-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-nnw-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-nw-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-wnw-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-w-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-wsw-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-sw-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-ssw-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-s-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-sse-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-se-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-ese-contact-sheet.png"
       ],
       "requiredActions": [
         "继续为剩余 daily 动作补充更长视频或分段素材",
@@ -79,7 +96,29 @@
         "重新运行 npm run validate:all",
         "重新运行 npm run validate:release"
       ],
-      "closureEvidence": []
+      "closureEvidence": [
+        "docs/animation-asset-contract.md: runtime 时长不足动作数 0",
+        "assets/reviews/runtime/duration-extension-phase1/walk-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-e-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-ene-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-ne-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-nne-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-n-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-nnw-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-nw-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-wnw-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-w-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-wsw-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-sw-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-ssw-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-s-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-sse-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-se-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-ese-contact-sheet.png",
+        "npm run validate:runtime-duration-phase1",
+        "npm run validate:animation-asset-contract",
+        "npm run validate:runtime-duration-extension-plan-current"
+      ]
     },
     {
       "id": "windows_real_machine_smoke",

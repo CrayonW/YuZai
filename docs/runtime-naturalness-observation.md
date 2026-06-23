@@ -5,8 +5,8 @@
 ## 当前摘要
 
 - runtime action 数：42
-- 衔接风险：high 4 / medium 48 / low 8
-- runtime 时长不足动作数：17
+- 衔接风险：high 4 / medium 34 / low 22
+- runtime 时长不足动作数：0
 - 桌面观察截图：12 张，440x440，变化帧 12
 - 观察证据状态：通过
 
@@ -34,14 +34,7 @@ npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-naturalness
 
 ## runtime 时长不足示例
 
-- `walk`：当前 72 帧（约 3s），契约需要 144 帧（6s）。
-- `look_e`：当前 120 帧（约 5s），契约需要 192 帧（8s）。
-- `look_ene`：当前 120 帧（约 5s），契约需要 192 帧（8s）。
-- `look_ne`：当前 120 帧（约 5s），契约需要 192 帧（8s）。
-- `look_nne`：当前 120 帧（约 5s），契约需要 192 帧（8s）。
-- `look_n`：当前 120 帧（约 5s），契约需要 192 帧（8s）。
-- `look_nnw`：当前 120 帧（约 5s），契约需要 192 帧（8s）。
-- `look_nw`：当前 120 帧（约 5s），契约需要 192 帧（8s）。
+- 当前没有列出的 runtime 时长不足示例。
 
 ## 观察边界
 

@@ -19,7 +19,24 @@ const phase1Actions = [
   { action: "stretch_yawn", phase: "phase1-c", expectedFrameCount: 144, expectedLoop: false, expectedCategory: "daily", expectedReturnTo: "idle_primary", expectedEntryFrames: [1, 48, 96], expectedExitFrames: [48, 96, 144] },
   { action: "sleepy", phase: "phase1-c", expectedFrameCount: 144, expectedLoop: false, expectedCategory: "transition", expectedReturnTo: "sleep", expectedEntryFrames: [1, 48, 96], expectedExitFrames: [48, 96, 144] },
   { action: "sleep", phase: "phase1-c", expectedFrameCount: 144, expectedLoop: false, expectedCategory: "transition", expectedReturnTo: "sleeping", expectedEntryFrames: [1, 48, 96], expectedExitFrames: [48, 96, 144] },
-  { action: "paw_raise", phase: "phase1-c", expectedFrameCount: 96, expectedLoop: false, expectedCategory: "interactive", expectedReturnTo: "idle_primary", expectedEntryFrames: [1, 48], expectedExitFrames: [48, 96] }
+  { action: "paw_raise", phase: "phase1-c", expectedFrameCount: 96, expectedLoop: false, expectedCategory: "interactive", expectedReturnTo: "idle_primary", expectedEntryFrames: [1, 48], expectedExitFrames: [48, 96] },
+  { action: "walk", phase: "phase1-d", expectedFrameCount: 144, expectedLoop: true, expectedCategory: "daily", expectedReturnTo: "idle_primary", expectedEntryFrames: [1, 48, 96], expectedExitFrames: [48, 96, 144] },
+  { action: "look_e", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_ene", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_ne", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_nne", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_n", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_nnw", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_nw", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_wnw", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_w", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_wsw", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_sw", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_ssw", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_s", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_sse", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_se", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" },
+  { action: "look_ese", phase: "phase1-d", expectedFrameCount: 192, expectedLoop: true, expectedCategory: "interactive", expectedReturnTo: "idle_primary" }
 ];
 const expectedFrameCount = 192;
 const expectedAnchors = [1, 48, 96, 144];
@@ -43,6 +60,7 @@ if (!existsSync(checklistPath)) {
   if (!checklist.includes("phase1-a")) failures.push("checklist must mention phase1-a");
   if (!checklist.includes("phase1-b")) failures.push("checklist must mention phase1-b");
   if (!checklist.includes("phase1-c")) failures.push("checklist must mention phase1-c");
+  if (!checklist.includes("phase1-d")) failures.push("checklist must mention phase1-d");
 }
 
 if (manifest) {

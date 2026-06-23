@@ -2163,3 +2163,21 @@ FPS：不变，仍为 24 FPS。
 桌面验收：已补 7 组桌面多帧截图，分别保存到 `assets/reviews/runtime/duration-extension-phase1/slow-blink-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/look-around-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/desk-sniff-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/stretch-yawn-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/sleepy-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/sleep-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/paw-raise-contact-sheet.png`；`capture:inspect` 结果分别为 `changedFrames=9`、`changedFrames=12`、`changedFrames=10`、`changedFrames=8`、`changedFrames=7`、`changedFrames=12`、`changedFrames=9`，尺寸均为 `440x440`。
 已知问题：本轮只处理 `phase1-c`，`runtime_duration_short` 仍为 open，剩余短动作数为 17；`walk` 与 16 方向 `look_*` 仍建议后续用更长源视频或分段素材单独处理。
 决定：接受 phase1-c 作为降低短动作重复感的第三步，同时继续保留后续重新生成更长、更自然方向跟随视频的空间。
+
+## 2026-06-23 runtime 时长补长 phase1-d
+
+日期：2026-06-23
+源文件：`assets/runtime/animations/manifest.json`、`assets/runtime/animations/walk/frames`、16 个 `assets/runtime/animations/look_*/frames`、`scripts/extend-runtime-duration-phase1.mjs`、`scripts/validate-runtime-duration-phase1.mjs`、`docs/runtime-duration-extension-phase1-checklist.md`
+目标动作：`walk`、`look_e`、`look_ene`、`look_ne`、`look_nne`、`look_n`、`look_nnw`、`look_nw`、`look_wnw`、`look_w`、`look_wsw`、`look_sw`、`look_ssw`、`look_s`、`look_sse`、`look_se`、`look_ese`
+问题：`runtime_duration_short` blocker 剩余 17 个动作低于契约目标；可灵当前实际生成/接入的视频约 5 秒，重新调用同一批不一定能得到 8 秒源视频。
+参考片段：`phase1-d`、`循环展开`、`runtime 时长不足动作数：0`。
+帧数：`walk` 从 72 帧补长到 144 帧；16 个 `look_*` 从 120 帧补长到 192 帧。
+FPS：不变，仍为 24 FPS。
+循环方式：使用现有已去水印/抠绿 runtime 序列帧循环展开；不调用可灵、不覆盖源 mp4。`look_*` 保持 `interactive`、`loop=true`、`returnTo=idle_primary`。
+水印处理：本轮不处理源视频；所有新增帧来自已经进入 runtime 的透明序列帧。
+重建方法：先扩展 `validate:runtime-duration-phase1` 并确认 `phase1-d` 红灯；再扩展 `runtime:extend-duration-phase1`，复制现有帧补齐到契约帧数，同时更新 manifest 的 `frameCount`、`entryFrames`、`exitFrames`。
+运行时输出：新增 `walk` 的 `frame_000073.png` 到 `frame_000144.png`；新增 16 个 `look_*` 动作的 `frame_000121.png` 到 `frame_000192.png`，并更新 manifest 对应动作。
+验证命令：`npm run validate:runtime-duration-phase1`、`npm run animations:asset-contract -- --write docs/animation-asset-contract.md`。
+桌面验收：已补 17 组桌面多帧截图，保存到 `assets/reviews/runtime/duration-extension-phase1/`。`walk` 使用 `minChangedFrames=6`，结果 `changedFrames=7`；16 个方向跟随动作用 `minChangedFrames=4`，结果依次为 `look_e=5`、`look_ene=12`、`look_ne=7`、`look_nne=6`、`look_n=12`、`look_nnw=12`、`look_nw=6`、`look_wnw=12`、`look_w=12`、`look_wsw=12`、`look_sw=10`、`look_ssw=12`、`look_s=12`、`look_sse=11`、`look_se=7`、`look_ese=4`，尺寸均为 `440x440`。
+已知问题：phase1-d 是运行时循环展开，不等同于重新生成真正 8 秒方向跟随源视频；后续若用户对方向跟随自然度仍不满意，应重新生成更长源视频并替换。
+决定：接受 phase1-d 作为关闭 `runtime_duration_short` 的工程补齐方案；项目整体仍因 Windows 实机验收、macOS 签名/公证和签名后安全复核未完成而不能标记完成。

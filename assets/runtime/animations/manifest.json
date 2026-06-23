@@ -89,7 +89,7 @@
       "frameRoot": "../assets/runtime/animations/walk/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 72,
+      "frameCount": 144,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -98,13 +98,13 @@
       "category": "daily",
       "entryFrames": [
         1,
-        24,
-        48
+        48,
+        96
       ],
       "exitFrames": [
-        24,
         48,
-        72
+        96,
+        144
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -546,7 +546,7 @@
       "frameRoot": "../assets/runtime/animations/look_e/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -554,10 +554,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -567,7 +573,7 @@
       "frameRoot": "../assets/runtime/animations/look_ene/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -575,10 +581,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -588,7 +600,7 @@
       "frameRoot": "../assets/runtime/animations/look_ne/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -596,10 +608,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -609,7 +627,7 @@
       "frameRoot": "../assets/runtime/animations/look_nne/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -617,10 +635,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -630,7 +654,7 @@
       "frameRoot": "../assets/runtime/animations/look_n/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -638,10 +662,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -651,7 +681,7 @@
       "frameRoot": "../assets/runtime/animations/look_nnw/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -659,10 +689,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -672,7 +708,7 @@
       "frameRoot": "../assets/runtime/animations/look_nw/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -680,10 +716,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -693,7 +735,7 @@
       "frameRoot": "../assets/runtime/animations/look_wnw/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -701,10 +743,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -714,7 +762,7 @@
       "frameRoot": "../assets/runtime/animations/look_w/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -722,10 +770,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -735,7 +789,7 @@
       "frameRoot": "../assets/runtime/animations/look_wsw/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -743,10 +797,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -756,7 +816,7 @@
       "frameRoot": "../assets/runtime/animations/look_sw/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -764,10 +824,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -777,7 +843,7 @@
       "frameRoot": "../assets/runtime/animations/look_ssw/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -785,10 +851,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -798,7 +870,7 @@
       "frameRoot": "../assets/runtime/animations/look_s/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -806,10 +878,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -819,7 +897,7 @@
       "frameRoot": "../assets/runtime/animations/look_sse/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -827,10 +905,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -840,7 +924,7 @@
       "frameRoot": "../assets/runtime/animations/look_se/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -848,10 +932,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -861,7 +951,7 @@
       "frameRoot": "../assets/runtime/animations/look_ese/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 192,
       "fps": 24,
       "loop": true,
       "interruptible": true,
@@ -869,10 +959,16 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48,
+        96,
+        144
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144,
+        192
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"

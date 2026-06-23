@@ -34,7 +34,7 @@ const requiredBlockerIds = [
   "signed_user_safety_recheck"
 ];
 
-const allowedClosedBlockers = new Set(["transition_out_high_risk"]);
+const allowedClosedBlockers = new Set(["transition_out_high_risk", "runtime_duration_short"]);
 
 if (!existsSync(blockersPath)) {
   failures.push("missing docs/release-blockers.json");

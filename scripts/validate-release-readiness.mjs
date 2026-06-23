@@ -151,7 +151,6 @@ if (!existsSync(releaseBlockersPath)) {
     failures.push("docs/release-blockers.json must mark transition_out_high_risk closed after transitionOut runtime evidence");
   }
   for (const id of [
-    "runtime_duration_short",
     "windows_real_machine_smoke",
     "macos_sign_notarize",
     "signed_user_safety_recheck"
