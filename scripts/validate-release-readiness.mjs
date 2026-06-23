@@ -50,6 +50,15 @@ if (!existsSync(playbookPath)) {
       failures.push(`docs/release-playbook.md missing required text: ${snippet}`);
     }
   }
+
+  for (const forbidden of [
+    "30 个 runtime 动作时长不足",
+    "runtime 时长不足动作数仍为 30"
+  ]) {
+    if (text.includes(forbidden)) {
+      failures.push(`docs/release-playbook.md contains stale runtime duration text: ${forbidden}`);
+    }
+  }
 }
 
 if (!existsSync(auditPath)) {
@@ -99,6 +108,10 @@ if (!existsSync(signedSafetyPath)) {
       failures.push(`docs/signed-release-safety.md missing safety text: ${snippet}`);
     }
   }
+
+  if (signedSafety.includes("30 个 runtime 时长不足动作")) {
+    failures.push("docs/signed-release-safety.md contains stale runtime duration text: 30 个 runtime 时长不足动作");
+  }
 }
 
 if (!existsSync(macosSigningStatusPath)) {
@@ -139,6 +152,10 @@ if (!existsSync(windowsSmokePath)) {
     if (!windowsSmoke.includes(snippet)) {
       failures.push(`docs/windows-release-smoke.md missing smoke text: ${snippet}`);
     }
+  }
+
+  if (windowsSmoke.includes("30 个 runtime 动作时长不足")) {
+    failures.push("docs/windows-release-smoke.md contains stale runtime duration text: 30 个 runtime 动作时长不足");
   }
 }
 

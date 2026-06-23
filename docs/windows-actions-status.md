@@ -1,6 +1,6 @@
 # Windows Package Actions 状态查询
 
-日期：2026-06-20
+日期：2026-06-23
 
 用途：记录如何查询 GitHub Actions 中 `windows-package.yml` 的远端运行状态和 `yuzai-windows-package` artifact。本文档不替代 Windows 实机验收，也不代表安装包已签名或可正式分发。
 
@@ -43,4 +43,6 @@ npm run actions:windows-status
 
 ## 本轮查询记录
 
-当前环境没有 `gh` CLI；GitHub connector 对 push workflow run 返回空；匿名 GitHub API 查询遇到 GitHub API rate limit。因此本轮只补齐项目内查询工具和操作说明，远端 run 与 artifact 仍需后续用 `GITHUB_TOKEN` 或 GitHub Actions 页面确认。
+2026-06-20：当前环境没有 `gh` CLI；GitHub connector 对 push workflow run 返回空；匿名 GitHub API 查询遇到 GitHub API rate limit。因此本轮只补齐项目内查询工具和操作说明，远端 run 与 artifact 仍需后续用 `GITHUB_TOKEN` 或 GitHub Actions 页面确认。
+
+2026-06-23：再次执行 `npm run actions:windows-status`。沙盒内 DNS 无法解析 `api.github.com`；外部网络只读查询可连接 GitHub API，但匿名请求仍返回 rate limit。当前仍没有确认到 `windows-package.yml` run 或 `yuzai-windows-package` artifact，关闭 `windows_real_machine_smoke` 前必须补充 `GITHUB_TOKEN` 查询结果或 GitHub Actions 页面证据，并继续完成 Windows 10/11 实机安装验收。

@@ -2181,3 +2181,15 @@ FPS：不变，仍为 24 FPS。
 桌面验收：已补 17 组桌面多帧截图，保存到 `assets/reviews/runtime/duration-extension-phase1/`。`walk` 使用 `minChangedFrames=6`，结果 `changedFrames=7`；16 个方向跟随动作用 `minChangedFrames=4`，结果依次为 `look_e=5`、`look_ene=12`、`look_ne=7`、`look_nne=6`、`look_n=12`、`look_nnw=12`、`look_nw=6`、`look_wnw=12`、`look_w=12`、`look_wsw=12`、`look_sw=10`、`look_ssw=12`、`look_s=12`、`look_sse=11`、`look_se=7`、`look_ese=4`，尺寸均为 `440x440`。
 已知问题：phase1-d 是运行时循环展开，不等同于重新生成真正 8 秒方向跟随源视频；后续若用户对方向跟随自然度仍不满意，应重新生成更长源视频并替换。
 决定：接受 phase1-d 作为关闭 `runtime_duration_short` 的工程补齐方案；项目整体仍因 Windows 实机验收、macOS 签名/公证和签名后安全复核未完成而不能标记完成。
+
+## 2026-06-23 分发文档陈旧限制修正
+
+日期：2026-06-23
+源文件：`docs/release-playbook.md`、`docs/windows-release-smoke.md`、`docs/signed-release-safety.md`、`docs/windows-actions-status.md`、`scripts/validate-release-readiness.mjs`
+问题：`runtime_duration_short` 已关闭后，分发手册、Windows 实机验收清单和签名包安全提示仍保留“30 个 runtime 时长不足动作”的旧限制，容易误导后续验收。
+参考片段：`runtime 时长不足动作数为 0`、`phase1-d`、`GitHub API rate limit`。
+处理：先让 `npm run validate:release-readiness` 暴露红灯，再补充校验禁止主分发文档继续写入旧的 30 个短动作说法。同步更新试用分发手册、Windows 实机验收清单、签名包安全提示和 Windows Actions 状态查询记录。
+Windows 状态查询：`npm run actions:windows-status` 在沙盒内 DNS 无法解析 `api.github.com`；外部网络只读查询可连接 GitHub API，但匿名请求仍返回 rate limit。
+验证命令：`npm run validate:release-readiness`。
+已知问题：`windows_real_machine_smoke` 仍需后续用只读 `GITHUB_TOKEN` 或 GitHub Actions 页面证据确认 artifact，并完成 Windows 10/11 实机安装验收；`macos_sign_notarize` 和 `signed_user_safety_recheck` 仍依赖正式 Apple 签名/公证与签名后人工复核。
+决定：接受本轮作为分发证据链纠偏，不关闭任何剩余 release blocker。

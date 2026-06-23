@@ -1,6 +1,6 @@
 # 鱼仔桌宠 Windows 试用验收清单
 
-日期：2026-06-20
+日期：2026-06-23
 
 用途：记录 Windows 安装包的构建、安装、桌面可视化、交互和卸载验收步骤。当前文档是后续实机测试的操作票；本机 macOS 不能替代 Windows 实机验收。
 
@@ -115,5 +115,5 @@ npm run package:win
 - 当前正式签名尚未完成。
 - macOS 公证不适用于 Windows，但 Windows 安装包仍需要后续签名策略。
 - 当前 4 个高风险回切已接入 `transitionOut` bridge，并已补 macOS 桌面多帧截图证据；Windows 实机仍需单独验收同类交互。
-- 当前仍有 30 个 runtime 动作时长不足，长时间陪伴可能出现重复感。
+- 当前 runtime 时长不足动作数为 0；phase1-d 方向跟随动作采用已清理 runtime 帧循环展开，Windows 实机仍需观察长时间播放是否有明显重复感。
 - 本清单完成前，不能把 Windows 安装包视为已经完成实机验收。

@@ -1,6 +1,6 @@
 # 鱼仔桌宠试用分发手册
 
-日期：2026-06-20
+日期：2026-06-23
 
 用途：记录当前本地试用包的构建、安装、首次打开、回滚和限制。本文档面向“给自己或少量测试者试用”的阶段，不等同于正式上架分发。
 
@@ -119,8 +119,8 @@ Windows Package Actions 状态查询见 `docs/windows-actions-status.md`，可�
 - `.github/workflows/windows-package.yml` 只生成 Windows 试用包 artifact，不签名、不发布正式版本。
 - `npm run actions:windows-status` 只查询远端 Actions 状态，不替代 Windows 10/11 实机验收。
 - `docs/release-blockers.json` 和 `docs/release-blockers.md` 中仍有 open blocker 时，不得把项目写成最终完成。
-- 当前 4 个原动作直接回切 high 风险记录已配置 transitionOut，并已补桌面多帧截图证据；后续自然度主要缺口转为 30 个 runtime 动作时长不足。
-- 当前 runtime 时长不足动作数仍为 30，长时间陪伴可能出现重复感。
+- 当前 4 个原动作直接回切 high 风险记录已配置 transitionOut，并已补桌面多帧截图证据。
+- 当前 runtime 时长不足动作数为 0；phase1-d 方向跟随动作采用已清理 runtime 帧循环展开，后续如果追求更自然观感，仍可重新生成真正更长的源视频替换。
 - 当前应用包不包含 `assets/origin`，因此不能从应用包内反向恢复源视频或重新抽帧。
 
 ## 后续正式分发前检查
