@@ -1,7 +1,5 @@
-import { drawPlaceholderYuzai } from "./placeholder-yuzai";
 import type { AnimationFrameSelection } from "./animation-director";
 import { DEFAULT_DRAG_VISUAL_FEEDBACK_CONFIG, type DragVisualFeedbackConfig } from "../config/load-config";
-import type { StateSnapshot } from "../fsm/state-types";
 
 export { DEFAULT_DRAG_VISUAL_FEEDBACK_CONFIG };
 
@@ -39,7 +37,7 @@ export class CanvasRenderer {
   }
 
   render(
-    snapshot: StateSnapshot,
+    _snapshot: unknown,
     now: number,
     dragOffset: { x: number; y: number },
     selection?: AnimationFrameSelection
@@ -49,17 +47,11 @@ export class CanvasRenderer {
     const sequence = selection?.sequence;
 
     if (!sequence || sequence.frames.length === 0) {
-      this.ctx.clearRect(0, 0, width, height);
+      this.clearToTransparent(width, height);
       this.lastDrawableFrame = null;
       this.lastRenderedAction = null;
       this.lastRenderedFrame = null;
       this.crossfadePreviousFrame = null;
-      drawPlaceholderYuzai(this.ctx, snapshot, {
-        width,
-        height,
-        now,
-        dragOffset
-      });
       return;
     }
 
@@ -88,12 +80,10 @@ export class CanvasRenderer {
       return;
     }
 
-    drawPlaceholderYuzai(this.ctx, snapshot, {
-      width,
-      height,
-      now,
-      dragOffset
-    });
+    this.clearToTransparent(width, height);
+    this.lastRenderedAction = null;
+    this.lastRenderedFrame = null;
+    this.crossfadePreviousFrame = null;
   }
 
   private drawFrameLayer(
@@ -127,6 +117,10 @@ export class CanvasRenderer {
       return frame;
     }
     return remember ? this.lastDrawableFrame : null;
+  }
+
+  private clearToTransparent(width: number, height: number): void {
+    this.ctx.clearRect(0, 0, width, height);
   }
 }
 

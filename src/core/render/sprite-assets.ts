@@ -20,8 +20,12 @@ export function sequenceForState(state: PetStateName, direction: -1 | 0 | 1): Sp
 export function preloadSpriteSequences(): Promise<void> {
   const actions = Object.entries(runtimeAnimationManifest.actions)
     .filter(([, config]) => config.enabled && config.frameCount > 0)
-    .map(([action]) => preloadAction(action as SpriteAction));
+    .map(([action]) => preloadSpriteSequence(action as SpriteAction));
   return Promise.all(actions).then(() => undefined);
+}
+
+export function preloadSpriteSequence(action: SpriteAction): Promise<void> {
+  return preloadAction(action);
 }
 
 export function sequenceForAction(action: SpriteAction): SpriteSequence {

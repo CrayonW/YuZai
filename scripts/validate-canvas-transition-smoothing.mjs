@@ -7,6 +7,8 @@ const root = process.cwd();
 const outdir = join(root, ".tmp", "canvas-transition-smoothing-validation");
 const outfile = join(outdir, "canvas-renderer.mjs");
 const rendererSource = readFileSync(join(root, "src", "core", "render", "canvas-renderer.ts"), "utf8");
+const rendererMainSource = readFileSync(join(root, "src", "renderer", "main.ts"), "utf8");
+const spriteAssetsSource = readFileSync(join(root, "src", "core", "render", "sprite-assets.ts"), "utf8");
 
 mkdirSync(outdir, { recursive: true });
 
@@ -35,7 +37,13 @@ const checks = [
   ["crossfade ends with current frame fully visible", actionCrossfadeAlphaForElapsed(ACTION_CROSSFADE_MS).currentAlpha, 1],
   ["renderer remembers previous action for crossfade", rendererSource.includes("lastRenderedAction"), true],
   ["renderer remembers previous frame for crossfade", rendererSource.includes("lastRenderedFrame"), true],
-  ["renderer starts transition on action changes", rendererSource.includes("selection.action !== this.lastRenderedAction"), true]
+  ["renderer starts transition on action changes", rendererSource.includes("selection.action !== this.lastRenderedAction"), true],
+  ["renderer does not import startup placeholder drawing", rendererSource.includes("drawPlaceholderYuzai"), false],
+  ["renderer does not draw non-runtime placeholder when frames are not ready", rendererSource.includes("placeholder-yuzai"), false],
+  ["renderer clears canvas when runtime frame is not drawable yet", rendererSource.includes("clearToTransparent(width, height)"), true],
+  ["startup does not block first animation frame on image preload", rendererMainSource.includes("await preload"), false],
+  ["startup keeps full preload as background follow-up", rendererMainSource.includes("void preloadSpriteSequences().catch"), true],
+  ["sprite assets expose single-action preload", spriteAssetsSource.includes("export function preloadSpriteSequence"), true]
 ];
 
 const failures = checks

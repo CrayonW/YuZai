@@ -170,7 +170,7 @@ async function start(): Promise<void> {
   applyPetSize(await window.yuzai.getSize());
   reminders.start();
   requestAnimationFrame((time) => void tick(time));
-  preloadSpriteSequences().catch((error: unknown) => {
+  void preloadSpriteSequences().catch((error: unknown) => {
     console.error("Failed to preload sprite sequences", error);
   });
 }

@@ -2193,3 +2193,14 @@ Windows 状态查询：`npm run actions:windows-status` 在沙盒内 DNS 无法�
 验证命令：`npm run validate:release-readiness`。
 已知问题：`windows_real_machine_smoke` 仍需后续用只读 `GITHUB_TOKEN` 或 GitHub Actions 页面证据确认 artifact，并完成 Windows 10/11 实机安装验收；`macos_sign_notarize` 和 `signed_user_safety_recheck` 仍依赖正式 Apple 签名/公证与签名后人工复核。
 决定：接受本轮作为分发证据链纠偏，不关闭任何剩余 release blocker。
+
+## 2026-06-23 启动画面占位图删除
+
+日期：2026-06-23
+源文件：`src/core/render/canvas-renderer.ts`、`src/core/render/pet-hit-test.ts`、`src/core/behavior/interaction-controller.ts`、`src/renderer/main.ts`、`scripts/validate-canvas-transition-smoothing.mjs`
+问题：启动瞬间如果 runtime 图片还没 ready，Canvas renderer 会绘制旧的手绘 `drawPlaceholderYuzai` 兜底画面；该画面不是当前鱼仔真实素材，用户要求删除。
+处理：删除 `src/core/render/placeholder-yuzai.ts`，Canvas renderer 在 runtime 帧不可绘制时只清空透明画布，不再绘制任何非 runtime 占位图；命中区域逻辑迁移到 `pet-hit-test.ts`，拖拽和点击交互继续复用同一椭圆命中范围；启动入口继续立即进入动画循环，并把全量 runtime 预加载作为后台任务。
+验证命令：`npm run validate:canvas-transition-smoothing`、`npm run typecheck`、`npm run validate:interaction-controller`、`npm run validate:drag-visual-feedback`。
+桌面验收：1200ms 启动截图已保存到 `assets/reviews/runtime/startup-clean/no-placeholder-startup-1200.png`，画面显示灰白鱼仔真实 runtime 帧，不显示旧的手绘橙色占位图。
+已知问题：450ms 极早截图可能仍是透明空画布，原因是首张 runtime 图片还未完成加载；但此阶段不会再显示错误占位画面。
+决定：接受“删除非鱼仔启动占位画面”作为当前启动体验修复；项目整体仍因 Windows 实机验收、macOS 签名/公证和签名后安全复核未完成而不能标记完成。

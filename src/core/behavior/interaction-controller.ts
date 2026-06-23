@@ -1,5 +1,5 @@
 import { DEFAULT_CONFIG } from "../config/load-config";
-import { hitTestYuzai } from "../render/placeholder-yuzai";
+import { hitTestYuzai } from "../render/pet-hit-test";
 import type { PetStateMachine } from "../fsm/state-machine";
 import { buildRuntimeInteractionSchedule, type RuntimeInteractionSchedule } from "../render/runtime-interaction-schedule";
 import { InteractionCooldowns } from "./interaction-cooldowns";
