@@ -12,7 +12,14 @@ const phase1Actions = [
   { action: "tail_wag", phase: "phase1-a", expectedLoop: true, expectedReturnTo: "idle_primary" },
   { action: "groom_face_wash", phase: "phase1-b", expectedLoop: false, expectedReturnTo: "idle_primary" },
   { action: "loaf_breathing", phase: "phase1-b", expectedLoop: true, expectedReturnTo: "idle_primary" },
-  { action: "sleeping", phase: "phase1-b", expectedLoop: true, expectedReturnTo: "waking" }
+  { action: "sleeping", phase: "phase1-b", expectedLoop: true, expectedReturnTo: "waking" },
+  { action: "slow_blink", phase: "phase1-c", expectedFrameCount: 144, expectedLoop: false, expectedCategory: "daily", expectedReturnTo: "idle_primary", expectedEntryFrames: [1, 48, 96], expectedExitFrames: [48, 96, 144] },
+  { action: "look_around", phase: "phase1-c", expectedFrameCount: 144, expectedLoop: false, expectedCategory: "daily", expectedReturnTo: "idle_primary", expectedEntryFrames: [1, 48, 96], expectedExitFrames: [48, 96, 144] },
+  { action: "desk_sniff", phase: "phase1-c", expectedFrameCount: 144, expectedLoop: false, expectedCategory: "daily", expectedReturnTo: "idle_primary", expectedEntryFrames: [1, 48, 96], expectedExitFrames: [48, 96, 144] },
+  { action: "stretch_yawn", phase: "phase1-c", expectedFrameCount: 144, expectedLoop: false, expectedCategory: "daily", expectedReturnTo: "idle_primary", expectedEntryFrames: [1, 48, 96], expectedExitFrames: [48, 96, 144] },
+  { action: "sleepy", phase: "phase1-c", expectedFrameCount: 144, expectedLoop: false, expectedCategory: "transition", expectedReturnTo: "sleep", expectedEntryFrames: [1, 48, 96], expectedExitFrames: [48, 96, 144] },
+  { action: "sleep", phase: "phase1-c", expectedFrameCount: 144, expectedLoop: false, expectedCategory: "transition", expectedReturnTo: "sleeping", expectedEntryFrames: [1, 48, 96], expectedExitFrames: [48, 96, 144] },
+  { action: "paw_raise", phase: "phase1-c", expectedFrameCount: 96, expectedLoop: false, expectedCategory: "interactive", expectedReturnTo: "idle_primary", expectedEntryFrames: [1, 48], expectedExitFrames: [48, 96] }
 ];
 const expectedFrameCount = 192;
 const expectedAnchors = [1, 48, 96, 144];
@@ -35,26 +42,32 @@ if (!existsSync(checklistPath)) {
   }
   if (!checklist.includes("phase1-a")) failures.push("checklist must mention phase1-a");
   if (!checklist.includes("phase1-b")) failures.push("checklist must mention phase1-b");
+  if (!checklist.includes("phase1-c")) failures.push("checklist must mention phase1-c");
 }
 
 if (manifest) {
-  for (const { action, expectedLoop, expectedReturnTo } of phase1Actions) {
+  for (const actionPlan of phase1Actions) {
+    const { action, expectedLoop, expectedReturnTo } = actionPlan;
+    const actionFrameCount = actionPlan.expectedFrameCount ?? expectedFrameCount;
+    const actionEntryFrames = actionPlan.expectedEntryFrames ?? expectedAnchors;
+    const actionExitFrames = actionPlan.expectedExitFrames ?? expectedExitFrames;
+    const actionCategory = actionPlan.expectedCategory ?? "daily";
     const config = manifest.actions?.[action];
     if (!config) {
       failures.push(`${action}: missing manifest action`);
       continue;
     }
 
-    if (config.frameCount !== expectedFrameCount) {
-      failures.push(`${action}: expected frameCount ${expectedFrameCount}, got ${config.frameCount}`);
+    if (config.frameCount !== actionFrameCount) {
+      failures.push(`${action}: expected frameCount ${actionFrameCount}, got ${config.frameCount}`);
     }
     if (config.loop !== expectedLoop) failures.push(`${action}: expected loop ${expectedLoop}`);
-    if (config.category !== "daily") failures.push(`${action}: expected daily category`);
+    if (config.category !== actionCategory) failures.push(`${action}: expected category ${actionCategory}, got ${config.category}`);
     if (config.returnTo !== expectedReturnTo) {
       failures.push(`${action}: expected returnTo ${expectedReturnTo}, got ${config.returnTo}`);
     }
-    assertArrayEqual(config.entryFrames, expectedAnchors, `${action}: entryFrames`);
-    assertArrayEqual(config.exitFrames, expectedExitFrames, `${action}: exitFrames`);
+    assertArrayEqual(config.entryFrames, actionEntryFrames, `${action}: entryFrames`);
+    assertArrayEqual(config.exitFrames, actionExitFrames, `${action}: exitFrames`);
 
     const frameRoot = runtimePathToDisk(config.frameRoot);
     if (!existsSync(frameRoot)) {
@@ -63,16 +76,22 @@ if (manifest) {
     }
 
     const files = readdirSync(frameRoot).filter((file) => file.endsWith(".png")).sort();
-    if (files.length !== expectedFrameCount) {
-      failures.push(`${action}: expected ${expectedFrameCount} PNG frames, found ${files.length}`);
+    if (files.length !== actionFrameCount) {
+      failures.push(`${action}: expected ${actionFrameCount} PNG frames, found ${files.length}`);
     }
 
-    for (const frame of [1, 72, 73, 144, 145, 192]) {
+    for (const frame of requiredFramesFor(actionFrameCount)) {
       const number = String(frame).padStart(6, "0");
       const expected = config.filePattern.replace("{index}", number);
       if (!existsSync(join(frameRoot, expected))) failures.push(`${action}: missing ${expected}`);
     }
   }
+}
+
+function requiredFramesFor(frameCount) {
+  if (frameCount === 96) return [1, 48, 72, 73, 96];
+  if (frameCount === 144) return [1, 72, 120, 121, 144];
+  return [1, 72, 73, 144, 145, 192];
 }
 
 console.log(JSON.stringify({ ok: failures.length === 0, failures }, null, 2));

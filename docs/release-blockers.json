@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-22",
+  "updatedAt": "2026-06-23",
   "purpose": "跟踪鱼仔桌宠距离可交付第一版的剩余硬缺口。所有条目关闭前，项目不得标记为完全完成。",
   "completionPolicy": {
     "projectCanBeMarkedComplete": false,
@@ -48,7 +48,7 @@
     },
     {
       "id": "runtime_duration_short",
-      "title": "24 个 runtime 动作时长不足",
+      "title": "17 个 runtime 动作时长不足",
       "status": "open",
       "category": "animation-duration",
       "source": "docs/animation-asset-contract.md",
@@ -62,7 +62,14 @@
         "assets/reviews/runtime/duration-extension-phase1/tail-wag-contact-sheet.png",
         "assets/reviews/runtime/duration-extension-phase1/groom-face-wash-contact-sheet.png",
         "assets/reviews/runtime/duration-extension-phase1/loaf-breathing-contact-sheet.png",
-        "assets/reviews/runtime/duration-extension-phase1/sleeping-contact-sheet.png"
+        "assets/reviews/runtime/duration-extension-phase1/sleeping-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/slow-blink-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/look-around-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/desk-sniff-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/stretch-yawn-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/sleepy-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/sleep-contact-sheet.png",
+        "assets/reviews/runtime/duration-extension-phase1/paw-raise-contact-sheet.png"
       ],
       "requiredActions": [
         "继续为剩余 daily 动作补充更长视频或分段素材",

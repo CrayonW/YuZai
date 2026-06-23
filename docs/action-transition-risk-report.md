@@ -21,12 +21,12 @@
 
 | risk | direction | from | to | best frame pair | metric | best source frame | tail diagnosis | current bridge | recommendation | reason |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- |
-| high | 回切 | sleep | sleeping | 120 -> 144 | 0.3372 | 1 (0.0300) | tail-not-recovered | sleep_to_sleeping | 已配置 sleep_to_sleeping，需桌面录屏确认 | sleep 播放结束后回到 sleeping |
+| high | 回切 | sleep | sleeping | 48 -> 144 | 0.2606 | 1 (0.0300) | tail-not-recovered | sleep_to_sleeping | 已配置 sleep_to_sleeping，需桌面录屏确认 | sleep 播放结束后回到 sleeping |
 | high | 回切 | waking | idle_primary | 120 -> 1 | 0.2512 | 8 (0.0691) | tail-not-recovered | waking_to_idle | 已配置 waking_to_idle，需桌面录屏确认 | waking 播放结束后回到 idle_primary |
 | high | 回切 | poke_annoyed | idle_primary | 120 -> 1 | 0.2248 | 17 (0.0774) | tail-not-recovered | poke_annoyed_to_idle | 已配置 poke_annoyed_to_idle，需桌面录屏确认 | poke_annoyed 播放结束后回到 idle_primary |
-| high | 回切 | paw_raise | idle_primary | 72 -> 96 | 0.1993 | 1 (0.0535) | tail-not-recovered | paw_raise_to_idle | 已配置 paw_raise_to_idle，需桌面录屏确认 | paw_raise 播放结束后回到 idle_primary |
-| medium | 回切 | sleepy | sleep | 120 -> 1 | 0.1681 | 2 (0.0451) | acceptable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | sleepy 播放结束后回到 sleep |
+| high | 回切 | paw_raise | idle_primary | 48 -> 96 | 0.1939 | 1 (0.0535) | tail-not-recovered | paw_raise_to_idle | 已配置 paw_raise_to_idle，需桌面录屏确认 | paw_raise 播放结束后回到 idle_primary |
 | medium | 回切 | look_sse | idle_primary | 120 -> 96 | 0.1390 | 8 (0.0734) | acceptable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | look_sse 播放结束后回到 idle_primary |
+| medium | 回切 | sleepy | sleep | 48 -> 1 | 0.1310 | 2 (0.0451) | acceptable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | sleepy 播放结束后回到 sleep |
 | medium | 回切 | look_ssw | idle_primary | 120 -> 1 | 0.1279 | 22 (0.0733) | acceptable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | look_ssw 播放结束后回到 idle_primary |
 | medium | 回切 | look_ne | idle_primary | 120 -> 1 | 0.1276 | 8 (0.0689) | acceptable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | look_ne 播放结束后回到 idle_primary |
 | medium | 回切 | look_wnw | idle_primary | 120 -> 1 | 0.1271 | 8 (0.0772) | acceptable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | look_wnw 播放结束后回到 idle_primary |

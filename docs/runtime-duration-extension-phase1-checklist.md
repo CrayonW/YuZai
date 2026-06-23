@@ -140,6 +140,16 @@ phase1-b 已保存证据：
 - `loaf_breathing`：`assets/reviews/runtime/duration-extension-phase1/loaf-breathing-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=9`，尺寸 `440x440`。
 - `sleeping`：`assets/reviews/runtime/duration-extension-phase1/sleeping-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=12`，尺寸 `440x440`。
 
+phase1-c 已保存证据：
+
+- `slow_blink`：`assets/reviews/runtime/duration-extension-phase1/slow-blink-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=9`，尺寸 `440x440`。
+- `look_around`：`assets/reviews/runtime/duration-extension-phase1/look-around-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=12`，尺寸 `440x440`。
+- `desk_sniff`：`assets/reviews/runtime/duration-extension-phase1/desk-sniff-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=10`，尺寸 `440x440`。
+- `stretch_yawn`：`assets/reviews/runtime/duration-extension-phase1/stretch-yawn-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=8`，尺寸 `440x440`。
+- `sleepy`：`assets/reviews/runtime/duration-extension-phase1/sleepy-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=7`，尺寸 `440x440`。
+- `sleep`：`assets/reviews/runtime/duration-extension-phase1/sleep-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=12`，尺寸 `440x440`。
+- `paw_raise`：`assets/reviews/runtime/duration-extension-phase1/paw-raise-contact-sheet.png`，`capture:inspect` 结果 `changedFrames=9`，尺寸 `440x440`。
+
 ## Git 记录规则
 
 - 每完成一个波次并通过验证后，单独提交。
@@ -148,23 +158,19 @@ phase1-b 已保存证据：
 
 ## 推荐下一步
 
-下一步建议继续执行 `phase1-c`：
+下一步建议继续执行 `phase1-d` 或重新生成更长方向跟随视频：
 
-1. `slow_blink`
-2. `look_around`
-3. `desk_sniff`
-4. `stretch_yawn`
-5. `sleepy`
-6. `sleep`
-7. `paw_raise`
+1. `walk`
+2. 16 个 `look_*` 鼠标方向动作
 
-这些动作缺口多为 24 帧，适合用尾段缓冲或短往返派生先降低短动作重复感；`walk` 和 16 方向 `look_*` 仍建议单独验收。
+`walk` 与桌宠位置移动强相关；16 方向 `look_*` 与鼠标停留交互强相关，仍建议用更长源视频或分段素材单独验收，不在 phase1-c 中机械补齐。
 
 ## 执行状态
 
 - `phase1-a`：已确认执行，已用现有序列帧补长 `idle_primary`、`idle_secondary`、`tail_wag`。
 - `phase1-b`：已确认执行，已用现有序列帧补长 `groom_face_wash`、`loaf_breathing`、`sleeping`。
-- 当前结果：phase1-a 三项均从 72 帧补到 192 帧；phase1-b 三项均从 120 帧补到 192 帧；仍使用原始 runtime 帧派生，不调用可灵生成新视频。
+- `phase1-c`：已确认执行，已用现有序列帧补长 `slow_blink`、`look_around`、`desk_sniff`、`stretch_yawn`、`sleepy`、`sleep`、`paw_raise`。
+- 当前结果：phase1-a 三项均从 72 帧补到 192 帧；phase1-b 三项均从 120 帧补到 192 帧；phase1-c 中 6 项从 120 帧补到 144 帧，`paw_raise` 从 72 帧补到 96 帧；仍使用原始 runtime 帧派生，不调用可灵生成新视频。
 - 已新增门禁：`npm run validate:runtime-duration-phase1`。
-- 已补桌面验收：phase1-a 和 phase1-b 共 6 项均已生成 12 帧桌面截图和 contact sheet，且 `capture:inspect` 均通过。
-- 剩余范围：`phase1-c`、`phase1-d` 仍未执行。
+- 已补桌面验收：phase1-a、phase1-b、phase1-c 共 13 项均已生成 12 帧桌面截图和 contact sheet，且 `capture:inspect` 均通过。
+- 剩余范围：`phase1-d` 仍未执行；`runtime_duration_short` 仍保持 open，剩余短动作数为 17。

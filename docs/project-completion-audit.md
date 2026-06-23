@@ -9,7 +9,7 @@
 - MVP 核心能力：当前证据显示已完成。
 - 13 状态覆盖：当前 13 个状态均有 independent runtime 动作。
 - 桌面可见动态：已有 12 张连续桌面截图证据，尺寸 `440x440`，变化帧 `12`。
-- 运行时动作数：`38`。
+- 运行时动作数：`42`。
 - 发布级验证：`npm run validate:release` 已通过。
 - 试用分发说明：`docs/release-playbook.md` 已补齐本地安装、首次打开、卸载步骤、回滚步骤、版本标签和已知限制。
 - 试用标签记录：`docs/release-tag-record.md` 已记录 `yuzai-v0.1.0-test.1` 和回滚 commit。
@@ -76,7 +76,7 @@ npm run validate:release
 
 ### 动作时长不足
 
-`docs/animation-asset-contract.md` 显示 runtime 时长不足动作数为 `24`。第一阶段 `phase1-a` 已用现有序列帧把 `idle_primary`、`idle_secondary`、`tail_wag` 从 72 帧补到 192 帧；`phase1-b` 已把 `groom_face_wash`、`loaf_breathing`、`sleeping` 从 120 帧补到 192 帧。已补充桌面多帧验收：`assets/reviews/runtime/duration-extension-phase1/idle-primary-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/idle-secondary-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/tail-wag-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/groom-face-wash-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/loaf-breathing-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/sleeping-contact-sheet.png`。剩余短动作范围见 `docs/runtime-duration-extension-plan.md`，执行清单见 `docs/runtime-duration-extension-phase1-checklist.md`。这不阻断第一版可见 MVP，但仍会影响长时间陪伴时的自然度和重复感。
+`docs/animation-asset-contract.md` 显示 runtime 时长不足动作数为 `17`。第一阶段 `phase1-a` 已用现有序列帧把 `idle_primary`、`idle_secondary`、`tail_wag` 从 72 帧补到 192 帧；`phase1-b` 已把 `groom_face_wash`、`loaf_breathing`、`sleeping` 从 120 帧补到 192 帧；`phase1-c` 已把 `slow_blink`、`look_around`、`desk_sniff`、`stretch_yawn`、`sleepy`、`sleep` 从 120 帧补到 144 帧，并把 `paw_raise` 从 72 帧补到 96 帧。已补充桌面多帧验收：`assets/reviews/runtime/duration-extension-phase1/idle-primary-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/idle-secondary-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/tail-wag-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/groom-face-wash-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/loaf-breathing-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/sleeping-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/slow-blink-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/look-around-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/desk-sniff-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/stretch-yawn-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/sleepy-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/sleep-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/paw-raise-contact-sheet.png`。剩余短动作范围见 `docs/runtime-duration-extension-plan.md`，执行清单见 `docs/runtime-duration-extension-phase1-checklist.md`。这不阻断第一版可见 MVP，但仍会影响长时间陪伴时的自然度和重复感。
 机器可读 blocker：`runtime_duration_short`，记录于 `docs/release-blockers.json`。
 
 ### 分发缺口
@@ -92,7 +92,7 @@ npm run validate:release
 
 ## 下一步建议
 
-1. 如果目标是继续解决“动作衔接太生硬”，下一步不再是 transitionOut 接入，而是继续处理 `runtime_duration_short` 中剩余 24 个短动作；如果实际长时间使用仍觉得回切生硬，再重生成尾段更明确回目标姿态的视频。
+1. 如果目标是继续解决“动作衔接太生硬”，下一步不再是 transitionOut 接入，而是继续处理 `runtime_duration_short` 中剩余 17 个短动作；如果实际长时间使用仍觉得回切生硬，再重生成尾段更明确回目标姿态的视频。
 2. 如果目标是提升长时间陪伴自然度，应先为 daily 动作生成更长视频或分段素材清单，再确认后处理。
 3. 如果目标是发布给别人试用，应优先补签名、公证和 Windows 实机验收，并按 `docs/release-playbook.md` 创建可回滚版本标签。
 

@@ -2145,3 +2145,21 @@ FPS：不变，仍为 24 FPS。
 桌面验收：已补 3 组桌面多帧截图，分别保存到 `assets/reviews/runtime/duration-extension-phase1/groom-face-wash-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/loaf-breathing-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/sleeping-contact-sheet.png`；`capture:inspect` 结果分别为 `changedFrames=12`、`changedFrames=9`、`changedFrames=12`，尺寸均为 `440x440`。
 已知问题：本轮只处理 `phase1-b`，`runtime_duration_short` 仍为 open，剩余短动作数为 24；16 方向 `look_*`、`walk` 和短交互/睡眠链路动作仍建议后续单独处理。
 决定：接受 phase1-b 作为扩大长陪伴日常动作池有效时长的第二步，继续保留后续重新生成更自然长视频的空间。
+
+## 2026-06-23 runtime 时长补长 phase1-c
+
+日期：2026-06-23
+源文件：`assets/runtime/animations/manifest.json`、`assets/runtime/animations/slow_blink/frames`、`assets/runtime/animations/look_around/frames`、`assets/runtime/animations/desk_sniff/frames`、`assets/runtime/animations/stretch_yawn/frames`、`assets/runtime/animations/sleepy/frames`、`assets/runtime/animations/sleep/frames`、`assets/runtime/animations/paw_raise/frames`、`scripts/extend-runtime-duration-phase1.mjs`、`scripts/validate-runtime-duration-phase1.mjs`、`docs/runtime-duration-extension-phase1-checklist.md`
+目标动作：`slow_blink`、`look_around`、`desk_sniff`、`stretch_yawn`、`sleepy`、`sleep`、`paw_raise`
+问题：`runtime_duration_short` blocker 中 7 个短缺口动作仍低于契约目标，其中日常/睡眠链路动作缺 24 帧，`paw_raise` 缺 24 帧。
+参考片段：`phase1-c`、`尾段缓冲`、`往返循环`、`runtime 时长不足动作数：17`。
+帧数：`slow_blink`、`look_around`、`desk_sniff`、`stretch_yawn`、`sleepy`、`sleep` 从 120 帧补长到 144 帧；`paw_raise` 从 72 帧补长到 96 帧。
+FPS：不变，仍为 24 FPS。
+循环方式：`look_around` 使用正放后倒放到安全帧；其余 phase1-c 动作用尾段安全帧缓冲。`sleepy`、`sleep` 保留 `transition/locked` 语义，`paw_raise` 保留 `interactive/locked` 与 `paw_raise_to_idle` 回切链路。
+水印处理：本轮不处理源视频；所有新增帧来自已经进入 runtime 的透明序列帧。
+重建方法：先扩展 `validate:runtime-duration-phase1` 并确认 `phase1-c` 红灯；再扩展 `runtime:extend-duration-phase1`，按动作策略复制或派生现有序列帧，同时更新 manifest 的 `frameCount`、`entryFrames`、`exitFrames`，并默认保留原 manifest 的 `category`、`interruptPolicy`、`transitionOut`。
+运行时输出：新增 `slow_blink`、`look_around`、`desk_sniff`、`stretch_yawn`、`sleepy`、`sleep` 的 `frame_000121.png` 到 `frame_000144.png`；新增 `paw_raise` 的 `frame_000073.png` 到 `frame_000096.png`，并更新 manifest 对应动作。
+验证命令：`npm run validate:runtime-duration-phase1`。
+桌面验收：已补 7 组桌面多帧截图，分别保存到 `assets/reviews/runtime/duration-extension-phase1/slow-blink-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/look-around-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/desk-sniff-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/stretch-yawn-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/sleepy-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/sleep-contact-sheet.png`、`assets/reviews/runtime/duration-extension-phase1/paw-raise-contact-sheet.png`；`capture:inspect` 结果分别为 `changedFrames=9`、`changedFrames=12`、`changedFrames=10`、`changedFrames=8`、`changedFrames=7`、`changedFrames=12`、`changedFrames=9`，尺寸均为 `440x440`。
+已知问题：本轮只处理 `phase1-c`，`runtime_duration_short` 仍为 open，剩余短动作数为 17；`walk` 与 16 方向 `look_*` 仍建议后续用更长源视频或分段素材单独处理。
+决定：接受 phase1-c 作为降低短动作重复感的第三步，同时继续保留后续重新生成更长、更自然方向跟随视频的空间。

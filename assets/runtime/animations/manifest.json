@@ -141,7 +141,7 @@
       "frameRoot": "../assets/runtime/animations/paw_raise/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 72,
+      "frameCount": 96,
       "fps": 24,
       "loop": false,
       "interruptible": true,
@@ -149,10 +149,12 @@
       "enabled": true,
       "category": "interactive",
       "entryFrames": [
-        1
+        1,
+        48
       ],
       "exitFrames": [
-        72
+        48,
+        96
       ],
       "interruptPolicy": "locked",
       "returnTo": "idle_primary",
@@ -163,7 +165,7 @@
       "frameRoot": "../assets/runtime/animations/slow_blink/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 144,
       "fps": 24,
       "loop": false,
       "interruptible": true,
@@ -171,10 +173,14 @@
       "enabled": true,
       "category": "daily",
       "entryFrames": [
-        1
+        1,
+        48,
+        96
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -184,7 +190,7 @@
       "frameRoot": "../assets/runtime/animations/look_around/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 144,
       "fps": 24,
       "loop": false,
       "interruptible": true,
@@ -192,10 +198,14 @@
       "enabled": true,
       "category": "daily",
       "entryFrames": [
-        1
+        1,
+        48,
+        96
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -290,7 +300,7 @@
       "frameRoot": "../assets/runtime/animations/stretch_yawn/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 144,
       "fps": 24,
       "loop": false,
       "interruptible": true,
@@ -298,10 +308,14 @@
       "enabled": true,
       "category": "daily",
       "entryFrames": [
-        1
+        1,
+        48,
+        96
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -365,7 +379,7 @@
       "frameRoot": "../assets/runtime/animations/desk_sniff/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 144,
       "fps": 24,
       "loop": false,
       "interruptible": true,
@@ -373,10 +387,14 @@
       "enabled": true,
       "category": "daily",
       "entryFrames": [
-        1
+        1,
+        48,
+        96
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144
       ],
       "interruptPolicy": "at-safe-frame",
       "returnTo": "idle_primary"
@@ -407,7 +425,7 @@
       "frameRoot": "../assets/runtime/animations/sleepy/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 144,
       "fps": 24,
       "loop": false,
       "interruptible": false,
@@ -415,10 +433,14 @@
       "enabled": true,
       "category": "transition",
       "entryFrames": [
-        1
+        1,
+        48,
+        96
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144
       ],
       "interruptPolicy": "locked",
       "returnTo": "sleep"
@@ -428,7 +450,7 @@
       "frameRoot": "../assets/runtime/animations/sleep/frames",
       "filePattern": "frame_{index}.png",
       "firstFrame": 1,
-      "frameCount": 120,
+      "frameCount": 144,
       "fps": 24,
       "loop": false,
       "interruptible": false,
@@ -436,10 +458,14 @@
       "enabled": true,
       "category": "transition",
       "entryFrames": [
-        1
+        1,
+        48,
+        96
       ],
       "exitFrames": [
-        120
+        48,
+        96,
+        144
       ],
       "interruptPolicy": "locked",
       "returnTo": "sleeping",

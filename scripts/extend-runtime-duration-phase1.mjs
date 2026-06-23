@@ -11,6 +11,8 @@ const phase1Actions = [
     sourceFrameCount: 72,
     targetFrameCount: 192,
     loop: true,
+    category: "daily",
+    interruptPolicy: "at-safe-frame",
     returnTo: "idle_primary",
     strategy: "repeat-existing-72-frame-sequence"
   },
@@ -20,6 +22,8 @@ const phase1Actions = [
     sourceFrameCount: 72,
     targetFrameCount: 192,
     loop: true,
+    category: "daily",
+    interruptPolicy: "at-safe-frame",
     returnTo: "idle_primary",
     strategy: "repeat-existing-72-frame-sequence"
   },
@@ -29,6 +33,8 @@ const phase1Actions = [
     sourceFrameCount: 72,
     targetFrameCount: 192,
     loop: true,
+    category: "daily",
+    interruptPolicy: "at-safe-frame",
     returnTo: "idle_primary",
     strategy: "repeat-existing-72-frame-sequence"
   },
@@ -38,6 +44,8 @@ const phase1Actions = [
     sourceFrameCount: 120,
     targetFrameCount: 192,
     loop: false,
+    category: "daily",
+    interruptPolicy: "at-safe-frame",
     returnTo: "idle_primary",
     strategy: "forward-then-reverse-to-safe-frame"
   },
@@ -47,6 +55,8 @@ const phase1Actions = [
     sourceFrameCount: 120,
     targetFrameCount: 192,
     loop: true,
+    category: "daily",
+    interruptPolicy: "at-safe-frame",
     returnTo: "idle_primary",
     strategy: "repeat-existing-120-frame-sequence"
   },
@@ -56,13 +66,75 @@ const phase1Actions = [
     sourceFrameCount: 120,
     targetFrameCount: 192,
     loop: true,
+    category: "daily",
+    interruptPolicy: "at-safe-frame",
     returnTo: "waking",
     strategy: "repeat-existing-120-frame-sequence"
+  },
+  {
+    action: "slow_blink",
+    phase: "phase1-c",
+    sourceFrameCount: 120,
+    targetFrameCount: 144,
+    loop: false,
+    returnTo: "idle_primary",
+    strategy: "hold-tail-frame"
+  },
+  {
+    action: "look_around",
+    phase: "phase1-c",
+    sourceFrameCount: 120,
+    targetFrameCount: 144,
+    loop: false,
+    returnTo: "idle_primary",
+    strategy: "forward-then-reverse-to-safe-frame"
+  },
+  {
+    action: "desk_sniff",
+    phase: "phase1-c",
+    sourceFrameCount: 120,
+    targetFrameCount: 144,
+    loop: false,
+    returnTo: "idle_primary",
+    strategy: "hold-tail-frame"
+  },
+  {
+    action: "stretch_yawn",
+    phase: "phase1-c",
+    sourceFrameCount: 120,
+    targetFrameCount: 144,
+    loop: false,
+    returnTo: "idle_primary",
+    strategy: "hold-tail-frame"
+  },
+  {
+    action: "sleepy",
+    phase: "phase1-c",
+    sourceFrameCount: 120,
+    targetFrameCount: 144,
+    loop: false,
+    returnTo: "sleep",
+    strategy: "hold-tail-frame"
+  },
+  {
+    action: "sleep",
+    phase: "phase1-c",
+    sourceFrameCount: 120,
+    targetFrameCount: 144,
+    loop: false,
+    returnTo: "sleeping",
+    strategy: "hold-tail-frame"
+  },
+  {
+    action: "paw_raise",
+    phase: "phase1-c",
+    sourceFrameCount: 72,
+    targetFrameCount: 96,
+    loop: false,
+    returnTo: "idle_primary",
+    strategy: "hold-tail-frame"
   }
 ];
-const targetFrameCount = 192;
-const entryFrames = [1, 48, 96, 144];
-const exitFrames = [48, 96, 144, 192];
 
 export function extendRuntimeDurationPhase1({ manifestFile = manifestPath } = {}) {
   const manifest = JSON.parse(readFileSync(manifestFile, "utf8"));
@@ -97,12 +169,12 @@ export function extendRuntimeDurationPhase1({ manifestFile = manifestPath } = {}
     removeExtraFrames(frameRoot, config, targetFrameCount);
 
     config.frameCount = targetFrameCount;
-    config.entryFrames = [...entryFrames];
-    config.exitFrames = [...exitFrames];
-    config.loop = actionPlan.loop;
-    config.category = "daily";
-    config.interruptPolicy = "at-safe-frame";
-    config.returnTo = actionPlan.returnTo;
+    config.entryFrames = entryFramesFor(targetFrameCount);
+    config.exitFrames = exitFramesFor(targetFrameCount);
+    if ("loop" in actionPlan) config.loop = actionPlan.loop;
+    if ("category" in actionPlan) config.category = actionPlan.category;
+    if ("interruptPolicy" in actionPlan) config.interruptPolicy = actionPlan.interruptPolicy;
+    if ("returnTo" in actionPlan) config.returnTo = actionPlan.returnTo;
 
     results.push({ action, phase: actionPlan.phase, frameCount: targetFrameCount, strategy });
   }
@@ -118,7 +190,25 @@ function sourceIndexFor({ index, sourceFrameCount, strategy }) {
     return Math.max(0, reverseIndex);
   }
 
+  if (strategy === "hold-tail-frame") {
+    return Math.min(index, sourceFrameCount - 1);
+  }
+
   return index % sourceFrameCount;
+}
+
+function entryFramesFor(frameCount) {
+  if (frameCount === 96) return [1, 48];
+  if (frameCount === 144) return [1, 48, 96];
+  if (frameCount === 192) return [1, 48, 96, 144];
+  throw new Error(`unsupported target frameCount ${frameCount}`);
+}
+
+function exitFramesFor(frameCount) {
+  if (frameCount === 96) return [48, 96];
+  if (frameCount === 144) return [48, 96, 144];
+  if (frameCount === 192) return [48, 96, 144, 192];
+  throw new Error(`unsupported target frameCount ${frameCount}`);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

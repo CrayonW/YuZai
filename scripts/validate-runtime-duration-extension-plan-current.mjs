@@ -18,7 +18,7 @@ if (!existsSync(planPath)) {
 
   for (const snippet of [
     "# runtime 动作时长补长清单",
-    "runtime 时长不足动作数：24",
+    "runtime 时长不足动作数：17",
     "look_e",
     "look_ese",
     "不得只修改 manifest 帧数来关闭时长缺口",
