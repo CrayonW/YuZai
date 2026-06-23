@@ -128,7 +128,8 @@
       "source": "docs/windows-release-smoke.md",
       "evidence": [
         ".github/workflows/windows-package.yml",
-        "docs/windows-release-smoke.md"
+        "docs/windows-release-smoke.md",
+        "docs/distribution-live-check.md"
       ],
       "requiredActions": [
         "在 GitHub Actions 或 Windows 环境生成 Windows 安装包",
@@ -147,7 +148,8 @@
       "evidence": [
         "docs/signed-release-safety.md",
         "docs/release-playbook.md",
-        "docs/macos-signing-notarization-status.md"
+        "docs/macos-signing-notarization-status.md",
+        "docs/distribution-live-check.md"
       ],
       "requiredActions": [
         "配置正式 Developer ID 签名身份",
@@ -166,7 +168,8 @@
       "evidence": [
         "docs/signed-release-safety.md",
         "docs/release-playbook.md",
-        "docs/macos-signing-notarization-status.md"
+        "docs/macos-signing-notarization-status.md",
+        "docs/distribution-live-check.md"
       ],
       "requiredActions": [
         "在签名/公证包上复核普通用户安装提示",

@@ -2204,3 +2204,14 @@ Windows 状态查询：`npm run actions:windows-status` 在沙盒内 DNS 无法�
 桌面验收：1200ms 启动截图已保存到 `assets/reviews/runtime/startup-clean/no-placeholder-startup-1200.png`，画面显示灰白鱼仔真实 runtime 帧，不显示旧的手绘橙色占位图。
 已知问题：450ms 极早截图可能仍是透明空画布，原因是首张 runtime 图片还未完成加载；但此阶段不会再显示错误占位画面。
 决定：接受“删除非鱼仔启动占位画面”作为当前启动体验修复；项目整体仍因 Windows 实机验收、macOS 签名/公证和签名后安全复核未完成而不能标记完成。
+
+## 2026-06-23 发布阻塞现场检查
+
+日期：2026-06-23
+源文件：`docs/distribution-live-check.md`、`docs/release-blockers.json`、`docs/release-blockers.md`、`docs/project-completion-audit.md`、`scripts/validate-distribution-live-check.mjs`、`scripts/validate-all.mjs`、`package.json`
+问题：继续完成项目时，剩余硬缺口集中在外部分发验证：Windows 实机验收、macOS 正式签名与公证、签名后普通用户安全复核。需要把本轮现场检查证据写入中文文档，并让验证脚本防止后续遗漏。
+参考片段：`windows_real_machine_smoke`、`macos_sign_notarize`、`signed_user_safety_recheck`、`GitHub API rate limit`、`0 valid identities found`。
+处理：新增 `docs/distribution-live-check.md`，记录 `npm run actions:windows-status` 在沙盒 DNS 失败、外部匿名 GitHub API rate limit、`security find-identity -v -p codesigning` 返回 0 个可用签名身份、`xcrun notarytool --help` 可用但不能在无签名身份/无签名包/无公证凭据时提交。把该文档加入三个 open release blocker 的 evidence，并重建 `docs/release-blockers.md`。
+验证命令：`npm run validate:distribution-live-check`。
+已知问题：本轮只补充现场证据和自动校验，不替代 Windows 10/11 实机安装验收，不执行签名，不调用 `notarytool submit`，不上传 Apple 公证。
+决定：接受本轮作为发布阻塞证据链增强；项目整体仍不能标记完成。
