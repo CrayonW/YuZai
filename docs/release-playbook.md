@@ -105,27 +105,27 @@ git push origin yuzai-v0.1.0-test.1
 
 当前已创建的第一版试用标签记录见 `docs/release-tag-record.md`。
 未签名试用包和未来签名包的安全说明见 `docs/signed-release-safety.md`。
-macOS 签名、公证和签名后安全复核当前状态见 `docs/macos-signing-notarization-status.md`。
-Windows 安装包实机验收清单见 `docs/windows-release-smoke.md`。
-Windows 远端打包工作流见 `.github/workflows/windows-package.yml`，用于生成试用安装包 artifact，不代表已经完成实机验收。
+macOS 签名、公证和签名后安全复核当前状态见 `docs/macos-signing-notarization-status.md`；按 2026-06-27 用户确认，本机自用口径下这些分发项已取消为完成阻塞。
+Windows 安装包实机验收清单见 `docs/windows-release-smoke.md`，当前仅作为未来 Windows 分发参考。
+Windows 远端打包工作流见 `.github/workflows/windows-package.yml`，用于未来生成试用安装包 artifact。
 Windows Package Actions 状态查询见 `docs/windows-actions-status.md`，可通过 `npm run actions:windows-status` 复查远端 run 和 `yuzai-windows-package` artifact。
-剩余硬缺口机器清单见 `docs/release-blockers.json`，中文报告见 `docs/release-blockers.md`；其中 blocker 全部关闭前，项目不得标记为完全完成。
+剩余硬缺口机器清单见 `docs/release-blockers.json`，中文报告见 `docs/release-blockers.md`；本机自用口径下项目可标记完成。
 
 ## 已知限制
 
-- 当前 `release/mac-arm64/鱼仔桌面宠物.app` 是本地验证包，不是已签名、公证的正式发行包。
-- `package:mac` 和 `package:win` 只是安装包入口，仍需要分别做 macOS 公证和 Windows 实机验收。
-- Windows 实机验收必须按 `docs/windows-release-smoke.md` 记录安装包、透明置顶、鼠标靠近、定时气泡和卸载结果。
+- 当前 `release/mac-arm64/鱼仔桌面宠物.app` 是本机自用验证包，不是已签名、公证的正式发行包。
+- `package:mac` 和 `package:win` 只是未来分发安装包入口；本机自用不要求 macOS 公证或 Windows 实机验收。
+- Windows 实机验收已取消为当前完成阻塞；如未来恢复 Windows 分发，再按 `docs/windows-release-smoke.md` 记录安装包、透明置顶、鼠标靠近、定时气泡和卸载结果。
 - `.github/workflows/windows-package.yml` 只生成 Windows 试用包 artifact，不签名、不发布正式版本。
-- `npm run actions:windows-status` 只查询远端 Actions 状态，不替代 Windows 10/11 实机验收。
-- `docs/release-blockers.json` 和 `docs/release-blockers.md` 中仍有 open blocker 时，不得把项目写成最终完成。
+- `npm run actions:windows-status` 只查询远端 Actions 状态，当前本机自用不要求 Windows 10/11 实机验收。
+- `docs/release-blockers.json` 和 `docs/release-blockers.md` 记录当前本机自用完成口径；未来对外分发前应重新检查 canceled 项。
 - 当前 4 个原动作直接回切 high 风险记录已配置 transitionOut，并已补桌面多帧截图证据。
 - 当前 runtime 时长不足动作数为 0；phase1-d 方向跟随动作采用已清理 runtime 帧循环展开，后续如果追求更自然观感，仍可重新生成真正更长的源视频替换。
 - 当前应用包不包含 `assets/origin`，因此不能从应用包内反向恢复源视频或重新抽帧。
 
 ## 后续正式分发前检查
 
-正式分发前至少补齐：
+未来正式分发前至少补齐：
 
 1. 正式应用图标复核。
 2. macOS 签名与公证。

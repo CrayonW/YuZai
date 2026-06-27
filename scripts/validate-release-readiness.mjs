@@ -40,7 +40,7 @@ if (!existsSync(playbookPath)) {
     "docs/windows-actions-status.md",
     ".github/workflows/windows-package.yml",
     "actions:windows-status",
-    "项目不得标记为完全完成",
+    "本机自用",
     "transitionOut",
     "不调用可灵生成视频"
   ];
@@ -70,18 +70,17 @@ if (!existsSync(auditPath)) {
     "docs/release-tag-record.md",
     "docs/signed-release-safety.md",
     "docs/macos-signing-notarization-status.md",
-    "面向最终用户的安装/回滚说明",
+    "面向本机自用和未来试用分发的安装/回滚说明",
     "卸载说明",
     "版本标签",
-    "正式签名",
-    "macOS 公证",
+    "本机自用口径",
     "docs/windows-release-smoke.md",
     "Windows 实机验收",
     ".github/workflows/windows-package.yml",
     "docs/release-blockers.json",
     "docs/release-blockers.md",
     "docs/windows-actions-status.md",
-    "项目不得标记为完全完成"
+    "项目可标记完成：是"
   ]) {
     if (!audit.includes(snippet)) {
       failures.push(`docs/project-completion-audit.md missing release readiness text: ${snippet}`);
@@ -121,8 +120,8 @@ if (!existsSync(macosSigningStatusPath)) {
   for (const snippet of [
     "# macOS 签名与公证状态报告",
     "签名 identity：null",
-    "macos_sign_notarize：open",
-    "signed_user_safety_recheck：open",
+    "macos_sign_notarize：canceled",
+    "signed_user_safety_recheck：canceled",
     "不执行签名、不调用 notarytool、不上传 Apple 公证"
   ]) {
     if (!macosSigningStatus.includes(snippet)) {
@@ -172,12 +171,12 @@ if (!existsSync(releaseBlockersPath)) {
     "macos_sign_notarize",
     "signed_user_safety_recheck"
   ]) {
-    if (!blockers.some((blocker) => blocker.id === id && blocker.status === "open")) {
-      failures.push(`docs/release-blockers.json missing open blocker: ${id}`);
+    if (!blockers.some((blocker) => blocker.id === id && blocker.status === "canceled")) {
+      failures.push(`docs/release-blockers.json must mark local-only canceled blocker: ${id}`);
     }
   }
-  if (releaseBlockers.completionPolicy?.projectCanBeMarkedComplete !== false) {
-    failures.push("docs/release-blockers.json must keep projectCanBeMarkedComplete false");
+  if (releaseBlockers.completionPolicy?.projectCanBeMarkedComplete !== true) {
+    failures.push("docs/release-blockers.json must allow project completion for local-only scope");
   }
 }
 
@@ -187,8 +186,8 @@ if (!existsSync(releaseBlockersReportPath)) {
   const releaseBlockersReport = readFileSync(releaseBlockersReportPath, "utf8");
   for (const snippet of [
     "# 鱼仔桌宠剩余硬缺口报告",
-    "项目可标记完成：否",
-    "Open Blockers",
+    "项目可标记完成：是",
+    "本机自用",
     "transition_out_high_risk",
     "windows_real_machine_smoke"
   ]) {

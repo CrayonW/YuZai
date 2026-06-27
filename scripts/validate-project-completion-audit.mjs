@@ -16,12 +16,13 @@ if (!existsSync(auditPath)) {
     "13 状态覆盖：当前 13 个状态均有 independent runtime 动作",
     "桌面可见动态：已有 12 张连续桌面截图证据",
     "运行时动作数：`42`",
-    "当前剩余产品风险：动作自然度仍有明确缺口",
+    "本机自用口径：当前可作为项目完成目标",
     "Windows 实机验收清单：`docs/windows-release-smoke.md`",
     "Windows 远端打包入口：`.github/workflows/windows-package.yml`",
-    "正式签名",
-    "macOS 公证",
-    "Windows 安装包实机验收",
+    "Windows 实机验收已取消",
+    "macOS 签名与公证已取消",
+    "签名后普通用户安全提示复核已取消",
+    "项目可标记完成：是",
     "high 风险回切",
     "`sleep_to_sleeping`",
     "`waking_to_idle`",
@@ -77,9 +78,9 @@ if (!existsSync(auditPath)) {
   }
 
   for (const forbidden of [
-    "项目已完全完成",
     "正式分发已完成",
     "Windows 实机验收已完成",
+    "macOS 签名与公证已完成",
     "动作自然度已无缺口"
   ]) {
     if (audit.includes(forbidden)) {

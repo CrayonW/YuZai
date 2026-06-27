@@ -1,14 +1,14 @@
 # 发布阻塞现场检查记录
 
-日期：2026-06-23
+日期：2026-06-27
 
-用途：记录本轮继续推进“完成项目”时，对剩余发布阻塞做过的现场检查。本文档是证据入口，不替代 Windows 实机验收、macOS 正式签名、公证或签名后普通用户安全复核。
+用途：记录本轮继续推进“完成项目”时，对分发相关检查做过的现场记录。用户已确认项目只在本人电脑本机运行，因此 Windows 实机验收、macOS 正式签名/公证和签名后普通用户安全复核已取消为完成阻塞。
 
 ## 当前结论
 
-- `windows_real_machine_smoke`：仍为 open。当前环境可以执行查询脚本，但匿名 GitHub API 查询被 rate limit 拦截，尚未确认 `windows-package.yml` 最新 run 或 `yuzai-windows-package` artifact。本轮已补充 `npm run actions:windows-dispatch`，后续可用具备 Actions workflow 权限的 `GITHUB_TOKEN` 手动触发构建。
-- `macos_sign_notarize`：仍为 open。本机 Keychain 当前没有可用代码签名身份，项目打包配置仍是 `identity: null`，不能视为正式签名包。
-- `signed_user_safety_recheck`：仍为 open。没有签名/公证包时，无法做普通用户安装安全提示复核。
+- `windows_real_machine_smoke`：canceled。Windows 实机验收已取消，当前只保留 `npm run actions:windows-dispatch` 和 `npm run actions:windows-status` 作为未来 Windows 分发工具。
+- `macos_sign_notarize`：canceled。macOS 签名与公证已取消，当前本机自用继续使用未签名验证包。
+- `signed_user_safety_recheck`：canceled。签名后普通用户安全提示复核已取消，未来对外分发时再重新启用。
 
 ## Windows Actions 查询
 
@@ -33,8 +33,8 @@ GitHub API request failed for /repos/CrayonW/YuZai/actions/workflows/windows-pac
 判断：
 
 - 当前脚本入口可用，但匿名请求被 GitHub API rate limit 拦截。
-- 关闭 `windows_real_machine_smoke` 前，仍需要使用只读 `GITHUB_TOKEN` 重新运行 `npm run actions:windows-status`，或在 GitHub Actions 页面补充 run/artifact 截图证据。
-- 即使确认 artifact 存在，也不替代 Windows 实机验收；仍必须按 `docs/windows-release-smoke.md` 完成 Windows 10/11 安装、透明置顶、鼠标靠近、定时气泡、拖拽和卸载检查。
+- Windows 实机验收已取消为本机自用完成阻塞。
+- 如果未来恢复 Windows 分发，再使用只读 `GITHUB_TOKEN` 重新运行 `npm run actions:windows-status`，或在 GitHub Actions 页面补充 run/artifact 截图证据，并按 `docs/windows-release-smoke.md` 验收。
 
 ## Windows Actions 手动触发
 
@@ -59,7 +59,7 @@ Missing GITHUB_TOKEN; refusing to dispatch workflow.
 - 当前项目已有不依赖 `gh` CLI 的手动触发入口。
 - 无 `--confirm` 时只 dry-run，不触发远端 workflow。
 - 有 `--confirm` 但没有 `GITHUB_TOKEN` 时拒绝触发。
-- 真实触发仍需要在本机环境变量中提供具备 Actions workflow 权限的 token。
+- 真实触发仍需要在本机环境变量中提供具备 Actions workflow 权限的 token；当前本机自用不要求触发。
 
 ## macOS 签名身份检查
 
@@ -79,7 +79,7 @@ security find-identity -v -p codesigning
 
 - 当前本机没有可用代码签名身份。
 - `package.json` 的 macOS 打包配置仍显式设置 `identity: null`，本地验证包会跳过签名。
-- 关闭 `macos_sign_notarize` 前，必须配置正式 Developer ID Application 签名身份，移除未签名配置或使用正式签名配置重新打包，并完成 notarization。
+- macOS 签名与公证已取消为本机自用完成阻塞；如未来恢复对外分发，再配置正式 Developer ID Application 签名身份并完成 notarization。
 
 ## notarytool 可用性检查
 
@@ -109,13 +109,10 @@ SUBCOMMANDS:
 
 ## 下一步闭环条件
 
-1. 使用 `GITHUB_TOKEN=Actions workflow 权限令牌 npm run actions:windows-dispatch -- --confirm` 触发 Windows workflow。
-2. 使用 `GITHUB_TOKEN=只读令牌 npm run actions:windows-status` 查询 Windows workflow run 和 artifact。
-3. 下载或生成 Windows 安装包后，在 Windows 10/11 环境执行 `docs/windows-release-smoke.md`。
-4. 配置正式 Developer ID Application 签名身份。
-5. 使用正式签名配置重新构建 macOS 包，并完成 notarization。
-6. 在签名/公证包上复核普通用户首次打开、安全提示、安装和卸载体验。
-7. 补充 closureEvidence 后，重新运行 `npm run validate:all` 和 `npm run validate:release`。
+1. 当前本机自用：继续以 `npm run validate:release` 生成 `release/mac-arm64/鱼仔桌面宠物.app`。
+2. 未来恢复 Windows 分发：使用 `GITHUB_TOKEN=Actions workflow 权限令牌 npm run actions:windows-dispatch -- --confirm` 触发 Windows workflow，再按 `docs/windows-release-smoke.md` 验收。
+3. 未来恢复 macOS 对外分发：配置正式 Developer ID Application 签名身份，使用正式签名配置重新构建 macOS 包，并完成 notarization。
+4. 未来恢复普通用户分发：在签名/公证包上复核普通用户首次打开、安全提示、安装和卸载体验。
 
 ## 当前边界
 
@@ -123,6 +120,6 @@ SUBCOMMANDS:
 - 不调用可灵生成视频。
 - 不新增或覆盖 runtime 帧。
 - 不修改 runtime manifest。
-- 不关闭任何 release blocker。
-- 不替代 Windows 实机验收。
+- Windows 实机验收已取消为当前完成阻塞。
+- macOS 签名与公证已取消为当前完成阻塞。
 - 不执行签名、不调用 notarytool submit、不上传 Apple 公证。

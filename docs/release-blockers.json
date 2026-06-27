@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2026-06-23",
-  "purpose": "跟踪鱼仔桌宠距离可交付第一版的剩余硬缺口。所有条目关闭前，项目不得标记为完全完成。",
+  "updatedAt": "2026-06-27",
+  "purpose": "跟踪鱼仔桌宠距离本机自用完成口径的剩余硬缺口。用户已确认只在本人电脑运行，Windows 实机验收、macOS 签名公证和签名后安全复核取消为完成阻塞。",
   "completionPolicy": {
-    "projectCanBeMarkedComplete": false,
-    "requiresAllBlockersClosed": true,
+    "projectCanBeMarkedComplete": true,
+    "requiresAllBlockersClosed": false,
     "requiresValidateAll": true,
     "requiresReleaseValidation": true,
     "requiresDesktopEvidence": true
@@ -122,8 +122,8 @@
     },
     {
       "id": "windows_real_machine_smoke",
-      "title": "Windows 安装包实机验收未完成",
-      "status": "open",
+      "title": "Windows 安装包实机验收已取消",
+      "status": "canceled",
       "category": "distribution",
       "source": "docs/windows-release-smoke.md",
       "evidence": [
@@ -133,17 +133,19 @@
         "docs/windows-actions-dispatch.md"
       ],
       "requiredActions": [
-        "在 GitHub Actions 或 Windows 环境生成 Windows 安装包",
-        "在 Windows 10 或 Windows 11 实机安装",
-        "记录透明置顶、鼠标靠近、定时气泡、拖拽、卸载截图",
-        "将验收证据写入 docs/windows-release-smoke.md 或后续验收记录"
+        "本机自用不再要求 Windows 10/11 实机安装验收",
+        "如未来恢复对外分发，再重新生成 Windows artifact 并执行 docs/windows-release-smoke.md"
       ],
-      "closureEvidence": []
+      "closureEvidence": [
+        "2026-06-27 用户确认：windows 实机验收取消，只在本人电脑上跑即可",
+        "docs/project-completion-audit.md",
+        "docs/distribution-live-check.md"
+      ]
     },
     {
       "id": "macos_sign_notarize",
-      "title": "macOS 正式签名与公证未完成",
-      "status": "open",
+      "title": "macOS 正式签名与公证已取消",
+      "status": "canceled",
       "category": "distribution",
       "source": "docs/signed-release-safety.md",
       "evidence": [
@@ -153,17 +155,19 @@
         "docs/distribution-live-check.md"
       ],
       "requiredActions": [
-        "配置正式 Developer ID 签名身份",
-        "完成 macOS notarization",
-        "验证 Gatekeeper 首次打开体验",
-        "重新运行 npm run validate:release"
+        "本机自用继续使用未签名本地验证包",
+        "如未来恢复对外分发，再配置 Developer ID、签名并完成 notarization"
       ],
-      "closureEvidence": []
+      "closureEvidence": [
+        "2026-06-27 用户确认：macOS 签名公证取消，只在本人电脑上跑即可",
+        "docs/macos-signing-notarization-status.md",
+        "docs/project-completion-audit.md"
+      ]
     },
     {
       "id": "signed_user_safety_recheck",
-      "title": "签名后普通用户安装安全提示复核未完成",
-      "status": "open",
+      "title": "签名后普通用户安装安全提示复核已取消",
+      "status": "canceled",
       "category": "release-safety",
       "source": "docs/signed-release-safety.md",
       "evidence": [
@@ -173,12 +177,14 @@
         "docs/distribution-live-check.md"
       ],
       "requiredActions": [
-        "在签名/公证包上复核普通用户安装提示",
-        "更新 docs/signed-release-safety.md",
-        "更新 docs/release-playbook.md",
-        "重新运行 npm run validate:release"
+        "本机自用不再要求普通用户安装安全提示复核",
+        "如未来恢复对外分发，再基于签名/公证包复核普通用户安装提示"
       ],
-      "closureEvidence": []
+      "closureEvidence": [
+        "2026-06-27 用户确认：签名后普通用户安全复核随 macOS 签名公证一并取消",
+        "docs/signed-release-safety.md",
+        "docs/project-completion-audit.md"
+      ]
     }
   ]
 }

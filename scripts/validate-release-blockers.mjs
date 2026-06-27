@@ -35,16 +35,17 @@ const requiredBlockerIds = [
 ];
 
 const allowedClosedBlockers = new Set(["transition_out_high_risk", "runtime_duration_short"]);
+const allowedCanceledBlockers = new Set(["windows_real_machine_smoke", "macos_sign_notarize", "signed_user_safety_recheck"]);
 
 if (!existsSync(blockersPath)) {
   failures.push("missing docs/release-blockers.json");
 } else {
   const data = JSON.parse(readFileSync(blockersPath, "utf8"));
-  if (data.completionPolicy?.projectCanBeMarkedComplete !== false) {
-    failures.push("docs/release-blockers.json must keep projectCanBeMarkedComplete false while blockers are open");
+  if (data.completionPolicy?.projectCanBeMarkedComplete !== true) {
+    failures.push("docs/release-blockers.json must allow project completion for local-only scope");
   }
-  if (data.completionPolicy?.requiresAllBlockersClosed !== true) {
-    failures.push("docs/release-blockers.json must require all blockers closed");
+  if (data.completionPolicy?.requiresAllBlockersClosed !== false) {
+    failures.push("docs/release-blockers.json must not require canceled distribution blockers to close");
   }
   if (data.completionPolicy?.requiresValidateAll !== true) {
     failures.push("docs/release-blockers.json must require validate:all");
@@ -65,11 +66,14 @@ if (!existsSync(blockersPath)) {
       if (!blocker.id || !requiredBlockerIds.includes(blocker.id)) {
         failures.push(`docs/release-blockers.json has unknown blocker id: ${blocker.id ?? "<missing>"}`);
       }
-      if (blocker.status !== "open" && blocker.status !== "closed") {
+      if (!["open", "closed", "canceled"].includes(blocker.status)) {
         failures.push(`docs/release-blockers.json blocker has invalid status: ${blocker.id}`);
       }
       if (blocker.status === "closed" && !allowedClosedBlockers.has(blocker.id)) {
         failures.push(`docs/release-blockers.json blocker must stay open until its closure flow is implemented: ${blocker.id}`);
+      }
+      if (blocker.status === "canceled" && !allowedCanceledBlockers.has(blocker.id)) {
+        failures.push(`docs/release-blockers.json blocker cannot be canceled: ${blocker.id}`);
       }
       for (const key of ["title", "category", "source"]) {
         if (!blocker[key]) {
@@ -87,6 +91,9 @@ if (!existsSync(blockersPath)) {
       }
       if (blocker.status === "closed" && blocker.closureEvidence.length === 0) {
         failures.push(`docs/release-blockers.json ${blocker.id} closed blocker must list closureEvidence`);
+      }
+      if (blocker.status === "canceled" && blocker.closureEvidence.length === 0) {
+        failures.push(`docs/release-blockers.json ${blocker.id} canceled blocker must list cancellation evidence`);
       }
       if (blocker.status === "open" && blocker.closureEvidence.length > 0) {
         failures.push(`docs/release-blockers.json ${blocker.id} open blocker must not list closureEvidence`);
@@ -148,8 +155,8 @@ if (!existsSync(join(root, macosSigningStatusPath))) {
   const signingStatus = readFileSync(join(root, macosSigningStatusPath), "utf8");
   for (const snippet of [
     "签名 identity：null",
-    "macos_sign_notarize：open",
-    "signed_user_safety_recheck：open",
+    "macos_sign_notarize：canceled",
+    "signed_user_safety_recheck：canceled",
     "不执行签名、不调用 notarytool、不上传 Apple 公证"
   ]) {
     if (!signingStatus.includes(snippet)) {
@@ -164,12 +171,14 @@ if (!existsSync(blockersReportPath)) {
   const report = readFileSync(blockersReportPath, "utf8");
   for (const snippet of [
     "# 鱼仔桌宠剩余硬缺口报告",
-    "项目可标记完成：否",
+    "项目可标记完成：是",
     "transition_out_high_risk",
     "runtime_duration_short",
     "windows_real_machine_smoke",
     "macos_sign_notarize",
     "signed_user_safety_recheck",
+    "本机自用",
+    "已取消",
     "docs/macos-signing-notarization-status.md",
     "`docs/release-blockers.json` 和本文档必须保持同步"
   ]) {
@@ -185,7 +194,7 @@ if (!existsSync(auditPath)) {
   const audit = readFileSync(auditPath, "utf8");
   for (const snippet of [
     "docs/release-blockers.json",
-    "项目不得标记为完全完成",
+    "本机自用口径",
     "transition_out_high_risk",
     "runtime_duration_short",
     "windows_real_machine_smoke",

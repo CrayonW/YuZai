@@ -17,7 +17,7 @@ export function renderReleaseBlockersReport(data) {
     `- 必须通过 release 验证：${data.completionPolicy.requiresReleaseValidation ? "是" : "否"}`,
     `- 必须有桌面验收证据：${data.completionPolicy.requiresDesktopEvidence ? "是" : "否"}`,
     "",
-    "## Open Blockers",
+    "## Blocker 状态",
     "",
     "| id | category | status | title | source | evidence | required actions | closure evidence |",
     "| --- | --- | --- | --- | --- | --- | --- | --- |"
@@ -33,10 +33,11 @@ export function renderReleaseBlockersReport(data) {
     "",
     "## 关闭规则",
     "",
-    "- 不得只修改文字就关闭 blocker。",
-    "- 每个 blocker 关闭前必须补充 closureEvidence。",
-    "- 每个 blocker 关闭前必须重新运行 `npm run validate:all`。",
-    "- 涉及发布的 blocker 关闭前必须重新运行 `npm run validate:release`。",
+    "- 不得只修改文字就关闭或取消 blocker。",
+    "- 每个 closed blocker 关闭前必须补充 closureEvidence。",
+    "- 每个 canceled blocker 必须记录用户确认或范围变更证据。",
+    "- 本机自用完成口径仍必须重新运行 `npm run validate:all`。",
+    "- 本机自用完成口径仍必须重新运行 `npm run validate:release`。",
     "- 涉及桌面交互或动画自然度的 blocker 关闭前必须补充桌面多帧截图证据。",
     "- `docs/release-blockers.json` 和本文档必须保持同步。"
   );

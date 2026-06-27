@@ -21,7 +21,8 @@ if (!existsSync(docsPath)) {
     "0 valid identities found",
     "notarytool 可用性检查",
     "xcrun notarytool --help",
-    "不替代 Windows 实机验收",
+    "Windows 实机验收已取消",
+    "macOS 签名与公证已取消",
     "不执行签名、不调用 notarytool submit、不上传 Apple 公证"
   ]) {
     if (!docs.includes(snippet)) {
@@ -48,6 +49,8 @@ if (!existsSync(blockersPath)) {
     const blocker = blockers.blockers?.find((item) => item.id === id);
     if (!blocker) {
       failures.push(`docs/release-blockers.json missing blocker: ${id}`);
+    } else if (blocker.status !== "canceled") {
+      failures.push(`docs/release-blockers.json must mark ${id} canceled for local-only scope`);
     } else if (!blocker.evidence?.includes("docs/distribution-live-check.md")) {
       failures.push(`${id} evidence must include docs/distribution-live-check.md`);
     }

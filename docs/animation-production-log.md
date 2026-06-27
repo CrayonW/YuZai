@@ -2226,3 +2226,14 @@ Windows 状态查询：`npm run actions:windows-status` 在沙盒内 DNS 无法�
 验证命令：`npm run validate:github-actions-dispatch-tool`、`npm run actions:windows-dispatch`、`npm run actions:windows-dispatch -- --confirm`。
 已知问题：本轮没有可用 `GITHUB_TOKEN`，所以只验证 dry-run 和无 token 拒绝；尚未真实触发 Windows workflow，也未生成或安装 Windows artifact。
 决定：接受本轮作为 Windows 包构建闭环的工具补齐；`windows_real_machine_smoke` 仍保持 open，项目整体仍不能标记完成。
+
+## 2026-06-27 本机自用完成口径确认
+
+日期：2026-06-27
+源文件：`docs/release-blockers.json`、`docs/release-blockers.md`、`docs/project-completion-audit.md`、`docs/distribution-live-check.md`、`docs/macos-signing-notarization-status.md`、`docs/release-playbook.md`、`docs/signed-release-safety.md`、`scripts/validate-release-blockers.mjs`、`scripts/validate-release-readiness.mjs`、`scripts/validate-project-completion-audit.mjs`、`scripts/validate-distribution-live-check.mjs`、`scripts/validate-macos-signing-status-current.mjs`、`scripts/macos-signing-status.mjs`、`scripts/release-blockers-report.mjs`
+问题：用户明确确认“Windows 实机验收、macOS 签名公证取消，只是在本人电脑上跑即可”。原 release blocker 和验证脚本仍按对外分发口径要求 Windows 实机、Developer ID 签名、公证和签名后普通用户安全复核。
+参考片段：`本机自用`、`windows_real_machine_smoke`、`macos_sign_notarize`、`signed_user_safety_recheck`、`canceled`、`项目可标记完成：是`。
+处理：将 `windows_real_machine_smoke`、`macos_sign_notarize`、`signed_user_safety_recheck` 从 `open` 改为 `canceled`，并在 closureEvidence 中记录 2026-06-27 用户确认。同步完成策略为本机自用口径下可标记完成，同时保留 Windows Actions、Windows smoke、macOS 签名状态和安全提示文档作为未来对外分发参考。
+验证命令：`npm run validate:release-blockers`、`npm run validate:release-readiness`、`npm run validate:macos-signing-status-current`、`npm run validate:distribution-live-check`、`npm run validate:project-completion-audit`。
+已知问题：本轮不执行 Windows 实机验收、不执行签名、不调用 `notarytool submit`、不上传 Apple 公证；如果未来改为对外分发，需要重新启用这些 canceled 项。
+决定：接受本机自用作为当前项目完成口径；后续完成判定以 `npm run validate:all`、`npm run validate:release` 和现有桌面证据为准。

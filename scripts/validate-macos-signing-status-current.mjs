@@ -20,10 +20,10 @@ if (!existsSync(statusPath)) {
     "签名 identity：null",
     "是否显式未签名：是",
     "是否配置正式签名身份：否",
-    "macos_sign_notarize：open",
-    "signed_user_safety_recheck：open",
+    "macos_sign_notarize：canceled",
+    "signed_user_safety_recheck：canceled",
     "不执行签名、不调用 notarytool、不上传 Apple 公证",
-    "不关闭 `macos_sign_notarize` 或 `signed_user_safety_recheck`"
+    "`macos_sign_notarize` 和 `signed_user_safety_recheck` 已按用户本机自用口径取消"
   ]) {
     if (!actual.includes(snippet)) {
       failures.push(`docs/macos-signing-notarization-status.md missing text: ${snippet}`);
@@ -39,6 +39,8 @@ if (!existsSync(blockersPath)) {
     const blocker = blockers.blockers?.find((item) => item.id === id);
     if (!blocker) {
       failures.push(`docs/release-blockers.json missing ${id} blocker`);
+    } else if (blocker.status !== "canceled") {
+      failures.push(`docs/release-blockers.json must mark ${id} canceled for local-only scope`);
     } else if (!blocker.evidence?.includes("docs/macos-signing-notarization-status.md")) {
       failures.push(`${id} evidence must include docs/macos-signing-notarization-status.md`);
     }
