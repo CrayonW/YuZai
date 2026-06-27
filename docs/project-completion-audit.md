@@ -30,7 +30,7 @@
 | --- | --- | --- |
 | 桌面上能看到一只会动的猫 | `docs/mvp-evidence.json`、`docs/runtime-naturalness-observation.md`、`assets/reviews/runtime/naturalness-observation/` | 已验证 |
 | 所有应用上层透明窗口 | `docs/requirements-mvp.md`、`docs/mvp-evidence.json` | 已验证 |
-| 定时气泡提醒喝水/休息 | `docs/requirements-mvp.md`、`docs/mvp-evidence.json` | 已验证 |
+| 默认不显示喝水/休息提示 | `docs/requirements-mvp.md`、`docs/mvp-evidence.json` | 已验证 |
 | 角色大小/位置调整 | `docs/requirements-mvp.md`、`docs/mvp-evidence.json` | 已验证 |
 | 鼠标靠近/方向跟随反馈 | `docs/runtime-naturalness-observation.md`、`assets/reviews/runtime/mouse-follow-16/` | 已验证 |
 | 姿势变换 | `docs/project-status.md`、`docs/state-coverage.md` | 已验证 |

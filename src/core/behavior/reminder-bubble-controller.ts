@@ -11,10 +11,6 @@ export interface ReminderBubbleShowEvent {
   index: number;
 }
 
-const REMINDER_MESSAGES: ReminderBubbleMessage[] = [
-  { kind: "water", text: "喝口水吧" },
-  { kind: "rest", text: "休息一下眼睛" }
-];
 const MIN_REMINDER_INTERVAL_MS = 45_000;
 const MAX_REMINDER_INTERVAL_MS = 90_000;
 const FIRST_REMINDER_DELAY_MS = MIN_REMINDER_INTERVAL_MS;
@@ -47,7 +43,7 @@ export class ReminderBubbleController {
   private nextReminderTimer: number | null = null;
 
   constructor(private readonly element: HTMLElement, options: ReminderBubbleControllerOptions = {}) {
-    this.messages = normalizeMessages(options.messages?.length ? options.messages : REMINDER_MESSAGES);
+    this.messages = normalizeMessages(options.messages ?? []);
     this.firstDelayMs = options.firstDelayMs ?? FIRST_REMINDER_DELAY_MS;
     this.minIntervalMs = options.minIntervalMs ?? MIN_REMINDER_INTERVAL_MS;
     this.maxIntervalMs = Math.max(this.minIntervalMs, options.maxIntervalMs ?? MAX_REMINDER_INTERVAL_MS);
@@ -60,6 +56,7 @@ export class ReminderBubbleController {
 
   start(): void {
     if (this.nextReminderTimer !== null) return;
+    if (this.messages.length === 0) return;
     this.nextReminderTimer = this.setTimer(() => this.showNext(), this.firstDelayMs);
   }
 
@@ -73,6 +70,7 @@ export class ReminderBubbleController {
 
   private showNext(): void {
     this.nextReminderTimer = null;
+    if (this.messages.length === 0) return;
     const index = this.messageIndex;
     const reminder = this.messages[index];
     this.element.textContent = reminder.text;

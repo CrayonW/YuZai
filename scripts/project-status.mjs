@@ -17,7 +17,7 @@ export function buildProjectStatus(rootDir = root) {
   const coverageSummary = extractRequired(coverageText, /覆盖摘要：(.+)/, "state coverage summary");
   const backlogCount = extractRequired(backlogText, /待补状态数：(\d+)/, "state backlog count");
   const draggingRow = backlogCount === "0" ? "" : extractRequired(backlogText, /\| dragging \| ([^\n]+)/, "dragging backlog row");
-  const startupEvidence = productionLog.includes("猫咪头顶区域无“喝口水吧”或其他气泡文字");
+  const startupEvidence = productionLog.includes("启动画面占位图删除");
   const approvals = collectRuntimeApprovals(rootDir, runtimeWaves.waves || []);
 
   return renderProjectStatus({

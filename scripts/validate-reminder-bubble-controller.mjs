@@ -39,7 +39,7 @@ const element = {
 };
 
 const controller = new ReminderBubbleController(element, {
-  messages: ["喝口水吧", "休息一下眼睛"],
+  messages: ["看你一眼", "喵一下"],
   firstDelayMs: 500,
   minIntervalMs: 45_000,
   maxIntervalMs: 90_000,
@@ -67,9 +67,9 @@ const secondTimer = scheduled.shift();
 
 const checks = [
   ["first reminder uses configured delay", firstTimer.delay, 500],
-  ["first message shows water reminder", element.textContent, "喝口水吧"],
+  ["first custom message is shown", element.textContent, "看你一眼"],
   ["first reminder event has water kind", shown[0]?.kind, "water"],
-  ["first reminder event keeps message", shown[0]?.message, "喝口水吧"],
+  ["first reminder event keeps custom message", shown[0]?.message, "看你一眼"],
   ["first reminder event has index", shown[0]?.index, 0],
   ["bubble becomes visible", element.classes.has("is-visible"), true],
   ["hide timer uses configured visible time", hideTimer.delay, 3000],
@@ -77,7 +77,7 @@ const checks = [
 ];
 
 secondTimer.callback();
-checks.push(["second message alternates to rest reminder", element.textContent, "休息一下眼睛"]);
+checks.push(["second custom message is shown", element.textContent, "喵一下"]);
 checks.push(["second reminder event has rest kind", shown[1]?.kind, "rest"]);
 checks.push(["second reminder event has index", shown[1]?.index, 1]);
 
@@ -114,7 +114,7 @@ startupController.start();
 const startupFirstTimer = startupScheduled.shift();
 checks.push(["startup has no immediate head text", startupElement.textContent, ""]);
 checks.push(["startup bubble stays hidden before first timed reminder", startupElement.classes.has("is-visible"), false]);
-checks.push(["default first reminder waits for normal reminder window", startupFirstTimer.delay, 45000]);
+checks.push(["default controller does not schedule removed drink/rest messages", startupFirstTimer, undefined]);
 
 const failures = checks
   .filter(([, actual, expected]) => actual !== expected)

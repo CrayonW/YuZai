@@ -2237,3 +2237,12 @@ Windows 状态查询：`npm run actions:windows-status` 在沙盒内 DNS 无法�
 验证命令：`npm run validate:release-blockers`、`npm run validate:release-readiness`、`npm run validate:macos-signing-status-current`、`npm run validate:distribution-live-check`、`npm run validate:project-completion-audit`。
 已知问题：本轮不执行 Windows 实机验收、不执行签名、不调用 `notarytool submit`、不上传 Apple 公证；如果未来改为对外分发，需要重新启用这些 canceled 项。
 决定：接受本机自用作为当前项目完成口径；后续完成判定以 `npm run validate:all`、`npm run validate:release` 和现有桌面证据为准。
+
+## 2026-06-27 去除喝水/休息提示消息
+
+日期：2026-06-27
+源文件：`src/core/behavior/reminder-bubble-controller.ts`、`scripts/validate-reminder-bubble-controller.mjs`、`docs/requirements-mvp.md`、`docs/mvp-evidence.json`、`docs/project-completion-audit.md`
+问题：用户要求将猫咪提示喝水和休息的消息去除掉；旧默认消息会在正常提醒窗口后显示“喝口水吧”或“休息一下眼睛”。
+处理：`ReminderBubbleController` 默认消息列表改为空，默认启动不会安排喝水/休息提醒；只有调用方显式传入消息时才会显示气泡。验证脚本保留显式消息用例，避免后续气泡扩展能力被误删。
+验证命令：`npm run validate:reminder-bubble-controller`
+决定：接受默认不显示喝水/休息提示；提醒气泡只作为后续显式配置扩展入口保留。

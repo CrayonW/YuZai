@@ -26,27 +26,27 @@ const available = (actions) => (action) => actions.includes(action);
 const checks = [
   [
     "rest reminder prefers stretch_yawn when available",
-    resolveReminderAnimationAction({ kind: "rest", message: "休息一下眼睛", index: 1 }, available(["stretch_yawn", "sleepy"])),
+    resolveReminderAnimationAction({ kind: "rest", message: "看你一眼", index: 1 }, available(["stretch_yawn", "sleepy"])),
     "stretch_yawn"
   ],
   [
     "rest reminder falls back to sleepy",
-    resolveReminderAnimationAction({ kind: "rest", message: "休息一下眼睛", index: 1 }, available(["sleepy"])),
+    resolveReminderAnimationAction({ kind: "rest", message: "看你一眼", index: 1 }, available(["sleepy"])),
     "sleepy"
   ],
   [
     "water reminder prefers call_response",
-    resolveReminderAnimationAction({ kind: "water", message: "喝口水吧", index: 0 }, available(["call_response", "cursor_watch"])),
+    resolveReminderAnimationAction({ kind: "water", message: "喵一下", index: 0 }, available(["call_response", "cursor_watch"])),
     "call_response"
   ],
   [
     "water reminder falls back to cursor_watch",
-    resolveReminderAnimationAction({ kind: "water", message: "喝口水吧", index: 0 }, available(["cursor_watch"])),
+    resolveReminderAnimationAction({ kind: "water", message: "喵一下", index: 0 }, available(["cursor_watch"])),
     "cursor_watch"
   ],
   [
     "missing candidates return null",
-    resolveReminderAnimationAction({ kind: "rest", message: "休息一下眼睛", index: 1 }, available(["paw_raise"])),
+    resolveReminderAnimationAction({ kind: "rest", message: "看你一眼", index: 1 }, available(["paw_raise"])),
     null
   ]
 ];
