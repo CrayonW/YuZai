@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-06-17",
+  "updatedAt": "2026-06-27",
   "purpose": "记录可灵生成视频进入桌宠 runtime 前的分波、衔接和门禁策略。此文件不代表已批准抽帧或接入。",
   "confirmationRule": "每一波正式处理前，必须先把清单给用户确认；确认前禁止抽帧、禁止去水印/抠绿、禁止修改 runtime manifest。",
   "candidateSelection": {
@@ -642,6 +642,141 @@
           "bridge": "transition-out.paw_raise_to_idle",
           "transitionPlan": "paw_raise 播放结束后先进入本过渡动作，再回到 idle_primary，降低抬爪尾段回待机的姿态跳变。",
           "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前总览图未见明显水印。"
+        }
+      ]
+    },
+    {
+      "id": "c1-interaction-transitions",
+      "name": "第七波：C1 互动动作专用过渡",
+      "intent": "把待机进入关键互动、关键互动回到待机的 8 个真实过渡视频接入 runtime，让鼠标靠近、点击、连续点击和抬爪动作不再硬切。",
+      "actions": [
+        {
+          "action": "idle_primary_to_paw_raise",
+          "category": "transition",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/idle_primary_to_paw_raise.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/idle_primary_to_paw_raise.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/idle_primary_to_paw_raise/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "paw_raise",
+          "bridge": "transition-in.idle_primary_to_paw_raise",
+          "transitionPlan": "鼠标靠近或打招呼触发 paw_raise 前，先从 idle_primary 播放本过渡动作，再进入 paw_raise。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前抽样图未见明显水印。"
+        },
+        {
+          "action": "paw_raise_to_idle_primary",
+          "category": "transition",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/paw_raise_to_idle_primary.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/paw_raise_to_idle_primary.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/paw_raise_to_idle_primary/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "transition-out.paw_raise_to_idle_primary",
+          "transitionPlan": "paw_raise 播放结束后先进入本过渡动作，再回到 idle_primary，替代旧的 paw_raise_to_idle。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前抽样图未见明显水印。"
+        },
+        {
+          "action": "idle_primary_to_cursor_watch",
+          "category": "transition",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/idle_primary_to_cursor_watch.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/idle_primary_to_cursor_watch.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/idle_primary_to_cursor_watch/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "cursor_watch",
+          "bridge": "transition-in.idle_primary_to_cursor_watch",
+          "transitionPlan": "鼠标靠近触发 cursor_watch 前，先从 idle_primary 播放本过渡动作，再进入关注鼠标动作。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前抽样图未见明显水印。"
+        },
+        {
+          "action": "cursor_watch_to_idle_primary",
+          "category": "transition",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/cursor_watch_to_idle_primary.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/cursor_watch_to_idle_primary.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/cursor_watch_to_idle_primary/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "transition-out.cursor_watch_to_idle_primary",
+          "transitionPlan": "cursor_watch 播放结束后先进入本过渡动作，再回到 idle_primary，避免观察动作尾段直接跳回待机。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前抽样图未见明显水印。"
+        },
+        {
+          "action": "idle_primary_to_click_surprised",
+          "category": "transition",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/idle_primary_to_click_surprised.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/idle_primary_to_click_surprised.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/idle_primary_to_click_surprised/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "click_surprised",
+          "bridge": "transition-in.idle_primary_to_click_surprised",
+          "transitionPlan": "单次点击触发 click_surprised 前，先从 idle_primary 播放本过渡动作，再进入惊讶反应。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前抽样图未见明显水印。"
+        },
+        {
+          "action": "click_surprised_to_idle_primary",
+          "category": "transition",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/click_surprised_to_idle_primary.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/click_surprised_to_idle_primary.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/click_surprised_to_idle_primary/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "transition-out.click_surprised_to_idle_primary",
+          "transitionPlan": "click_surprised 播放结束后先进入本过渡动作，再回到 idle_primary，避免惊讶尾段直接跳回待机。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前抽样图未见明显水印。"
+        },
+        {
+          "action": "idle_primary_to_poke_annoyed",
+          "category": "transition",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/idle_primary_to_poke_annoyed.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/idle_primary_to_poke_annoyed.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/idle_primary_to_poke_annoyed/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "poke_annoyed",
+          "bridge": "transition-in.idle_primary_to_poke_annoyed",
+          "transitionPlan": "连续点击触发 poke_annoyed 前，先从 idle_primary 播放本过渡动作，再进入不满反应。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前抽样图未见明显水印。"
+        },
+        {
+          "action": "poke_annoyed_to_idle_primary",
+          "category": "transition",
+          "status": "recommended",
+          "confirmation": "needs-user-confirmation",
+          "sourceVideo": "assets/origin/generated/kling/poke_annoyed_to_idle_primary.mp4",
+          "reviewEvidence": [
+            "assets/reviews/kling-generated/poke_annoyed_to_idle_primary.png"
+          ],
+          "runtimeFrameRoot": "assets/runtime/animations/poke_annoyed_to_idle_primary/frames",
+          "interruptPolicy": "locked",
+          "returnTo": "idle_primary",
+          "bridge": "transition-out.poke_annoyed_to_idle_primary",
+          "transitionPlan": "poke_annoyed 播放结束后先进入本过渡动作，再回到 idle_primary，替代旧的 poke_annoyed_to_idle。",
+          "watermarkGate": "正式抽帧前逐视频播放检查无文字、水印、logo、额外物体和身体裁切；当前抽样图未见明显水印。"
         }
       ]
     }

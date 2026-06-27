@@ -46,6 +46,7 @@
     "validate:action-transition-risk-report": "node scripts/validate-action-transition-risk-report.mjs",
     "validate:transition-out-checklist": "node scripts/validate-transition-out-checklist.mjs",
     "validate:transition-out-intake-proposal": "node scripts/validate-transition-out-intake-proposal.mjs",
+    "validate:c1-transition-runtime-intake": "node scripts/validate-c1-transition-runtime-intake.mjs",
     "runtime:action-bridge-report": "node scripts/runtime-action-bridge-report.mjs",
     "validate:runtime-action-bridge-report": "node scripts/validate-runtime-action-bridge-report.mjs",
     "validate:action-bridge-contract": "node scripts/validate-action-bridge-contract.mjs",

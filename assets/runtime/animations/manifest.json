@@ -158,7 +158,8 @@
       ],
       "interruptPolicy": "locked",
       "returnTo": "idle_primary",
-      "transitionOut": "paw_raise_to_idle"
+      "transitionIn": "idle_primary_to_paw_raise",
+      "transitionOut": "paw_raise_to_idle_primary"
     },
     "slow_blink": {
       "source": "assets/origin/generated/kling/slow_blink.mp4",
@@ -229,7 +230,9 @@
         120
       ],
       "interruptPolicy": "locked",
-      "returnTo": "idle_primary"
+      "returnTo": "idle_primary",
+      "transitionIn": "idle_primary_to_cursor_watch",
+      "transitionOut": "cursor_watch_to_idle_primary"
     },
     "click_surprised": {
       "source": "assets/origin/generated/kling/click_surprised.mp4",
@@ -250,7 +253,9 @@
         120
       ],
       "interruptPolicy": "locked",
-      "returnTo": "idle_primary"
+      "returnTo": "idle_primary",
+      "transitionIn": "idle_primary_to_click_surprised",
+      "transitionOut": "click_surprised_to_idle_primary"
     },
     "poke_annoyed": {
       "source": "assets/origin/generated/kling/poke_annoyed.mp4",
@@ -272,7 +277,8 @@
       ],
       "interruptPolicy": "locked",
       "returnTo": "idle_primary",
-      "transitionOut": "poke_annoyed_to_idle"
+      "transitionIn": "idle_primary_to_poke_annoyed",
+      "transitionOut": "poke_annoyed_to_idle_primary"
     },
     "call_response": {
       "source": "assets/origin/generated/kling/call_response.mp4",
@@ -1053,6 +1059,174 @@
       ],
       "exitFrames": [
         14
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
+    },
+    "idle_primary_to_paw_raise": {
+      "source": "assets/origin/generated/kling/idle_primary_to_paw_raise.mp4",
+      "frameRoot": "../assets/runtime/animations/idle_primary_to_paw_raise/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "paw_raise",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        28
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "paw_raise"
+    },
+    "paw_raise_to_idle_primary": {
+      "source": "assets/origin/generated/kling/paw_raise_to_idle_primary.mp4",
+      "frameRoot": "../assets/runtime/animations/paw_raise_to_idle_primary/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        10
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
+    },
+    "idle_primary_to_cursor_watch": {
+      "source": "assets/origin/generated/kling/idle_primary_to_cursor_watch.mp4",
+      "frameRoot": "../assets/runtime/animations/idle_primary_to_cursor_watch/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "cursor_watch",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        3
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "cursor_watch"
+    },
+    "cursor_watch_to_idle_primary": {
+      "source": "assets/origin/generated/kling/cursor_watch_to_idle_primary.mp4",
+      "frameRoot": "../assets/runtime/animations/cursor_watch_to_idle_primary/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        13
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
+    },
+    "idle_primary_to_click_surprised": {
+      "source": "assets/origin/generated/kling/idle_primary_to_click_surprised.mp4",
+      "frameRoot": "../assets/runtime/animations/idle_primary_to_click_surprised/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "click_surprised",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        120
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "click_surprised"
+    },
+    "click_surprised_to_idle_primary": {
+      "source": "assets/origin/generated/kling/click_surprised_to_idle_primary.mp4",
+      "frameRoot": "../assets/runtime/animations/click_surprised_to_idle_primary/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        14
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "idle_primary"
+    },
+    "idle_primary_to_poke_annoyed": {
+      "source": "assets/origin/generated/kling/idle_primary_to_poke_annoyed.mp4",
+      "frameRoot": "../assets/runtime/animations/idle_primary_to_poke_annoyed/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "poke_annoyed",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        2
+      ],
+      "interruptPolicy": "locked",
+      "returnTo": "poke_annoyed"
+    },
+    "poke_annoyed_to_idle_primary": {
+      "source": "assets/origin/generated/kling/poke_annoyed_to_idle_primary.mp4",
+      "frameRoot": "../assets/runtime/animations/poke_annoyed_to_idle_primary/frames",
+      "filePattern": "frame_{index}.png",
+      "firstFrame": 1,
+      "frameCount": 120,
+      "fps": 24,
+      "loop": false,
+      "interruptible": false,
+      "fallback": "idle_primary",
+      "enabled": true,
+      "category": "transition",
+      "entryFrames": [
+        1
+      ],
+      "exitFrames": [
+        12
       ],
       "interruptPolicy": "locked",
       "returnTo": "idle_primary"

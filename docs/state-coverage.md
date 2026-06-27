@@ -1,7 +1,7 @@
 ## 桌宠状态动作覆盖报告
 
 状态总数：13
-运行时 action 数：42
+运行时 action 数：50
 覆盖摘要：independent 13 / mixed 0 / fallback 0 / missing 0
 
 | state | status | runtime actions | source | prompt hint |

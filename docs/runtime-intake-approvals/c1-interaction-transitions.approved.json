@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "waveId": "c1-interaction-transitions",
+  "approvedAt": "2026-06-27",
+  "approvalSource": "用户在 C1 互动动作专用过渡视频生成后回复：继续执行下一步、继续。",
+  "sourceChecklist": "docs/kling-batch-intake-c1-interaction-transitions.md",
+  "sourcePreflight": "docs/kling-preflight-c1-interaction-transitions.md",
+  "sourceDryRun": "docs/runtime-intake-c1-interaction-transitions-dry-run.md",
+  "sourceAudit": "docs/kling-generated-video-audit-c1-interaction-transitions.md",
+  "approvedActions": [
+    "idle_primary_to_paw_raise",
+    "paw_raise_to_idle_primary",
+    "idle_primary_to_cursor_watch",
+    "cursor_watch_to_idle_primary",
+    "idle_primary_to_click_surprised",
+    "click_surprised_to_idle_primary",
+    "idle_primary_to_poke_annoyed",
+    "poke_annoyed_to_idle_primary"
+  ],
+  "allowedOperations": [
+    "从 assets/origin/generated/kling/*_to_*.mp4 抽取 5 秒 24fps 序列帧",
+    "执行绿幕抠像、水印区域透明化和绿色残留清理",
+    "新增 assets/runtime/animations/*_to_*/frames",
+    "把 8 个 C1 transition 动作写入 assets/runtime/animations/manifest.json",
+    "把 paw_raise、cursor_watch、click_surprised、poke_annoyed 的 transitionIn 和 transitionOut 指向对应 C1 过渡动作",
+    "执行桌面可视化验收并记录中文日志"
+  ],
+  "blockedOperations": [
+    "覆盖已有 runtime 动作目录",
+    "强制提交 mp4 源视频",
+    "接入非 c1-interaction-transitions 波次",
+    "跳过桌面可视化验收",
+    "把仍有明显水印、文字、logo 或额外物体的视频接入 runtime"
+  ],
+  "notes": [
+    "本批准文件只覆盖 8 个 C1 互动动作专用过渡。",
+    "当前抽样总览图未见明显水印、文字或 logo；正式接入后必须用桌面多帧截图复查进入互动和回到待机是否比旧硬切更自然。"
+  ]
+}

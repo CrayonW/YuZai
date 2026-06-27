@@ -24,6 +24,11 @@ const transitionRecoveryActions = [
   "paw_raise_to_idle"
 ];
 
+const currentBridgeAliases = {
+  poke_annoyed_to_idle: ["poke_annoyed_to_idle", "poke_annoyed_to_idle_primary"],
+  paw_raise_to_idle: ["paw_raise_to_idle", "paw_raise_to_idle_primary"]
+};
+
 const macosSigningStatusPath = "docs/macos-signing-notarization-status.md";
 
 const requiredBlockerIds = [
@@ -143,8 +148,10 @@ if (existsSync(join(root, "docs/kling-batch-status-transition-out-recovery.md"))
 if (existsSync(join(root, "docs/action-transition-risk-report.md"))) {
   const riskReport = readFileSync(join(root, "docs/action-transition-risk-report.md"), "utf8");
   for (const bridge of transitionRecoveryActions) {
-    if (!riskReport.includes(`| high | 回切 |`) || !riskReport.includes(`| ${bridge} | 已配置 ${bridge}`)) {
-      failures.push(`docs/action-transition-risk-report.md must show current bridge ${bridge}`);
+    const acceptableBridges = currentBridgeAliases[bridge] ?? [bridge];
+    const hasAcceptableBridge = acceptableBridges.some((candidate) => riskReport.includes(`| ${candidate} | 已配置 ${candidate}`));
+    if (!riskReport.includes(`| high | 回切 |`) || !hasAcceptableBridge) {
+      failures.push(`docs/action-transition-risk-report.md must show current bridge ${acceptableBridges.join(" or ")}`);
     }
   }
 }

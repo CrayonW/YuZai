@@ -245,17 +245,6 @@
       "generationDurationSeconds": 5
     },
     {
-      "action": "idle_to_paw_raise",
-      "category": "transition",
-      "loop": false,
-      "durationSeconds": 2,
-      "antiFatigueRole": "待机到抬爪的衔接，降低序列帧切换突兀感",
-      "minCooldownSeconds": 0,
-      "prompt": "动作：猫咪从正面待机坐姿开始，身体重心轻微调整，肩部和前爪准备抬起，但不要完全抬爪。动作很短、很柔和，结束姿势要能自然衔接到抬前爪动作的第一帧。画面不要出现文字、水印或 logo。",
-      "output": "assets/origin/generated/kling/idle_to_paw_raise.mp4",
-      "generationDurationSeconds": 5
-    },
-    {
       "action": "paw_raise_to_idle",
       "category": "transition",
       "loop": false,
@@ -264,17 +253,6 @@
       "minCooldownSeconds": 0,
       "prompt": "动作：猫咪从前爪抬起或刚放下的姿势开始，缓慢把前爪收回身体下方，轻微调整身体和头部，最后回到稳定正面坐姿。动作很短，结束姿势要接近日常待机第一帧。画面不要出现文字、水印或 logo。",
       "output": "assets/origin/generated/kling/paw_raise_to_idle.mp4",
-      "generationDurationSeconds": 5
-    },
-    {
-      "action": "idle_to_cursor_watch",
-      "category": "transition",
-      "loop": false,
-      "durationSeconds": 2,
-      "antiFatigueRole": "待机到注视鼠标的衔接，支持鼠标靠近更自然",
-      "minCooldownSeconds": 0,
-      "prompt": "动作：猫咪从正面待机坐姿开始，眼神先轻轻偏向一侧，耳朵微动，头部准备跟随目标但还没有大幅转动。结束姿势要能自然衔接到注视鼠标动作第一帧。画面不要出现文字、水印或 logo。",
-      "output": "assets/origin/generated/kling/idle_to_cursor_watch.mp4",
       "generationDurationSeconds": 5
     },
     {

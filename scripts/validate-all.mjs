@@ -23,6 +23,7 @@ const steps = [
   ["validate:action-transition-risk-report", ["npm", "run", "validate:action-transition-risk-report"]],
   ["validate:transition-out-checklist", ["npm", "run", "validate:transition-out-checklist"]],
   ["validate:transition-out-intake-proposal", ["npm", "run", "validate:transition-out-intake-proposal"]],
+  ["validate:c1-transition-runtime-intake", ["npm", "run", "validate:c1-transition-runtime-intake"]],
   ["validate:runtime-action-bridge-report", ["npm", "run", "validate:runtime-action-bridge-report"]],
   ["validate:action-bridge-contract", ["npm", "run", "validate:action-bridge-contract"]],
   ["validate:manifest-contract", ["npm", "run", "validate:manifest-contract"]],

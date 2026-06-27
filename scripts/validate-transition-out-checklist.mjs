@@ -30,6 +30,7 @@ const expectedMappings = [
     risk: "poke_annoyed -> idle_primary",
     action: "poke_annoyed_to_idle",
     sourceAction: "poke_annoyed",
+    allowedRuntimeTransitionOut: ["poke_annoyed_to_idle", "poke_annoyed_to_idle_primary"],
     source: "assets/origin/generated/kling/poke_annoyed_to_idle.mp4",
     runtimeFrameRoot: "assets/runtime/animations/poke_annoyed_to_idle/frames",
     contactSheet: "assets/reviews/runtime/transition-out-recovery/poke-annoyed-contact-sheet.png",
@@ -39,6 +40,7 @@ const expectedMappings = [
     risk: "paw_raise -> idle_primary",
     action: "paw_raise_to_idle",
     sourceAction: "paw_raise",
+    allowedRuntimeTransitionOut: ["paw_raise_to_idle", "paw_raise_to_idle_primary"],
     source: "assets/origin/generated/kling/paw_raise_to_idle.mp4",
     runtimeFrameRoot: "assets/runtime/animations/paw_raise_to_idle/frames",
     contactSheet: "assets/reviews/runtime/transition-out-recovery/paw-raise-contact-sheet.png",
@@ -96,8 +98,9 @@ if (failures.length === 0) {
     if (runtimeAction?.frameCount > 1 && lastExitFrame <= 1) {
       failures.push(`${mapping.action}: transitionOut runtime must not return at frame 1`);
     }
-    if (manifest.actions?.[mapping.sourceAction]?.transitionOut !== mapping.action) {
-      failures.push(`${mapping.sourceAction}.transitionOut must be ${mapping.action}`);
+    const allowedRuntimeTransitionOut = mapping.allowedRuntimeTransitionOut ?? [mapping.action];
+    if (!allowedRuntimeTransitionOut.includes(manifest.actions?.[mapping.sourceAction]?.transitionOut)) {
+      failures.push(`${mapping.sourceAction}.transitionOut must be one of ${allowedRuntimeTransitionOut.join(", ")}`);
     }
   }
 

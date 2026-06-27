@@ -12,10 +12,10 @@
 
 ## 当前摘要
 
-- 计划动作数：43
-- runtime 可播放动作数：42
-- 可播放覆盖率：95%
-- 缺失动作数：2
+- 计划动作数：49
+- runtime 可播放动作数：50
+- 可播放覆盖率：100%
+- 缺失动作数：0
 - runtime 时长不足动作数：0
 - manifest 元数据不一致数：4
 
@@ -25,23 +25,15 @@
 | --- | ---: | ---: | ---: |
 | daily | 13 | 13 | 0 |
 | interactive | 24 | 24 | 0 |
-| transition | 6 | 4 | 2 |
+| transition | 12 | 12 | 0 |
 
 ## 优先补齐批次
 
-### 第四批：动作衔接过渡
-补齐短过渡动作，用于降低待机到交互、交互回待机、入睡回睡眠循环时的序列帧跳变。
-
-| action | 分类 | 时长 | 预期源视频 |
-| --- | --- | ---: | --- |
-| idle_to_paw_raise | transition | 2s | assets/origin/generated/kling/idle_to_paw_raise.mp4 |
-| idle_to_cursor_watch | transition | 2s | assets/origin/generated/kling/idle_to_cursor_watch.mp4 |
-
+当前没有需要补齐的计划动作。
 
 ## 缺失动作
 
-- `idle_to_paw_raise`（transition，2s）：待机到抬爪的衔接，降低序列帧切换突兀感；预期源视频：assets/origin/generated/kling/idle_to_paw_raise.mp4
-- `idle_to_cursor_watch`（transition，2s）：待机到注视鼠标的衔接，支持鼠标靠近更自然；预期源视频：assets/origin/generated/kling/idle_to_cursor_watch.mp4
+当前没有计划内缺失动作。
 
 ## runtime 时长不足
 

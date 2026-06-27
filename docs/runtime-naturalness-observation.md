@@ -4,8 +4,8 @@
 
 ## 当前摘要
 
-- runtime action 数：42
-- 衔接风险：high 4 / medium 34 / low 22
+- runtime action 数：50
+- 衔接风险：high 4 / medium 43 / low 29
 - runtime 时长不足动作数：0
 - 桌面观察截图：12 张，440x440，变化帧 12
 - 观察证据状态：通过
@@ -29,8 +29,8 @@ npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-naturalness
 
 - sleep -> sleeping（回切，metric 0.2606）：已配置 sleep_to_sleeping，需桌面录屏确认
 - waking -> idle_primary（回切，metric 0.2512）：已配置 waking_to_idle，需桌面录屏确认
-- poke_annoyed -> idle_primary（回切，metric 0.2248）：已配置 poke_annoyed_to_idle，需桌面录屏确认
-- paw_raise -> idle_primary（回切，metric 0.1939）：已配置 paw_raise_to_idle，需桌面录屏确认
+- poke_annoyed -> idle_primary（回切，metric 0.2248）：已配置 poke_annoyed_to_idle_primary，需桌面录屏确认
+- paw_raise -> idle_primary（回切，metric 0.1939）：已配置 paw_raise_to_idle_primary，需桌面录屏确认
 
 ## runtime 时长不足示例
 

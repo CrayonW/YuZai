@@ -27,6 +27,7 @@ const expectedActions = [
   {
     action: "poke_annoyed_to_idle",
     sourceAction: "poke_annoyed",
+    allowedRuntimeTransitionOut: ["poke_annoyed_to_idle", "poke_annoyed_to_idle_primary"],
     sourceVideo: "assets/origin/generated/kling/poke_annoyed_to_idle.mp4",
     reviewEvidence: "assets/reviews/kling-generated/poke_annoyed_to_idle.png",
     runtimeFrameRoot: "assets/runtime/animations/poke_annoyed_to_idle/frames",
@@ -35,6 +36,7 @@ const expectedActions = [
   {
     action: "paw_raise_to_idle",
     sourceAction: "paw_raise",
+    allowedRuntimeTransitionOut: ["paw_raise_to_idle", "paw_raise_to_idle_primary"],
     sourceVideo: "assets/origin/generated/kling/paw_raise_to_idle.mp4",
     reviewEvidence: "assets/reviews/kling-generated/paw_raise_to_idle.png",
     runtimeFrameRoot: "assets/runtime/animations/paw_raise_to_idle/frames",
@@ -92,8 +94,9 @@ if (failures.length === 0) {
     if (manifest.actions?.[expected.action] && manifest.actions[expected.action].category !== "transition") {
       failures.push(`${expected.action} runtime manifest category must be transition`);
     }
-    if (manifest.actions?.[expected.action] && manifest.actions?.[expected.sourceAction]?.transitionOut !== expected.action) {
-      failures.push(`${expected.sourceAction}.transitionOut must be ${expected.action}`);
+    const allowedRuntimeTransitionOut = expected.allowedRuntimeTransitionOut ?? [expected.action];
+    if (manifest.actions?.[expected.action] && !allowedRuntimeTransitionOut.includes(manifest.actions?.[expected.sourceAction]?.transitionOut)) {
+      failures.push(`${expected.sourceAction}.transitionOut must be one of ${allowedRuntimeTransitionOut.join(", ")}`);
     }
   }
 
