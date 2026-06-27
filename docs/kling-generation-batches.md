@@ -13,6 +13,7 @@ npm run kling:generate-batch -- --batch 1 --dry-run
 npm run kling:generate-batch -- --batch sleep-routine --dry-run
 npm run kling:generate-batch -- --batch transition-out-recovery --dry-run
 npm run kling:generate-batch -- --batch mouse-follow-16-direction --dry-run
+npm run kling:generate-batch -- --batch c1-interaction-transitions --dry-run
 ```
 
 鉴权通过且账号余额充足后的批次生成：
@@ -22,6 +23,7 @@ npm run kling:generate-batch -- --batch 1
 npm run kling:generate-batch -- --batch sleep-routine
 npm run kling:generate-batch -- --batch transition-out-recovery
 npm run kling:generate-batch -- --batch mouse-follow-16-direction
+npm run kling:generate-batch -- --batch c1-interaction-transitions
 ```
 
 ## 第一批：降低疲劳与关键交互
@@ -92,6 +94,21 @@ npm run kling:generate-batch -- --batch mouse-follow-16-direction
 | look_sse | interactive | 8s / API 5s | assets/origin/generated/kling/look_sse.mp4 | - | `npm run kling:generate -- --action look_sse` |
 | look_se | interactive | 8s / API 5s | assets/origin/generated/kling/look_se.mp4 | - | `npm run kling:generate -- --action look_se` |
 | look_ese | interactive | 8s / API 5s | assets/origin/generated/kling/look_ese.mp4 | - | `npm run kling:generate -- --action look_ese` |
+
+## 第六批：C1 互动动作专用过渡
+
+补齐待机与关键交互动作之间的真实过渡视频，解决随机插入互动动作时的硬切和缺少动作语义问题。
+
+| action | 分类 | 时长 | 输出 | 覆盖状态 | 生成命令 |
+| --- | --- | ---: | --- | --- | --- |
+| idle_primary_to_paw_raise | transition | 3s / API 5s | assets/origin/generated/kling/idle_primary_to_paw_raise.mp4 | - | `npm run kling:generate -- --action idle_primary_to_paw_raise` |
+| paw_raise_to_idle_primary | transition | 3s / API 5s | assets/origin/generated/kling/paw_raise_to_idle_primary.mp4 | - | `npm run kling:generate -- --action paw_raise_to_idle_primary` |
+| idle_primary_to_cursor_watch | transition | 3s / API 5s | assets/origin/generated/kling/idle_primary_to_cursor_watch.mp4 | - | `npm run kling:generate -- --action idle_primary_to_cursor_watch` |
+| cursor_watch_to_idle_primary | transition | 3s / API 5s | assets/origin/generated/kling/cursor_watch_to_idle_primary.mp4 | - | `npm run kling:generate -- --action cursor_watch_to_idle_primary` |
+| idle_primary_to_click_surprised | transition | 3s / API 5s | assets/origin/generated/kling/idle_primary_to_click_surprised.mp4 | - | `npm run kling:generate -- --action idle_primary_to_click_surprised` |
+| click_surprised_to_idle_primary | transition | 3s / API 5s | assets/origin/generated/kling/click_surprised_to_idle_primary.mp4 | - | `npm run kling:generate -- --action click_surprised_to_idle_primary` |
+| idle_primary_to_poke_annoyed | transition | 3s / API 5s | assets/origin/generated/kling/idle_primary_to_poke_annoyed.mp4 | - | `npm run kling:generate -- --action idle_primary_to_poke_annoyed` |
+| poke_annoyed_to_idle_primary | transition | 3s / API 5s | assets/origin/generated/kling/poke_annoyed_to_idle_primary.mp4 | - | `npm run kling:generate -- --action poke_annoyed_to_idle_primary` |
 
 ## 批次后处理
 

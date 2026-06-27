@@ -2257,3 +2257,15 @@ Windows 状态查询：`npm run actions:windows-status` 在沙盒内 DNS 无法�
 验证命令：`npm run validate:runtime-alpha-quality`、`npm run validate:transition-out-checklist`、`npm run animations:transition-risk -- --write docs/action-transition-risk-report.md`、`npm run validate:action-transition-risk-report`
 已知问题：风险报告仍记录 4 个源动作尾段高风险，但这些路径已配置 transitionOut；后续若肉眼仍觉得不自然，需要重新生成更完整的 transitionOut 视频，而不是继续依赖当前短安全帧。
 决定：接受本轮作为第一层修复，优先消除透明破损闪动和明显错误回切。
+
+## 2026-06-27 C1 互动动作专用过渡视频生成
+
+日期：2026-06-27
+源文件：`docs/kling-action-generation-plan.json`、`docs/kling-generation-batches.json`、`docs/kling-generation-batches.md`、`docs/kling-preflight-c1-interaction-transitions.md`、`docs/kling-batch-status-c1-interaction-transitions.md`、`docs/kling-batch-intake-c1-interaction-transitions.md`、`docs/kling-generated-video-audit-c1-interaction-transitions.md`、`assets/origin/generated/kling/*_to_*.mp4`
+问题：用户确认采用方案 C，用可灵生成专用过渡视频，优先解决待机动作与关键互动动作之间硬切、生硬插入和缺少动作语义的问题。
+参考片段：`c1-interaction-transitions`、`idle_primary_to_paw_raise`、`paw_raise_to_idle_primary`、`idle_primary_to_cursor_watch`、`cursor_watch_to_idle_primary`、`idle_primary_to_click_surprised`、`click_surprised_to_idle_primary`、`idle_primary_to_poke_annoyed`、`poke_annoyed_to_idle_primary`。
+处理：新增“第六批：C1 互动动作专用过渡”生成批次，并为 8 个待机到互动、互动回待机动作补充 5 秒真实动作视频提示词。预检通过后生成全部 8 个源视频；其中 `poke_annoyed_to_idle_primary` 批量生成时两次出现 `fetch failed`，随后用单动作生成命令补齐成功。已生成批次状态、接入清单和视频抽样审计文档，并导出 `assets/reviews/kling-generated/overview.png` 方便人工查看。
+生成命令：`npm run kling:generation-batches -- --write-json docs/kling-generation-batches.json --write-md docs/kling-generation-batches.md`、`npm run kling:preflight -- --batch c1-interaction-transitions --write docs/kling-preflight-c1-interaction-transitions.md`、`npm run kling:generate-batch -- --batch c1-interaction-transitions`、`npm run kling:generate -- --action poke_annoyed_to_idle_primary`、`npm run kling:batch-status -- --batch c1-interaction-transitions --write docs/kling-batch-status-c1-interaction-transitions.md`、`npm run kling:batch-intake-checklist -- --batch c1-interaction-transitions --write docs/kling-batch-intake-c1-interaction-transitions.md`、`npm run kling:generated-video-audit -- --batch c1-interaction-transitions --extract-previews --write docs/kling-generated-video-audit-c1-interaction-transitions.md`。
+验证命令：`npm run validate:kling-plan-quality`、`npm run validate:kling-generation-batches`。
+已知问题：本轮只生成并审计原始视频，不抽帧、不去水印、不修改 runtime manifest、不覆盖 `assets/runtime/animations`。自动审计只能确认元数据和抽样图路径，正式接入前仍需人工逐个确认无水印、无文字、无 logo、猫咪身份一致、全身入镜和绿幕稳定。
+决定：接受 C1 源视频生成阶段完成；下一步应先确认 `docs/kling-batch-intake-c1-interaction-transitions.md` 的接入清单，再执行去水印/抠绿、抽帧、manifest 接入和桌面验收。

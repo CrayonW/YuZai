@@ -4,8 +4,8 @@
   "sourceBacklog": "docs/state-backlog.md",
   "prerequisite": "先运行 auth-check，确认可灵 API 鉴权通过，再按批次生成。",
   "summary": {
-    "totalBatches": 5,
-    "totalActions": 34
+    "totalBatches": 6,
+    "totalActions": 42
   },
   "batches": [
     {
@@ -345,6 +345,85 @@
           "generationDurationSeconds": 5,
           "output": "assets/origin/generated/kling/look_ese.mp4",
           "antiFatigueRole": "鼠标位于右下偏右方向时的长循环头眼跟随",
+          "backlogState": null
+        }
+      ]
+    },
+    {
+      "id": "c1-interaction-transitions",
+      "name": "第六批：C1 互动动作专用过渡",
+      "reason": "补齐待机与关键交互动作之间的真实过渡视频，解决随机插入互动动作时的硬切和缺少动作语义问题。",
+      "actions": [
+        {
+          "action": "idle_primary_to_paw_raise",
+          "category": "transition",
+          "durationSeconds": 3,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/idle_primary_to_paw_raise.mp4",
+          "antiFatigueRole": "待机到抬爪的真实过渡",
+          "backlogState": null
+        },
+        {
+          "action": "paw_raise_to_idle_primary",
+          "category": "transition",
+          "durationSeconds": 3,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/paw_raise_to_idle_primary.mp4",
+          "antiFatigueRole": "抬爪动作回待机的真实过渡",
+          "backlogState": null
+        },
+        {
+          "action": "idle_primary_to_cursor_watch",
+          "category": "transition",
+          "durationSeconds": 3,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/idle_primary_to_cursor_watch.mp4",
+          "antiFatigueRole": "待机到注视鼠标的真实过渡",
+          "backlogState": null
+        },
+        {
+          "action": "cursor_watch_to_idle_primary",
+          "category": "transition",
+          "durationSeconds": 3,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/cursor_watch_to_idle_primary.mp4",
+          "antiFatigueRole": "注视鼠标回待机的真实过渡",
+          "backlogState": null
+        },
+        {
+          "action": "idle_primary_to_click_surprised",
+          "category": "transition",
+          "durationSeconds": 3,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/idle_primary_to_click_surprised.mp4",
+          "antiFatigueRole": "待机到点击惊讶的真实过渡",
+          "backlogState": null
+        },
+        {
+          "action": "click_surprised_to_idle_primary",
+          "category": "transition",
+          "durationSeconds": 3,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/click_surprised_to_idle_primary.mp4",
+          "antiFatigueRole": "点击惊讶回待机的真实过渡",
+          "backlogState": null
+        },
+        {
+          "action": "idle_primary_to_poke_annoyed",
+          "category": "transition",
+          "durationSeconds": 3,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/idle_primary_to_poke_annoyed.mp4",
+          "antiFatigueRole": "待机到被戳不满的真实过渡",
+          "backlogState": null
+        },
+        {
+          "action": "poke_annoyed_to_idle_primary",
+          "category": "transition",
+          "durationSeconds": 3,
+          "generationDurationSeconds": 5,
+          "output": "assets/origin/generated/kling/poke_annoyed_to_idle_primary.mp4",
+          "antiFatigueRole": "被戳不满回待机的真实过渡",
           "backlogState": null
         }
       ]

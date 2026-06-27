@@ -31,7 +31,15 @@ const testSource = `
       action("sleep_to_sleeping", "transition", 2, "入睡回睡眠循环"),
       action("waking_to_idle", "transition", 2, "唤醒回待机"),
       action("poke_annoyed_to_idle", "transition", 2, "被戳回待机"),
-      action("paw_raise_to_idle", "transition", 2, "抬爪回待机")
+      action("paw_raise_to_idle", "transition", 2, "抬爪回待机"),
+      action("idle_primary_to_paw_raise", "transition", 3, "待机到抬爪"),
+      action("paw_raise_to_idle_primary", "transition", 3, "抬爪回待机"),
+      action("idle_primary_to_cursor_watch", "transition", 3, "待机到注视鼠标"),
+      action("cursor_watch_to_idle_primary", "transition", 3, "注视鼠标回待机"),
+      action("idle_primary_to_click_surprised", "transition", 3, "待机到点击惊讶"),
+      action("click_surprised_to_idle_primary", "transition", 3, "点击惊讶回待机"),
+      action("idle_primary_to_poke_annoyed", "transition", 3, "待机到被戳不满"),
+      action("poke_annoyed_to_idle_primary", "transition", 3, "被戳不满回待机")
     ]
   };
   const backlog = {
@@ -46,17 +54,23 @@ const testSource = `
   };
 
   const batches = buildKlingGenerationBatches({ plan, backlog });
-  assertEqual(batches.batches.length, 4, "creates four batches");
+  assertEqual(batches.batches.length, 5, "creates five batches");
   assertEqual(batches.batches[0].name, "第一批：降低疲劳与关键交互", "names first batch");
   assertEqual(batches.batches[0].actions.map((item) => item.action).join(","), "groom_face_wash,loaf_breathing,cursor_watch,click_surprised", "first batch focuses on fatigue and key interaction");
   assertEqual(batches.batches[1].actions.map((item) => item.action).join(","), "sleepy,sleep,sleeping,waking", "second batch is sleep chain");
   assertIncludes(batches.batches[2].actions.map((item) => item.action).join(","), "dragging", "third batch includes remaining interaction backlog");
   assertEqual(batches.batches[3].actions.map((item) => item.action).join(","), "sleep_to_sleeping,waking_to_idle,poke_annoyed_to_idle,paw_raise_to_idle", "fourth batch is transition recovery");
-  assertEqual(batches.summary.totalActions, 16, "deduplicates planned actions across batches");
+  assertEqual(
+    batches.batches[4].actions.map((item) => item.action).join(","),
+    "idle_primary_to_paw_raise,paw_raise_to_idle_primary,idle_primary_to_cursor_watch,cursor_watch_to_idle_primary,idle_primary_to_click_surprised,click_surprised_to_idle_primary,idle_primary_to_poke_annoyed,poke_annoyed_to_idle_primary",
+    "fifth batch is C1 interaction transition pack"
+  );
+  assertEqual(batches.summary.totalActions, 24, "deduplicates planned actions across batches");
 
   const text = renderKlingGenerationBatches(batches);
   assertIncludes(text, "可灵视频生成优先批次", "renders Chinese title");
   assertIncludes(text, "npm run kling:generate-batch -- --batch 1 --dry-run", "renders batch dry-run command");
+  assertIncludes(text, "npm run kling:generate-batch -- --batch c1-interaction-transitions --dry-run", "renders C1 dry-run command");
   assertIncludes(text, "npm run kling:generate -- --action groom_face_wash", "renders generation command");
   assertIncludes(text, "8s / API 5s", "renders separate design and API duration");
   assertIncludes(text, "先运行 auth-check", "renders auth prerequisite");

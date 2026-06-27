@@ -278,6 +278,94 @@
       "generationDurationSeconds": 5
     },
     {
+      "action": "idle_primary_to_paw_raise",
+      "category": "transition",
+      "loop": false,
+      "durationSeconds": 3,
+      "antiFatigueRole": "待机到抬爪的真实过渡",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪从正面待机坐姿开始，用 2 到 3 秒自然、缓慢、连续地过渡到前爪准备抬起并自然进入抬爪动作第一帧。整个动作要像真实小猫调整身体重心和头部眼神，不能突然跳帧，不能快速抽动。开始姿势必须贴近前一个动作的结束姿势，结束姿势必须贴近目标动作的第一帧。猫咪全身入镜，尾巴、耳朵、脚掌和身体边缘不要被裁切。固定机位，纯绿色绿幕背景。画面中只能有这只猫，不要出现文字、水印、logo、人、手、鼠标实体、道具或 UI。",
+      "output": "assets/origin/generated/kling/idle_primary_to_paw_raise.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "paw_raise_to_idle_primary",
+      "category": "transition",
+      "loop": false,
+      "durationSeconds": 3,
+      "antiFatigueRole": "抬爪动作回待机的真实过渡",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪从前爪抬起或刚开始放下的姿势开始，用 2 到 3 秒自然、缓慢、连续地过渡到稳定正面待机坐姿。整个动作要像真实小猫调整身体重心和头部眼神，不能突然跳帧，不能快速抽动。开始姿势必须贴近前一个动作的结束姿势，结束姿势必须贴近目标动作的第一帧。猫咪全身入镜，尾巴、耳朵、脚掌和身体边缘不要被裁切。固定机位，纯绿色绿幕背景。画面中只能有这只猫，不要出现文字、水印、logo、人、手、鼠标实体、道具或 UI。",
+      "output": "assets/origin/generated/kling/paw_raise_to_idle_primary.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "idle_primary_to_cursor_watch",
+      "category": "transition",
+      "loop": false,
+      "durationSeconds": 3,
+      "antiFatigueRole": "待机到注视鼠标的真实过渡",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪从正面待机坐姿开始，用 2 到 3 秒自然、缓慢、连续地过渡到头部和眼睛开始注视鼠标方向的姿势。整个动作要像真实小猫调整身体重心和头部眼神，不能突然跳帧，不能快速抽动。开始姿势必须贴近前一个动作的结束姿势，结束姿势必须贴近目标动作的第一帧。猫咪全身入镜，尾巴、耳朵、脚掌和身体边缘不要被裁切。固定机位，纯绿色绿幕背景。画面中只能有这只猫，不要出现文字、水印、logo、人、手、鼠标实体、道具或 UI。",
+      "output": "assets/origin/generated/kling/idle_primary_to_cursor_watch.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "cursor_watch_to_idle_primary",
+      "category": "transition",
+      "loop": false,
+      "durationSeconds": 3,
+      "antiFatigueRole": "注视鼠标回待机的真实过渡",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪从头部和眼睛正在注视鼠标方向的姿势开始，用 2 到 3 秒自然、缓慢、连续地过渡到稳定正面待机坐姿。整个动作要像真实小猫调整身体重心和头部眼神，不能突然跳帧，不能快速抽动。开始姿势必须贴近前一个动作的结束姿势，结束姿势必须贴近目标动作的第一帧。猫咪全身入镜，尾巴、耳朵、脚掌和身体边缘不要被裁切。固定机位，纯绿色绿幕背景。画面中只能有这只猫，不要出现文字、水印、logo、人、手、鼠标实体、道具或 UI。",
+      "output": "assets/origin/generated/kling/cursor_watch_to_idle_primary.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "idle_primary_to_click_surprised",
+      "category": "transition",
+      "loop": false,
+      "durationSeconds": 3,
+      "antiFatigueRole": "待机到点击惊讶的真实过渡",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪从正面待机坐姿开始，用 2 到 3 秒自然、缓慢、连续地过渡到轻微惊讶、耳朵和眼睛有反应的姿势。整个动作要像真实小猫调整身体重心和头部眼神，不能突然跳帧，不能快速抽动。开始姿势必须贴近前一个动作的结束姿势，结束姿势必须贴近目标动作的第一帧。猫咪全身入镜，尾巴、耳朵、脚掌和身体边缘不要被裁切。固定机位，纯绿色绿幕背景。画面中只能有这只猫，不要出现文字、水印、logo、人、手、鼠标实体、道具或 UI。",
+      "output": "assets/origin/generated/kling/idle_primary_to_click_surprised.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "click_surprised_to_idle_primary",
+      "category": "transition",
+      "loop": false,
+      "durationSeconds": 3,
+      "antiFatigueRole": "点击惊讶回待机的真实过渡",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪从轻微惊讶反应后的姿势开始，用 2 到 3 秒自然、缓慢、连续地过渡到稳定正面待机坐姿。整个动作要像真实小猫调整身体重心和头部眼神，不能突然跳帧，不能快速抽动。开始姿势必须贴近前一个动作的结束姿势，结束姿势必须贴近目标动作的第一帧。猫咪全身入镜，尾巴、耳朵、脚掌和身体边缘不要被裁切。固定机位，纯绿色绿幕背景。画面中只能有这只猫，不要出现文字、水印、logo、人、手、鼠标实体、道具或 UI。",
+      "output": "assets/origin/generated/kling/click_surprised_to_idle_primary.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "idle_primary_to_poke_annoyed",
+      "category": "transition",
+      "loop": false,
+      "durationSeconds": 3,
+      "antiFatigueRole": "待机到被戳不满的真实过渡",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪从正面待机坐姿开始，用 2 到 3 秒自然、缓慢、连续地过渡到轻微不满或被打扰的姿势。整个动作要像真实小猫调整身体重心和头部眼神，不能突然跳帧，不能快速抽动。开始姿势必须贴近前一个动作的结束姿势，结束姿势必须贴近目标动作的第一帧。猫咪全身入镜，尾巴、耳朵、脚掌和身体边缘不要被裁切。固定机位，纯绿色绿幕背景。画面中只能有这只猫，不要出现文字、水印、logo、人、手、鼠标实体、道具或 UI。",
+      "output": "assets/origin/generated/kling/idle_primary_to_poke_annoyed.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
+      "action": "poke_annoyed_to_idle_primary",
+      "category": "transition",
+      "loop": false,
+      "durationSeconds": 3,
+      "antiFatigueRole": "被戳不满回待机的真实过渡",
+      "minCooldownSeconds": 0,
+      "prompt": "动作：猫咪从轻微不满或回头看的姿势开始，用 2 到 3 秒自然、缓慢、连续地过渡到情绪缓和后的稳定正面待机坐姿。整个动作要像真实小猫调整身体重心和头部眼神，不能突然跳帧，不能快速抽动。开始姿势必须贴近前一个动作的结束姿势，结束姿势必须贴近目标动作的第一帧。猫咪全身入镜，尾巴、耳朵、脚掌和身体边缘不要被裁切。固定机位，纯绿色绿幕背景。画面中只能有这只猫，不要出现文字、水印、logo、人、手、鼠标实体、道具或 UI。",
+      "output": "assets/origin/generated/kling/poke_annoyed_to_idle_primary.mp4",
+      "generationDurationSeconds": 5
+    },
+    {
       "action": "sleep_to_sleeping",
       "category": "transition",
       "loop": false,
