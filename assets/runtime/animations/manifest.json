@@ -1010,7 +1010,7 @@
         1
       ],
       "exitFrames": [
-        1
+        12
       ],
       "interruptPolicy": "locked",
       "returnTo": "idle_primary"
@@ -1031,7 +1031,7 @@
         1
       ],
       "exitFrames": [
-        1
+        3
       ],
       "interruptPolicy": "locked",
       "returnTo": "idle_primary"
@@ -1052,7 +1052,7 @@
         1
       ],
       "exitFrames": [
-        1
+        14
       ],
       "interruptPolicy": "locked",
       "returnTo": "idle_primary"

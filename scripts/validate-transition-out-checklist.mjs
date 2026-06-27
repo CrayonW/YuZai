@@ -92,6 +92,10 @@ if (failures.length === 0) {
     if (!runtimeAction) failures.push(`${mapping.action}: missing runtime manifest action`);
     if (runtimeAction?.category !== "transition") failures.push(`${mapping.action}: runtime category must be transition`);
     if (runtimeAction?.loop !== false) failures.push(`${mapping.action}: runtime loop must be false`);
+    const lastExitFrame = Math.max(...(runtimeAction?.exitFrames ?? []));
+    if (runtimeAction?.frameCount > 1 && lastExitFrame <= 1) {
+      failures.push(`${mapping.action}: transitionOut runtime must not return at frame 1`);
+    }
     if (manifest.actions?.[mapping.sourceAction]?.transitionOut !== mapping.action) {
       failures.push(`${mapping.sourceAction}.transitionOut must be ${mapping.action}`);
     }

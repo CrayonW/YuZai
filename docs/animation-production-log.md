@@ -2246,3 +2246,14 @@ Windows 状态查询：`npm run actions:windows-status` 在沙盒内 DNS 无法�
 处理：`ReminderBubbleController` 默认消息列表改为空，默认启动不会安排喝水/休息提醒；只有调用方显式传入消息时才会显示气泡。验证脚本保留显式消息用例，避免后续气泡扩展能力被误删。
 验证命令：`npm run validate:reminder-bubble-controller`
 决定：接受默认不显示喝水/休息提示；提醒气泡只作为后续显式配置扩展入口保留。
+
+## 2026-06-27 动作衔接和透明闪动修复
+
+日期：2026-06-27
+源文件：`assets/runtime/animations/manifest.json`、`assets/runtime/animations/walk/frames`、`assets/runtime/animations/sleep_to_sleeping/frames`、`scripts/validate-runtime-alpha-quality.mjs`、`scripts/validate-transition-out-checklist.mjs`、`docs/action-transition-risk-report.md`
+问题：用户反馈动作衔接仍非常生硬，且猫咪身上局部直接透明，造成异常闪动。
+根因：`waking_to_idle`、`poke_annoyed_to_idle`、`paw_raise_to_idle` 的 transitionOut 退出帧此前会在第 1 帧或错误尾帧返回，过渡素材没有在相似安全帧退出；`sleep_to_sleeping` 第 40-45 帧存在明显 alpha 破损；`walk` 第 72 到 73 帧是补长接缝，从走姿跳到坐姿。
+处理：新增 alpha mean 连续性验证，阈值为相邻帧 `0.02`；`walk` 后半段改为前半段倒放 ping-pong；`sleep_to_sleeping` 第 40-45 帧用第 39 帧替换，去除透明破损；transitionOut 本体分别改为相似度安全退出帧：`waking_to_idle=12`、`poke_annoyed_to_idle=3`、`paw_raise_to_idle=14`。
+验证命令：`npm run validate:runtime-alpha-quality`、`npm run validate:transition-out-checklist`、`npm run animations:transition-risk -- --write docs/action-transition-risk-report.md`、`npm run validate:action-transition-risk-report`
+已知问题：风险报告仍记录 4 个源动作尾段高风险，但这些路径已配置 transitionOut；后续若肉眼仍觉得不自然，需要重新生成更完整的 transitionOut 视频，而不是继续依赖当前短安全帧。
+决定：接受本轮作为第一层修复，优先消除透明破损闪动和明显错误回切。

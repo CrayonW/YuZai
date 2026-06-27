@@ -62,7 +62,6 @@
 | low | 进入 | idle_primary | look_ssw | 96 -> 144 | 0.0993 | 7 (0.0735) | not-applicable | Canvas crossfade | 当前可接受，低频复查即可 | look_ssw 是可被用户触发的交互动作 |
 | low | 进入 | idle_primary | paw_raise | 96 -> 1 | 0.0991 | 2 (0.0513) | not-applicable | Canvas crossfade | 当前可接受，低频复查即可 | paw_raise 是可被用户触发的交互动作 |
 | low | 进入 | idle_primary | look_nne | 96 -> 144 | 0.0983 | 5 (0.0699) | not-applicable | Canvas crossfade | 当前可接受，低频复查即可 | look_nne 是可被用户触发的交互动作 |
-| low | 回切 | paw_raise_to_idle | idle_primary | 1 -> 1 | 0.0965 | 14 (0.0692) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | paw_raise_to_idle 播放结束后回到 idle_primary |
 | low | 回切 | look_e | idle_primary | 144 -> 1 | 0.0951 | 12 (0.0670) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_e 播放结束后回到 idle_primary |
 | low | 回切 | look_s | idle_primary | 144 -> 1 | 0.0942 | 5 (0.0716) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_s 播放结束后回到 idle_primary |
 | low | 回切 | look_se | idle_primary | 144 -> 1 | 0.0920 | 8 (0.0698) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_se 播放结束后回到 idle_primary |
@@ -73,11 +72,12 @@
 | low | 回切 | sleep_to_sleeping | sleeping | 120 -> 96 | 0.0892 | 5 (0.0497) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | sleep_to_sleeping 播放结束后回到 sleeping |
 | low | 回切 | look_ene | idle_primary | 192 -> 96 | 0.0874 | 3 (0.0806) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_ene 播放结束后回到 idle_primary |
 | low | 回切 | look_ne | idle_primary | 144 -> 1 | 0.0867 | 8 (0.0689) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_ne 播放结束后回到 idle_primary |
-| low | 回切 | poke_annoyed_to_idle | idle_primary | 1 -> 1 | 0.0854 | 3 (0.0739) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | poke_annoyed_to_idle 播放结束后回到 idle_primary |
 | low | 回切 | look_ese | idle_primary | 144 -> 1 | 0.0843 | 7 (0.0692) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_ese 播放结束后回到 idle_primary |
 | low | 回切 | look_nne | idle_primary | 144 -> 1 | 0.0829 | 8 (0.0753) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_nne 播放结束后回到 idle_primary |
-| low | 回切 | waking_to_idle | idle_primary | 1 -> 1 | 0.0824 | 12 (0.0764) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | waking_to_idle 播放结束后回到 idle_primary |
 | low | 进入 | idle_primary | look_w | 96 -> 96 | 0.0815 | 16 (0.0669) | not-applicable | Canvas crossfade | 当前可接受，低频复查即可 | look_w 是可被用户触发的交互动作 |
 | low | 回切 | look_w | idle_primary | 96 -> 96 | 0.0815 | 6 (0.0771) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_w 播放结束后回到 idle_primary |
 | low | 回切 | look_ssw | idle_primary | 144 -> 1 | 0.0768 | 22 (0.0733) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_ssw 播放结束后回到 idle_primary |
+| low | 回切 | waking_to_idle | idle_primary | 12 -> 1 | 0.0764 | 12 (0.0764) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | waking_to_idle 播放结束后回到 idle_primary |
 | low | 回切 | dragging | idle_primary | 120 -> 1 | 0.0754 | 14 (0.0699) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | dragging 播放结束后回到 idle_primary |
+| low | 回切 | poke_annoyed_to_idle | idle_primary | 3 -> 1 | 0.0739 | 3 (0.0739) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | poke_annoyed_to_idle 播放结束后回到 idle_primary |
+| low | 回切 | paw_raise_to_idle | idle_primary | 14 -> 1 | 0.0692 | 14 (0.0692) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | paw_raise_to_idle 播放结束后回到 idle_primary |
