@@ -18,6 +18,7 @@ import {
 import { AnimationDirector } from "../core/render/animation-director";
 import { CanvasRenderer } from "../core/render/canvas-renderer";
 import { DailyAnimationRotator } from "../core/render/daily-animation-rotator";
+import { MotionIntentScheduler } from "../core/render/motion-intent-scheduler";
 import { buildRuntimeDailyRotatorOptions } from "../core/render/runtime-behavior-schedule";
 import { preloadSpriteSequences, sequenceForAction } from "../core/render/sprite-assets";
 import { entryFrameForTransition } from "../core/render/transition-anchors";
@@ -41,19 +42,22 @@ const interaction = new InteractionController(canvas, fsm, () => autonomous.noti
   onMouseNearAccepted() {
     const action = resolveProximityAnimationAction({ near: true }, isRenderableRuntimeAnimationAction);
     if (action && isRenderableRuntimeAnimationAction(action)) {
-      animationDirector.request(action, performance.now());
+      const now = performance.now();
+      motionScheduler.submit({ type: "proximity", action, now, lockMs: 1800 });
     }
   },
   onClickAccepted(kind) {
     const action = resolveClickAnimationAction({ kind }, isRenderableRuntimeAnimationAction);
     if (action && isRenderableRuntimeAnimationAction(action)) {
-      animationDirector.request(action, performance.now());
+      const now = performance.now();
+      motionScheduler.submit({ type: "click", action, now, lockMs: 2200 });
     }
   },
   onDragAccepted() {
     const action = resolveDragAnimationAction({ phase: "start" }, isRenderableRuntimeAnimationAction);
     if (action && isRenderableRuntimeAnimationAction(action)) {
-      animationDirector.request(action, performance.now());
+      const now = performance.now();
+      motionScheduler.submit({ type: "drag", action, now, lockMs: 900 });
     }
   }
 });
@@ -61,7 +65,8 @@ const reminders = new ReminderBubbleController(reminderBubble, {
   onShow(event) {
     const action = resolveReminderAnimationAction(event, isRenderableRuntimeAnimationAction);
     if (action && isRenderableRuntimeAnimationAction(action)) {
-      animationDirector.request(action, performance.now());
+      const now = performance.now();
+      motionScheduler.submit({ type: "click", action, now, lockMs: 2200 });
     }
   }
 });
@@ -74,6 +79,11 @@ let previewAction: RuntimeAnimationAction | null = null;
 let previewActionUntil = 0;
 let mouseFollowAction: RuntimeAnimationAction | null = null;
 const dailyRotator = new DailyAnimationRotator(buildRuntimeDailyRotatorOptions());
+const motionScheduler = new MotionIntentScheduler({
+  defaultAction: runtimeAnimationManifest.defaultAction,
+  mouseFollowStableMs: 160,
+  mouseFollowMinHoldMs: 300
+});
 
 window.yuzai.getScreenBounds().then((bounds) => {
   screenBounds = bounds;
@@ -85,14 +95,30 @@ window.yuzai.onSizeChange((size) => {
 });
 window.yuzai.onMouseProximityChange((near) => {
   interaction.setGlobalProximity(near);
-  if (!near) mouseFollowAction = null;
+  if (!near) {
+    mouseFollowAction = null;
+    motionScheduler.submit({
+      type: "mouse-follow",
+      action: runtimeAnimationManifest.defaultAction,
+      now: performance.now(),
+      near: false
+    });
+  }
 });
 window.yuzai.onMouseFollowDirectionChange((payload) => {
+  const now = performance.now();
   if (!payload.near || !payload.action || !isRenderableRuntimeAnimationAction(payload.action)) {
     mouseFollowAction = null;
+    motionScheduler.submit({
+      type: "mouse-follow",
+      action: runtimeAnimationManifest.defaultAction,
+      now,
+      near: false
+    });
     return;
   }
   mouseFollowAction = payload.action;
+  motionScheduler.submit({ type: "mouse-follow", action: payload.action, now, near: true });
 });
 window.yuzai.onTestDrag((payload) => {
   void interaction.simulateDragForTest({ x: payload.x, y: payload.y }, payload.holdMs);
@@ -102,8 +128,8 @@ window.yuzai.onTestPreviewAction((action) => {
     const now = performance.now();
     previewAction = action;
     previewActionUntil = now + 2400;
-    animationDirector.request(action, now);
-    lastRequestedAnimationAction = action;
+    motionScheduler.submit({ type: "preview", action, now, until: previewActionUntil });
+    lastRequestedAnimationAction = null;
   } else {
     console.warn(`[preview] ignored unavailable action: ${action}`);
   }
@@ -116,25 +142,45 @@ async function tick(now: number): Promise<void> {
   fsm.update(now);
   autonomous.update(now);
   await updateWindowMotion(deltaSeconds);
-  const nextAnimationAction = resolveAnimationAction(now);
+  submitFrameIntents(now);
+  const nextAnimationAction = motionScheduler.resolve(now);
   if (nextAnimationAction !== lastRequestedAnimationAction) {
     animationDirector.request(nextAnimationAction, now);
     lastRequestedAnimationAction = nextAnimationAction;
   }
   const animationFrame = animationDirector.update(now);
+  const config = configForAction(animationFrame.action);
+  if (config?.category === "interactive" || config?.category === "transition") {
+    const lastFrame = animationFrame.sequence.frames.length - 1;
+    if (!animationFrame.sequence.loop && animationFrame.frameIndex >= lastFrame) {
+      motionScheduler.completeCurrent(animationFrame.action, now);
+    }
+  }
   renderer.render(fsm.snapshot, now, interaction.currentDragOffset, animationFrame);
 
   requestAnimationFrame((time) => void tick(time));
 }
 
-function resolveAnimationAction(now: number): RuntimeAnimationAction {
-  if (previewAction && now < previewActionUntil) return previewAction;
-  previewAction = null;
-  if (mouseFollowAction && (fsm.snapshot.pose.state === "idle" || fsm.snapshot.pose.state === "teaser")) {
-    return mouseFollowAction;
+function submitFrameIntents(now: number): void {
+  if (previewAction && now >= previewActionUntil) {
+    previewAction = null;
   }
+
   const baseAction = actionForPose(fsm.snapshot.pose.state, fsm.snapshot.pose.direction);
-  return dailyRotator.resolve(baseAction, fsm.snapshot.pose.state === "idle", now);
+  motionScheduler.submit({ type: "base", action: baseAction, now });
+
+  if (mouseFollowAction && (fsm.snapshot.pose.state === "idle" || fsm.snapshot.pose.state === "teaser")) {
+    motionScheduler.submit({ type: "mouse-follow", action: mouseFollowAction, now, near: true });
+    return;
+  }
+
+  const dailyAction = dailyRotator.resolve(baseAction, fsm.snapshot.pose.state === "idle", now);
+  motionScheduler.submit({
+    type: dailyAction === baseAction ? "base" : "daily",
+    action: dailyAction,
+    now,
+    holdMs: dailyAction === baseAction ? undefined : 2400
+  });
 }
 
 async function updateWindowMotion(deltaSeconds: number): Promise<void> {

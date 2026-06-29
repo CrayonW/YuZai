@@ -67,7 +67,7 @@ const testSource = `
   scheduler.submit({ type: "proximity", action: "paw_raise", now: 20, lockMs: 1800 });
   assertEqual(scheduler.resolve(20), "paw_raise", "interaction takes priority over daily");
 
-  scheduler.submit({ type: "daily", action: "tail_wag", now: 30, holdMs: 1000 });
+  scheduler.submit({ type: "daily", action: "tail_wag", now: 30, holdMs: 5000 });
   assertEqual(scheduler.resolve(30), "paw_raise", "daily cannot interrupt locked interaction chain");
 
   scheduler.submit({ type: "proximity", action: "paw_raise", now: 40, lockMs: 1800 });

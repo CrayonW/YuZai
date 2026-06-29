@@ -26,6 +26,7 @@
     "validate:runtime-alpha-quality": "node scripts/validate-runtime-alpha-quality.mjs",
     "validate:animation-smoothness": "node scripts/validate-animation-smoothness.mjs",
     "validate:animation-director": "node scripts/validate-animation-director.mjs",
+    "validate:motion-intent-scheduler": "node scripts/validate-motion-intent-scheduler.mjs",
     "validate:daily-animation-rotator": "node scripts/validate-daily-animation-rotator.mjs",
     "validate:autonomous-behavior-schedule": "node scripts/validate-autonomous-behavior-schedule.mjs",
     "validate:runtime-behavior-schedule": "node scripts/validate-runtime-behavior-schedule.mjs",

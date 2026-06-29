@@ -5,6 +5,7 @@ const steps = [
   ["validate:runtime-alpha-quality", ["npm", "run", "validate:runtime-alpha-quality"]],
   ["validate:animation-smoothness", ["npm", "run", "validate:animation-smoothness"]],
   ["validate:animation-director", ["npm", "run", "validate:animation-director"]],
+  ["validate:motion-intent-scheduler", ["npm", "run", "validate:motion-intent-scheduler"]],
   ["validate:daily-animation-rotator", ["npm", "run", "validate:daily-animation-rotator"]],
   ["validate:autonomous-behavior-schedule", ["npm", "run", "validate:autonomous-behavior-schedule"]],
   ["validate:runtime-behavior-schedule", ["npm", "run", "validate:runtime-behavior-schedule"]],
