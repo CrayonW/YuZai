@@ -21,8 +21,8 @@
 
 | risk | direction | from | to | best frame pair | metric | best source frame | tail diagnosis | current bridge | recommendation | reason |
 | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- |
-| high | 回切 | sleep | sleeping | 48 -> 144 | 0.2606 | 1 (0.0300) | tail-not-recovered | sleep_to_sleeping | 已配置 sleep_to_sleeping，需桌面录屏确认 | sleep 播放结束后回到 sleeping |
-| high | 回切 | waking | idle_primary | 120 -> 1 | 0.2512 | 8 (0.0691) | tail-not-recovered | waking_to_idle | 已配置 waking_to_idle，需桌面录屏确认 | waking 播放结束后回到 idle_primary |
+| high | 回切 | sleep | sleeping | 48 -> 144 | 0.2607 | 1 (0.0300) | tail-not-recovered | sleep_to_sleeping | 已配置 sleep_to_sleeping，需桌面录屏确认 | sleep 播放结束后回到 sleeping |
+| high | 回切 | waking | idle_primary | 120 -> 1 | 0.2511 | 8 (0.0691) | tail-not-recovered | waking_to_idle | 已配置 waking_to_idle，需桌面录屏确认 | waking 播放结束后回到 idle_primary |
 | high | 回切 | poke_annoyed | idle_primary | 120 -> 1 | 0.2248 | 17 (0.0774) | tail-not-recovered | poke_annoyed_to_idle_primary | 已配置 poke_annoyed_to_idle_primary，需桌面录屏确认 | poke_annoyed 播放结束后回到 idle_primary |
 | high | 回切 | paw_raise | idle_primary | 48 -> 96 | 0.1939 | 1 (0.0535) | tail-not-recovered | paw_raise_to_idle_primary | 已配置 paw_raise_to_idle_primary，需桌面录屏确认 | paw_raise 播放结束后回到 idle_primary |
 | medium | 回切 | sleepy | sleep | 48 -> 1 | 0.1310 | 2 (0.0451) | acceptable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | sleepy 播放结束后回到 sleep |
@@ -49,7 +49,7 @@
 | medium | 进入 | idle_primary | poke_annoyed_to_idle | 96 -> 1 | 0.1127 | 4 (0.0736) | not-applicable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | poke_annoyed_to_idle 是姿势链路过渡动作 |
 | medium | 进入 | idle_primary | waking_to_idle | 96 -> 1 | 0.1120 | 4 (0.0760) | not-applicable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | waking_to_idle 是姿势链路过渡动作 |
 | medium | 进入 | idle_primary | look_s | 96 -> 144 | 0.1112 | 7 (0.0774) | not-applicable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | look_s 是可被用户触发的交互动作 |
-| medium | 进入 | idle_primary | idle_primary_to_click_surprised | 96 -> 1 | 0.1111 | 5 (0.0756) | not-applicable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | idle_primary_to_click_surprised 是姿势链路过渡动作 |
+| medium | 进入 | idle_primary | idle_primary_to_click_surprised | 96 -> 1 | 0.1111 | 5 (0.0755) | not-applicable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | idle_primary_to_click_surprised 是姿势链路过渡动作 |
 | medium | 进入 | idle_primary | cursor_watch | 96 -> 1 | 0.1109 | 5 (0.0760) | not-applicable | idle_primary_to_cursor_watch | 已配置 idle_primary_to_cursor_watch，需桌面录屏确认 | cursor_watch 是可被用户触发的交互动作 |
 | medium | 进入 | idle_primary | shy | 96 -> 1 | 0.1107 | 7 (0.0744) | not-applicable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | shy 是可被用户触发的交互动作 |
 | medium | 进入 | idle_primary | look_ene | 96 -> 48 | 0.1107 | 7 (0.0864) | not-applicable | Canvas crossfade | 保留 Canvas crossfade，并用多帧截图复查 | look_ene 是可被用户触发的交互动作 |
@@ -83,7 +83,7 @@
 | low | 回切 | look_ene | idle_primary | 192 -> 96 | 0.0874 | 3 (0.0806) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_ene 播放结束后回到 idle_primary |
 | low | 回切 | look_ne | idle_primary | 144 -> 1 | 0.0867 | 8 (0.0689) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_ne 播放结束后回到 idle_primary |
 | low | 回切 | look_ese | idle_primary | 144 -> 1 | 0.0843 | 7 (0.0692) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_ese 播放结束后回到 idle_primary |
-| low | 回切 | look_nne | idle_primary | 144 -> 1 | 0.0829 | 8 (0.0753) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_nne 播放结束后回到 idle_primary |
+| low | 回切 | look_nne | idle_primary | 144 -> 1 | 0.0828 | 8 (0.0753) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_nne 播放结束后回到 idle_primary |
 | low | 进入 | idle_primary | look_w | 96 -> 96 | 0.0815 | 16 (0.0669) | not-applicable | Canvas crossfade | 当前可接受，低频复查即可 | look_w 是可被用户触发的交互动作 |
 | low | 回切 | look_w | idle_primary | 96 -> 96 | 0.0815 | 6 (0.0771) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_w 播放结束后回到 idle_primary |
 | low | 回切 | look_ssw | idle_primary | 144 -> 1 | 0.0768 | 22 (0.0733) | acceptable | Canvas crossfade | 当前可接受，低频复查即可 | look_ssw 播放结束后回到 idle_primary |

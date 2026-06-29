@@ -27,8 +27,8 @@ npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-naturalness
 
 ## high 风险回切
 
-- sleep -> sleeping（回切，metric 0.2606）：已配置 sleep_to_sleeping，需桌面录屏确认
-- waking -> idle_primary（回切，metric 0.2512）：已配置 waking_to_idle，需桌面录屏确认
+- sleep -> sleeping（回切，metric 0.2607）：已配置 sleep_to_sleeping，需桌面录屏确认
+- waking -> idle_primary（回切，metric 0.2511）：已配置 waking_to_idle，需桌面录屏确认
 - poke_annoyed -> idle_primary（回切，metric 0.2248）：已配置 poke_annoyed_to_idle_primary，需桌面录屏确认
 - paw_raise -> idle_primary（回切，metric 0.1939）：已配置 paw_raise_to_idle_primary，需桌面录屏确认
 
@@ -50,6 +50,16 @@ npm run capture:inspect -- --sequence-path /private/tmp/yuzai-window-naturalness
 - 桌面链路验收：`paw_raise` 预览序列，24 帧，窗口 440x440，变化帧 18，满足不少于 8 个变化帧的门禁。
 - alpha 门禁：`npm run validate:runtime-alpha-quality` 通过，未发现 green spill 或连续 alpha 均值跳变失败。
 - 若后续仍看到猫身透明闪动，应进入素材 alpha cleanup 或重新生成视频；本调度器只解决运行时抢占和动作链路秩序，不伪装成素材修复。
+
+## 2026-06-29 猫身透明闪动修复
+
+- 根因：旧 alpha 门禁只检查全帧 alpha 均值和绿溢出，无法发现猫身内部被抠绿/去绿溢出打穿的局部透明孔洞。
+- 修复：新增 `runtime:alpha-hole-repair`，只填补被猫身 alpha 区域包围、没有连接到画布边缘的内部低 alpha 孔洞，不填外部透明背景。
+- 本轮修复 runtime 帧：7048 张 PNG 被填补内部孔洞。
+- 新门禁：`npm run validate:runtime-alpha-holes`，检查最大内部孔洞、孔洞总面积和连续帧孔洞跳变。
+- 验收结果：`validate:runtime-alpha-holes` 通过，内部孔洞失败数 0。
+- 桌面截图验收：`idle_primary` 24 帧，变化帧 24；`walk` 24 帧，变化帧 16；两组窗口均为 440x440。
+- 肉眼复核图：`assets/reviews/runtime/alpha-hole-repair/idle-primary-contact-sheet.png`、`assets/reviews/runtime/alpha-hole-repair/walk-contact-sheet.png`。
 
 ## 后续优先级
 

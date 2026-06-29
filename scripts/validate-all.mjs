@@ -3,6 +3,7 @@ import { spawnSync } from "node:child_process";
 const steps = [
   ["validate:runtime-animations", ["npm", "run", "validate:runtime-animations"]],
   ["validate:runtime-alpha-quality", ["npm", "run", "validate:runtime-alpha-quality"]],
+  ["validate:runtime-alpha-holes", ["npm", "run", "validate:runtime-alpha-holes"]],
   ["validate:animation-smoothness", ["npm", "run", "validate:animation-smoothness"]],
   ["validate:animation-director", ["npm", "run", "validate:animation-director"]],
   ["validate:motion-intent-scheduler", ["npm", "run", "validate:motion-intent-scheduler"]],
