@@ -2,6 +2,7 @@ node_modules/
 dist/
 release/
 .tmp/
+.superpowers/
 .DS_Store
 npm-debug.log*
 .env.local
