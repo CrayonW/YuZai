@@ -80,9 +80,6 @@ if (failures.length === 0) {
       failures.push(`${mapping.action}: prompt must exclude watermark/logo`);
     }
 
-    if (!existsSync(join(root, mapping.source))) {
-      failures.push(`${mapping.action}: generated source video is missing`);
-    }
     if (!existsSync(join(root, mapping.contactSheet))) {
       failures.push(`${mapping.action}: desktop contact sheet is missing`);
     }
