@@ -147,7 +147,7 @@ assets/origin/generated/kling/<action>.mp4
 - `KLING_SECRET_KEY` 存在，长度为 32。
 - 未把真实 key 写入仓库文件。
 
-当前结论不变：项目侧可灵 CLI 已接入，当前不能真实生成视频的原因仍是这组 key 没有通过可灵开放 API 鉴权。下一次换 key 或开放平台权限调整后，先运行 `npm run kling:auth-check`；通过后再执行 `npm run kling:generate-batch -- --batch 1`，生成第一批视频，并按 `docs/kling-batch-intake-first.md` 先给用户确认清单后再处理素材。
+当前结论不变：项目侧可灵 CLI 已接入，当前不能真实生成视频的原因仍是这组 key 没有通过可灵开放 API 鉴权。下一次换 key 或开放平台权限调整后，先运行 `npm run kling:auth-check`；通过后再按 `docs/kling-generation-batches.md` 选择批次执行 `npm run kling:generate-batch -- --batch <batch-id>`，生成后先刷新素材清单和统一审查报告，再处理素材。
 
 ## 2026-06-16 鉴权诊断增强记录
 
@@ -185,7 +185,7 @@ duration: 5
 验证结果：
 
 - `npm run kling:auth-check` 返回 `ok: true`，探测任务返回 `400 auth_accepted` 和 “Task not found”，说明 JWT 和 key 已被服务端接受。
-- `npm run kling:preflight -- --batch 1 --write docs/kling-preflight-first.md` 显示“可以开始生成”。
+- `npm run kling:preflight -- --batch 1` 显示“可以开始生成”。
 - `npm run kling:generate-batch -- --batch 1` 已进入真实提交，但返回 `HTTP 429`，错误信息为 `Account balance not enough`。
 
 当前结论：项目侧可灵 API 接入已打通到真实业务接口；当前不能生成第一批视频的原因变为账号余额不足，不再是鉴权或接口入口问题。余额补足后，继续执行 `npm run kling:generate-batch -- --batch 1` 即可从第一批 `groom_face_wash` 开始生成。
@@ -197,9 +197,9 @@ duration: 5
 执行结果：
 
 - `npm run kling:auth-check` 返回 `ok: true`，可灵服务端接受 JWT 和 key。
-- `npm run kling:preflight -- --batch 1 --write docs/kling-preflight-first.md` 显示“可以开始生成”，第一批 4 个视频仍缺失。
+- `npm run kling:preflight -- --batch 1` 显示“可以开始生成”，第一批 4 个视频仍缺失。
 - `npm run kling:generate-batch -- --batch 1` 已提交到图生视频业务接口，但返回 `HTTP 429` 和 `Account balance not enough`。
-- `npm run kling:batch-status -- --batch 1 --write docs/kling-batch-status-first.md --last-error "<最近一次错误>"` 已刷新第一批状态页，阻塞类型为“余额不足”。
+- `npm run kling:batch-status -- --batch 1 --last-error "<最近一次错误>"` 可刷新第一批状态，阻塞类型为“余额不足”。
 
 当前结论：项目侧可灵接入已按当前 key 打通到真实业务接口；现在不是鉴权失败，也不是项目代码未接入，而是可灵账号余额不足。余额补足后，从下面命令继续：
 
@@ -208,3 +208,7 @@ npm run kling:generate-batch -- --batch 1
 ```
 
 生成成功后，先刷新素材清单并给用户确认，再进入水印检查、去水印、抽帧和 runtime manifest 接入。
+
+## 2026-06-30 文档清理记录
+
+已清理早期批次执行过程中生成的临时 preflight、batch-status、batch-intake 和分拆审查文档。后续查询动作批次与生成状态时，以 `docs/kling-generation-batches.md`、`docs/kling-generated-video-audit.md` 和当前仍被发布校验引用的 transition-out/runtime-intake 证据文档为准。
