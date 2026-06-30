@@ -38,7 +38,13 @@ if (manifest) {
       }
 
       if (!config.source) failures.push(`${action}: source is required`);
-      else if (!existsSync(join(root, config.source))) failures.push(`${action}: missing source ${config.source}`);
+      else if (!existsSync(join(root, config.source))) {
+        if (String(config.source).startsWith("assets/origin/generated/")) {
+          warnings.push(`${action}: pruned generated source ${config.source}`);
+        } else {
+          failures.push(`${action}: missing source ${config.source}`);
+        }
+      }
 
       if (typeof config.frameRoot !== "string" || !config.frameRoot) failures.push(`${action}: frameRoot is required`);
       if (typeof config.filePattern !== "string" || !config.filePattern.includes("{index}")) failures.push(`${action}: filePattern must include {index}`);

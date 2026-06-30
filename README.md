@@ -2,7 +2,7 @@
 
 鱼仔是一个本地运行的 Electron 桌面宠物项目。当前第一版目标是：桌面上能看到一只由 `assets/origin` 源视频重建而来的猫，透明置顶显示，能播放序列帧动画，能弹气泡提醒，并能对鼠标靠近做出可见反应。
 
-项目文档默认使用中文。后续新增动作、删除旧素材、覆盖运行帧之前，必须先列出清单给用户确认。
+后续新增动作、删除旧素材、覆盖运行帧之前，必须先列出清单给用户确认。
 
 ## 当前可运行状态
 
@@ -12,21 +12,17 @@
 npm run dev
 ```
 
-常用验证：
+常用运行验证：
 
 ```bash
-npm run validate:all
+npm run typecheck
+npm run build
+YUZAI_CAPTURE_PATH=/private/tmp/yuzai-window.png npm run dev
 ```
 
-发布前总检查：
+说明：仓库已清理历史执行文档和中间记录，`validate:all` / `validate:release` 中部分文档型校验不再作为当前运行验收入口。确认程序能否正常运行时，以类型检查、构建、桌宠启动截图和 runtime 资源检查为准。
 
-```bash
-npm run validate:release
-```
-
-`validate:release` 会先跑核心运行验证，再重新生成本机应用包并检查打包内容，耗时会比 `validate:all` 更长。
-
-单项验证：
+可继续使用的运行相关单项验证：
 
 ```bash
 npm run validate:runtime-animations
@@ -37,11 +33,6 @@ npm run validate:runtime-behavior-schedule
 npm run validate:runtime-interaction-schedule
 npm run validate:drag-visual-feedback
 npm run validate:canvas-transition-smoothing
-npm run validate:action-transition-risk-report
-npm run validate:transition-out-checklist
-npm run validate:transition-out-intake-proposal
-npm run validate:action-preview-capture
-npm run validate:release-readiness
 npm run validate:manifest-contract
 npm run validate:manifest-contract:current
 npm run validate:capture-plan
@@ -66,11 +57,6 @@ npm run package:win
 
 打包产物输出到 `release/`，该目录不会提交到 Git。当前打包内容只包含运行所需的 `dist/electron`、`dist/renderer` 和 `dist/assets/runtime`，不会把 `assets/origin` 源视频打进应用包。
 `validate:package` 会重新生成本机应用包，并检查 `app.asar` 包含运行入口和 runtime 动画资源、没有打入源视频或可灵生成素材，同时确认应用图标资源存在。
-
-试用分发说明：
-
-- [docs/release-playbook.md](docs/release-playbook.md)：本地试用包构建、安装、首次打开、回滚步骤和已知限制。
-- [docs/project-completion-audit.md](docs/project-completion-audit.md)：当前完成度、发布验证证据和剩余质量缺口。
 
 桌面截图验收示例：
 
@@ -116,13 +102,12 @@ npm run capture:inspect -- \
 
 - Electron 透明、无边框、置顶桌面宠物窗口。
 - 运行时播放 `assets/runtime/animations` 中的透明 PNG 序列帧。
-- 当前运行帧来自 `assets/origin` 中已有鱼仔源视频和 `assets/origin/generated/kling` 中已验收的可灵动作视频，源视频水印区域在运行帧中透明化。
+- 当前运行帧来自已接入的透明 PNG 序列帧；中间生成视频和历史执行文档已清理。
 - 当前 manifest 已启用 22 个动作，其中 16 个来自可灵生成动作；13 个桌宠语义状态均已有独立动作映射。
 - `AnimationDirector` 按 `daily / interactive / transition` 分类调度动作，交互动作结束后回到日常动作。
 - manifest 合约验证会检查 13 个状态映射、动作分类、切换安全帧和交互回流配置，避免新增动作时破坏调度。
 - idle 状态会自动插入眨眼、环顾、舔脸、趴卧呼吸、桌面嗅闻、摇尾和备用待机等日常变化，避免长期只播放默认待机。
 - Canvas 渲染器已接入跨动作淡入淡出，降低日常动作与交互动作切换时的生硬闪切。
-- 动作衔接风险报告会对实际 runtime PNG 帧做差异计算，定位最需要补安全帧或专用过渡素材的切换。
 - 定时气泡提醒喝水、休息。
 - 右键菜单支持隐藏、显示、重置位置、角色大小、动作频率和退出。
 - 托盘菜单支持隐藏后恢复显示，并提供退出入口，避免隐藏后找不回桌宠。
@@ -159,128 +144,42 @@ assets/runtime/animations/<action>/frames/frame_000001.png
 | `walk` | `daily` | `assets/origin/鱼仔走路视频.mp4` | 已接入 |
 | `walk_left` | `daily` | 从 `walk` 镜像生成 | 已接入 |
 | `paw_raise` | `interactive` | `assets/origin/鱼仔前肢抬起视频.mp4` | 已接入 |
-| `slow_blink` | `daily` | `assets/origin/generated/kling/slow_blink.mp4` | 已接入 |
-| `look_around` | `daily` | `assets/origin/generated/kling/look_around.mp4` | 已接入 |
-| `cursor_watch` | `interactive` | `assets/origin/generated/kling/cursor_watch_clean_candidate_v3.mp4` | 已接入 |
-| `click_surprised` | `interactive` | `assets/origin/generated/kling/click_surprised.mp4` | 已接入 |
-| `poke_annoyed` | `interactive` | `assets/origin/generated/kling/poke_annoyed.mp4` | 已接入 |
-| `call_response` | `interactive` | `assets/origin/generated/kling/call_response.mp4` | 已接入 |
-| `stretch_yawn` | `daily` | `assets/origin/generated/kling/stretch_yawn.mp4` | 已接入 |
-| `groom_face_wash` | `daily` | `assets/origin/generated/kling/groom_face_wash.mp4` | 已接入 |
-| `loaf_breathing` | `daily` | `assets/origin/generated/kling/loaf_breathing.mp4` | 已接入 |
-| `desk_sniff` | `daily` | `assets/origin/generated/kling/desk_sniff.mp4` | 已接入 |
-| `shy` | `interactive` | `assets/origin/generated/kling/shy.mp4` | 已接入 |
-| `sleepy` | `transition` | `assets/origin/generated/kling/sleepy.mp4` | 已接入 |
-| `sleep` | `transition` | `assets/origin/generated/kling/sleep.mp4` | 已接入 |
-| `sleeping` | `daily` | `assets/origin/generated/kling/sleeping.mp4` | 已接入 |
-| `waking` | `transition` | `assets/origin/generated/kling/waking.mp4` | 已接入 |
-| `dragging` | `interactive` | `assets/origin/generated/kling/dragging.mp4` | 已接入 |
+| `slow_blink` | `daily` | 已接入 runtime 序列帧 | 已接入 |
+| `look_around` | `daily` | 已接入 runtime 序列帧 | 已接入 |
+| `cursor_watch` | `interactive` | 已接入 runtime 序列帧 | 已接入 |
+| `click_surprised` | `interactive` | 已接入 runtime 序列帧 | 已接入 |
+| `poke_annoyed` | `interactive` | 已接入 runtime 序列帧 | 已接入 |
+| `call_response` | `interactive` | 已接入 runtime 序列帧 | 已接入 |
+| `stretch_yawn` | `daily` | 已接入 runtime 序列帧 | 已接入 |
+| `groom_face_wash` | `daily` | 已接入 runtime 序列帧 | 已接入 |
+| `loaf_breathing` | `daily` | 已接入 runtime 序列帧 | 已接入 |
+| `desk_sniff` | `daily` | 已接入 runtime 序列帧 | 已接入 |
+| `shy` | `interactive` | 已接入 runtime 序列帧 | 已接入 |
+| `sleepy` | `transition` | 已接入 runtime 序列帧 | 已接入 |
+| `sleep` | `transition` | 已接入 runtime 序列帧 | 已接入 |
+| `sleeping` | `daily` | 已接入 runtime 序列帧 | 已接入 |
+| `waking` | `transition` | 已接入 runtime 序列帧 | 已接入 |
+| `dragging` | `interactive` | 已接入 runtime 序列帧 | 已接入 |
 
 当前 13 个桌宠状态覆盖结果为：独立动作 13 个、复用混合 0 个、fallback 0 个、missing 0 个。后续新增动作优先用于提升自然度、衔接和角色一致性，而不是补基础状态缺口。
 
-## 素材生产流程
+## 素材边界
 
-当前权威流程：
+当前运行流程：
 
 ```text
-assets/origin/*.mp4
-  -> npm run animations:intake-checklist
-  -> npm run animations:audit-origin
-  -> npm run animations:build-from-origin
-  -> assets/runtime/animations/<action>/frames/*.png
+assets/runtime/animations/<action>/frames/*.png
   -> assets/runtime/animations/manifest.json
-  -> Electron 桌面窗口验收
+  -> Electron 桌宠窗口播放
 ```
 
-接入新视频前先给用户确认清单，至少包含：
+`assets/origin` 保留用户提供的原始素材视频和参考图，不作为运行时直接播放来源。中间生成视频、历史执行文档和批次记录已清理；后续如果重新生成或接入动作，应先列清单确认：
 
 - 本次处理的源视频文件。
 - 目标 action 名称和分类。
 - 会生成、删除或覆盖的路径。
 - 是否会修改 manifest。
 - 验证命令和桌面验收方式。
-
-可先运行：
-
-```bash
-npm run animations:intake-checklist
-npm run animations:state-coverage
-npm run animations:state-coverage -- --write docs/state-coverage.md
-npm run animations:state-backlog -- --write docs/state-backlog.md
-```
-
-`animations:intake-checklist` 会扫描 `assets/origin` 和当前 manifest，输出中文“动作素材处理前确认清单”。如果同一个源视频会影响多个 action，例如 `walk` 和 `walk_left`，清单会合并列出所有目标 action 和覆盖路径。
-
-`animations:state-coverage` 会输出 13 个桌宠状态的动作覆盖报告，标出哪些状态已有独立/复用动作，哪些仍 fallback 到待机，并附上可灵提示词计划中的候选动作名称。
-需要保存当前缺口面板时，使用 `--write docs/state-coverage.md`。
-
-`animations:state-backlog` 会把 fallback / missing 状态转成补齐待办，输出建议 action、类别、计划产物和下一步动作。需要保存当前执行清单时，使用 `--write docs/state-backlog.md`。
-
-接入后必须更新：
-
-```text
-docs/animation-production-log.md
-```
-
-接入后至少运行：
-
-```bash
-npm run validate:runtime-animations
-npm run validate:animation-intake-checklist
-npm run animations:audit-origin
-npm run validate:origin-video-audit
-npm run validate:state-coverage-report
-npm run validate:manifest-contract:current
-npm run validate:animation-director
-```
-
-其中 `validate:manifest-contract:current` 会确认当前 `PetStateName` 的 13 个状态都已在 manifest 中有映射，并检查动作调度字段是否完整。
-
-## 可灵 AI 视频生成
-
-提示词文档：
-
-```text
-docs/cat-video-prompt-guide.md
-docs/kling-action-generation-plan.json
-```
-
-本地 CLI：
-
-```bash
-npm run kling:auth-check
-npm run kling:generate -- --dry-run --action idle_primary
-npm run kling:generate -- --action idle_primary
-```
-
-当前联调记录在：
-
-```text
-docs/kling-integration.md
-```
-
-截至 2026-06-16，项目已切到可灵北京开放平台 API 和 `kling-v2-6` 模型，`kling:auth-check` 返回 `ok:true`，说明本地 JWT 和密钥格式已被 API 接受。真实生成仍依赖账号余额、额度和人工验收清单；生成结果必须先进入 `assets/origin/generated/kling` 待验收，再按素材生产流程接入运行时。
-
-## 重要文档入口
-
-- `docs/requirements-mvp.md`：第一版 MVP 需求和验收记录。
-- `docs/animation-adapter.md`：动画资源接入规范。
-- `docs/animation-production-log.md`：每次素材处理、验证和决定。
-- `docs/animation-upgrade-plan.md`：从旧生成素材流程切换到源视频序列帧流程的执行计划。
-- `docs/cat-video-prompt-guide.md`：后续生成日常动作、交互动作和过渡动作的视频提示词。
-- `docs/kling-integration.md`：可灵 AI 接入说明和鉴权状态。
-- `docs/state-coverage.md`：当前 13 状态动作覆盖报告和缺口面板。
-- `docs/state-backlog.md`：当前 13 状态动作补齐待办和建议生成顺序。
-- `docs/generated-action-preview.md`：已生成动作逐个在桌宠窗口预览的截图验收记录。
-- `docs/action-transition-smoothing.md`：动作衔接生硬问题的淡入淡出优化记录和验证证据。
-- `docs/action-transition-risk-report.md`：基于实际序列帧的动作切换风险清单和下一步过渡素材建议。
-- `docs/transition-out-action-checklist.md`：高风险回切过渡动作处理前确认清单。
-- `docs/runtime-intake-transition-out-recovery-proposal.md`：高风险回切过渡动作升级为正式 runtime-intake 波次前的待确认提案。
-- `docs/kling-preflight-transition-out-recovery.md`：高风险回切过渡视频生成前置检查，只记录本地条件和缺失视频。
-- `docs/kling-batch-status-transition-out-recovery.md`：高风险回切过渡批次产物状态。
-- `docs/kling-batch-intake-transition-out-recovery.md`：高风险回切过渡视频生成后的 runtime 接入前确认清单。
-- `docs/runtime-duration-extension-plan.md`：runtime 动作时长不足的补长动作清单和处理边界。
-- `docs/macos-signing-notarization-status.md`：macOS 签名、公证和签名后安全复核当前状态。
 
 ## 代码结构
 
