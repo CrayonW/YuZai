@@ -3,6 +3,7 @@ dist/
 release/
 .tmp/
 .superpowers/
+.worktrees/
 .DS_Store
 npm-debug.log*
 .env.local
